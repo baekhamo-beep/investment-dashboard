@@ -1,0 +1,15 @@
+{
+  "updated_utc": "2026-01-01T00:00:00Z",
+  "nasdaq": {
+    "drawdown_pct": null,
+    "rsi": null,
+    "ma200_dev_pct": null,
+    "current_price": null,
+    "peak_price": null
+  },
+  "vix": null,
+  "fear_greed": {
+    "value": null,
+    "classification": "unavailable"
+  }
+}
