@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-01-01T00:00:00Z",
+  "updated_utc": "2026-04-11T23:50:43Z",
   "nasdaq": {
-    "drawdown_pct": null,
-    "rsi": null,
-    "ma200_dev_pct": null,
-    "current_price": null,
-    "peak_price": null
+    "drawdown_pct": -3.64,
+    "rsi": 65.4,
+    "ma200_dev_pct": 2.65,
+    "current_price": 611.07,
+    "peak_price": 634.15
   },
-  "vix": null,
+  "vix": 19.23,
   "fear_greed": {
-    "value": null,
-    "classification": "unavailable"
+    "value": 15,
+    "classification": "Extreme Fear"
   }
 }
