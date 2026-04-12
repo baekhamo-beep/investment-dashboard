@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>투자 헌법 사령부</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg0:#0a0e1a; --bg1:#0f1525; --bg2:#161d30; --bg3:#1e2740;
+  --accent:#c9a84c; --accent2:#e8c97a; --accent-dim:rgba(201,168,76,0.15); --accent-border:rgba(201,168,76,0.35);
+  --red:#e05c5c; --green:#4caf7d; --blue:#4a9eff; --purple:#9b7fe8;
+  --text1:#e8eaf0; --text2:#9aa0b8; --text3:#5a6080;
+  --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+}
+body { background:var(--bg0); color:var(--text1); font-family:'Segoe UI',sans-serif; }
+.app { min-height:100vh; }
+.header { background:var(--bg1); border-bottom:1px solid var(--accent-border); padding:14px 20px; display:flex; align-items:center; gap:12px; }
+.header-icon { width:32px; height:32px; background:var(--accent); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+.header-title { font-size:15px; font-weight:600; color:var(--accent2); }
+.header-sub { font-size:11px; color:var(--text2); margin-top:2px; }
+.header-right { margin-left:auto; display:flex; align-items:center; gap:8px; }
+.live-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.live-label { font-size:10px; color:var(--green); }
+.header-time { font-size:10px; color:var(--text3); margin-left:8px; }
+.tabs { display:flex; background:var(--bg1); border-bottom:1px solid var(--border); overflow-x:auto; }
+.tab { padding:11px 18px; font-size:12px; font-weight:500; color:var(--text2); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.2s; white-space:nowrap; }
+.tab:hover { color:var(--text1); }
+.tab.active { color:var(--accent2); border-bottom-color:var(--accent); background:rgba(201,168,76,0.05); }
+.content { padding:16px; max-width:900px; margin:0 auto; }
+.panel { display:none; }
+.panel.active { display:block; }
+.section-title { font-size:11px; font-weight:600; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+.grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:12px; }
+.grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:12px; }
+.card { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:12px 14px; }
+.card-label { font-size:10px; color:var(--text3); margin-bottom:4px; }
+.card-value { font-size:20px; font-weight:700; }
+.card-sub { font-size:11px; color:var(--text2); margin-top:3px; }
+.status-box { border-radius:8px; padding:14px 16px; margin-bottom:12px; }
+.status-box.safe { background:rgba(76,175,125,0.1); border:1px solid rgba(76,175,125,0.3); }
+.status-box.warn { background:rgba(255,193,7,0.1); border:1px solid rgba(255,193,7,0.3); }
+.status-box.danger { background:rgba(224,92,92,0.1); border:1px solid rgba(224,92,92,0.3); }
+.status-box.hold { background:rgba(74,158,255,0.1); border:1px solid rgba(74,158,255,0.3); }
+.status-title { font-size:13px; font-weight:700; margin-bottom:4px; }
+.status-desc { font-size:11px; color:var(--text2); line-height:1.6; }
+.btn { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all 0.2s; }
+.btn-gold { background:var(--accent); color:#0a0e1a; }
+.btn-gold:hover { background:var(--accent2); }
+.input-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.input-label { font-size:11px; color:var(--text2); width:80px; flex-shrink:0; }
+.inp { background:var(--bg3); border:1px solid var(--border2); color:var(--text1); border-radius:5px; padding:7px 10px; font-size:12px; width:100%; outline:none; }
+.inp:focus { border-color:var(--accent-border); }
+.inp-unit { font-size:11px; color:var(--text3); width:30px; flex-shrink:0; }
+.alert-badge { display:inline-block; font-size:10px; padding:2px 7px; border-radius:3px; font-weight:600; }
+.badge-red { background:rgba(224,92,92,0.2); color:var(--red); }
+.badge-green { background:rgba(76,175,125,0.2); color:var(--green); }
+.badge-gray { background:rgba(255,255,255,0.08); color:var(--text2); }
+.progress-wrap { background:var(--bg3); border-radius:3px; height:6px; overflow:hidden; margin-top:6px; }
+.progress-bar { height:6px; border-radius:3px; transition:width 0.5s; }
+.pulse { animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.divider { border:none; border-top:1px solid var(--border); margin:12px 0; }
+.action-box { background:var(--bg3); border-radius:6px; padding:10px 12px; margin-bottom:8px; display:flex; align-items:flex-start; gap:10px; }
+.action-num { background:var(--accent); color:#0a0e1a; width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; flex-shrink:0; margin-top:1px; }
+.action-text { font-size:12px; color:var(--text1); line-height:1.6; }
+.mps-circle { width:70px; height:70px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; border:3px solid; }
+.quick-btn-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+.quick-btn { background:var(--bg2); border:1px solid var(--border2); color:var(--text2); border-radius:7px; padding:10px 12px; font-size:11px; cursor:pointer; transition:all 0.2s; text-align:left; }
+.quick-btn:hover { border-color:var(--accent-border); color:var(--accent); background:var(--accent-dim); }
+.quick-btn .qb-title { font-weight:600; color:var(--text1); font-size:11px; display:block; margin-bottom:2px; }
+.quick-btn .qb-sub { font-size:10px; color:var(--text3); }
+.ai-answer-box { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:16px; min-height:160px; font-size:12px; line-height:1.8; }
+.ai-rule-block { border-left:3px solid var(--accent); padding-left:12px; margin-bottom:14px; }
+.ai-rule-title { font-size:11px; font-weight:700; color:var(--accent2); margin-bottom:4px; }
+.ai-rule-body { font-size:11px; color:var(--text2); line-height:1.7; }
+.coming-soon-banner { background:var(--accent-dim); border:1px solid var(--accent-border); border-radius:6px; padding:8px 12px; font-size:11px; color:var(--accent); margin-bottom:12px; }
+.data-updated { font-size:10px; color:var(--text3); margin-bottom:12px; display:flex; align-items:center; gap:6px; }
+.data-dot { width:5px; height:5px; border-radius:50%; background:var(--green); }
+@media(max-width:600px){ .grid4{grid-template-columns:repeat(2,1fr);} .grid3{grid-template-columns:1fr 1fr;} .quick-btn-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <div class="header-icon">⚖</div>
+    <div>
+      <div class="header-title">투자 헌법 사령부</div>
+      <div class="header-sub">부의 계단 프로젝트 · The Elite 5 Hybrid</div>
+    </div>
+    <div class="header-right">
+      <div class="live-dot"></div>
+      <span class="live-label">LIVE</span>
+      <span class="header-time" id="live-time">—</span>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('diag',this)">① 상황 진단</div>
+    <div class="tab" onclick="switchTab('port',this)">② 포트폴리오</div>
+    <div class="tab" onclick="switchTab('bigmoney',this)">③ 대자금 투입</div>
+    <div class="tab" onclick="switchTab('ai',this)">④ AI 조언</div>
+  </div>
+  <div class="content panel active" id="tab-diag">
+    <div class="data-updated">
+      <div class="data-dot pulse" id="data-dot"></div>
+      <span id="data-updated-text">데이터 불러오는 중...</span>
+      <button onclick="loadData()" style="margin-left:auto;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:4px;padding:3px 8px;font-size:10px;cursor:pointer;">새로고침</button>
+    </div>
+    <div class="section-title">실시간 시장 지표</div>
+    <div class="grid4">
+      <div class="card"><div class="card-label">나스닥 하락률</div><div class="card-value" id="d-nasdaq">—</div><div class="card-sub pulse" id="d-nasdaq-sub">로딩 중...</div></div>
+      <div class="card"><div class="card-label">VIX 공포지수</div><div class="card-value" id="d-vix">—</div><div class="card-sub pulse" id="d-vix-sub">로딩 중...</div></div>
+      <div class="card"><div class="card-label">RSI (나스닥)</div><div class="card-value" id="d-rsi">—</div><div class="card-sub pulse" id="d-rsi-sub">로딩 중...</div></div>
+      <div class="card"><div class="card-label">공포&amp;탐욕 지수</div><div class="card-value" id="d-fg">—</div><div class="card-sub pulse" id="d-fg-sub">로딩 중...</div></div>
+    </div>
+    <div id="diag-status"></div>
+    <div class="section-title">하락장 매수 단계 (3-3-4-3-2)</div>
+    <div id="dip-stages"></div>
+    <hr class="divider">
+    <div class="section-title">상승장 과열 신호</div>
+    <div id="bull-signals"></div>
+    <hr class="divider">
+    <div class="section-title">수동 override</div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;">
+      <div class="input-row"><span class="input-label">나스닥 하락%</span><input class="inp" id="m-nasdaq" type="number" placeholder="예: -15" step="0.1"><span class="inp-unit">%</span></div>
+      <div class="input-row"><span class="input-label">VIX</span><input class="inp" id="m-vix" type="number" placeholder="예: 28"></div>
+      <div class="input-row"><span class="input-label">RSI</span><input class="inp" id="m-rsi" type="number" placeholder="예: 65"></div>
+      <div class="input-row"><span class="input-label">F&amp;G 지수</span><input class="inp" id="m-fg" type="number" placeholder="예: 45"></div>
+      <div style="margin-top:8px;"><button class="btn btn-gold" onclick="runManualDiag()">수동 진단 실행</button></div>
+    </div>
+  </div>
+  <div class="content panel" id="tab-port">
+    <div class="section-title">현재 보유 금액 입력 (만원)</div>
+    <div id="port-inputs"></div>
+    <div style="margin-top:10px;display:flex;gap:8px;align-items:center;">
+      <button class="btn btn-gold" onclick="calcPort()">리밸런싱 계산</button>
+      <div style="font-size:12px;color:var(--text2)">총액: <span id="total-amt" style="color:var(--accent);font-weight:700">0</span> 만원</div>
+    </div>
+    <hr class="divider">
+    <div class="section-title">비중 현황 및 리밸런싱 지시</div>
+    <div id="port-result"><div style="color:var(--text3);font-size:12px;">금액 입력 후 계산 버튼을 누르세요.</div></div>
+  </div>
+  <div class="content panel" id="tab-bigmoney">
+    <div class="section-title">MPS 점수 계산</div>
+    <div class="card" style="margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">추세 (나스닥>200일MA)</div><select class="inp" id="mps1" style="padding:6px 8px;"><option value="1">상승 궤도 (+1)</option><option value="0">하락 궤도 (0)</option></select></div>
+        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">모멘텀 (6개월 수익률>0)</div><select class="inp" id="mps2" style="padding:6px 8px;"><option value="1">플러스 (+1)</option><option value="0">마이너스 (0)</option></select></div>
+        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">변동성 (VIX&lt;20)</div><select class="inp" id="mps3" style="padding:6px 8px;"><option value="1">안정 (+1)</option><option value="0">불안 (0)</option></select></div>
+      </div>
+    </div>
+    <div class="section-title">투입 금액</div>
+    <div class="input-row" style="margin-bottom:12px;"><span class="input-label">총 금액</span><input class="inp" id="big-amt" type="number" placeholder="10000" value="10000"><span class="inp-unit">만원</span></div>
+    <button class="btn btn-gold" onclick="calcBigMoney()">투입 계획 산출</button>
+    <hr class="divider">
+    <div id="bigmoney-result"><div style="color:var(--text3);font-size:12px;">위 항목 선택 후 산출 버튼을 누르세요.</div></div>
+  </div>
+  <div class="content panel" id="tab-ai">
+    <div class="coming-soon-banner">⚙ AI 실시간 연동 준비 중 — 현재는 헌법 기반 정적 답변을 제공합니다</div>
+    <div class="section-title">빠른 질문</div>
+    <div class="quick-btn-grid">
+      <button class="quick-btn" onclick="showAnswer('dip')"><span class="qb-title">하락장 매수 절차</span><span class="qb-sub">3-3-4-3-2 단계별 가이드</span></button>
+      <button class="quick-btn" onclick="showAnswer('rebal')"><span class="qb-title">리밸런싱 기준</span><span class="qb-sub">상시/정기 이탈 기준</span></button>
+      <button class="quick-btn" onclick="showAnswer('bull')"><span class="qb-title">상승장 현금 재충전</span><span class="qb-sub">과열 신호 3가지 조건</span></button>
+      <button class="quick-btn" onclick="showAnswer('qld')"><span class="qb-title">QLD 캡 &amp; TQQQ 조항</span><span class="qb-sub">레버리지 폭주 방지</span></button>
+      <button class="quick-btn" onclick="showAnswer('special')"><span class="qb-title">특수조항 1·2</span><span class="qb-sub">모멘텀 교체 &amp; 소형주</span></button>
+      <button class="quick-btn" onclick="showAnswer('fail')"><span class="qb-title">실패의 정의 &amp; 금지</span><span class="qb-sub">헌법 제5조·제7조</span></button>
+    </div>
+    <div class="section-title">답변</div>
+    <div class="ai-answer-box" id="ai-answer"><span style="color:var(--text3)">위 버튼을 누르면 헌법 기반 답변이 표시됩니다.</span></div>
+  </div>
+</div>
+<script>
+const DATA_URL="https://baekhamo-beep.github.io/investment-dashboard/data.json";
+const TICKERS=[
+  {id:'QLD',target:20,color:'#e8c97a',role:'나스닥 2배 레버리지',capUpper:12},
+  {id:'SPMO',target:30,color:'#4a9eff',role:'S&P500 모멘텀',capUpper:12},
+  {id:'SCHD',target:25,color:'#4caf7d',role:'배당 성장',capUpper:7},
+  {id:'AVUV',target:10,color:'#9b7fe8',role:'소형 가치',capUpper:7},
+  {id:'SGOV',target:15,color:'#9aa0b8',role:'단기국채 현금',capUpper:7},
+];
+let mkt={nasdaq:null,vix:null,rsi:null,fg:null,ma200:null};
+
+function updateTime(){
+  const kst=new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);
+  document.getElementById('live-time').textContent=kst.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' KST';
+}
+setInterval(updateTime,1000);updateTime();
+
+function switchTab(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+async function fetchFG(){
+  try{
+    const r=await fetch('https://api.alternative.me/fng/?limit=1');
+    const d=await r.json();
+    const fg=parseInt(d.data[0].value);
+    mkt.fg=fg;
+    setCard('d-fg',fg,fg>=80?'극단적 탐욕':fg>=60?'탐욕':fg<=25?'극단적 공포':'중립',fg>=80?'var(--red)':fg<=25?'var(--green)':'var(--accent)');
+  }catch(e){
+    document.getElementById('d-fg').textContent='—';
+    document.getElementById('d-fg-sub').textContent='직접 입력';
+    document.getElementById('d-fg-sub').classList.remove('pulse');
+  }
+}
+
+async function loadData(){
+  document.getElementById('data-updated-text').textContent='데이터 불러오는 중...';
+  fetchFG();
+  try{
+    const res=await fetch(DATA_URL+'?t='+Date.now());
+    const d=await res.json();
+    const nd=d.nasdaq?.drawdown_pct,vx=d.vix,rs=d.nasdaq?.rsi,fg=d.fear_greed?.value,ma=d.nasdaq?.ma200_dev_pct;
+    const isRun=d.updated_utc&&d.updated_utc!=='2026-01-01T00:00:00Z';
+    if(!isRun){
+      document.getElementById('data-updated-text').textContent='⚠ GitHub Actions 미실행 — Actions 탭에서 Run workflow 눌러주세요';
+      ['d-nasdaq','d-vix','d-rsi'].forEach(id=>{document.getElementById(id).textContent='—';document.getElementById(id+'-sub').textContent='Actions 실행 필요';document.getElementById(id+'-sub').classList.remove('pulse');});
+      renderDiagStatus();renderDipStages();renderBullSignals();return;
+    }
+    if(nd!=null){mkt.nasdaq=nd;setCard('d-nasdaq',nd.toFixed(1)+'%',nd<=-12?'매수 신호':nd<0?'하락 중':'상승 중',nd<=-12?'var(--red)':nd<0?'var(--accent)':'var(--green)');}
+    if(vx!=null){mkt.vix=vx;setCard('d-vix',vx.toFixed(1),vx>=40?'극단 공포':vx>=25?'주의':'안정',vx>=40?'var(--red)':vx>=25?'#ffc107':'var(--green)');}
+    if(rs!=null){mkt.rsi=rs;setCard('d-rsi',rs.toFixed(0),rs>=70?'과매수':rs<=30?'과매도':'중립',rs>=70?'var(--red)':rs<=30?'var(--green)':'var(--text1)');}
+    if(fg!=null&&mkt.fg===null){mkt.fg=fg;setCard('d-fg',fg,fg>=80?'극단적 탐욕':fg>=60?'탐욕':fg<=25?'극단적 공포':'중립',fg>=80?'var(--red)':fg<=25?'var(--green)':'var(--accent)');}
+    if(ma!=null)mkt.ma200=ma;
+    const updKST=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
+    document.getElementById('data-updated-text').textContent='마지막 업데이트: '+updKST+' KST (12시간마다 자동 갱신)';
+    document.getElementById('data-dot').classList.remove('pulse');
+    renderDiagStatus();renderDipStages();renderBullSignals();
+  }catch(e){
+    document.getElementById('data-updated-text').textContent='GitHub Pages 로드 실패 — 수동 입력을 사용하세요';
+    renderDiagStatus();renderDipStages();renderBullSignals();
+  }
+}
+
+function setCard(id,val,sub,color){
+  const el=document.getElementById(id);el.textContent=val;el.style.color=color;
+  const s=document.getElementById(id+'-sub');s.textContent=sub;s.classList.remove('pulse');
+}
+
+function renderDiagStatus(){
+  const nd=mkt.nasdaq,vx=mkt.vix;let html='';
+  if(nd===null){html='<div class="status-box hold"><div class="status-title" style="color:var(--blue)">데이터 로딩 중 / 수동 입력 대기</div><div class="status-desc">GitHub에서 데이터를 가져오는 중이거나, 아래 수동 입력을 사용하세요.</div></div>';}
+  else if(vx!==null&&vx>=40&&nd<=-25){html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">극단 변동성 모드 (VIX≥40 & 나스닥≤-25%)</div><div class="status-desc">상시 리밸런싱 중단. 3-3-4-3-2 하락장 매수만 집행. 패닉 셀 절대 금지.</div></div>';}
+  else if(nd<=-45){html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">5단계 — 최후의 한발 (-45%)</div><div class="status-desc">SGOV 20% → TQQQ 매수. SGOV 소진 시 원화채굴 투입.</div></div>';}
+  else if(nd<=-35){html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">4단계 — 공포의 절정 (-35%)</div><div class="status-desc">SGOV 30% → TQQQ 매수. TQQQ 최대 5%.</div></div>';}
+  else if(nd<=-25){html='<div class="status-box warn"><div class="status-title" style="color:#ffc107">3단계 — 핵심 승부처 (-25%)</div><div class="status-desc">SGOV 40% → QLD 매수. QLD 27% 캡 확인 필수.</div></div>';}
+  else if(nd<=-18){html='<div class="status-box warn"><div class="status-title" style="color:#ffc107">2단계 — 본격 매수 (-18%)</div><div class="status-desc">SGOV 30% → QLD 매수.</div></div>';}
+  else if(nd<=-12){html='<div class="status-box warn"><div class="status-title" style="color:#ff9800">1단계 — 첫 번째 진입 (-12%)</div><div class="status-desc">SGOV 30% → QLD 매수. 전날 종가 확정, 익일 시가 집행.</div></div>';}
+  else{html='<div class="status-box safe"><div class="status-title" style="color:var(--green)">정상 운항 — 하락장 매수 미발동</div><div class="status-desc">정기 적립 및 22일 매수 루틴 유지. 상승장 과열 신호 모니터링.</div></div>';}
+  document.getElementById('diag-status').innerHTML=html;
+}
+
+function renderDipStages(){
+  const stages=[{pct:-12,label:'1단계 첫 번째 진입',action:'SGOV 30% → QLD',color:'#ff9800'},{pct:-18,label:'2단계 본격 매수',action:'SGOV 30% → QLD',color:'#ff5722'},{pct:-25,label:'3단계 핵심 승부처',action:'SGOV 40% → QLD',color:'#f44336'},{pct:-35,label:'4단계 공포의 절정',action:'SGOV 30% → TQQQ',color:'#e05c5c'},{pct:-45,label:'5단계 최후의 한발',action:'SGOV 20% → TQQQ',color:'#b71c1c'}];
+  const nd=mkt.nasdaq;
+  let html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
+  stages.forEach(s=>{const on=nd!==null&&nd<=s.pct;html+=`<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);${on?'background:rgba(224,92,92,0.07);':''}"><div style="width:8px;height:8px;border-radius:50%;background:${on?s.color:'var(--bg3)'}"></div><div style="font-size:11px;font-weight:700;color:${on?s.color:'var(--text3)'};width:38px;">${s.pct}%</div><div style="font-size:11px;color:${on?'var(--text1)':'var(--text3)'};flex:1;">${s.label}</div><div style="font-size:11px;color:${on?s.color:'var(--text3)'}">${s.action}</div>${on?'<span class="alert-badge badge-red">발동</span>':''}</div>`;});
+  html+='</div>';
+  document.getElementById('dip-stages').innerHTML=html;
+}
+
+function renderBullSignals(){
+  const rsi=mkt.rsi,fg=mkt.fg,ma=mkt.ma200;
+  const sigs=[{label:'RSI ≥ 70',active:rsi!==null&&rsi>=70,val:rsi!==null?rsi:'—'},{label:'F&G ≥ 80',active:fg!==null&&fg>=80,val:fg!==null?fg:'—'},{label:'200일 이격도 ≥ 15%',active:ma!==null&&ma>=15,val:ma!==null?ma.toFixed(1)+'%':'—'}];
+  const cnt=sigs.filter(s=>s.active).length;
+  let html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;"><div style="display:flex;gap:10px;margin-bottom:10px;">';
+  sigs.forEach(s=>{html+=`<div style="flex:1;background:var(--bg3);border-radius:6px;padding:10px;text-align:center;${s.active?'border:1px solid rgba(224,92,92,0.4);':''}"><div style="font-size:10px;color:var(--text3);margin-bottom:4px;">${s.label}</div><div style="font-size:16px;font-weight:700;color:${s.active?'var(--red)':'var(--text2)'};">${s.val}</div><div style="font-size:10px;margin-top:3px;">${s.active?'<span class="alert-badge badge-red">과열</span>':'<span class="alert-badge badge-gray">정상</span>'}</div></div>`;});
+  html+=`</div><div style="font-size:12px;${cnt>=3?'color:var(--red);font-weight:600;':cnt>=2?'color:#ffc107;font-weight:600;':'color:var(--text3);'}">${cnt>=3?'3개 모두 충족 → SGOV 15% 강제 충전 + SPMO/QLD 초과분 매도':cnt>=2?'2개 충족 → SGOV 7.5% 충전 + SPMO/QLD 초과분 매도':'과열 신호 미발동 — 현금 재충전 조건 미충족'}</div></div>`;
+  document.getElementById('bull-signals').innerHTML=html;
+}
+
+function runManualDiag(){
+  const p=id=>parseFloat(document.getElementById(id).value);
+  const nd=p('m-nasdaq'),vx=p('m-vix'),rs=p('m-rsi'),fg=p('m-fg');
+  if(!isNaN(nd)){mkt.nasdaq=nd;setCard('d-nasdaq',nd.toFixed(1)+'%',nd<=-12?'매수 신호':nd<0?'하락 중':'상승 중',nd<=-12?'var(--red)':nd<0?'var(--accent)':'var(--green)');}
+  if(!isNaN(vx)){mkt.vix=vx;setCard('d-vix',vx.toFixed(1),vx>=40?'극단 공포':vx>=25?'주의':'안정',vx>=40?'var(--red)':vx>=25?'#ffc107':'var(--green)');}
+  if(!isNaN(rs)){mkt.rsi=rs;setCard('d-rsi',rs.toFixed(0),rs>=70?'과매수':rs<=30?'과매도':'중립',rs>=70?'var(--red)':rs<=30?'var(--green)':'var(--text1)');}
+  if(!isNaN(fg)){mkt.fg=fg;setCard('d-fg',fg,fg>=80?'극단적 탐욕':fg>=60?'탐욕':fg<=25?'극단적 공포':'중립',fg>=80?'var(--red)':fg<=25?'var(--green)':'var(--accent)');}
+  renderDiagStatus();renderDipStages();renderBullSignals();
+}
+
+function buildPortInputs(){
+  document.getElementById('port-inputs').innerHTML=TICKERS.map(t=>`<div class="input-row"><span class="input-label" style="color:${t.color};font-weight:700;">${t.id}</span><input class="inp" id="port-${t.id}" type="number" placeholder="0" oninput="updateTotal()"><span class="inp-unit">만원</span><span style="font-size:10px;color:var(--text3);width:80px;text-align:right;">목표 ${t.target}%</span></div>`).join('');
+}
+function updateTotal(){let t=0;TICKERS.forEach(tk=>{t+=parseFloat(document.getElementById('port-'+tk.id).value||0);});document.getElementById('total-amt').textContent=t.toLocaleString();}
+
+function calcPort(){
+  let total=0;const vals={};
+  TICKERS.forEach(t=>{const v=parseFloat(document.getElementById('port-'+t.id).value||0);vals[t.id]=v;total+=v;});
+  if(!total){document.getElementById('port-result').innerHTML='<div style="color:var(--text3);font-size:12px;">금액을 입력하세요.</div>';return;}
+  let html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
+  const alerts=[];
+  TICKERS.forEach(t=>{
+    const cur=vals[t.id]/total*100,diff=cur-t.target,abs=Math.abs(diff);
+    const need=diff<0&&abs>=7||diff>0&&abs>=t.capUpper;
+    if(need)alerts.push({name:t.id,diff,amt:Math.abs(diff/100*total),color:t.color,isOver:diff>0});
+    html+=`<div style="padding:10px 14px;border-bottom:1px solid var(--border);"><div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span style="font-size:12px;font-weight:700;color:${t.color};width:46px;">${t.id}</span><span style="font-size:11px;color:var(--text2);flex:1;">${t.role}</span><span style="font-size:13px;font-weight:700;color:${need?(diff>0?'var(--red)':'var(--green)'):'var(--text1)'};">${cur.toFixed(1)}%</span><span style="font-size:10px;color:var(--text3);">/ ${t.target}%</span><span style="font-size:11px;font-weight:600;width:44px;text-align:right;color:${diff>0?'var(--red)':diff<0?'var(--green)':'var(--text3)'};">${diff>0?'+':''}${diff.toFixed(1)}%p</span>${need?'<span class="alert-badge badge-red">리밸</span>':''}</div><div class="progress-wrap"><div class="progress-bar" style="width:${Math.min(100,cur/t.target*100)}%;background:${t.color};"></div></div></div>`;
+  });
+  html+='</div>';
+  if(alerts.length){html+='<div style="margin-top:12px;"><div class="section-title">리밸런싱 지시</div>';alerts.forEach(a=>{html+=`<div class="action-box"><div class="action-num">${a.isOver?'↓':'↑'}</div><div class="action-text"><span style="color:${a.color};font-weight:700">${a.name}</span>${a.isOver?'<span style="color:var(--red)"> 매도</span>':'<span style="color:var(--green)"> 매수</span>'} 약 <b>${Math.round(a.amt).toLocaleString()}만원</b> <span style="color:var(--text3);font-size:11px;">(${a.diff>0?'+':''}${a.diff.toFixed(1)}%p)</span></div></div>`;});html+='</div>';}
+  else{html+='<div class="status-box safe" style="margin-top:10px;"><div class="status-title" style="color:var(--green)">리밸런싱 불필요</div><div class="status-desc">모든 종목이 허용 범위 내에 있습니다.</div></div>';}
+  document.getElementById('port-result').innerHTML=html;
+}
+
+function calcBigMoney(){
+  const mps=[1,2,3].reduce((s,i)=>s+parseInt(document.getElementById('mps'+i).value),0);
+  const amt=parseFloat(document.getElementById('big-amt').value||0);
+  const g={3:{label:'시장 만개',spot:.60,ammo:.25,dca:.15,color:'var(--green)',desc:'즉시 거치 60% / 하락 탄약 25% / DCA 15%'},2:{label:'안전 운행',spot:.50,ammo:.30,dca:.20,color:'var(--blue)',desc:'즉시 거치 50% / 하락 탄약 30% / DCA 20%'},1:{label:'살얼음판',spot:.35,ammo:.40,dca:.25,color:'#ffc107',desc:'즉시 거치 35% / 하락 탄약 40% / DCA 25%'},0:{label:'폭풍 전야',spot:.25,ammo:.50,dca:.25,color:'var(--red)',desc:'즉시 거치 25% / 하락 탄약 50% / DCA 25%'}}[mps];
+  const sp=Math.round(amt*g.spot),am=Math.round(amt*g.ammo),dc=Math.round(amt*g.dca),dcm=Math.round(dc/12);
+  const dcaRule=mps<=1?'비중 최저 <b>1종목 집중 매수</b> (공격적 수량 확보)':mps===2?'결손 비중 비례 매수 — 예) QLD -2%p, SCHD -1%p → 50:25:25':'방어자산 비중 최저 매수 — <b>SCHD / AVUV / SGOV</b> 중 선택';
+  document.getElementById('bigmoney-result').innerHTML=`<div class="status-box hold" style="margin-bottom:12px;"><div style="display:flex;align-items:center;gap:14px;"><div class="mps-circle" style="border-color:${g.color};"><div style="font-size:22px;font-weight:700;color:${g.color};">${mps}점</div><div style="font-size:9px;color:var(--text3);">MPS</div></div><div><div class="status-title" style="color:${g.color};">${g.label}</div><div class="status-desc">${g.desc}</div></div></div></div><div class="grid3"><div class="card"><div class="card-label">즉시 거치</div><div class="card-value" style="color:var(--green);font-size:17px;">${sp.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">첫 거래일 목표 비중으로 집행</div></div><div class="card"><div class="card-label">하락 탄약</div><div class="card-value" style="color:var(--red);font-size:17px;">${am.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">SGOV 보관 → 3-3-4-3-2</div></div><div class="card"><div class="card-label">DCA (월)</div><div class="card-value" style="color:var(--blue);font-size:17px;">${dcm.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">12개월 분할 (총 ${dc.toLocaleString()}만)</div></div></div><div class="section-title">DCA 종목 선정 (MPS ${mps}점)</div><div class="action-box"><div class="action-num">룰</div><div class="action-text">${dcaRule}</div></div>`;
+}
+
+const ANSWERS={
+  dip:[{title:'1단계 (-12%)',body:'SGOV 30% 투입 → QLD 매수 | 사이클당 1회, 전날 종가 확정 후 익일 시가 집행'},{title:'2단계 (-18%)',body:'SGOV 30% 투입 → QLD 매수'},{title:'3단계 (-25%) 핵심 승부처',body:'SGOV 40% 투입 → QLD 매수 | 최대 화력 집중'},{title:'4단계 (-35%) 공포의 절정',body:'SGOV 30% 투입 → TQQQ 매수 | TQQQ 최대 5%'},{title:'5단계 (-45%) 최후의 한발',body:'SGOV 20% 투입 → TQQQ 매수 | SGOV 소진 후 원화채굴 투입'}],
+  rebal:[{title:'상시 리밸런싱',body:'목표 대비 -7%p 이탈 시 즉시 | 공격자산 상방 +12%p | 방어자산 상방 +7%p'},{title:'정기 리밸런싱',body:'매년 1월 첫 번째 월요일 | 특수조항 검토 후 목표 비중 리셋'},{title:'극단 변동성 예외',body:'VIX≥40 & 나스닥≤-25% → 상시 리밸런싱 중단, 하락장 매수만'}],
+  bull:[{title:'과열 신호 3가지',body:'① RSI ≥ 70 ② F&G ≥ 80 ③ 200일 이격도 ≥ 15%'},{title:'2개 충족',body:'SPMO/QLD 초과분 매도 → SGOV 7.5% 충전 → 잔액 SCHD/SGOV'},{title:'3개 충족',body:'SGOV 15% 강제 충전'}],
+  qld:[{title:'QLD 캡 (27%)',body:'하락장 매수 중 QLD 27% 도달 시 이후 자금 전부 SPMO 투입'},{title:'TQQQ 조항',body:'+60% 익절(과열 2개↑→SGOV, 미충족→SPMO) | -50% 손절→SGOV'}],
+  special:[{title:'특수조항 1',body:'QQQ>SPMO+5%p + 보조조건 → SPMO 20%, SCHD 35% | 복귀조건 3가지 모두'},{title:'특수조항 2',body:'러셀2000이 S&P500 대비 -20%p 언더퍼폼 → AVUV 13%'}],
+  fail:[{title:'제7조 실패의 정의',body:'실패는 자산 하락이 아니라 스스로 규칙을 어기는 것'},{title:'제5조 절대 금지',body:'① QLD 27% 초과 ② 충동적 전략 수정 ③ 뉴스 매매'},{title:'제8조 봉인',body:'성과가 좋을수록 수정하지 않는다'}],
+};
+function showAnswer(key){document.getElementById('ai-answer').innerHTML=ANSWERS[key].map(b=>`<div class="ai-rule-block" style="margin-bottom:14px;"><div class="ai-rule-title">${b.title}</div><div class="ai-rule-body">${b.body}</div></div>`).join('');}
+
+buildPortInputs();
+loadData();
+</script>
+</body>
+</html>
