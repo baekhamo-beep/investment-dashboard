@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-04-12T14:10:41Z",
+  "updated_utc": "2026-04-12T23:55:36Z",
   "nasdaq": {
     "drawdown_pct": -3.64,
     "rsi": 65.4,
@@ -9,7 +9,11 @@
   },
   "vix": 19.23,
   "fear_greed": {
-    "value": 16,
-    "classification": "Extreme Fear"
+    "value": 37.7,
+    "classification": "fear",
+    "prev_close": 36.1,
+    "prev_1w": 23.7,
+    "prev_1m": 20.3,
+    "source": "CNN Business"
   }
 }
