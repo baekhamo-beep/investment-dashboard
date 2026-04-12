@@ -82,6 +82,52 @@ body { background:var(--bg0); color:var(--text1); font-family:'Segoe UI',sans-se
 </style>
 </head>
 <body>
+
+<style>
+#lock-screen{position:fixed;inset:0;background:#0a0e1a;display:flex;align-items:center;justify-content:center;z-index:9999;}
+.lock-box{background:#0f1525;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:36px 32px;width:320px;text-align:center;}
+.lock-icon{font-size:32px;margin-bottom:16px;}
+.lock-title{font-size:16px;font-weight:600;color:#e8c97a;margin-bottom:6px;}
+.lock-sub{font-size:11px;color:#9aa0b8;margin-bottom:24px;}
+.lock-input{width:100%;background:#1e2740;border:1px solid rgba(255,255,255,0.12);color:#e8eaf0;border-radius:6px;padding:10px 14px;font-size:14px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:12px;}
+.lock-input:focus{border-color:rgba(201,168,76,0.5);}
+.lock-btn{width:100%;background:#c9a84c;color:#0a0e1a;border:none;border-radius:6px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;}
+.lock-btn:hover{background:#e8c97a;}
+.lock-error{font-size:11px;color:#e05c5c;margin-top:8px;min-height:16px;}
+</style>
+<div id="lock-screen">
+  <div class="lock-box">
+    <div class="lock-icon">⚖</div>
+    <div class="lock-title">투자 헌법 사령부</div>
+    <div class="lock-sub">접근 권한이 필요합니다</div>
+    <input class="lock-input" id="lock-pw" type="password" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkPW()">
+    <button class="lock-btn" onclick="checkPW()">입장</button>
+    <div class="lock-error" id="lock-err"></div>
+  </div>
+</div>
+<script>
+(function(){
+  async function sha256(str){
+    const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  if(sessionStorage.getItem('inv_auth')==='ok')document.getElementById('lock-screen').style.display='none';
+  window.checkPW=async function(){
+    const pw=document.getElementById('lock-pw').value;
+    const h=await sha256(pw);
+    const t=await sha256('Dpatod1102^^');
+    if(h===t){
+      sessionStorage.setItem('inv_auth','ok');
+      document.getElementById('lock-screen').style.display='none';
+    }else{
+      document.getElementById('lock-err').textContent='비밀번호가 틀렸습니다';
+      document.getElementById('lock-pw').value='';
+      document.getElementById('lock-pw').focus();
+    }
+  };
+})();
+</script>
+
 <div class="app">
   <div class="header">
     <div class="header-icon">⚖</div>
