@@ -115,7 +115,7 @@ body { background:var(--bg0); color:var(--text1); font-family:'Segoe UI',sans-se
   window.checkPW=async function(){
     const pw=document.getElementById('lock-pw').value;
     const h=await sha256(pw);
-    const t=await sha256('Dpatod1102^^');
+    const t=await sha256('9155');
     if(h===t){
       sessionStorage.setItem('inv_auth','ok');
       document.getElementById('lock-screen').style.display='none';
