@@ -52,40 +52,67 @@ def get_usd_krw():
         return None
 
 def get_kiwoom_etf_price():
-    """KIWOOM 미국S&P500모멘텀 (0137V0) 가격 - 네이버 금융에서 스크래핑"""
+    """KIWOOM 미국S&P500모멘텀 (0137V0) - 네이버 금융 현재가"""
+    code = "0137V0"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+        "Referer": "https://finance.naver.com",
+    }
+
+    # 방법 1: 네이버 금융 현재가 API
     try:
-        # 네이버 금융 API
-        url = "https://api.finance.naver.com/siseJson.naver?symbol=0137V0&requestType=1&startTime=&endTime=&timeframe=day&count=1&requestType=1"
-        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36", "Referer": "https://finance.naver.com"}
+        url = f"https://finance.naver.com/item/main.naver?code={code}"
         r = requests.get(url, headers=headers, timeout=10)
-        # 응답 파싱
-        text = r.text.strip()
-        # 숫자만 추출 (종가)
-        nums = re.findall(r'\d+', text)
-        if len(nums) >= 5:
-            price = int(nums[4])  # 종가 위치
-            if 1000 < price < 1000000:  # 합리적인 가격 범위
-                print(f"  KIWOOM(0137V0): {price:,}원")
+        # 현재가 파싱
+        match = re.search(r'"now":\s*"?([\d,]+)"?', r.text)
+        if match:
+            price = int(match.group(1).replace(",", ""))
+            if 1000 < price < 1000000:
+                print(f"  KIWOOM(naver1): {price:,}원")
                 return price
     except Exception as e:
-        print(f"  KIWOOM 네이버 오류: {e}")
+        print(f"  방법1 오류: {e}")
 
-    # fallback: KRX API
+    # 방법 2: 네이버 금융 시세 JSON
     try:
-        today = datetime.now().strftime("%Y%m%d")
-        url2 = f"https://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd"
-        data = {"bld": "dbms/MDC/STAT/standard/MDCSTAT04901", "isuCd": "KR7013770002", "strtDd": today, "endDd": today}
-        r2 = requests.post(url2, data=data, timeout=10, headers={"User-Agent": "Mozilla/5.0"})
+        url2 = f"https://polling.finance.naver.com/api/realtime/domestic/stock/{code}"
+        r2 = requests.get(url2, headers=headers, timeout=10)
         d = r2.json()
-        if d.get("output"):
-            price = int(d["output"][0]["TDD_CLSPRC"].replace(",", ""))
-            print(f"  KIWOOM(KRX): {price:,}원")
+        price = int(d["datas"][0]["closePrice"].replace(",",""))
+        if 1000 < price < 1000000:
+            print(f"  KIWOOM(naver2): {price:,}원")
             return price
     except Exception as e:
-        print(f"  KIWOOM KRX 오류: {e}")
+        print(f"  방법2 오류: {e}")
 
-    # 최종 fallback: SPMO 가격 × 환율로 추정
-    print("  KIWOOM: 스크래핑 실패 — None 반환")
+    # 방법 3: 네이버 증권 검색 API
+    try:
+        url3 = f"https://m.stock.naver.com/api/stock/{code}/basic"
+        r3 = requests.get(url3, headers=headers, timeout=10)
+        d = r3.json()
+        price = int(str(d.get("closePrice","0")).replace(",",""))
+        if 1000 < price < 1000000:
+            print(f"  KIWOOM(naver3): {price:,}원")
+            return price
+    except Exception as e:
+        print(f"  방법3 오류: {e}")
+
+    # 방법 4: 네이버 금융 모바일
+    try:
+        url4 = f"https://m.finance.naver.com/domestic/item.nhn?code={code}"
+        r4 = requests.get(url4, headers=headers, timeout=10)
+        match2 = re.search(r'<em[^>]*class="[^"]*price[^"]*"[^>]*>([\d,]+)</em>', r4.text)
+        if not match2:
+            match2 = re.search(r'([\d,]+)</em>', r4.text)
+        if match2:
+            price = int(match2.group(1).replace(",",""))
+            if 1000 < price < 1000000:
+                print(f"  KIWOOM(naver4): {price:,}원")
+                return price
+    except Exception as e:
+        print(f"  방법4 오류: {e}")
+
+    print(f"  KIWOOM: 모든 방법 실패 — None 반환")
     return None
 
 def get_cnn_fear_greed():
@@ -129,7 +156,7 @@ print("CNN F&G 수집...")
 fg = get_cnn_fear_greed()
 
 data = {
-    "updated_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    "updated_utc":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     "nasdaq": {
         "drawdown_pct":  qqq["drawdown_pct"],
         "rsi":           qqq["rsi"],
@@ -137,11 +164,11 @@ data = {
         "current_price": qqq["current_price"],
         "peak_price":    qqq["peak_price"],
     },
-    "vix":         vix,
-    "fear_greed":  fg,
-    "etf_prices":  etf_prices,
-    "usd_krw":     usd_krw,
-    "kiwoom_price": kiwoom_price,  # 원화 가격 (원)
+    "vix":          vix,
+    "fear_greed":   fg,
+    "etf_prices":   etf_prices,
+    "usd_krw":      usd_krw,
+    "kiwoom_price": kiwoom_price,
 }
 
 with open("docs/data.json", "w") as f:
