@@ -171,7 +171,6 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="tab" onclick="switchTab('bigmoney',this)">③ 대자금 투입</div>
     <div class="tab" onclick="switchTab('ai',this)">④ AI 조언</div>
     <div class="tab" onclick="switchTab('calc',this)">⑤ 계산기</div>
-    <div class="tab" onclick="switchTab('chk',this)">⑥ 체크리스트</div>
   </div>
 
   <!-- ① 상황 진단 -->
@@ -195,14 +194,26 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="section-title">상승장 과열 신호</div>
     <div id="bull-signals"></div>
     <hr class="divider">
-    <div class="section-title">수동 override</div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;">
-      <div class="input-row"><span class="input-label">나스닥 하락%</span><input class="inp" id="m-nasdaq" type="number" placeholder="예: -15" step="0.1"><span class="inp-unit">%</span></div>
-      <div class="input-row"><span class="input-label">VIX</span><input class="inp" id="m-vix" type="number" placeholder="예: 28"></div>
-      <div class="input-row"><span class="input-label">RSI</span><input class="inp" id="m-rsi" type="number" placeholder="예: 65"></div>
-      <div class="input-row"><span class="input-label">F&amp;G 지수</span><input class="inp" id="m-fg" type="number" placeholder="예: 45"></div>
-      <div style="margin-top:8px;"><button class="btn btn-gold" onclick="runManualDiag()">수동 진단 실행</button></div>
+
+    <!-- D-day 카운트다운 -->
+    <div class="section-title">정기 리밸런싱 D-day</div>
+    <div style="background:var(--bg2);border:1px solid var(--accent-border);border-radius:8px;padding:14px;margin-bottom:14px;display:flex;align-items:center;gap:16px;">
+      <div style="text-align:center;min-width:80px;">
+        <div style="font-size:32px;font-weight:700;color:var(--accent);" id="dday-num">—</div>
+        <div style="font-size:11px;color:var(--text3);">일 남음</div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text1);" id="dday-date">계산중...</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:4px;">매년 1월 첫 번째 월요일 — 전체 비중 목표치로 리셋</div>
+      </div>
     </div>
+
+    <!-- 연간 리밸런싱 체크리스트 -->
+    <div class="section-title">연간 리밸런싱 체크리스트</div>
+    <div style="background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--accent2);margin-bottom:12px;">매년 1월 첫 번째 월요일 실행 — 항목 클릭으로 완료 체크</div>
+    <div id="chk-special-diag" style="margin-bottom:14px;"><div class="section-title">특수 조항 검토</div></div>
+    <div id="chk-regular-diag" style="margin-bottom:14px;"><div class="section-title">정기 점검 항목</div></div>
+    <div id="chk-footer-diag"></div>
   </div>
 
   <!-- ② 포트폴리오 -->
@@ -452,14 +463,6 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     </div>
   </div>
 
-  <!-- ⑥ 체크리스트 -->
-  <div class="content panel" id="tab-chk">
-    <div class="section-title">연간 리밸런싱 체크리스트</div>
-    <div style="background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--accent2);margin-bottom:14px;">매년 1월 첫 번째 월요일 실행 — 항목 클릭으로 완료 체크</div>
-    <div id="chk-special" style="margin-bottom:16px;"><div class="section-title">특수 조항 검토</div></div>
-    <div id="chk-regular" style="margin-bottom:16px;"><div class="section-title">정기 점검 항목</div></div>
-    <div id="chk-footer"></div>
-  </div>
 </div>
 
 <script>
@@ -1060,20 +1063,37 @@ const CHK_REGULAR=[
   {id:'r4',label:'별동대(AVDV) 배당금 재투자 확인',sub:'배당금이 계좌에 방치되지 않았는지 확인'},
   {id:'r5',label:'나스닥 전고점 업데이트',sub:'현재 나스닥 100 역대 최고가 기록해두기'},
 ];
+function calcDday(){
+  const now=new Date();
+  const yr=now.getMonth()===0&&now.getDate()<=7?now.getFullYear():now.getFullYear()+1;
+  const d=new Date(yr,0,1);
+  while(d.getDay()!==1)d.setDate(d.getDate()+1);
+  const diff=Math.ceil((d-now)/(1000*60*60*24));
+  const el=document.getElementById('dday-num');
+  const el2=document.getElementById('dday-date');
+  if(el) el.textContent=diff<=0?'D-DAY':diff;
+  if(el) el.style.color=diff<=30?'var(--red)':diff<=90?'#ffc107':'var(--accent)';
+  if(el2) el2.textContent=`${yr}년 1월 ${d.getDate()}일 (월요일)`;
+}
+
 function renderChecklist(){
   const saved=JSON.parse(localStorage.getItem('inv_chk_'+new Date().getFullYear())||'{}');
   function renderGroup(items,targetId){
     let html='';
     items.forEach(item=>{const done=!!saved[item.id];html+=`<div class="chk-item${done?' done':''}" onclick="toggleChk('${item.id}')"><div class="chk-box">${done?'✓':''}</div><div><div class="chk-label">${item.label}</div><div class="chk-sub">${item.sub}</div></div></div>`;});
-    document.getElementById(targetId).innerHTML=(document.getElementById(targetId).innerHTML||'')+html;
+    const el=document.getElementById(targetId);
+    if(el) el.innerHTML=(el.innerHTML||'')+html;
   }
-  document.getElementById('chk-special').innerHTML='<div class="section-title">특수 조항 검토</div>';
-  document.getElementById('chk-regular').innerHTML='<div class="section-title">정기 점검 항목</div>';
-  renderGroup(CHK_SPECIAL,'chk-special');renderGroup(CHK_REGULAR,'chk-regular');
+  const sp=document.getElementById('chk-special-diag');
+  const rg=document.getElementById('chk-regular-diag');
+  if(sp) sp.innerHTML='<div class="section-title">특수 조항 검토</div>';
+  if(rg) rg.innerHTML='<div class="section-title">정기 점검 항목</div>';
+  renderGroup(CHK_SPECIAL,'chk-special-diag');
+  renderGroup(CHK_REGULAR,'chk-regular-diag');
   const all=[...CHK_SPECIAL,...CHK_REGULAR];
   const doneCount=all.filter(i=>saved[i.id]).length;
-  const nextMonday=getNextJanMonday();
-  document.getElementById('chk-footer').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;"><div style="font-size:12px;color:var(--text2);">완료: <span style="color:var(--green);font-weight:700;">${doneCount}/${all.length}</span></div><button onclick="resetChk()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text3);border-radius:4px;padding:5px 12px;font-size:11px;cursor:pointer;">올해 초기화</button></div><div style="margin-top:10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--text2);">다음 정기 리밸런싱: <span style="color:var(--accent);font-weight:700;">${nextMonday}</span></div>`;
+  const footer=document.getElementById('chk-footer-diag');
+  if(footer) footer.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;"><div style="font-size:12px;color:var(--text2);">완료: <span style="color:var(--green);font-weight:700;">${doneCount}/${all.length}</span></div><button onclick="resetChk()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text3);border-radius:4px;padding:5px 12px;font-size:11px;cursor:pointer;">올해 초기화</button></div>`;
 }
 function getNextJanMonday(){const now=new Date();const yr=now.getMonth()===0&&now.getDate()<=7?now.getFullYear():now.getFullYear()+1;const d=new Date(yr,0,1);while(d.getDay()!==1)d.setDate(d.getDate()+1);return `${yr}년 1월 ${d.getDate()}일 (월요일)`;}
 function toggleChk(id){const key='inv_chk_'+new Date().getFullYear();const saved=JSON.parse(localStorage.getItem(key)||'{}');saved[id]=!saved[id];localStorage.setItem(key,JSON.stringify(saved));renderChecklist();}
@@ -1083,6 +1103,7 @@ function resetChk(){localStorage.removeItem('inv_chk_'+new Date().getFullYear())
 buildPortInputs();
 drawPie({},0);
 renderChecklist();
+calcDday();
 // 저장된 포트폴리오 자동 로드
 const _saved=localStorage.getItem('inv_portfolio');
 if(_saved){const _d=JSON.parse(_saved);TICKERS.forEach(t=>{const el=document.getElementById('qty-'+t.id);if(el&&_d[t.id])el.value=_d[t.id];});}
