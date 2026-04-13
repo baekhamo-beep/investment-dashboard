@@ -431,8 +431,24 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="sub-panel active" id="sub-buy">
       <div class="section-title">월 적립 매수 계산기</div>
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div class="input-row"><span class="input-label">총 자산</span><input class="inp" id="buy-total" type="number" placeholder="50000" oninput="calcBuy()"><span class="inp-unit">만원</span></div>
-        <div class="input-row"><span class="input-label">이번 달 매수</span><input class="inp" id="buy-monthly" type="number" placeholder="100" oninput="calcBuy()"><span class="inp-unit">만원</span></div>
+        <!-- 총 자산 -->
+        <div style="display:flex;gap:6px;margin-bottom:10px;">
+          <button id="buy-mode-manual" onclick="setBuyMode('manual')" style="flex:1;padding:6px;font-size:11px;font-weight:600;border-radius:5px;border:2px solid var(--accent);background:var(--accent-dim);color:var(--accent2);cursor:pointer;">직접 입력</button>
+          <button id="buy-mode-port" onclick="setBuyMode('port')" style="flex:1;padding:6px;font-size:11px;font-weight:500;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;">포트폴리오 연동</button>
+        </div>
+        <div id="buy-manual-wrap" class="input-row" style="margin-bottom:8px;">
+          <span class="input-label">총 자산</span>
+          <input class="inp" id="buy-total" type="number" placeholder="50000" oninput="calcBuy()">
+          <span class="inp-unit">만원</span>
+        </div>
+        <div id="buy-port-wrap" style="display:none;background:var(--bg3);border-radius:5px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:var(--accent);font-weight:700;">
+          포트폴리오 탭에서 수량을 먼저 입력하세요
+        </div>
+        <div class="input-row">
+          <span class="input-label">이번 달 매수</span>
+          <input class="inp" id="buy-monthly" type="number" placeholder="100" oninput="calcBuy()">
+          <span class="inp-unit">만원</span>
+        </div>
       </div>
       <div id="buy-result"><div style="color:var(--text3);font-size:12px;">총 자산과 월 매수 금액을 입력하세요.</div></div>
     </div>
@@ -977,14 +993,123 @@ function calcMilestone(){
 }
 
 /* ── 계산기 ── */
+let buyMode = 'manual';
+
+function setBuyMode(mode){
+  buyMode = mode;
+  const isManual = mode === 'manual';
+  document.getElementById('buy-mode-manual').style.cssText = isManual
+    ? 'flex:1;padding:6px;font-size:11px;font-weight:600;border-radius:5px;border:2px solid var(--accent);background:var(--accent-dim);color:var(--accent2);cursor:pointer;'
+    : 'flex:1;padding:6px;font-size:11px;font-weight:500;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;';
+  document.getElementById('buy-mode-port').style.cssText = !isManual
+    ? 'flex:1;padding:6px;font-size:11px;font-weight:600;border-radius:5px;border:2px solid var(--accent);background:var(--accent-dim);color:var(--accent2);cursor:pointer;'
+    : 'flex:1;padding:6px;font-size:11px;font-weight:500;border-radius:5px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;';
+  document.getElementById('buy-manual-wrap').style.display = isManual ? 'flex' : 'none';
+  document.getElementById('buy-port-wrap').style.display = !isManual ? 'block' : 'none';
+  if(!isManual){
+    let total = 0;
+    if(typeof TICKERS !== 'undefined') TICKERS.forEach(t=>{ total += getTickerValueKRW(t.id); });
+    const el = document.getElementById('buy-port-wrap');
+    if(el) el.textContent = total > 0 ? '포트폴리오 총액: ' + Math.round(total).toLocaleString() + '만원 (자동 연동)' : '포트폴리오 탭에서 수량을 먼저 입력하세요';
+  }
+  calcBuy();
+}
+
+function getBuyTotal(){
+  if(buyMode === 'port'){
+    let total = 0;
+    if(typeof TICKERS !== 'undefined') TICKERS.forEach(t=>{ total += getTickerValueKRW(t.id); });
+    return total;
+  }
+  return parseFloat(document.getElementById('buy-total').value || 0);
+}
+
 function calcBuy(){
-  const total=parseFloat(document.getElementById('buy-total').value||0);
-  const monthly=parseFloat(document.getElementById('buy-monthly').value||0);
-  if(!total||!monthly){document.getElementById('buy-result').innerHTML='<div style="color:var(--text3);font-size:12px;">총 자산과 월 매수 금액을 입력하세요.</div>';return;}
-  let html='<div class="result-box"><div style="font-size:11px;color:var(--text2);margin-bottom:10px;">종목별 이번 달 매수 금액</div>';
-  TICKERS.forEach(t=>{const b=Math.round(monthly*t.target/100);html+=`<div class="result-row"><div class="result-label" style="color:${t.color};font-weight:700;">${t.id}</div><div style="font-size:11px;color:var(--text3);">목표 ${Math.round(total*t.target/100).toLocaleString()}만원</div><div class="result-val" style="color:var(--accent);">${b.toLocaleString()}만원</div></div>`;});
-  html+='</div><div class="status-box safe" style="margin-top:10px;"><div class="status-desc">매수일: 매월 22일 밤 12:30~03:00 KST | SGOV 15% 확인 후 결손 비중 순 매수</div></div>';
-  document.getElementById('buy-result').innerHTML=html;
+  const total = getBuyTotal();
+  const monthly = parseFloat(document.getElementById('buy-monthly').value || 0);
+  if(!total || !monthly){
+    document.getElementById('buy-result').innerHTML = '<div style="color:var(--text3);font-size:12px;">총 자산과 월 매수 금액을 입력하세요.</div>';
+    return;
+  }
+
+  // 종목별 현재 금액 및 비중 계산
+  const vals = {};
+  TICKERS.forEach(t => { vals[t.id] = getTickerValueKRW(t.id); });
+
+  // 결손 비중 계산 (현재비중 < 목표비중인 경우만)
+  const deficits = {};
+  let totalDeficit = 0;
+  TICKERS.forEach(t => {
+    const curPct = (vals[t.id] / total) * 100;
+    const deficit = t.target - curPct;
+    if(deficit > 0){
+      deficits[t.id] = deficit;
+      totalDeficit += deficit;
+    } else {
+      deficits[t.id] = 0;
+    }
+  });
+
+  // 결손 비중이 없으면 균등 배분 (모두 목표 도달)
+  const useDeficit = totalDeficit > 0;
+
+  let html = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;">';
+  // 헤더
+  html += `<div style="display:grid;grid-template-columns:55px 1fr 70px 70px 90px;padding:8px 14px;background:var(--bg3);font-size:10px;color:var(--text3);gap:4px;">
+    <div>종목</div><div>현재 → 목표</div><div style="text-align:right;">결손</div><div style="text-align:right;">비중</div><div style="text-align:right;">매수금액</div>
+  </div>`;
+
+  let totalBuy = 0;
+  TICKERS.forEach(t => {
+    const curPct = total > 0 ? (vals[t.id] / total) * 100 : 0;
+    const deficit = deficits[t.id];
+    const buyRatio = useDeficit ? (deficit / totalDeficit) : (t.target / 100);
+    const buyAmt = Math.round(monthly * buyRatio);
+    totalBuy += buyAmt;
+
+    const isDeficit = deficit > 0;
+    const barWidth = Math.min(100, (curPct / t.target) * 100);
+    const barColor = curPct >= t.target ? 'var(--green)' : t.color;
+
+    html += `<div style="padding:10px 14px;border-bottom:1px solid var(--border);">
+      <div style="display:grid;grid-template-columns:55px 1fr 70px 70px 90px;align-items:center;gap:4px;margin-bottom:6px;">
+        <span style="font-size:12px;font-weight:700;color:${t.color};">${t.id}</span>
+        <div style="font-size:11px;color:var(--text2);">
+          <span style="color:${curPct>=t.target?'var(--green)':'var(--red)'};">${curPct.toFixed(1)}%</span>
+          <span style="color:var(--text3);"> → ${t.target}%</span>
+        </div>
+        <div style="text-align:right;font-size:11px;color:${isDeficit?'var(--red)':'var(--text3)'};">
+          ${isDeficit ? '-'+deficit.toFixed(1)+'%p' : '✓'}
+        </div>
+        <div style="text-align:right;font-size:10px;color:var(--text3);">
+          ${useDeficit&&isDeficit ? (deficit/totalDeficit*100).toFixed(0)+'%' : '—'}
+        </div>
+        <div style="text-align:right;font-size:13px;font-weight:700;color:${isDeficit||!useDeficit?'var(--accent)':'var(--text3)'};">
+          ${isDeficit||!useDeficit ? buyAmt.toLocaleString()+'만' : '0만'}
+        </div>
+      </div>
+      <div style="background:var(--bg3);border-radius:3px;height:4px;overflow:hidden;">
+        <div style="height:4px;border-radius:3px;background:${barColor};width:${barWidth}%;transition:width 0.5s;"></div>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+
+  // 요약
+  html += `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <span style="font-size:12px;color:var(--text2);">총 매수 예정</span>
+      <span style="font-size:15px;font-weight:700;color:var(--accent);">${totalBuy.toLocaleString()}만원</span>
+    </div>
+    <div style="font-size:10px;color:var(--text3);line-height:1.8;">
+      ${useDeficit
+        ? '✅ 결손 비중 기준 배분 — 결손이 클수록 더 많이 매수'
+        : '✅ 모든 종목 목표 비중 달성 — 목표 비중 기준 균등 배분'}
+      <br>매수일: 매월 22일 밤 12:30~03:00 KST | SGOV 15% 확인 후 결손 비중 순 매수
+    </div>
+  </div>`;
+
+  document.getElementById('buy-result').innerHTML = html;
 }
 
 function calcTQQQ(){
