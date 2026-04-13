@@ -530,71 +530,75 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
 </div>
 
-  <!-- ⑦ 자산 트래커 -->
+  <!-- ⑥ 자산 트래커 -->
   <div class="content panel" id="tab-tracker">
 
-    <!-- 설정 -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+    <!-- ① 설정 -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;">
       <div class="section-title">트래커 설정</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
         <div>
           <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">시작 나이</div>
-          <input class="inp" id="tr-age" type="number" placeholder="35" style="padding:6px 8px;">
+          <input class="inp" id="tr-age" type="number" placeholder="35" style="padding:6px 8px;" oninput="renderTrackerChart()">
         </div>
         <div>
           <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">월 적립금 (만원)</div>
-          <input class="inp" id="tr-monthly" type="number" placeholder="100" style="padding:6px 8px;">
+          <input class="inp" id="tr-monthly" type="number" placeholder="100" style="padding:6px 8px;" oninput="renderTrackerChart()">
         </div>
         <div>
           <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">목표 CAGR (%)</div>
-          <input class="inp" id="tr-cagr" type="number" placeholder="16.4" step="0.1" style="padding:6px 8px;" value="16.4">
+          <input class="inp" id="tr-cagr" type="number" placeholder="16.4" step="0.1" value="16.4" style="padding:6px 8px;" oninput="renderTrackerChart()">
         </div>
       </div>
-      <button onclick="saveTrackerSettings()" class="btn btn-gold" style="font-size:11px;padding:6px 14px;">설정 저장</button>
+      <div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">시작 자산 (만원) — 첫 기록 기준 자동 설정</div>
+        <input class="inp" id="tr-start-asset" type="number" placeholder="첫 기록 저장 시 자동 반영" style="padding:6px 8px;" oninput="renderTrackerChart()">
+      </div>
     </div>
 
-    <!-- 이번 달 기록 -->
-    <div style="background:var(--bg2);border:1px solid var(--accent-border);border-radius:8px;padding:14px;margin-bottom:12px;">
+    <!-- ② 이번 달 기록 -->
+    <div style="background:var(--bg2);border:1px solid var(--accent-border);border-radius:8px;padding:14px;margin-bottom:10px;">
       <div class="section-title">이번 달 자산 기록</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:flex-end;">
+      <div style="display:grid;grid-template-columns:120px 1fr auto auto;gap:8px;align-items:flex-end;margin-bottom:10px;">
         <div>
           <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">연월</div>
           <input class="inp" id="tr-ym" type="month" style="padding:6px 8px;">
         </div>
         <div>
           <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">총 자산 (만원)</div>
-          <div style="display:flex;gap:6px;">
-            <input class="inp" id="tr-asset" type="number" placeholder="직접 입력" style="padding:6px 8px;">
-            <button onclick="syncPortToTracker()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:6px 10px;font-size:10px;cursor:pointer;white-space:nowrap;">포트 연동</button>
-          </div>
+          <input class="inp" id="tr-asset" type="number" placeholder="직접 입력" style="padding:6px 8px;">
         </div>
-        <div>
-          <button onclick="addTrackerRecord()" class="btn btn-gold" style="font-size:11px;padding:7px 16px;white-space:nowrap;">기록 저장</button>
-        </div>
+        <button onclick="syncPortToTracker()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:7px 12px;font-size:11px;cursor:pointer;white-space:nowrap;height:34px;">포트 연동</button>
+        <button onclick="addTrackerRecord()" class="btn btn-gold" style="font-size:11px;padding:7px 16px;white-space:nowrap;height:34px;">기록 저장</button>
       </div>
-      <div id="tr-save-status" style="font-size:11px;color:var(--text3);margin-top:8px;"></div>
-    </div>
-
-    <!-- GitHub Token 입력 (저장용) -->
-    <div id="tr-token-wrap" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
-      <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">GitHub Token (기록 저장 시 필요 — 세션 중에만 유지)</div>
-      <div style="display:flex;gap:8px;">
+      <!-- GitHub Token -->
+      <div style="border-top:1px solid var(--border);padding-top:10px;">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">GitHub Token (저장 시 필요 · 세션 중에만 유지)</div>
         <input class="inp" id="tr-token" type="password" placeholder="ghp_..." style="padding:6px 8px;font-size:11px;">
-        <button onclick="document.getElementById('tr-token-wrap').style.display='none'" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:6px 10px;font-size:10px;cursor:pointer;">접기</button>
       </div>
+      <div id="tr-save-status" style="font-size:11px;color:var(--text3);margin-top:8px;min-height:18px;"></div>
     </div>
 
-    <!-- 차트 -->
+    <!-- ③ 차트 -->
     <div class="section-title">실제 자산 vs 시나리오</div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-      <canvas id="tracker-chart" style="width:100%;height:320px;"></canvas>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:20px;height:3px;background:#c9a84c;border-radius:2px;"></div>실제 자산</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:20px;height:2px;background:#4caf7d;border-radius:2px;border-top:2px dashed #4caf7d;"></div>낙관(μ+σ)</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:20px;height:2px;background:#4a9eff;border-radius:2px;border-top:2px dashed #4a9eff;"></div>중립(μ)</div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:20px;height:2px;background:#9aa0b8;border-radius:2px;border-top:2px dashed #9aa0b8;"></div>보수(μ-σ)</div>
+      </div>
+      <canvas id="tracker-chart" style="width:100%;display:block;"></canvas>
+      <div id="tracker-chart-msg" style="font-size:11px;color:var(--text3);margin-top:8px;"></div>
     </div>
 
-    <!-- 기록 테이블 -->
+    <!-- ④ 월별 기록 테이블 -->
     <div class="section-title">월별 기록</div>
-    <div id="tr-table"><div style="color:var(--text3);font-size:12px;">기록이 없습니다. 이번 달 자산을 입력하고 저장해보세요.</div></div>
+    <div id="tr-table"><div style="color:var(--text3);font-size:12px;">이번 달 자산을 입력하고 저장해보세요.</div></div>
 
   </div>
+
+
 
 <script>
 const DATA_URL="./data.json";
