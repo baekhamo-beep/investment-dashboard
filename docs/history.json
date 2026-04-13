@@ -1,0 +1,11 @@
+{
+  "description": "월별 실제 자산 기록 | 투자 헌법 사령부",
+  "settings": {
+    "start_age": 0,
+    "start_asset": 0,
+    "monthly_deposit": 0,
+    "cagr": 16.4,
+    "volatility": 17.5
+  },
+  "records": []
+}
