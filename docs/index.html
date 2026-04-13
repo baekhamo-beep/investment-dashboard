@@ -1233,15 +1233,76 @@ function calcSim(){
   const total=parseFloat(document.getElementById('sim-total').value||0);
   const drop=parseFloat(document.getElementById('sim-drop').value||0);
   if(!total||!drop){document.getElementById('sim-result').innerHTML='<div style="color:var(--text3);font-size:12px;">총 자산과 하락률을 입력하세요.</div>';return;}
-  const dropRates={QLD:drop*2,SPMO:drop*0.9,SCHD:drop*0.3,AVUV:drop*0.7,SGOV:0};
+
+  // 실제 베타 계수 (2020~2025 월별 수익률 기반)
+  const BETA={QLD:2.04,SPMO:0.71,SCHD:0.43,AVUV:0.65,SGOV:0.00};
   const targets={QLD:20,SPMO:30,SCHD:25,AVUV:10,SGOV:15};
-  let totalLoss=0,rows='';
-  TICKERS.forEach(t=>{const amt=total*targets[t.id]/100,loss=amt*dropRates[t.id]/100;totalLoss+=loss;rows+=`<div class="result-row"><div class="result-label" style="color:${t.color};font-weight:700;">${t.id}</div><div style="font-size:11px;color:var(--text3);">${dropRates[t.id].toFixed(0)}% 적용</div><div class="result-val" style="color:${loss<0?'var(--red)':'var(--text3)'};">${loss<0?Math.round(Math.abs(loss)).toLocaleString()+'만 손실':'영향 없음'}</div></div>`;});
-  const afterTotal=total+totalLoss,totalPct=totalLoss/total*100;
-  document.getElementById('sim-result').innerHTML=`<div class="result-box">${rows}
-    <div class="result-row" style="padding-top:10px;margin-top:4px;border-top:1px solid var(--accent-border);"><div class="result-label" style="font-weight:700;">예상 총 손실</div><div class="result-val" style="color:var(--red);">${Math.round(Math.abs(totalLoss)).toLocaleString()}만원 (${totalPct.toFixed(1)}%)</div></div>
-    <div class="result-row"><div class="result-label">예상 잔여 자산</div><div class="result-val" style="color:var(--accent);">${Math.round(afterTotal).toLocaleString()}만원</div></div>
-  </div><div class="action-box" style="margin-top:10px;"><div class="action-num">→</div><div class="action-text">${drop<=-12?'<b>하락장 매수 발동 구간!</b> SGOV 탄약 준비 상태를 확인하세요':'아직 하락장 매수 미발동 — 정기 적립 루틴 유지'}</div></div>`;
+
+  let totalLoss=0;
+  let rows='';
+
+  TICKERS.forEach(t=>{
+    const beta=BETA[t.id]||0;
+    const etfDrop=drop*beta;
+    const amt=total*targets[t.id]/100;
+    const loss=amt*etfDrop/100;
+    totalLoss+=loss;
+
+    const lossAbs=Math.abs(loss);
+    const lossColor=loss<0?'var(--red)':loss>0?'var(--green)':'var(--text3)';
+
+    rows+=`<div style="padding:9px 14px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+        <span style="font-size:12px;font-weight:700;color:${t.color};width:46px;">${t.id}</span>
+        <span style="font-size:11px;color:var(--text3);flex:1;">β=${beta.toFixed(2)} → ETF ${etfDrop.toFixed(1)}%</span>
+        <span style="font-size:12px;font-weight:700;color:${lossColor};">
+          ${loss<0?'-'+Math.round(lossAbs).toLocaleString()+'만':loss>0?'+'+Math.round(lossAbs).toLocaleString()+'만':'영향 없음'}
+        </span>
+      </div>
+      <div style="background:var(--bg3);border-radius:3px;height:4px;overflow:hidden;">
+        <div style="height:4px;border-radius:3px;background:${t.color};width:${Math.min(100,Math.abs(etfDrop/drop/2*100))}%;"></div>
+      </div>
+    </div>`;
+  });
+
+  const afterTotal=total+totalLoss;
+  const totalPct=totalLoss/total*100;
+
+  // 단계 판단
+  let stageMsg='';
+  if(drop<=-45) stageMsg='<span style="color:var(--red);font-weight:700;">5단계 발동 (-45%) — SGOV 20% → TQQQ 매수</span>';
+  else if(drop<=-35) stageMsg='<span style="color:var(--red);font-weight:700;">4단계 발동 (-35%) — SGOV 30% → TQQQ 매수</span>';
+  else if(drop<=-25) stageMsg='<span style="color:#ffc107;font-weight:700;">3단계 발동 (-25%) — SGOV 40% → QLD 매수</span>';
+  else if(drop<=-18) stageMsg='<span style="color:#ffc107;font-weight:700;">2단계 발동 (-18%) — SGOV 30% → QLD 매수</span>';
+  else if(drop<=-12) stageMsg='<span style="color:#ff9800;font-weight:700;">1단계 발동 (-12%) — SGOV 30% → QLD 매수</span>';
+  else stageMsg='<span style="color:var(--text3);">하락장 매수 미발동 — 정기 적립 루틴 유지</span>';
+
+  document.getElementById('sim-result').innerHTML=`
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;">
+      <div style="display:flex;padding:8px 14px;background:var(--bg3);font-size:10px;color:var(--text3);">
+        <span style="width:46px;">종목</span>
+        <span style="flex:1;">베타 × 나스닥 하락률</span>
+        <span>예상 손실</span>
+      </div>
+      ${rows}
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-size:12px;color:var(--text2);">예상 총 손실</span>
+        <span style="font-size:15px;font-weight:700;color:var(--red);">${Math.round(Math.abs(totalLoss)).toLocaleString()}만원 (${Math.abs(totalPct).toFixed(1)}%)</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:12px;color:var(--text2);">예상 잔여 자산</span>
+        <span style="font-size:15px;font-weight:700;color:var(--accent);">${Math.round(afterTotal).toLocaleString()}만원</span>
+      </div>
+    </div>
+    <div class="action-box">
+      <div class="action-num">→</div>
+      <div class="action-text">${stageMsg}</div>
+    </div>
+    <div style="margin-top:8px;font-size:10px;color:var(--text3);">
+      ※ 베타 계수: 2020~2025 실제 월별 수익률 기반 계산 (QLD 2.04 / SPMO 0.71 / SCHD 0.43 / AVUV 0.65 / SGOV 0.00)
+    </div>`;
 }
 
 function calcRetire(){
