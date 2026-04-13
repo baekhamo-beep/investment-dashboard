@@ -25,16 +25,15 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .live-label{font-size:10px;color:var(--green);}
 .header-time{font-size:10px;color:var(--text3);margin-left:8px;}
 .tabs{display:flex;background:var(--bg1);border-bottom:1px solid var(--border);overflow-x:auto;}
-.tab{padding:11px 16px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;}
+.tab{padding:11px 14px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;white-space:nowrap;}
 .tab:hover{color:var(--text1);}
 .tab.active{color:var(--accent2);border-bottom-color:var(--accent);background:rgba(201,168,76,0.05);}
 .content{padding:16px;max-width:900px;margin:0 auto;}
-.panel{display:none;}
-.panel.active{display:block;}
+.panel{display:none;}.panel.active{display:block;}
 .section-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
 .card-label{font-size:10px;color:var(--text3);margin-bottom:4px;}
 .card-value{font-size:20px;font-weight:700;}
@@ -47,8 +46,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .status-title{font-size:13px;font-weight:700;margin-bottom:4px;}
 .status-desc{font-size:11px;color:var(--text2);line-height:1.6;}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;}
-.btn-gold{background:var(--accent);color:#0a0e1a;}
-.btn-gold:hover{background:var(--accent2);}
+.btn-gold{background:var(--accent);color:#0a0e1a;}.btn-gold:hover{background:var(--accent2);}
 .input-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .input-label{font-size:11px;color:var(--text2);width:90px;flex-shrink:0;}
 .inp{background:var(--bg3);border:1px solid var(--border2);color:var(--text1);border-radius:5px;padding:7px 10px;font-size:12px;width:100%;outline:none;}
@@ -56,9 +54,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .inp-unit{font-size:11px;color:var(--text3);width:36px;flex-shrink:0;}
 .alert-badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:3px;font-weight:600;}
 .badge-red{background:rgba(224,92,92,0.2);color:var(--red);}
-.badge-green{background:rgba(76,175,125,0.2);color:var(--green);}
 .badge-gray{background:rgba(255,255,255,0.08);color:var(--text2);}
-.badge-gold{background:var(--accent-dim);color:var(--accent);}
 .progress-wrap{background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;margin-top:6px;}
 .progress-bar{height:6px;border-radius:3px;transition:width 0.5s;}
 .pulse{animation:pulse 1.5s infinite;}
@@ -80,37 +76,40 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .coming-soon-banner{background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--accent);margin-bottom:12px;}
 .data-updated{font-size:10px;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
 .data-dot{width:5px;height:5px;border-radius:50%;background:var(--green);}
-/* 체크리스트 */
-.chk-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;cursor:pointer;}
-.chk-item.done{background:rgba(76,175,125,0.07);border-color:rgba(76,175,125,0.25);}
-.chk-box{width:16px;height:16px;border-radius:3px;border:1px solid var(--border2);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;}
-.chk-item.done .chk-box{background:var(--green);border-color:var(--green);color:#0a0e1a;}
-.chk-label{font-size:11px;color:var(--text1);line-height:1.5;}
-.chk-item.done .chk-label{color:var(--text3);text-decoration:line-through;}
-/* 파이차트 */
-#pie-canvas{display:block;margin:0 auto;}
-.pie-legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px;}
-.pie-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);}
-.pie-dot{width:10px;height:10px;border-radius:2px;}
-/* 계산기 서브탭 */
 .sub-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
 .sub-tab{padding:6px 12px;font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;border-radius:5px;border:1px solid var(--border2);background:var(--bg2);transition:all 0.2s;}
 .sub-tab:hover{color:var(--text1);}
 .sub-tab.active{background:var(--accent-dim);border-color:var(--accent-border);color:var(--accent2);}
-.sub-panel{display:none;}
-.sub-panel.active{display:block;}
+.sub-panel{display:none;}.sub-panel.active{display:block;}
 .result-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:12px;}
-.result-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;}
 .result-row:last-child{border-bottom:none;}
 .result-label{color:var(--text2);}
 .result-val{font-weight:700;color:var(--text1);}
-/* 은퇴 타임라인 */
-.retire-bar{display:flex;gap:4px;margin:12px 0;flex-wrap:wrap;}
-.retire-step{flex:1;min-width:60px;background:var(--bg3);border-radius:6px;padding:8px 6px;text-align:center;}
-.retire-step-year{font-size:10px;color:var(--text3);margin-bottom:4px;}
-.retire-step-val{font-size:13px;font-weight:700;color:var(--accent);}
-.retire-step-label{font-size:9px;color:var(--text3);margin-top:2px;}
-@media(max-width:600px){.grid4{grid-template-columns:repeat(2,1fr);}.grid3{grid-template-columns:1fr 1fr;}.quick-btn-grid{grid-template-columns:1fr;}.retire-bar{flex-direction:column;}}
+.chk-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:6px;cursor:pointer;transition:all 0.2s;}
+.chk-item.done{background:rgba(76,175,125,0.07);border-color:rgba(76,175,125,0.25);}
+.chk-box{width:16px;height:16px;border-radius:3px;border:1px solid var(--border2);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.chk-item.done .chk-box{background:var(--green);border-color:var(--green);color:#0a0e1a;}
+.chk-label{font-size:12px;color:var(--text1);line-height:1.5;}
+.chk-sub{font-size:10px;color:var(--text3);margin-top:2px;}
+.chk-item.done .chk-label{color:var(--text3);text-decoration:line-through;}
+.retire-bar{display:flex;gap:6px;margin:12px 0;flex-wrap:wrap;}
+.retire-step{flex:1;min-width:80px;background:var(--bg3);border-radius:6px;padding:10px 8px;text-align:center;border:1px solid var(--border);}
+.retire-step.active{border-color:var(--accent-border);background:var(--accent-dim);}
+.retire-step-year{font-size:10px;color:var(--text3);margin-bottom:6px;}
+.retire-step-val{font-size:14px;font-weight:700;color:var(--accent);}
+.retire-step-label{font-size:9px;color:var(--text3);margin-top:4px;line-height:1.4;}
+.pie-legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px;}
+.pie-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2);}
+.pie-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+/* 포트폴리오 토글 */
+.currency-toggle{display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:5px 10px;cursor:pointer;user-select:none;}
+.toggle-track{width:30px;height:16px;background:var(--bg2);border-radius:8px;position:relative;border:1px solid var(--border2);}
+.toggle-dot{width:11px;height:11px;background:var(--accent);border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s;}
+.toggle-dot.on{left:16px;}
+/* 포트 테이블 */
+.port-table-header{display:grid;grid-template-columns:55px 80px 1fr 90px 90px;gap:0;padding:8px 14px;background:var(--bg3);font-size:10px;color:var(--text3);}
+.port-table-row{display:grid;grid-template-columns:55px 80px 1fr 90px 90px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);}
 /* 잠금 */
 #lock-screen{position:fixed;inset:0;background:#0a0e1a;display:flex;align-items:center;justify-content:center;z-index:9999;}
 .lock-box{background:#0f1525;border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:36px 32px;width:320px;text-align:center;}
@@ -122,9 +121,12 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .lock-btn{width:100%;background:#c9a84c;color:#0a0e1a;border:none;border-radius:6px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;}
 .lock-btn:hover{background:#e8c97a;}
 .lock-error{font-size:11px;color:#e05c5c;margin-top:8px;min-height:16px;}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#c9a84c;color:#0a0e1a;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+@media(max-width:600px){.grid4{grid-template-columns:repeat(2,1fr);}.grid3{grid-template-columns:1fr 1fr;}.grid2{grid-template-columns:1fr;}.quick-btn-grid{grid-template-columns:1fr;}.port-table-header,.port-table-row{grid-template-columns:50px 70px 1fr 80px 60px;}}
 </style>
 </head>
 <body>
+<div id="toast"></div>
 
 <div id="lock-screen">
   <div class="lock-box">
@@ -167,8 +169,9 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="tab active" onclick="switchTab('diag',this)">① 상황 진단</div>
     <div class="tab" onclick="switchTab('port',this)">② 포트폴리오</div>
     <div class="tab" onclick="switchTab('bigmoney',this)">③ 대자금 투입</div>
-    <div class="tab" onclick="switchTab('calc',this)">④ 계산기</div>
-    <div class="tab" onclick="switchTab('ai',this)">⑤ AI 조언</div>
+    <div class="tab" onclick="switchTab('ai',this)">④ AI 조언</div>
+    <div class="tab" onclick="switchTab('calc',this)">⑤ 계산기</div>
+    <div class="tab" onclick="switchTab('chk',this)">⑥ 체크리스트</div>
   </div>
 
   <!-- ① 상황 진단 -->
@@ -192,9 +195,6 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="section-title">상승장 과열 신호</div>
     <div id="bull-signals"></div>
     <hr class="divider">
-    <div class="section-title">연간 리밸런싱 체크리스트</div>
-    <div id="annual-checklist"></div>
-    <hr class="divider">
     <div class="section-title">수동 override</div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;">
       <div class="input-row"><span class="input-label">나스닥 하락%</span><input class="inp" id="m-nasdaq" type="number" placeholder="예: -15" step="0.1"><span class="inp-unit">%</span></div>
@@ -207,21 +207,42 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
   <!-- ② 포트폴리오 -->
   <div class="content panel" id="tab-port">
-    <div class="section-title">현재 보유 금액 입력 (만원)</div>
-    <div id="port-inputs"></div>
-    <div style="margin-top:10px;display:flex;gap:8px;align-items:center;">
+    <!-- 상단 컨트롤 바 -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+      <div style="font-size:11px;color:var(--text3);">환율: <span id="rate-display" style="color:var(--accent);">로딩중...</span></div>
+      <div style="font-size:10px;color:var(--text3);" id="etf-price-status"></div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <!-- 원화/달러 토글 -->
+        <div class="currency-toggle" onclick="toggleCurrency()">
+          <span style="font-size:11px;color:var(--text2);">₩</span>
+          <div class="toggle-track"><div class="toggle-dot" id="toggle-dot"></div></div>
+          <span style="font-size:11px;color:var(--text2);">$</span>
+          <span style="font-size:11px;font-weight:700;color:var(--accent2);" id="currency-label">원화</span>
+        </div>
+        <button onclick="savePort()" style="background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent2);border-radius:5px;padding:5px 10px;font-size:11px;cursor:pointer;font-weight:600;">저장</button>
+        <button onclick="loadPort()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:5px 10px;font-size:11px;cursor:pointer;">불러오기</button>
+      </div>
+    </div>
+    <!-- 포트폴리오 입력 테이블 -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px;">
+      <div class="port-table-header">
+        <div>종목</div><div>현재가</div><div style="text-align:center;">보유 수량</div><div style="text-align:right;">평가금액</div><div style="text-align:right;">목표비중</div>
+      </div>
+      <div id="port-inputs"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
       <button class="btn btn-gold" onclick="calcPort()">리밸런싱 계산</button>
-      <div style="font-size:12px;color:var(--text2)">총액: <span id="total-amt" style="color:var(--accent);font-weight:700">0</span> 만원</div>
+      <div style="font-size:12px;color:var(--text2)">총액: <span id="total-amt" style="color:var(--accent);font-weight:700;">—</span></div>
     </div>
     <hr class="divider">
     <div class="grid2">
       <div>
-        <div class="section-title">비중 현황 및 리밸런싱 지시</div>
-        <div id="port-result"><div style="color:var(--text3);font-size:12px;">금액 입력 후 계산 버튼을 누르세요.</div></div>
+        <div class="section-title">리밸런싱 지시</div>
+        <div id="port-result"><div style="color:var(--text3);font-size:12px;">수량 입력 후 계산 버튼을 누르세요.</div></div>
       </div>
       <div>
         <div class="section-title">포트폴리오 구성</div>
-        <canvas id="pie-canvas" width="200" height="200"></canvas>
+        <canvas id="pie-canvas" width="200" height="200" style="display:block;margin:0 auto;border-radius:8px;"></canvas>
         <div class="pie-legend" id="pie-legend"></div>
       </div>
     </div>
@@ -233,69 +254,17 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="card" style="margin-bottom:12px;">
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
         <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">추세 (나스닥>200일MA)</div><select class="inp" id="mps1" style="padding:6px 8px;"><option value="1">상승 궤도 (+1)</option><option value="0">하락 궤도 (0)</option></select></div>
-        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">모멘텀 (6개월 수익률>0)</div><select class="inp" id="mps2" style="padding:6px 8px;"><option value="1">플러스 (+1)</option><option value="0">마이너스 (0)</option></select></div>
+        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">모멘텀 (6개월>0)</div><select class="inp" id="mps2" style="padding:6px 8px;"><option value="1">플러스 (+1)</option><option value="0">마이너스 (0)</option></select></div>
         <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">변동성 (VIX&lt;20)</div><select class="inp" id="mps3" style="padding:6px 8px;"><option value="1">안정 (+1)</option><option value="0">불안 (0)</option></select></div>
       </div>
     </div>
-    <div class="section-title">투입 금액</div>
     <div class="input-row" style="margin-bottom:12px;"><span class="input-label">총 금액</span><input class="inp" id="big-amt" type="number" placeholder="10000" value="10000"><span class="inp-unit">만원</span></div>
     <button class="btn btn-gold" onclick="calcBigMoney()">투입 계획 산출</button>
     <hr class="divider">
     <div id="bigmoney-result"><div style="color:var(--text3);font-size:12px;">위 항목 선택 후 산출 버튼을 누르세요.</div></div>
   </div>
 
-  <!-- ④ 계산기 -->
-  <div class="content panel" id="tab-calc">
-    <div class="sub-tabs">
-      <button class="sub-tab active" onclick="switchSub('buy',this)">매수 계산기</button>
-      <button class="sub-tab" onclick="switchSub('tqqq',this)">TQQQ 손익</button>
-      <button class="sub-tab" onclick="switchSub('sim',this)">하락 시뮬레이터</button>
-      <button class="sub-tab" onclick="switchSub('retire',this)">은퇴 전환</button>
-    </div>
-
-    <!-- 매수 계산기 -->
-    <div class="sub-panel active" id="sub-buy">
-      <div class="section-title">월 적립 매수 계산기</div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div class="input-row"><span class="input-label">총 자산</span><input class="inp" id="buy-total" type="number" placeholder="50000" oninput="calcBuy()"><span class="inp-unit">만원</span></div>
-        <div class="input-row"><span class="input-label">이번 달 매수</span><input class="inp" id="buy-monthly" type="number" placeholder="100" oninput="calcBuy()"><span class="inp-unit">만원</span></div>
-      </div>
-      <div id="buy-result"><div style="color:var(--text3);font-size:12px;">총 자산과 월 매수 금액을 입력하세요.</div></div>
-    </div>
-
-    <!-- TQQQ 손익 -->
-    <div class="sub-panel" id="sub-tqqq">
-      <div class="section-title">TQQQ 손익 추적</div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div class="input-row"><span class="input-label">매수 평균가</span><input class="inp" id="tqqq-avg" type="number" placeholder="50.00" step="0.01" oninput="calcTQQQ()"><span class="inp-unit">$</span></div>
-        <div class="input-row"><span class="input-label">현재가</span><input class="inp" id="tqqq-cur" type="number" placeholder="55.00" step="0.01" oninput="calcTQQQ()"><span class="inp-unit">$</span></div>
-        <div class="input-row"><span class="input-label">보유 수량</span><input class="inp" id="tqqq-qty" type="number" placeholder="100" oninput="calcTQQQ()"><span class="inp-unit">주</span></div>
-      </div>
-      <div id="tqqq-result"><div style="color:var(--text3);font-size:12px;">매수가, 현재가, 수량을 입력하세요.</div></div>
-    </div>
-
-    <!-- 하락 시뮬레이터 -->
-    <div class="sub-panel" id="sub-sim">
-      <div class="section-title">하락장 포트폴리오 시뮬레이터</div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div class="input-row"><span class="input-label">현재 총 자산</span><input class="inp" id="sim-total" type="number" placeholder="50000" oninput="calcSim()"><span class="inp-unit">만원</span></div>
-        <div class="input-row"><span class="input-label">나스닥 하락률</span><input class="inp" id="sim-drop" type="number" placeholder="-25" step="1" oninput="calcSim()"><span class="inp-unit">%</span></div>
-      </div>
-      <div id="sim-result"><div style="color:var(--text3);font-size:12px;">총 자산과 나스닥 예상 하락률을 입력하세요.</div></div>
-    </div>
-
-    <!-- 은퇴 전환 계산기 -->
-    <div class="sub-panel" id="sub-retire">
-      <div class="section-title">은퇴 전환 스케줄</div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div class="input-row"><span class="input-label">은퇴 목표 연도</span><input class="inp" id="retire-year" type="number" placeholder="2045" oninput="calcRetire()"><span class="inp-unit">년</span></div>
-        <div class="input-row"><span class="input-label">현재 총 자산</span><input class="inp" id="retire-total" type="number" placeholder="50000" oninput="calcRetire()"><span class="inp-unit">만원</span></div>
-      </div>
-      <div id="retire-result"><div style="color:var(--text3);font-size:12px;">은퇴 목표 연도를 입력하세요.</div></div>
-    </div>
-  </div>
-
-  <!-- ⑤ AI 조언 -->
+  <!-- ④ AI 조언 -->
   <div class="content panel" id="tab-ai">
     <div class="coming-soon-banner">⚙ AI 실시간 연동 준비 중 — 현재는 헌법 기반 정적 답변을 제공합니다</div>
     <div class="section-title">빠른 질문</div>
@@ -310,6 +279,58 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="section-title">답변</div>
     <div class="ai-answer-box" id="ai-answer"><span style="color:var(--text3)">위 버튼을 누르면 헌법 기반 답변이 표시됩니다.</span></div>
   </div>
+
+  <!-- ⑤ 계산기 -->
+  <div class="content panel" id="tab-calc">
+    <div class="sub-tabs">
+      <button class="sub-tab active" onclick="switchSub('buy',this)">매수 계산기</button>
+      <button class="sub-tab" onclick="switchSub('tqqq',this)">TQQQ 손익</button>
+      <button class="sub-tab" onclick="switchSub('sim',this)">하락 시뮬레이터</button>
+      <button class="sub-tab" onclick="switchSub('retire',this)">은퇴 전환</button>
+    </div>
+    <div class="sub-panel active" id="sub-buy">
+      <div class="section-title">월 적립 매수 계산기</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+        <div class="input-row"><span class="input-label">총 자산</span><input class="inp" id="buy-total" type="number" placeholder="50000" oninput="calcBuy()"><span class="inp-unit">만원</span></div>
+        <div class="input-row"><span class="input-label">이번 달 매수</span><input class="inp" id="buy-monthly" type="number" placeholder="100" oninput="calcBuy()"><span class="inp-unit">만원</span></div>
+      </div>
+      <div id="buy-result"><div style="color:var(--text3);font-size:12px;">총 자산과 월 매수 금액을 입력하세요.</div></div>
+    </div>
+    <div class="sub-panel" id="sub-tqqq">
+      <div class="section-title">TQQQ 손익 추적</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+        <div class="input-row"><span class="input-label">매수 평균가</span><input class="inp" id="tqqq-avg" type="number" placeholder="50.00" step="0.01" oninput="calcTQQQ()"><span class="inp-unit">$</span></div>
+        <div class="input-row"><span class="input-label">현재가</span><input class="inp" id="tqqq-cur" type="number" placeholder="55.00" step="0.01" oninput="calcTQQQ()"><span class="inp-unit">$</span></div>
+        <div class="input-row"><span class="input-label">보유 수량</span><input class="inp" id="tqqq-qty" type="number" placeholder="100" oninput="calcTQQQ()"><span class="inp-unit">주</span></div>
+      </div>
+      <div id="tqqq-result"><div style="color:var(--text3);font-size:12px;">매수가와 현재가를 입력하세요.</div></div>
+    </div>
+    <div class="sub-panel" id="sub-sim">
+      <div class="section-title">하락장 포트폴리오 시뮬레이터</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+        <div class="input-row"><span class="input-label">현재 총 자산</span><input class="inp" id="sim-total" type="number" placeholder="50000" oninput="calcSim()"><span class="inp-unit">만원</span></div>
+        <div class="input-row"><span class="input-label">나스닥 하락률</span><input class="inp" id="sim-drop" type="number" placeholder="-25" step="1" oninput="calcSim()"><span class="inp-unit">%</span></div>
+      </div>
+      <div id="sim-result"><div style="color:var(--text3);font-size:12px;">총 자산과 나스닥 예상 하락률을 입력하세요.</div></div>
+    </div>
+    <div class="sub-panel" id="sub-retire">
+      <div class="section-title">은퇴 전환 스케줄 (헌법 제6조)</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+        <div class="input-row"><span class="input-label">은퇴 목표 연도</span><input class="inp" id="retire-year" type="number" placeholder="2045" oninput="calcRetire()"><span class="inp-unit">년</span></div>
+        <div class="input-row"><span class="input-label">현재 총 자산</span><input class="inp" id="retire-total" type="number" placeholder="50000" oninput="calcRetire()"><span class="inp-unit">만원</span></div>
+      </div>
+      <div id="retire-result"><div style="color:var(--text3);font-size:12px;">은퇴 목표 연도를 입력하세요.</div></div>
+    </div>
+  </div>
+
+  <!-- ⑥ 체크리스트 -->
+  <div class="content panel" id="tab-chk">
+    <div class="section-title">연간 리밸런싱 체크리스트</div>
+    <div style="background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--accent2);margin-bottom:14px;">매년 1월 첫 번째 월요일 실행 — 항목 클릭으로 완료 체크</div>
+    <div id="chk-special" style="margin-bottom:16px;"><div class="section-title">특수 조항 검토</div></div>
+    <div id="chk-regular" style="margin-bottom:16px;"><div class="section-title">정기 점검 항목</div></div>
+    <div id="chk-footer"></div>
+  </div>
 </div>
 
 <script>
@@ -322,6 +343,9 @@ const TICKERS=[
   {id:'SGOV',target:15,color:'#9aa0b8',role:'단기국채 현금',capUpper:7},
 ];
 let mkt={nasdaq:null,vix:null,rsi:null,fg:null,ma200:null};
+let etfPrices={};
+let usdKrw=1350;
+let useDollar=false;
 
 function updateTime(){const kst=new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);document.getElementById('live-time').textContent=kst.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' KST';}
 setInterval(updateTime,1000);updateTime();
@@ -329,67 +353,46 @@ setInterval(updateTime,1000);updateTime();
 function switchTab(id,el){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');el.classList.add('active');}
 function switchSub(id,el){document.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));document.getElementById('sub-'+id).classList.add('active');el.classList.add('active');}
 
-async function fetchFG(){try{const r=await fetch('https://api.alternative.me/fng/?limit=1');const d=await r.json();const fg=parseInt(d.data[0].value);mkt.fg=fg;setCard('d-fg',fg,fg>=80?'극단적 탐욕':fg>=60?'탐욕':fg<=25?'극단적 공포':'중립',fg>=80?'var(--red)':fg<=25?'var(--green)':'var(--accent)');}catch(e){document.getElementById('d-fg').textContent='—';document.getElementById('d-fg-sub').textContent='직접 입력';document.getElementById('d-fg-sub').classList.remove('pulse');}}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';setTimeout(()=>{t.style.opacity='0';},2000);}
 
 async function loadData(){
   document.getElementById('data-updated-text').textContent='데이터 불러오는 중...';
-  fetchFG();
   try{
-    const res=await fetch(DATA_URL+'?t='+Date.now());
-    const d=await res.json();
+    const res=await fetch(DATA_URL+'?t='+Date.now());const d=await res.json();
     const nd=d.nasdaq?.drawdown_pct,vx=d.vix,rs=d.nasdaq?.rsi,fg=d.fear_greed?.value,ma=d.nasdaq?.ma200_dev_pct;
     const isRun=d.updated_utc&&d.updated_utc!=='2026-01-01T00:00:00Z';
-    if(!isRun){document.getElementById('data-updated-text').textContent='⚠ GitHub Actions 미실행 — Actions 탭에서 Run workflow 눌러주세요';['d-nasdaq','d-vix','d-rsi'].forEach(id=>{document.getElementById(id).textContent='—';document.getElementById(id+'-sub').textContent='Actions 실행 필요';document.getElementById(id+'-sub').classList.remove('pulse');});renderDiagStatus();renderDipStages();renderBullSignals();return;}
+    if(!isRun){document.getElementById('data-updated-text').textContent='⚠ GitHub Actions 미실행 — Actions 탭에서 Run workflow 눌러주세요';renderDiagStatus();renderDipStages();renderBullSignals();return;}
     if(nd!=null){mkt.nasdaq=nd;setCard('d-nasdaq',nd.toFixed(1)+'%',nd<=-12?'매수 신호':nd<0?'하락 중':'상승 중',nd<=-12?'var(--red)':nd<0?'var(--accent)':'var(--green)');}
     if(vx!=null){mkt.vix=vx;setCard('d-vix',vx.toFixed(1),vx>=40?'극단 공포':vx>=25?'주의':'안정',vx>=40?'var(--red)':vx>=25?'#ffc107':'var(--green)');}
     if(rs!=null){mkt.rsi=rs;setCard('d-rsi',rs.toFixed(0),rs>=70?'과매수':rs<=30?'과매도':'중립',rs>=70?'var(--red)':rs<=30?'var(--green)':'var(--text1)');}
-    if(fg!=null&&mkt.fg===null){mkt.fg=fg;setCard('d-fg',fg,fg>=80?'극단적 탐욕':fg>=60?'탐욕':fg<=25?'극단적 공포':'중립',fg>=80?'var(--red)':fg<=25?'var(--green)':'var(--accent)');}
+    if(fg!=null){mkt.fg=fg;setCard('d-fg',fg,fg>=80?'극단적 탐욕':fg>=60?'탐욕':fg<=25?'극단적 공포':'중립',fg>=80?'var(--red)':fg<=25?'var(--green)':'var(--accent)');}
     if(ma!=null)mkt.ma200=ma;
-    // ETF 가격 & 환율 반영
     if(d.etf_prices){
       etfPrices=d.etf_prices;
-      TICKERS.forEach(t=>{
-        const el=document.getElementById('price-'+t.id);
-        if(el&&etfPrices[t.id]) el.textContent='$'+etfPrices[t.id];
-      });
-      document.getElementById('etf-price-status').textContent='ETF 현재가 기준: '+new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
+      TICKERS.forEach(t=>{const el=document.getElementById('price-'+t.id);if(el&&etfPrices[t.id])el.textContent='$'+etfPrices[t.id];});
+      document.getElementById('etf-price-status').textContent='| ETF가격 기준: '+new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' KST';
     }
-    if(d.usd_krw){
-      usdKrw=d.usd_krw;
-      document.getElementById('rate-display').textContent='1$ = '+usdKrw.toLocaleString()+'원';
-    }
-    // ETF 가격 & 환율 반영
-    if(d.etf_prices){
-      etfPrices=d.etf_prices;
-      TICKERS.forEach(t=>{
-        const el=document.getElementById('price-'+t.id);
-        if(el&&etfPrices[t.id]) el.textContent='$'+etfPrices[t.id];
-      });
-      document.getElementById('etf-price-status').textContent='ETF 현재가 기준: '+new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
-    }
-    if(d.usd_krw){
-      usdKrw=d.usd_krw;
-      document.getElementById('rate-display').textContent='1$ = '+usdKrw.toLocaleString()+'원';
-    }
+    if(d.usd_krw){usdKrw=d.usd_krw;document.getElementById('rate-display').textContent='1$ = '+usdKrw.toLocaleString()+'원';}
     const updKST=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
-    document.getElementById('data-updated-text').textContent='마지막 업데이트: '+updKST+' KST (12시간마다 자동 갱신)';
+    document.getElementById('data-updated-text').textContent='마지막 업데이트: '+updKST+' KST';
     document.getElementById('data-dot').classList.remove('pulse');
     renderDiagStatus();renderDipStages();renderBullSignals();
-  }catch(e){document.getElementById('data-updated-text').textContent='GitHub Pages 로드 실패 — 수동 입력을 사용하세요';renderDiagStatus();renderDipStages();renderBullSignals();}
+    updateTotal();
+  }catch(e){document.getElementById('data-updated-text').textContent='데이터 로드 실패 — 수동 입력을 사용하세요';renderDiagStatus();renderDipStages();renderBullSignals();}
 }
 
 function setCard(id,val,sub,color){const el=document.getElementById(id);el.textContent=val;el.style.color=color;const s=document.getElementById(id+'-sub');s.textContent=sub;s.classList.remove('pulse');}
 
 function renderDiagStatus(){
   const nd=mkt.nasdaq,vx=mkt.vix;let html='';
-  if(nd===null){html='<div class="status-box hold"><div class="status-title" style="color:var(--blue)">데이터 로딩 중 / 수동 입력 대기</div><div class="status-desc">GitHub에서 데이터를 가져오는 중이거나, 아래 수동 입력을 사용하세요.</div></div>';}
-  else if(vx!==null&&vx>=40&&nd<=-25){html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">극단 변동성 모드 (VIX≥40 & 나스닥≤-25%)</div><div class="status-desc">상시 리밸런싱 중단. 3-3-4-3-2 하락장 매수만 집행. 패닉 셀 절대 금지.</div></div>';}
-  else if(nd<=-45){html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">5단계 — 최후의 한발 (-45%)</div><div class="status-desc">SGOV 20% → TQQQ 매수. SGOV 소진 시 원화채굴 투입.</div></div>';}
-  else if(nd<=-35){html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">4단계 — 공포의 절정 (-35%)</div><div class="status-desc">SGOV 30% → TQQQ 매수. TQQQ 최대 5%.</div></div>';}
-  else if(nd<=-25){html='<div class="status-box warn"><div class="status-title" style="color:#ffc107">3단계 — 핵심 승부처 (-25%)</div><div class="status-desc">SGOV 40% → QLD 매수. QLD 27% 캡 확인 필수.</div></div>';}
-  else if(nd<=-18){html='<div class="status-box warn"><div class="status-title" style="color:#ffc107">2단계 — 본격 매수 (-18%)</div><div class="status-desc">SGOV 30% → QLD 매수.</div></div>';}
-  else if(nd<=-12){html='<div class="status-box warn"><div class="status-title" style="color:#ff9800">1단계 — 첫 번째 진입 (-12%)</div><div class="status-desc">SGOV 30% → QLD 매수. 전날 종가 확정, 익일 시가 집행.</div></div>';}
-  else{html='<div class="status-box safe"><div class="status-title" style="color:var(--green)">정상 운항 — 하락장 매수 미발동</div><div class="status-desc">정기 적립 및 22일 매수 루틴 유지. 상승장 과열 신호 모니터링.</div></div>';}
+  if(nd===null)html='<div class="status-box hold"><div class="status-title" style="color:var(--blue)">데이터 로딩 중 / 수동 입력 대기</div><div class="status-desc">아래 수동 입력을 사용하거나 잠시 후 새로고침하세요.</div></div>';
+  else if(vx!==null&&vx>=40&&nd<=-25)html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">극단 변동성 모드 (VIX≥40 & 나스닥≤-25%)</div><div class="status-desc">상시 리밸런싱 중단. 3-3-4-3-2 하락장 매수만 집행. 패닉 셀 절대 금지.</div></div>';
+  else if(nd<=-45)html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">5단계 — 최후의 한발 (-45%)</div><div class="status-desc">SGOV 20% → TQQQ 매수. SGOV 소진 시 원화채굴 투입.</div></div>';
+  else if(nd<=-35)html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">4단계 — 공포의 절정 (-35%)</div><div class="status-desc">SGOV 30% → TQQQ 매수. TQQQ 최대 5%.</div></div>';
+  else if(nd<=-25)html='<div class="status-box warn"><div class="status-title" style="color:#ffc107">3단계 — 핵심 승부처 (-25%)</div><div class="status-desc">SGOV 40% → QLD 매수. QLD 27% 캡 확인 필수.</div></div>';
+  else if(nd<=-18)html='<div class="status-box warn"><div class="status-title" style="color:#ffc107">2단계 — 본격 매수 (-18%)</div><div class="status-desc">SGOV 30% → QLD 매수.</div></div>';
+  else if(nd<=-12)html='<div class="status-box warn"><div class="status-title" style="color:#ff9800">1단계 — 첫 번째 진입 (-12%)</div><div class="status-desc">SGOV 30% → QLD 매수. 전날 종가 확정, 익일 시가 집행.</div></div>';
+  else html='<div class="status-box safe"><div class="status-title" style="color:var(--green)">정상 운항 — 하락장 매수 미발동</div><div class="status-desc">정기 적립 및 22일 매수 루틴 유지. 상승장 과열 신호 모니터링.</div></div>';
   document.getElementById('diag-status').innerHTML=html;
 }
 
@@ -398,8 +401,7 @@ function renderDipStages(){
   const nd=mkt.nasdaq;
   let html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
   stages.forEach(s=>{const on=nd!==null&&nd<=s.pct;html+=`<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);${on?'background:rgba(224,92,92,0.07);':''}"><div style="width:8px;height:8px;border-radius:50%;background:${on?s.color:'var(--bg3)'}"></div><div style="font-size:11px;font-weight:700;color:${on?s.color:'var(--text3)'};width:38px;">${s.pct}%</div><div style="font-size:11px;color:${on?'var(--text1)':'var(--text3)'};flex:1;">${s.label}</div><div style="font-size:11px;color:${on?s.color:'var(--text3)'}">${s.action}</div>${on?'<span class="alert-badge badge-red">발동</span>':''}</div>`;});
-  html+='</div>';
-  document.getElementById('dip-stages').innerHTML=html;
+  html+='</div>';document.getElementById('dip-stages').innerHTML=html;
 }
 
 function renderBullSignals(){
@@ -412,30 +414,6 @@ function renderBullSignals(){
   document.getElementById('bull-signals').innerHTML=html;
 }
 
-/* ── 연간 리밸런싱 체크리스트 ── */
-const CHK_ITEMS=[
-  {id:'c1',label:'특수조항1 검토: 전년도 QQQ 수익률이 SPMO+5%p 초과 여부 확인'},
-  {id:'c2',label:'특수조항1 보조: S&P500 상위 7종목 비중 30% 초과 또는 연평균 VIX 25 이상 여부'},
-  {id:'c3',label:'특수조항2 검토: 러셀2000이 S&P500 대비 -20%p 이상 언더퍼폼 여부'},
-  {id:'c4',label:'ETF 존속성 확인: QLD, SPMO, SCHD, AVUV, SGOV 운용사 이상 없음'},
-  {id:'c5',label:'나스닥 성장성 점검: 나스닥 100 구조적 성장 전제 유효한지 재확인'},
-  {id:'c6',label:'전체 비중 목표치로 리셋: QLD 20 / SPMO 30 / SCHD 25 / AVUV 10 / SGOV 15'},
-  {id:'c7',label:'별동대(AVDV) 배당금 재투자 확인'},
-];
-function initChecklist(){
-  const saved=JSON.parse(localStorage.getItem('annual_chk')||'{}');
-  let html=`<div style="font-size:10px;color:var(--text3);margin-bottom:8px;">매년 1월 첫 번째 월요일 체크 — 완료 항목 클릭으로 체크</div>`;
-  CHK_ITEMS.forEach(item=>{
-    const done=!!saved[item.id];
-    html+=`<div class="chk-item${done?' done':''}" id="${item.id}" onclick="toggleChk('${item.id}')"><div class="chk-box">${done?'✓':''}</div><div class="chk-label">${item.label}</div></div>`;
-  });
-  const doneCount=Object.values(saved).filter(Boolean).length;
-  html+=`<div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;"><div style="font-size:11px;color:var(--text2);">완료: <span style="color:var(--green);font-weight:700;">${doneCount}/${CHK_ITEMS.length}</span></div><button onclick="resetChk()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text3);border-radius:4px;padding:4px 10px;font-size:10px;cursor:pointer;">초기화</button></div>`;
-  document.getElementById('annual-checklist').innerHTML=html;
-}
-function toggleChk(id){const saved=JSON.parse(localStorage.getItem('annual_chk')||'{}');saved[id]=!saved[id];localStorage.setItem('annual_chk',JSON.stringify(saved));initChecklist();}
-function resetChk(){localStorage.removeItem('annual_chk');initChecklist();}
-
 function runManualDiag(){
   const p=id=>parseFloat(document.getElementById(id).value);
   const nd=p('m-nasdaq'),vx=p('m-vix'),rs=p('m-rsi'),fg=p('m-fg');
@@ -446,123 +424,129 @@ function runManualDiag(){
   renderDiagStatus();renderDipStages();renderBullSignals();
 }
 
-/* ── 포트폴리오 + 파이차트 ── */
-let useDollar = false;
-let etfPrices = {};
-let usdKrw = 1350;
-
+/* ── 포트폴리오 ── */
 function toggleCurrency(){
-  useDollar = !useDollar;
-  document.getElementById('currency-label').textContent = useDollar ? '$ 달러' : '₩ 원화';
-  document.getElementById('toggle-dot').style.left = useDollar ? '15px' : '2px';
+  useDollar=!useDollar;
+  document.getElementById('toggle-dot').className='toggle-dot'+(useDollar?' on':'');
+  document.getElementById('currency-label').textContent=useDollar?'달러':'원화';
   updateTotal();
-  calcPort();
 }
 
 function buildPortInputs(){
-  document.getElementById('port-inputs').innerHTML = TICKERS.map(t => {
-    const price = etfPrices[t.id];
-    const priceStr = price ? `$${price}` : '—';
-    return `<div style="display:grid;grid-template-columns:60px 1fr 90px 90px 100px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);">
+  document.getElementById('port-inputs').innerHTML=TICKERS.map(t=>{
+    const price=etfPrices[t.id];
+    return `<div class="port-table-row">
       <span style="font-size:12px;font-weight:700;color:${t.color};">${t.id}</span>
-      <span style="font-size:12px;color:var(--text2);" id="price-${t.id}">${priceStr}</span>
-      <div style="text-align:right;"><input class="inp" id="qty-${t.id}" type="number" placeholder="0" step="1" style="width:80px;text-align:right;padding:5px 8px;" oninput="updateTotal()"></div>
+      <span style="font-size:12px;color:var(--text2);" id="price-${t.id}">${price?'$'+price:'로딩중'}</span>
+      <div style="text-align:center;"><input class="inp" id="qty-${t.id}" type="number" placeholder="0" step="1" min="0" style="width:80px;text-align:right;padding:5px 8px;" oninput="updateTotal()"></div>
       <div style="text-align:right;font-size:12px;font-weight:600;color:var(--text1);" id="val-${t.id}">—</div>
       <div style="text-align:right;font-size:11px;color:var(--text3);">목표 ${t.target}%</div>
     </div>`;
   }).join('');
 }
 
-function getTickerValue(id){
-  const qty = parseFloat(document.getElementById('qty-'+id).value||0);
-  const price = etfPrices[id] || 0;
-  if(!qty || !price) return 0;
-  const usdVal = qty * price;
-  return useDollar ? usdVal : usdVal * usdKrw / 10000; // 만원 단위
+function getTickerValueKRW(id){
+  const qty=parseFloat(document.getElementById('qty-'+id).value||0);
+  const price=etfPrices[id]||0;
+  if(!qty||!price)return 0;
+  return qty*price*usdKrw/10000; // 만원
 }
 
 function updateTotal(){
-  let total = 0;
-  TICKERS.forEach(t => {
-    const val = getTickerValue(t.id);
-    total += val;
-    const el = document.getElementById('val-'+t.id);
-    if(el) el.textContent = val > 0 ? (useDollar ? '$'+val.toFixed(0) : Math.round(val).toLocaleString()+'만') : '—';
+  let totalKRW=0;
+  TICKERS.forEach(t=>{
+    const valKRW=getTickerValueKRW(t.id);
+    totalKRW+=valKRW;
+    const el=document.getElementById('val-'+t.id);
+    if(el){
+      if(valKRW>0){
+        el.textContent=useDollar?'$'+(valKRW*10000/usdKrw).toFixed(0):Math.round(valKRW).toLocaleString()+'만';
+      } else { el.textContent='—'; }
+    }
   });
-  const totalEl = document.getElementById('total-amt');
-  if(total > 0){
-    totalEl.textContent = useDollar ? '$'+total.toFixed(0) : Math.round(total).toLocaleString()+'만원';
-  } else {
-    totalEl.textContent = '—';
-  }
+  const el=document.getElementById('total-amt');
+  if(totalKRW>0){
+    el.textContent=useDollar?'$'+(totalKRW*10000/usdKrw).toFixed(0):Math.round(totalKRW).toLocaleString()+'만원';
+  } else { el.textContent='—'; }
 }
 
 function savePort(){
-  const data = {};
-  TICKERS.forEach(t => { data[t.id] = document.getElementById('qty-'+t.id).value||'0'; });
-  localStorage.setItem('inv_portfolio', JSON.stringify(data));
+  const data={};
+  TICKERS.forEach(t=>{data[t.id]=document.getElementById('qty-'+t.id).value||'0';});
+  localStorage.setItem('inv_portfolio',JSON.stringify(data));
   showToast('포트폴리오 저장 완료!');
 }
 
 function loadPort(){
-  const data = JSON.parse(localStorage.getItem('inv_portfolio')||'{}');
-  if(!Object.keys(data).length){ showToast('저장된 포트폴리오가 없습니다'); return; }
-  TICKERS.forEach(t => {
-    const el = document.getElementById('qty-'+t.id);
-    if(el && data[t.id]) el.value = data[t.id];
-  });
+  const data=JSON.parse(localStorage.getItem('inv_portfolio')||'{}');
+  if(!Object.keys(data).length){showToast('저장된 포트폴리오가 없습니다');return;}
+  TICKERS.forEach(t=>{const el=document.getElementById('qty-'+t.id);if(el&&data[t.id])el.value=data[t.id];});
   updateTotal();
-  showToast('포트폴리오 불러오기 완료!');
+  showToast('불러오기 완료!');
 }
 
-function showToast(msg){
-  let toast = document.getElementById('toast');
-  if(!toast){ toast = document.createElement('div'); toast.id='toast'; toast.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#c9a84c;color:#0a0e1a;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;z-index:9998;transition:opacity 0.3s;'; document.body.appendChild(toast); }
-  toast.textContent = msg; toast.style.opacity='1';
-  setTimeout(()=>{ toast.style.opacity='0'; }, 2000);
-}
-
-function drawPie(vals,total){
+function drawPie(valsKRW,totalKRW){
   const canvas=document.getElementById('pie-canvas');
   const ctx=canvas.getContext('2d');
   ctx.clearRect(0,0,200,200);
-  if(!total){ctx.fillStyle='#1e2740';ctx.beginPath();ctx.arc(100,100,90,0,Math.PI*2);ctx.fill();return;}
+  if(!totalKRW){ctx.fillStyle='#1e2740';ctx.beginPath();ctx.arc(100,100,90,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(100,100,50,0,Math.PI*2);ctx.fillStyle='#0a0e1a';ctx.fill();document.getElementById('pie-legend').innerHTML='';return;}
   let start=-Math.PI/2;
   TICKERS.forEach(t=>{
-    const slice=(vals[t.id]||0)/total*Math.PI*2;
+    const slice=(valsKRW[t.id]||0)/totalKRW*Math.PI*2;
+    if(slice<=0)return;
     ctx.beginPath();ctx.moveTo(100,100);ctx.arc(100,100,90,start,start+slice);ctx.closePath();
-    ctx.fillStyle=t.color;ctx.fill();
-    ctx.strokeStyle='#0a0e1a';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=t.color;ctx.fill();ctx.strokeStyle='#0a0e1a';ctx.lineWidth=2;ctx.stroke();
     start+=slice;
   });
-  // 도넛 구멍
   ctx.beginPath();ctx.arc(100,100,50,0,Math.PI*2);ctx.fillStyle='#0a0e1a';ctx.fill();
-  // 가운데 텍스트
-  ctx.fillStyle='#e8c97a';ctx.font='bold 14px Segoe UI';ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText(total.toLocaleString(),100,95);
+  const label=useDollar?'$'+(totalKRW*10000/usdKrw).toFixed(0):Math.round(totalKRW).toLocaleString();
+  ctx.fillStyle='#e8c97a';ctx.font='bold 12px Segoe UI';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(label,100,95);
   ctx.fillStyle='#9aa0b8';ctx.font='10px Segoe UI';
-  ctx.fillText('만원',100,112);
-
-  // 범례
-  document.getElementById('pie-legend').innerHTML=TICKERS.map(t=>`<div class="pie-legend-item"><div class="pie-dot" style="background:${t.color}"></div>${t.id} ${vals[t.id]?((vals[t.id]/total*100).toFixed(1))+'%':'0%'}</div>`).join('');
+  ctx.fillText(useDollar?'USD':'만원',100,111);
+  document.getElementById('pie-legend').innerHTML=TICKERS.map(t=>`<div class="pie-legend-item"><div class="pie-dot" style="background:${t.color}"></div>${t.id} ${valsKRW[t.id]?((valsKRW[t.id]/totalKRW*100).toFixed(1))+'%':'0%'}</div>`).join('');
 }
 
 function calcPort(){
-  let total=0;const vals={};
-  TICKERS.forEach(t=>{const v=parseFloat(document.getElementById('port-'+t.id).value||0);vals[t.id]=v;total+=v;});
-  drawPie(vals,total);
-  if(!total){document.getElementById('port-result').innerHTML='<div style="color:var(--text3);font-size:12px;">금액을 입력하세요.</div>';return;}
+  const valsKRW={};let totalKRW=0;
+  TICKERS.forEach(t=>{const v=getTickerValueKRW(t.id);valsKRW[t.id]=v;totalKRW+=v;});
+  drawPie(valsKRW,totalKRW);
+  if(!totalKRW){document.getElementById('port-result').innerHTML='<div style="color:var(--text3);font-size:12px;">수량을 입력하세요.</div>';return;}
   let html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
   const alerts=[];
   TICKERS.forEach(t=>{
-    const cur=vals[t.id]/total*100,diff=cur-t.target,abs=Math.abs(diff);
+    const cur=valsKRW[t.id]/totalKRW*100,diff=cur-t.target,abs=Math.abs(diff);
     const need=diff<0&&abs>=7||diff>0&&abs>=t.capUpper;
-    if(need)alerts.push({name:t.id,diff,amt:Math.abs(diff/100*total),color:t.color,isOver:diff>0});
-    html+=`<div style="padding:9px 14px;border-bottom:1px solid var(--border);"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span style="font-size:12px;font-weight:700;color:${t.color};width:46px;">${t.id}</span><span style="font-size:11px;color:var(--text2);flex:1;">${t.role}</span><span style="font-size:13px;font-weight:700;color:${need?(diff>0?'var(--red)':'var(--green)'):'var(--text1)'};">${cur.toFixed(1)}%</span><span style="font-size:10px;color:var(--text3);">/ ${t.target}%</span><span style="font-size:11px;font-weight:600;width:44px;text-align:right;color:${diff>0?'var(--red)':diff<0?'var(--green)':'var(--text3)'};">${diff>0?'+':''}${diff.toFixed(1)}%p</span>${need?'<span class="alert-badge badge-red">리밸</span>':''}</div><div class="progress-wrap"><div class="progress-bar" style="width:${Math.min(100,cur/t.target*100)}%;background:${t.color};"></div></div></div>`;
+    const price=etfPrices[t.id]||0;
+    const rebalKRW=Math.abs(diff/100*totalKRW);
+    const rebalShares=price>0?Math.round(rebalKRW*10000/usdKrw/price):null;
+    if(need)alerts.push({name:t.id,diff,krw:rebalKRW,shares:rebalShares,price,color:t.color,isOver:diff>0});
+    html+=`<div style="padding:9px 14px;border-bottom:1px solid var(--border);"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+      <span style="font-size:12px;font-weight:700;color:${t.color};width:46px;">${t.id}</span>
+      <span style="font-size:11px;color:var(--text2);flex:1;">${t.role}</span>
+      <span style="font-size:13px;font-weight:700;color:${need?(diff>0?'var(--red)':'var(--green)'):'var(--text1)'};">${cur.toFixed(1)}%</span>
+      <span style="font-size:10px;color:var(--text3);">/ ${t.target}%</span>
+      <span style="font-size:11px;font-weight:600;width:44px;text-align:right;color:${diff>0?'var(--red)':diff<0?'var(--green)':'var(--text3)'};">${diff>0?'+':''}${diff.toFixed(1)}%p</span>
+      ${need?'<span class="alert-badge badge-red">리밸</span>':''}
+    </div><div class="progress-wrap"><div class="progress-bar" style="width:${Math.min(100,cur/t.target*100)}%;background:${t.color};"></div></div></div>`;
   });
   html+='</div>';
-  if(alerts.length){html+='<div style="margin-top:10px;">';alerts.forEach(a=>{html+=`<div class="action-box"><div class="action-num">${a.isOver?'↓':'↑'}</div><div class="action-text"><span style="color:${a.color};font-weight:700">${a.name}</span>${a.isOver?'<span style="color:var(--red)"> 매도</span>':'<span style="color:var(--green)"> 매수</span>'} 약 <b>${Math.round(a.amt).toLocaleString()}만원</b></div></div>`;});html+='</div>';}
-  else{html+='<div class="status-box safe" style="margin-top:10px;"><div class="status-title" style="color:var(--green)">리밸런싱 불필요</div></div>';}
+  if(alerts.length){
+    html+='<div style="margin-top:10px;">';
+    alerts.forEach(a=>{
+      const amtStr=useDollar?'$'+(a.krw*10000/usdKrw).toFixed(0):Math.round(a.krw).toLocaleString()+'만원';
+      const sharesStr=a.shares!==null?` <span style="color:var(--accent);font-size:11px;">(약 ${a.shares}주 @ $${a.price})</span>`:'';
+      html+=`<div class="action-box"><div class="action-num">${a.isOver?'↓':'↑'}</div><div class="action-text">
+        <span style="color:${a.color};font-weight:700">${a.name}</span>
+        ${a.isOver?'<span style="color:var(--red)"> 매도</span>':'<span style="color:var(--green)"> 매수</span>'}
+        <b>${amtStr}</b>${sharesStr}
+        <span style="color:var(--text3);font-size:11px;"> (${a.diff>0?'+':''}${a.diff.toFixed(1)}%p)</span>
+      </div></div>`;
+    });
+    html+='</div>';
+  } else {
+    html+='<div class="status-box safe" style="margin-top:10px;"><div class="status-title" style="color:var(--green)">리밸런싱 불필요</div><div class="status-desc">모든 종목이 허용 범위 내에 있습니다.</div></div>';
+  }
   document.getElementById('port-result').innerHTML=html;
 }
 
@@ -576,118 +560,65 @@ function calcBigMoney(){
   document.getElementById('bigmoney-result').innerHTML=`<div class="status-box hold" style="margin-bottom:12px;"><div style="display:flex;align-items:center;gap:14px;"><div class="mps-circle" style="border-color:${g.color};"><div style="font-size:22px;font-weight:700;color:${g.color};">${mps}점</div><div style="font-size:9px;color:var(--text3);">MPS</div></div><div><div class="status-title" style="color:${g.color};">${g.label}</div><div class="status-desc">${g.desc}</div></div></div></div><div class="grid3"><div class="card"><div class="card-label">즉시 거치</div><div class="card-value" style="color:var(--green);font-size:17px;">${sp.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">첫 거래일 목표 비중</div></div><div class="card"><div class="card-label">하락 탄약</div><div class="card-value" style="color:var(--red);font-size:17px;">${am.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">SGOV 보관 → 3-3-4-3-2</div></div><div class="card"><div class="card-label">DCA (월)</div><div class="card-value" style="color:var(--blue);font-size:17px;">${dcm.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">12개월 분할 (총 ${dc.toLocaleString()}만)</div></div></div><div class="section-title">DCA 종목 선정</div><div class="action-box"><div class="action-num">룰</div><div class="action-text">${dcaRule}</div></div>`;
 }
 
-/* ── 매수 계산기 ── */
+/* ── 계산기 ── */
 function calcBuy(){
   const total=parseFloat(document.getElementById('buy-total').value||0);
   const monthly=parseFloat(document.getElementById('buy-monthly').value||0);
   if(!total||!monthly){document.getElementById('buy-result').innerHTML='<div style="color:var(--text3);font-size:12px;">총 자산과 월 매수 금액을 입력하세요.</div>';return;}
-  let html='<div class="result-box"><div style="font-size:11px;color:var(--text2);margin-bottom:10px;">종목별 매수 금액 (목표 비중 기준 적립식 리밸런싱)</div>';
-  let rows='';
-  TICKERS.forEach(t=>{
-    const targetAmt=total*t.target/100;
-    const buyAmt=Math.round(monthly*t.target/100);
-    rows+=`<div class="result-row"><div class="result-label" style="color:${t.color};font-weight:700;">${t.id}</div><div style="font-size:11px;color:var(--text2);">목표 ${(total*t.target/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',')}만원</div><div class="result-val" style="color:var(--accent);">${buyAmt.toLocaleString()}만원</div></div>`;
-  });
-  html+=rows+'</div>';
-  html+=`<div class="status-box safe" style="margin-top:10px;"><div class="status-desc">다음 매수일: 매월 22일 (한국시간 밤 12:30~03:00)<br>SGOV 15% 우선 확인 후 결손 비중 순서로 매수</div></div>`;
+  let html='<div class="result-box"><div style="font-size:11px;color:var(--text2);margin-bottom:10px;">종목별 이번 달 매수 금액</div>';
+  TICKERS.forEach(t=>{const b=Math.round(monthly*t.target/100);html+=`<div class="result-row"><div class="result-label" style="color:${t.color};font-weight:700;">${t.id}</div><div style="font-size:11px;color:var(--text3);">목표 ${Math.round(total*t.target/100).toLocaleString()}만원</div><div class="result-val" style="color:var(--accent);">${b.toLocaleString()}만원</div></div>`;});
+  html+='</div><div class="status-box safe" style="margin-top:10px;"><div class="status-desc">매수일: 매월 22일 밤 12:30~03:00 KST | SGOV 15% 확인 후 결손 비중 순 매수</div></div>';
   document.getElementById('buy-result').innerHTML=html;
 }
 
-/* ── TQQQ 손익 ── */
 function calcTQQQ(){
   const avg=parseFloat(document.getElementById('tqqq-avg').value||0);
   const cur=parseFloat(document.getElementById('tqqq-cur').value||0);
   const qty=parseFloat(document.getElementById('tqqq-qty').value||0);
   if(!avg||!cur){document.getElementById('tqqq-result').innerHTML='<div style="color:var(--text3);font-size:12px;">매수가와 현재가를 입력하세요.</div>';return;}
-  const pnlPct=(cur-avg)/avg*100;
-  const pnlAmt=(cur-avg)*qty;
-  const exitPlus=avg*1.6;
-  const exitMinus=avg*0.5;
-  const toPlus=(exitPlus-cur)/cur*100;
-  const toMinus=(exitMinus-cur)/cur*100;
+  const pnlPct=(cur-avg)/avg*100,pnlAmt=(cur-avg)*qty;
+  const exitPlus=avg*1.6,exitMinus=avg*0.5;
+  const toPlus=(exitPlus-cur)/cur*100,toMinus=(exitMinus-cur)/cur*100;
   const color=pnlPct>=0?'var(--green)':'var(--red)';
-  document.getElementById('tqqq-result').innerHTML=`
-    <div class="result-box">
-      <div class="result-row"><div class="result-label">현재 손익률</div><div class="result-val" style="color:${color};">${pnlPct>=0?'+':''}${pnlPct.toFixed(1)}%</div></div>
-      ${qty?`<div class="result-row"><div class="result-label">평가 손익 (${qty}주)</div><div class="result-val" style="color:${color};">${pnlPct>=0?'+':''}$${pnlAmt.toFixed(0)}</div></div>`:''}
-      <div class="result-row"><div class="result-label">익절 목표가 (+60%)</div><div class="result-val" style="color:var(--green);">$${exitPlus.toFixed(2)} <span style="font-size:10px;color:var(--text3);">(${toPlus>=0?'+':''}${toPlus.toFixed(1)}%)</span></div></div>
-      <div class="result-row"><div class="result-label">손절 기준가 (-50%)</div><div class="result-val" style="color:var(--red);">$${exitMinus.toFixed(2)} <span style="font-size:10px;color:var(--text3);">(${toMinus.toFixed(1)}%)</span></div></div>
+  document.getElementById('tqqq-result').innerHTML=`<div class="result-box">
+    <div class="result-row"><div class="result-label">현재 손익률</div><div class="result-val" style="color:${color};">${pnlPct>=0?'+':''}${pnlPct.toFixed(1)}%</div></div>
+    ${qty?`<div class="result-row"><div class="result-label">평가 손익 (${qty}주)</div><div class="result-val" style="color:${color};">${pnlPct>=0?'+':''}$${pnlAmt.toFixed(0)}</div></div>`:''}
+    <div class="result-row"><div class="result-label">익절 목표가 (+60%)</div><div class="result-val" style="color:var(--green);">$${exitPlus.toFixed(2)} <span style="font-size:10px;color:var(--text3);">(${toPlus>=0?'+':''}${toPlus.toFixed(1)}%)</span></div></div>
+    <div class="result-row"><div class="result-label">손절 기준가 (-50%)</div><div class="result-val" style="color:var(--red);">$${exitMinus.toFixed(2)} <span style="font-size:10px;color:var(--text3);">(${toMinus.toFixed(1)}%)</span></div></div>
+  </div>
+  <div class="status-box ${pnlPct>=60||pnlPct<=-50?'danger':pnlPct>=40||pnlPct<=-30?'warn':'safe'}" style="margin-top:10px;">
+    <div class="status-title" style="color:${pnlPct>=60?'var(--red)':pnlPct<=-50?'var(--red)':pnlPct>=40?'#ffc107':'var(--green)'};">
+      ${pnlPct>=60?'익절 조건 충족! → 즉시 SPMO 또는 SGOV로 이동':pnlPct<=-50?'손절 조건 충족! → 즉시 SGOV로 이동':pnlPct>=40?'익절 목표 근접 — 주시 필요':pnlPct<=-30?'손절 기준 근접 — 주시 필요':'정상 보유 구간'}
     </div>
-    <div class="status-box ${pnlPct>=-20?pnlPct>=40?'warn':'safe':'danger'}" style="margin-top:10px;">
-      <div class="status-title" style="color:${pnlPct>=40?'#ffc107':pnlPct>=-20?'var(--green)':'var(--red)'};">
-        ${pnlPct>=60?'익절 조건 충족! → SPMO 또는 SGOV로 이동':pnlPct>=40?'익절 목표 접근 중 — 주시 필요':pnlPct<=-50?'손절 조건 충족! → 즉시 SGOV로 이동':pnlPct<=-30?'손절 기준 접근 중 — 주시 필요':'정상 보유 구간'}
-      </div>
-    </div>`;
+  </div>`;
 }
 
-/* ── 하락 시뮬레이터 ── */
 function calcSim(){
   const total=parseFloat(document.getElementById('sim-total').value||0);
   const drop=parseFloat(document.getElementById('sim-drop').value||0);
   if(!total||!drop){document.getElementById('sim-result').innerHTML='<div style="color:var(--text3);font-size:12px;">총 자산과 하락률을 입력하세요.</div>';return;}
-  // 종목별 예상 하락률 (QLD=나스닥2배, SPMO=나스닥0.9배, SCHD=나스닥0.3배, AVUV=나스닥0.7배, SGOV=0)
   const dropRates={QLD:drop*2,SPMO:drop*0.9,SCHD:drop*0.3,AVUV:drop*0.7,SGOV:0};
   const targets={QLD:20,SPMO:30,SCHD:25,AVUV:10,SGOV:15};
-  let totalLoss=0;
-  let rows='';
-  TICKERS.forEach(t=>{
-    const amt=total*targets[t.id]/100;
-    const loss=amt*dropRates[t.id]/100;
-    totalLoss+=loss;
-    rows+=`<div class="result-row"><div class="result-label" style="color:${t.color};font-weight:700;">${t.id}</div><div style="font-size:11px;color:var(--text2);">${dropRates[t.id].toFixed(0)}% 예상</div><div class="result-val" style="color:${loss<0?'var(--red)':'var(--text3)'};">${loss<0?'':'+'} ${Math.round(Math.abs(loss)).toLocaleString()}만원 ${loss<0?'손실':'영향없음'}</div></div>`;
-  });
-  const afterTotal=total+totalLoss;
-  const totalPct=totalLoss/total*100;
-  document.getElementById('sim-result').innerHTML=`
-    <div class="result-box">${rows}
-      <div class="result-row" style="border-top:1px solid var(--accent-border);margin-top:4px;padding-top:10px;">
-        <div class="result-label" style="font-weight:700;">예상 총 손실</div>
-        <div class="result-val" style="color:var(--red);">${Math.round(Math.abs(totalLoss)).toLocaleString()}만원 (${totalPct.toFixed(1)}%)</div>
-      </div>
-      <div class="result-row"><div class="result-label">예상 잔여 자산</div><div class="result-val" style="color:var(--accent);">${Math.round(afterTotal).toLocaleString()}만원</div></div>
-    </div>
-    <div class="action-box" style="margin-top:10px;"><div class="action-num">→</div><div class="action-text">
-      ${drop<=-12?`<b>하락장 매수 발동 구간!</b> SGOV 탄약 준비 완료 여부 확인`:'아직 하락장 매수 미발동 — 정기 적립 루틴 유지'}
-    </div></div>`;
+  let totalLoss=0,rows='';
+  TICKERS.forEach(t=>{const amt=total*targets[t.id]/100,loss=amt*dropRates[t.id]/100;totalLoss+=loss;rows+=`<div class="result-row"><div class="result-label" style="color:${t.color};font-weight:700;">${t.id}</div><div style="font-size:11px;color:var(--text3);">${dropRates[t.id].toFixed(0)}% 적용</div><div class="result-val" style="color:${loss<0?'var(--red)':'var(--text3)'};">${loss<0?Math.round(Math.abs(loss)).toLocaleString()+'만 손실':'영향 없음'}</div></div>`;});
+  const afterTotal=total+totalLoss,totalPct=totalLoss/total*100;
+  document.getElementById('sim-result').innerHTML=`<div class="result-box">${rows}
+    <div class="result-row" style="padding-top:10px;margin-top:4px;border-top:1px solid var(--accent-border);"><div class="result-label" style="font-weight:700;">예상 총 손실</div><div class="result-val" style="color:var(--red);">${Math.round(Math.abs(totalLoss)).toLocaleString()}만원 (${totalPct.toFixed(1)}%)</div></div>
+    <div class="result-row"><div class="result-label">예상 잔여 자산</div><div class="result-val" style="color:var(--accent);">${Math.round(afterTotal).toLocaleString()}만원</div></div>
+  </div><div class="action-box" style="margin-top:10px;"><div class="action-num">→</div><div class="action-text">${drop<=-12?'<b>하락장 매수 발동 구간!</b> SGOV 탄약 준비 상태를 확인하세요':'아직 하락장 매수 미발동 — 정기 적립 루틴 유지'}</div></div>`;
 }
 
-/* ── 은퇴 전환 계산기 ── */
 function calcRetire(){
   const retireYear=parseInt(document.getElementById('retire-year').value||0);
   const total=parseFloat(document.getElementById('retire-total').value||0);
-  const curYear=new Date().getFullYear();
-  const yearsLeft=retireYear-curYear;
+  const curYear=new Date().getFullYear(),yearsLeft=retireYear-curYear;
   if(!retireYear||yearsLeft<=0){document.getElementById('retire-result').innerHTML='<div style="color:var(--text3);font-size:12px;">유효한 은퇴 연도를 입력하세요.</div>';return;}
-  // QLD 단계적 축소 스케줄 (헌법 제6조)
-  const schedule=[
-    {y:7,qld:15,schd:30,sgov:20},
-    {y:5,qld:10,schd:35,sgov:20},
-    {y:3,qld:0,schd:40,sgov:25},
-    {y:0,qld:0,schd:45,sgov:30},
-  ];
+  const schedule=[{y:7,qld:15,schd:30,sgov:20},{y:5,qld:10,schd:35,sgov:20},{y:3,qld:0,schd:40,sgov:25},{y:0,qld:0,schd:45,sgov:30}];
   let html='<div class="retire-bar">';
-  schedule.forEach(s=>{
-    const yr=retireYear-s.y;
-    const active=yearsLeft<=s.y+2&&yearsLeft>=(s.y===0?0:s.y-2);
-    html+=`<div class="retire-step" style="${active?'border:1px solid var(--accent-border);background:var(--accent-dim);':''}">
-      <div class="retire-step-year">${yr}년${s.y===0?' (은퇴)':` (D-${s.y}년)`}</div>
-      <div class="retire-step-val">QLD ${s.qld}%</div>
-      <div class="retire-step-label">SCHD ${s.schd}% / SGOV ${s.sgov}%</div>
-    </div>`;
-  });
+  schedule.forEach(s=>{const yr=retireYear-s.y,active=yearsLeft<=s.y+1&&yearsLeft>=(s.y===0?-1:s.y-1);html+=`<div class="retire-step${active?' active':''}"><div class="retire-step-year">${yr}년${s.y===0?' (은퇴)':` (D-${s.y}년)`}</div><div class="retire-step-val">QLD ${s.qld}%</div><div class="retire-step-label">SCHD ${s.schd}%<br>SGOV ${s.sgov}%</div></div>`;});
   html+='</div>';
-  const phase=schedule.find(s=>yearsLeft>=s.y)||schedule[schedule.length-1];
-  html+=`<div class="result-box">
-    <div class="result-row"><div class="result-label">은퇴까지 남은 기간</div><div class="result-val" style="color:var(--accent);">${yearsLeft}년</div></div>
-    <div class="result-row"><div class="result-label">현재 권장 QLD 비중</div><div class="result-val">${yearsLeft>=7?'20% (정상)':phase.qld+'% (전환 중)'}</div></div>
-    <div class="result-row"><div class="result-label">현재 총 자산</div><div class="result-val">${total?total.toLocaleString()+'만원':'—'}</div></div>
-  </div>
-  <div class="status-box ${yearsLeft>=7?'safe':yearsLeft>=3?'warn':'danger'}" style="margin-top:10px;">
-    <div class="status-title" style="color:${yearsLeft>=7?'var(--green)':yearsLeft>=3?'#ffc107':'var(--red)'};">
-      ${yearsLeft>=7?'성장 극대화 단계 — 헌법 원래 비중 유지':yearsLeft>=5?'은퇴 7년 전 — QLD 15%로 단계 축소 시작':yearsLeft>=3?'은퇴 5년 전 — QLD 10%로 추가 축소':yearsLeft>0?'은퇴 3년 전 — QLD 0% 완전 제거':'은퇴 시점 — 안전자산 중심 운용'}
-    </div>
-    <div class="status-desc">헌법 제6조: 은퇴 7년 전부터 QLD를 단계적으로 축소하여 SGOV, SCHD로 이동</div>
-  </div>`;
+  html+=`<div class="result-box"><div class="result-row"><div class="result-label">은퇴까지</div><div class="result-val" style="color:var(--accent);">${yearsLeft}년 남음</div></div><div class="result-row"><div class="result-label">현재 권장 QLD 비중</div><div class="result-val">${yearsLeft>=7?'20% (정상 운항)':'단계 축소 중'}</div></div>${total?`<div class="result-row"><div class="result-label">현재 자산</div><div class="result-val">${total.toLocaleString()}만원</div></div>`:''}</div>
+  <div class="status-box ${yearsLeft>=7?'safe':yearsLeft>=3?'warn':'danger'}" style="margin-top:10px;"><div class="status-title" style="color:${yearsLeft>=7?'var(--green)':yearsLeft>=3?'#ffc107':'var(--red)'};">${yearsLeft>=7?'성장 극대화 단계 — 원래 비중 유지':yearsLeft>=5?'은퇴 7년 전 — QLD 15%로 축소 시작':yearsLeft>=3?'은퇴 5년 전 — QLD 10%로 추가 축소':yearsLeft>0?'은퇴 3년 전 — QLD 0% 완전 제거':'은퇴 시점 도달'}</div><div class="status-desc">헌법 제6조: 7년 전부터 QLD 단계적 축소 → SGOV, SCHD로 이동</div></div>`;
   document.getElementById('retire-result').innerHTML=html;
 }
 
@@ -702,15 +633,46 @@ const ANSWERS={
 };
 function showAnswer(key){document.getElementById('ai-answer').innerHTML=ANSWERS[key].map(b=>`<div class="ai-rule-block" style="margin-bottom:14px;"><div class="ai-rule-title">${b.title}</div><div class="ai-rule-body">${b.body}</div></div>`).join('');}
 
+/* ── 체크리스트 ── */
+const CHK_SPECIAL=[
+  {id:'s1',label:'특수조항 1 검토',sub:'전년도 QQQ 수익률이 SPMO+5%p 초과 여부 확인'},
+  {id:'s2',label:'특수조항 1 보조 조건',sub:'S&P500 상위 7종목 비중 30% 초과 또는 연평균 VIX 25 이상 여부'},
+  {id:'s3',label:'특수조항 1 복귀 조건',sub:'SPMO>QQQ & 비중≤30% & VIX≤25 세 가지 모두 충족 여부'},
+  {id:'s4',label:'특수조항 2 검토',sub:'러셀2000이 S&P500 대비 -20%p 이상 언더퍼폼 여부'},
+];
+const CHK_REGULAR=[
+  {id:'r1',label:'전체 비중 목표치 리셋',sub:'QLD 20 / SPMO 30 / SCHD 25 / AVUV 10 / SGOV 15'},
+  {id:'r2',label:'ETF 존속성 확인',sub:'QLD, SPMO, SCHD, AVUV, SGOV 운용사 이상 없음'},
+  {id:'r3',label:'나스닥 성장성 점검',sub:'나스닥 100 구조적 성장 전제 유효한지 재확인'},
+  {id:'r4',label:'별동대(AVDV) 배당금 재투자 확인',sub:'배당금이 계좌에 방치되지 않았는지 확인'},
+  {id:'r5',label:'나스닥 전고점 업데이트',sub:'현재 나스닥 100 역대 최고가 기록해두기'},
+];
+function renderChecklist(){
+  const saved=JSON.parse(localStorage.getItem('inv_chk_'+new Date().getFullYear())||'{}');
+  function renderGroup(items,targetId){
+    let html='';
+    items.forEach(item=>{const done=!!saved[item.id];html+=`<div class="chk-item${done?' done':''}" onclick="toggleChk('${item.id}')"><div class="chk-box">${done?'✓':''}</div><div><div class="chk-label">${item.label}</div><div class="chk-sub">${item.sub}</div></div></div>`;});
+    document.getElementById(targetId).innerHTML=(document.getElementById(targetId).innerHTML||'')+html;
+  }
+  document.getElementById('chk-special').innerHTML='<div class="section-title">특수 조항 검토</div>';
+  document.getElementById('chk-regular').innerHTML='<div class="section-title">정기 점검 항목</div>';
+  renderGroup(CHK_SPECIAL,'chk-special');renderGroup(CHK_REGULAR,'chk-regular');
+  const all=[...CHK_SPECIAL,...CHK_REGULAR];
+  const doneCount=all.filter(i=>saved[i.id]).length;
+  const nextMonday=getNextJanMonday();
+  document.getElementById('chk-footer').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;"><div style="font-size:12px;color:var(--text2);">완료: <span style="color:var(--green);font-weight:700;">${doneCount}/${all.length}</span></div><button onclick="resetChk()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text3);border-radius:4px;padding:5px 12px;font-size:11px;cursor:pointer;">올해 초기화</button></div><div style="margin-top:10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:11px;color:var(--text2);">다음 정기 리밸런싱: <span style="color:var(--accent);font-weight:700;">${nextMonday}</span></div>`;
+}
+function getNextJanMonday(){const now=new Date();const yr=now.getMonth()===0&&now.getDate()<=7?now.getFullYear():now.getFullYear()+1;const d=new Date(yr,0,1);while(d.getDay()!==1)d.setDate(d.getDate()+1);return `${yr}년 1월 ${d.getDate()}일 (월요일)`;}
+function toggleChk(id){const key='inv_chk_'+new Date().getFullYear();const saved=JSON.parse(localStorage.getItem(key)||'{}');saved[id]=!saved[id];localStorage.setItem(key,JSON.stringify(saved));renderChecklist();}
+function resetChk(){localStorage.removeItem('inv_chk_'+new Date().getFullYear());renderChecklist();}
+
+/* ── 초기화 ── */
 buildPortInputs();
 drawPie({},0);
-// 저장된 포트폴리오 자동 불러오기
+renderChecklist();
+// 저장된 포트폴리오 자동 로드
 const _saved=localStorage.getItem('inv_portfolio');
-if(_saved){const _d=JSON.parse(_saved);TICKERS.forEach(t=>{const el=document.getElementById('qty-'+t.id);if(el&&_d[t.id])el.value=_d[t.id];});updateTotal();}
-// 저장된 포트폴리오 자동 불러오기
-const _saved=localStorage.getItem('inv_portfolio');
-if(_saved){const _d=JSON.parse(_saved);TICKERS.forEach(t=>{const el=document.getElementById('qty-'+t.id);if(el&&_d[t.id])el.value=_d[t.id];});updateTotal();}
-initChecklist();
+if(_saved){const _d=JSON.parse(_saved);TICKERS.forEach(t=>{const el=document.getElementById('qty-'+t.id);if(el&&_d[t.id])el.value=_d[t.id];});}
 loadData();
 </script>
 </body>
