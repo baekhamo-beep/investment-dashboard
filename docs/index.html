@@ -250,18 +250,70 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
   <!-- ③ 대자금 투입 -->
   <div class="content panel" id="tab-bigmoney">
-    <div class="section-title">MPS 점수 계산</div>
-    <div class="card" style="margin-bottom:12px;">
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
-        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">추세 (나스닥>200일MA)</div><select class="inp" id="mps1" style="padding:6px 8px;"><option value="1">상승 궤도 (+1)</option><option value="0">하락 궤도 (0)</option></select></div>
-        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">모멘텀 (6개월>0)</div><select class="inp" id="mps2" style="padding:6px 8px;"><option value="1">플러스 (+1)</option><option value="0">마이너스 (0)</option></select></div>
-        <div><div style="font-size:10px;color:var(--text3);margin-bottom:6px;">변동성 (VIX&lt;20)</div><select class="inp" id="mps3" style="padding:6px 8px;"><option value="1">안정 (+1)</option><option value="0">불안 (0)</option></select></div>
+
+    <!-- MPS 자동 계산 -->
+    <div class="section-title">MPS 자동 계산 (실시간 데이터 기준)</div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+        <div style="background:var(--bg3);border-radius:6px;padding:10px;text-align:center;">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">추세 (나스닥 vs 200일MA)</div>
+          <div style="font-size:16px;font-weight:700;" id="mps-trend-val">—</div>
+          <div style="font-size:10px;margin-top:4px;" id="mps-trend-desc">로딩중...</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:6px;padding:10px;text-align:center;">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">모멘텀 (6개월 수익률)</div>
+          <div style="font-size:16px;font-weight:700;" id="mps-mom-val">—</div>
+          <div style="font-size:10px;margin-top:4px;" id="mps-mom-desc">로딩중...</div>
+        </div>
+        <div style="background:var(--bg3);border-radius:6px;padding:10px;text-align:center;">
+          <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">변동성 (VIX &lt; 20)</div>
+          <div style="font-size:16px;font-weight:700;" id="mps-vix-val">—</div>
+          <div style="font-size:10px;margin-top:4px;" id="mps-vix-desc">로딩중...</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="font-size:13px;color:var(--text2);">MPS 점수:</div>
+        <div style="font-size:22px;font-weight:700;" id="mps-total-display">—</div>
+        <div style="font-size:12px;" id="mps-label-display"></div>
       </div>
     </div>
-    <div class="input-row" style="margin-bottom:12px;"><span class="input-label">총 금액</span><input class="inp" id="big-amt" type="number" placeholder="10000" value="10000"><span class="inp-unit">만원</span></div>
+
+    <!-- 투입 금액 -->
+    <div class="section-title">투입 금액</div>
+    <div class="input-row" style="margin-bottom:12px;">
+      <span class="input-label">총 금액</span>
+      <input class="inp" id="big-amt" type="number" placeholder="10000" value="10000">
+      <span class="inp-unit">만원</span>
+    </div>
     <button class="btn btn-gold" onclick="calcBigMoney()">투입 계획 산출</button>
     <hr class="divider">
-    <div id="bigmoney-result"><div style="color:var(--text3);font-size:12px;">위 항목 선택 후 산출 버튼을 누르세요.</div></div>
+    <div id="bigmoney-result"><div style="color:var(--text3);font-size:12px;">위 버튼을 눌러 투입 계획을 산출하세요.</div></div>
+
+    <!-- 마일스톤 -->
+    <hr class="divider">
+    <div class="section-title">은퇴 자산 마일스톤</div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">현재 나이</div>
+          <input class="inp" id="ms-age" type="number" placeholder="35" style="padding:6px 8px;" oninput="calcMilestone()">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">현재 자산 (만원)</div>
+          <input class="inp" id="ms-asset" type="number" placeholder="5000" style="padding:6px 8px;" oninput="calcMilestone()">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">월 적립금 (만원)</div>
+          <input class="inp" id="ms-monthly" type="number" placeholder="100" style="padding:6px 8px;" oninput="calcMilestone()">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">연 수익률 (%)</div>
+          <input class="inp" id="ms-cagr" type="number" placeholder="16.4" step="0.1" style="padding:6px 8px;" oninput="calcMilestone()">
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--text3);">※ 백테스트 기준 CAGR 16.4% | 보수적 10% | 중립 13%</div>
+    </div>
+    <div id="milestone-result"><div style="color:var(--text3);font-size:12px;">위 정보를 입력하면 연도별 자산 마일스톤이 계산됩니다.</div></div>
   </div>
 
   <!-- ④ AI 조언 -->
@@ -376,6 +428,15 @@ async function loadData(){
     if(d.kiwoom_price){kiwoomPrice=d.kiwoom_price;}
     buildPortInputs();
     updatePriceDisplay();
+    // MPS 자동 계산 반영
+    if(d.mps&&d.nasdaq){
+      autoMPS={
+        trend:d.mps.trend, momentum:d.mps.momentum, vix:d.mps.vix, total:d.mps.total,
+        above_ma200:d.nasdaq.above_ma200, ma200_dev:d.nasdaq.ma200_dev_pct,
+        momentum_6m:d.nasdaq.momentum_6m, vix_val:d.vix,
+      };
+      renderMPSAuto();
+    }
     const updKST=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='마지막 업데이트: '+updKST+' KST';
     document.getElementById('data-dot').classList.remove('pulse');
@@ -600,13 +661,101 @@ function calcPort(){
 }
 
 /* ── 대자금 ── */
+let autoMPS = null;
+
+function renderMPSAuto(){
+  if(!autoMPS) return;
+  const g = autoMPS;
+  const colors = {trend: g.trend?'var(--green)':'var(--red)', mom: g.momentum?'var(--green)':'var(--red)', vix: g.vix?'var(--green)':'var(--red)'};
+  const labels = {3:'시장 만개',2:'안전 운행',1:'살얼음판',0:'폭풍 전야'};
+  const tcolors = {3:'var(--green)',2:'var(--blue)',1:'#ffc107',0:'var(--red)'};
+  document.getElementById('mps-trend-val').textContent = g.trend ? '+1' : '0';
+  document.getElementById('mps-trend-val').style.color = colors.trend;
+  document.getElementById('mps-trend-desc').textContent = g.above_ma200 ? `200일MA 위 (+${g.ma200_dev?.toFixed(1)||''}%)` : `200일MA 아래 (${g.ma200_dev?.toFixed(1)||''}%)`;
+  document.getElementById('mps-mom-val').textContent = g.momentum ? '+1' : '0';
+  document.getElementById('mps-mom-val').style.color = colors.mom;
+  document.getElementById('mps-mom-desc').textContent = `6개월 수익률 ${g.momentum_6m>=0?'+':''}${g.momentum_6m?.toFixed(1)||''}%`;
+  document.getElementById('mps-vix-val').textContent = g.vix ? '+1' : '0';
+  document.getElementById('mps-vix-val').style.color = colors.vix;
+  document.getElementById('mps-vix-desc').textContent = `VIX ${g.vix_val?.toFixed(1)||''} (${g.vix?'안정':'불안'})`;
+  document.getElementById('mps-total-display').textContent = g.total+'점';
+  document.getElementById('mps-total-display').style.color = tcolors[g.total];
+  document.getElementById('mps-label-display').textContent = '— '+labels[g.total];
+  document.getElementById('mps-label-display').style.color = tcolors[g.total];
+}
+
 function calcBigMoney(){
-  const mps=[1,2,3].reduce((s,i)=>s+parseInt(document.getElementById('mps'+i).value),0);
+  const mps = autoMPS ? autoMPS.total : 2;
   const amt=parseFloat(document.getElementById('big-amt').value||0);
   const g={3:{label:'시장 만개',spot:.60,ammo:.25,dca:.15,color:'var(--green)',desc:'즉시 거치 60% / 하락 탄약 25% / DCA 15%'},2:{label:'안전 운행',spot:.50,ammo:.30,dca:.20,color:'var(--blue)',desc:'즉시 거치 50% / 하락 탄약 30% / DCA 20%'},1:{label:'살얼음판',spot:.35,ammo:.40,dca:.25,color:'#ffc107',desc:'즉시 거치 35% / 하락 탄약 40% / DCA 25%'},0:{label:'폭풍 전야',spot:.25,ammo:.50,dca:.25,color:'var(--red)',desc:'즉시 거치 25% / 하락 탄약 50% / DCA 25%'}}[mps];
   const sp=Math.round(amt*g.spot),am=Math.round(amt*g.ammo),dc=Math.round(amt*g.dca),dcm=Math.round(dc/12);
   const dcaRule=mps<=1?'비중 최저 <b>1종목 집중 매수</b>':mps===2?'결손 비중 비례 매수':'방어자산 비중 최저 — <b>SCHD / AVUV / SGOV</b>';
   document.getElementById('bigmoney-result').innerHTML=`<div class="status-box hold" style="margin-bottom:12px;"><div style="display:flex;align-items:center;gap:14px;"><div class="mps-circle" style="border-color:${g.color};"><div style="font-size:22px;font-weight:700;color:${g.color};">${mps}점</div><div style="font-size:9px;color:var(--text3);">MPS</div></div><div><div class="status-title" style="color:${g.color};">${g.label}</div><div class="status-desc">${g.desc}</div></div></div></div><div class="grid3"><div class="card"><div class="card-label">즉시 거치</div><div class="card-value" style="color:var(--green);font-size:17px;">${sp.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">첫 거래일 목표 비중</div></div><div class="card"><div class="card-label">하락 탄약</div><div class="card-value" style="color:var(--red);font-size:17px;">${am.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">SGOV 보관 → 3-3-4-3-2</div></div><div class="card"><div class="card-label">DCA (월)</div><div class="card-value" style="color:var(--blue);font-size:17px;">${dcm.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">12개월 분할 (총 ${dc.toLocaleString()}만)</div></div></div><div class="section-title">DCA 종목 선정</div><div class="action-box"><div class="action-num">룰</div><div class="action-text">${dcaRule}</div></div>`;
+  calcMilestone();
+}
+
+function calcMilestone(){
+  const age=parseInt(document.getElementById('ms-age').value||0);
+  const asset=parseFloat(document.getElementById('ms-asset').value||0);
+  const monthly=parseFloat(document.getElementById('ms-monthly').value||0);
+  const cagr=parseFloat(document.getElementById('ms-cagr').value||16.4)/100;
+  if(!age||!asset){document.getElementById('milestone-result').innerHTML='<div style="color:var(--text3);font-size:12px;">나이와 현재 자산을 입력하세요.</div>';return;}
+
+  const monthlyRate=(1+cagr)**(1/12)-1;
+  const milestones=[30,35,40,45,50,55,60];
+  const FIRE_LEVELS=[
+    {name:'PRE-FIRE',min:0,max:15000,color:'#9aa0b8',bg:'rgba(154,160,184,0.1)'},
+    {name:'LEAN',min:15000,max:35000,color:'#4a9eff',bg:'rgba(74,158,255,0.1)'},
+    {name:'FIRE',min:35000,max:50000,color:'#4caf7d',bg:'rgba(76,175,125,0.1)'},
+    {name:'FAT FIRE',min:50000,max:Infinity,color:'#9b7fe8',bg:'rgba(155,127,232,0.1)'},
+  ];
+  function getLevel(asset){return FIRE_LEVELS.find(l=>asset>=l.min&&asset<l.max)||FIRE_LEVELS[0];}
+  function calcAssetAt(targetAge){
+    const years=targetAge-age;
+    if(years<0)return null;
+    // 현재 자산 복리 성장
+    let a=asset*(1+cagr)**years;
+    // 월 적립금 미래가치
+    const months=years*12;
+    if(monthly>0&&monthlyRate>0){
+      a+=monthly*((1+monthlyRate)**months-1)/monthlyRate*(1+monthlyRate);
+    }
+    return Math.round(a);
+  }
+
+  let html=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+    <div style="display:grid;grid-template-columns:60px 1fr 100px 1fr 90px;padding:8px 16px;background:var(--bg3);font-size:10px;color:var(--text3);gap:8px;">
+      <div>나이</div><div>예상 자산</div><div>월 가용금액</div><div style="padding-left:8px;">진행률</div><div style="text-align:right;">단계</div>
+    </div>`;
+
+  milestones.forEach(m=>{
+    if(m<age) return;
+    const a=calcAssetAt(m);
+    if(a===null) return;
+    const level=getLevel(a);
+    const monthlyIncome=Math.round(a*0.04/12); // 4% 인출 법칙
+    const progress=Math.min(100,Math.round(a/50000*100));
+    html+=`<div style="display:grid;grid-template-columns:60px 1fr 100px 1fr 90px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center;gap:8px;">
+      <div style="font-size:13px;font-weight:700;color:var(--text1);">${m}세</div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent);">${a>=10000?Math.floor(a/10000)+'억 '+(a%10000).toLocaleString()+'만':a.toLocaleString()+'만'}원</div>
+      <div style="font-size:11px;color:var(--text2);">월 ${monthlyIncome.toLocaleString()}만원</div>
+      <div>
+        <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;">
+          <div style="height:6px;border-radius:3px;background:${level.color};width:${progress}%;"></div>
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">${progress}%</div>
+      </div>
+      <div style="text-align:right;"><span style="background:${level.bg};color:${level.color};border:1px solid ${level.color};border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;">${level.name}</span></div>
+    </div>`;
+  });
+
+  html+=`</div>
+  <div style="margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;">
+    ${FIRE_LEVELS.map(l=>`<div style="display:flex;align-items:center;gap:4px;font-size:10px;color:${l.color};"><div style="width:8px;height:8px;border-radius:50%;background:${l.color};"></div>${l.name}: ${l.max===Infinity?l.min.toLocaleString()+'만+ 원':l.min.toLocaleString()+'~'+l.max.toLocaleString()+'만원'}</div>`).join('')}
+  </div>
+  <div style="margin-top:8px;font-size:10px;color:var(--text3);">※ CAGR ${(cagr*100).toFixed(1)}% 적용 | 월 적립 ${monthly.toLocaleString()}만원 | 월 가용금액 = 자산×4%÷12 (4% 인출법칙)</div>`;
+
+  document.getElementById('milestone-result').innerHTML=html;
 }
 
 /* ── 계산기 ── */
