@@ -346,6 +346,7 @@ let mkt={nasdaq:null,vix:null,rsi:null,fg:null,ma200:null};
 let etfPrices={};
 let usdKrw=1350;
 let useDollar=false;
+let kiwoomPrice=null;
 
 function updateTime(){const kst=new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);document.getElementById('live-time').textContent=kst.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' KST';}
 setInterval(updateTime,1000);updateTime();
@@ -369,10 +370,12 @@ async function loadData(){
     if(ma!=null)mkt.ma200=ma;
     if(d.etf_prices){
       etfPrices=d.etf_prices;
-      TICKERS.forEach(t=>{const el=document.getElementById('price-'+t.id);if(el&&etfPrices[t.id])el.textContent='$'+etfPrices[t.id];});
       document.getElementById('etf-price-status').textContent='| ETF가격 기준: '+new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' KST';
     }
     if(d.usd_krw){usdKrw=d.usd_krw;document.getElementById('rate-display').textContent='1$ = '+usdKrw.toLocaleString()+'원';}
+    if(d.kiwoom_price){kiwoomPrice=d.kiwoom_price;}
+    buildPortInputs();
+    updatePriceDisplay();
     const updKST=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='마지막 업데이트: '+updKST+' KST';
     document.getElementById('data-dot').classList.remove('pulse');
@@ -425,31 +428,77 @@ function runManualDiag(){
 }
 
 /* ── 포트폴리오 ── */
+function updatePriceDisplay(){
+  TICKERS.forEach(t=>{
+    const el=document.getElementById('price-'+t.id);
+    if(el&&etfPrices[t.id]){
+      el.textContent=useDollar?'$'+etfPrices[t.id]:Math.round(etfPrices[t.id]*usdKrw).toLocaleString()+'원';
+    }
+  });
+  const kEl=document.getElementById('price-KIWOOM');
+  if(kEl&&kiwoomPrice){
+    kEl.textContent=useDollar?'$'+(kiwoomPrice/usdKrw).toFixed(2):kiwoomPrice.toLocaleString()+'원';
+  }
+}
+
 function toggleCurrency(){
   useDollar=!useDollar;
   document.getElementById('toggle-dot').className='toggle-dot'+(useDollar?' on':'');
   document.getElementById('currency-label').textContent=useDollar?'달러':'원화';
+  updatePriceDisplay();
   updateTotal();
 }
 
+function getPriceDisplay(ticker){
+  const price = etfPrices[ticker];
+  if(!price) return '로딩중';
+  if(useDollar) return '$'+price;
+  return Math.round(price*usdKrw).toLocaleString()+'원';
+}
+
 function buildPortInputs(){
-  document.getElementById('port-inputs').innerHTML=TICKERS.map(t=>{
-    const price=etfPrices[t.id];
-    return `<div class="port-table-row">
+  let rows = TICKERS.map(t=>{
+    const priceStr = getPriceDisplay(t.id);
+    let row = `<div class="port-table-row">
       <span style="font-size:12px;font-weight:700;color:${t.color};">${t.id}</span>
-      <span style="font-size:12px;color:var(--text2);" id="price-${t.id}">${price?'$'+price:'로딩중'}</span>
+      <span style="font-size:12px;color:var(--text2);" id="price-${t.id}">${priceStr}</span>
       <div style="text-align:center;"><input class="inp" id="qty-${t.id}" type="number" placeholder="0" step="1" min="0" style="width:80px;text-align:right;padding:5px 8px;" oninput="updateTotal()"></div>
       <div style="text-align:right;font-size:12px;font-weight:600;color:var(--text1);" id="val-${t.id}">—</div>
       <div style="text-align:right;font-size:11px;color:var(--text3);">목표 ${t.target}%</div>
     </div>`;
+    // SPMO 아래 KIWOOM 입력창 추가
+    if(t.id==='SPMO'){
+      const kprice = kiwoomPrice ? (useDollar?'$'+(kiwoomPrice/usdKrw).toFixed(2):kiwoomPrice.toLocaleString()+'원') : '로딩중';
+      row += `<div class="port-table-row" style="background:rgba(74,158,255,0.04);padding-left:28px;">
+        <span style="font-size:11px;color:#4a9eff;opacity:0.8;">↳ KIWOOM</span>
+        <span style="font-size:11px;color:var(--text3);" id="price-KIWOOM">${kprice}</span>
+        <div style="text-align:center;"><input class="inp" id="qty-KIWOOM" type="number" placeholder="0" step="1" min="0" style="width:80px;text-align:right;padding:5px 8px;font-size:11px;" oninput="updateTotal()"></div>
+        <div style="text-align:right;font-size:11px;color:var(--text2);" id="val-KIWOOM">—</div>
+        <div style="text-align:right;font-size:10px;color:var(--text3);">SPMO 합산</div>
+      </div>`;
+    }
+    return row;
   }).join('');
+  document.getElementById('port-inputs').innerHTML = rows;
 }
 
 function getTickerValueKRW(id){
   const qty=parseFloat(document.getElementById('qty-'+id).value||0);
   const price=etfPrices[id]||0;
-  if(!qty||!price)return 0;
-  return qty*price*usdKrw/10000; // 만원
+  let valKRW = qty&&price ? qty*price*usdKrw/10000 : 0;
+  // SPMO인 경우 KIWOOM 수량 합산
+  if(id==='SPMO'){
+    const kQty=parseFloat((document.getElementById('qty-KIWOOM')||{}).value||0);
+    const kPrice=kiwoomPrice||0;
+    if(kQty&&kPrice) valKRW += kQty*kPrice/10000;
+    // KIWOOM 평가금액 표시
+    const kValEl=document.getElementById('val-KIWOOM');
+    if(kValEl){
+      const kVal=kQty&&kPrice?kQty*kPrice/10000:0;
+      kValEl.textContent=kVal>0?(useDollar?'$'+(kVal*10000/usdKrw).toFixed(0):Math.round(kVal).toLocaleString()+'만'):'—';
+    }
+  }
+  return valKRW;
 }
 
 function updateTotal(){
