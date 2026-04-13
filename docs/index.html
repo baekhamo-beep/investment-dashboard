@@ -651,6 +651,11 @@ async function loadData(){
 function renderTrackerChart(){
   const canvas = document.getElementById('tracker-chart');
   if(!canvas) return;
+  // 토글 UI 초기 상태 반영
+  const _toggle=document.getElementById('log-toggle');
+  const _dot=document.getElementById('log-dot');
+  if(_toggle){_toggle.style.background=trackerLogScale?'var(--green)':'var(--bg3)';_toggle.style.border=trackerLogScale?'none':'1px solid var(--border2)';}
+  if(_dot){_dot.style.left=trackerLogScale?'16px':'2px';_dot.style.background=trackerLogScale?'#fff':'var(--text3)';}
   const ctx = canvas.getContext('2d');
   const W = canvas.offsetWidth||800;
   const H = 320;
@@ -1578,7 +1583,7 @@ loadTrackerData();
 const _now=new Date();document.getElementById("tr-ym").value=`${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,"0")}`;
 
 
-let trackerLogScale = false;
+let trackerLogScale = true;
 function toggleLogScale(){
   trackerLogScale = !trackerLogScale;
   const toggle = document.getElementById('log-toggle');
@@ -1748,24 +1753,32 @@ function renderTrackerChart(){
   const s_mid=calcScenario(cagr);
   const s_opt=calcScenario(cagr+vol);
   const allYMs=s_mid.map(p=>p.ym);
-  const maxVal=Math.max(...s_opt.map(p=>p.val),...(records.length?records.map(r=>r.asset):[startAsset||1]));
+  // Y축: 중립 최종값 기준 (낙관이 너무 크면 클리핑해서 실제자산이 잘 보이게)
+  const midFinal = s_mid[s_mid.length-1].val;
+  const optFinal = s_opt[s_opt.length-1].val;
+  const recordMax = records.length ? Math.max(...records.map(r=>r.asset)) : startAsset;
+  // 낙관이 중립의 3배 이상이면 중립×1.5로 제한
+  const maxVal = optFinal > midFinal*3
+    ? Math.max(midFinal*1.5, recordMax*1.2)
+    : Math.max(optFinal, recordMax*1.1);
+  const minVal2 = Math.max(1, startAsset*0.5);
 
   const PAD={t:20,r:16,b:40,l:76};
   const CW=W-PAD.l-PAD.r, CH=H-PAD.t-PAD.b;
 
   function xPos(ym){const idx=allYMs.indexOf(ym);return idx<0?PAD.l:PAD.l+(idx/Math.max(1,allYMs.length-1))*CW;}
-  const minVal = Math.max(1, startAsset * 0.5);
   function yPos(val){
+    const clipped = Math.min(val, maxVal); // 클리핑
     if(trackerLogScale){
-      const logMin=Math.log(minVal), logMax=Math.log(maxVal);
-      return PAD.t+CH*(1-(Math.log(Math.max(1,val))-logMin)/(logMax-logMin));
+      const logMin=Math.log(minVal2), logMax=Math.log(maxVal);
+      return PAD.t+CH*(1-(Math.log(Math.max(1,clipped))-logMin)/(logMax-logMin));
     }
-    return PAD.t+CH*(1-val/maxVal);
+    return PAD.t+CH*(1-clipped/maxVal);
   }
   // 로그스케일 그리드값 계산
   function getGridVals(){
     if(!trackerLogScale) return [0,0.25,0.5,0.75,1].map(r=>Math.round(maxVal*r));
-    const logMin=Math.log(minVal), logMax=Math.log(maxVal);
+    const logMin=Math.log(minVal2), logMax=Math.log(maxVal);
     return [0,0.25,0.5,0.75,1].map(r=>Math.round(Math.exp(logMin+r*(logMax-logMin))));
   }
 
