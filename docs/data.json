@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-04-12T23:55:36Z",
+  "updated_utc": "2026-04-13T00:28:58Z",
   "nasdaq": {
     "drawdown_pct": -3.64,
     "rsi": 65.4,
@@ -15,5 +15,13 @@
     "prev_1w": 23.7,
     "prev_1m": 20.3,
     "source": "CNN Business"
-  }
+  },
+  "etf_prices": {
+    "QLD": 68.19,
+    "SPMO": 123.34,
+    "SCHD": 30.56,
+    "AVUV": 114.73,
+    "SGOV": 100.5
+  },
+  "usd_krw": 1493.1
 }
