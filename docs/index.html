@@ -429,7 +429,18 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
       <button class="sub-tab" onclick="switchSub('retire',this)">은퇴 전환</button>
     </div>
     <div class="sub-panel active" id="sub-buy">
-      <div class="section-title">월 적립 매수 계산기</div>
+      <div class="section-title">월 적립 매수 계산기 (헌법 DCA 룰)</div>
+      <div id="buy-mps-banner" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:14px;">
+        <div style="text-align:center;min-width:56px;">
+          <div style="font-size:22px;font-weight:700;" id="buy-mps-score">—</div>
+          <div style="font-size:9px;color:var(--text3);">MPS 점수</div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:12px;font-weight:700;" id="buy-mps-label">데이터 로딩중...</div>
+          <div style="font-size:10px;color:var(--text2);margin-top:3px;" id="buy-mps-rule">상황 진단 탭에서 데이터를 먼저 로드하세요</div>
+        </div>
+        <div style="font-size:10px;color:var(--text3);text-align:right;" id="buy-mps-detail"></div>
+      </div>
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
         <!-- 총 자산 -->
         <div style="display:flex;gap:6px;margin-bottom:10px;">
@@ -1024,92 +1035,132 @@ function getBuyTotal(){
   return parseFloat(document.getElementById('buy-total').value || 0);
 }
 
+
+function renderBuyMPSBanner(){
+  if(!autoMPS){
+    const el=document.getElementById('buy-mps-score');
+    if(el){el.textContent='—';el.style.color='var(--text3)';}
+    return;
+  }
+  const colors={3:'var(--green)',2:'var(--blue)',1:'#ffc107',0:'var(--red)'};
+  const labels={3:'시장 만개 — 과열',2:'안전 운행 — 보통',1:'살얼음판 — 하락',0:'폭풍 전야 — 공포'};
+  const rules={3:'방어자산 비중 최저 종목 집중 매수',2:'결손 비중 비례 배분',1:'비중 최저 1종목 집중 매수',0:'비중 최저 1종목 집중 매수'};
+  const c=colors[autoMPS.total];
+  const s=document.getElementById('buy-mps-score');
+  const l=document.getElementById('buy-mps-label');
+  const rl=document.getElementById('buy-mps-rule');
+  const d=document.getElementById('buy-mps-detail');
+  if(s){s.textContent=autoMPS.total+'점';s.style.color=c;}
+  if(l){l.textContent=labels[autoMPS.total];l.style.color=c;}
+  if(rl) rl.textContent='📋 '+rules[autoMPS.total];
+  if(d) d.innerHTML='추세 '+(autoMPS.trend?'✅':'❌')+' | 모멘텀 '+(autoMPS.momentum?'✅':'❌')+' | VIX '+(autoMPS.vix?'✅':'❌');
+}
+
 function calcBuy(){
+  renderBuyMPSBanner();
   const total = getBuyTotal();
   const monthly = parseFloat(document.getElementById('buy-monthly').value || 0);
-  if(!total || !monthly){
-    document.getElementById('buy-result').innerHTML = '<div style="color:var(--text3);font-size:12px;">총 자산과 월 매수 금액을 입력하세요.</div>';
+  if(!monthly){
+    document.getElementById('buy-result').innerHTML = '<div style="color:var(--text3);font-size:12px;">월 매수 금액을 입력하세요.</div>';
     return;
   }
 
-  // 종목별 현재 금액 및 비중 계산
+  // 종목별 현재 금액 및 비중
   const vals = {};
-  TICKERS.forEach(t => { vals[t.id] = getTickerValueKRW(t.id); });
+  TICKERS.forEach(t => { vals[t.id] = total > 0 ? getTickerValueKRW(t.id) : 0; });
+  const curPcts = {};
+  TICKERS.forEach(t => { curPcts[t.id] = total > 0 ? (vals[t.id] / total) * 100 : 0; });
 
-  // 결손 비중 계산 (현재비중 < 목표비중인 경우만)
+  // 결손 비중
   const deficits = {};
   let totalDeficit = 0;
   TICKERS.forEach(t => {
-    const curPct = (vals[t.id] / total) * 100;
-    const deficit = t.target - curPct;
-    if(deficit > 0){
-      deficits[t.id] = deficit;
-      totalDeficit += deficit;
-    } else {
-      deficits[t.id] = 0;
-    }
+    const d = t.target - curPcts[t.id];
+    deficits[t.id] = d > 0 ? d : 0;
+    if(d > 0) totalDeficit += d;
   });
 
-  // 결손 비중이 없으면 균등 배분 (모두 목표 도달)
-  const useDeficit = totalDeficit > 0;
+  // MPS 점수별 DCA 룰
+  const mpsScore = autoMPS ? autoMPS.total : 2;
+  const DEFENSE = ['SCHD', 'AVUV', 'SGOV'];
+  const buyAmts = {};
+  TICKERS.forEach(t => { buyAmts[t.id] = 0; });
 
-  let html = '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;">';
-  // 헤더
-  html += `<div style="display:grid;grid-template-columns:55px 1fr 70px 70px 90px;padding:8px 14px;background:var(--bg3);font-size:10px;color:var(--text3);gap:4px;">
-    <div>종목</div><div>현재 → 목표</div><div style="text-align:right;">결손</div><div style="text-align:right;">비중</div><div style="text-align:right;">매수금액</div>
-  </div>`;
+  if(mpsScore <= 1){
+    // 0~1점: 비중 최저 1종목 집중
+    let minComp = null, minPct = Infinity;
+    TICKERS.forEach(t => { if(curPcts[t.id] < minPct){ minPct = curPcts[t.id]; minComp = t.id; } });
+    if(minComp) buyAmts[minComp] = monthly;
+  } else if(mpsScore === 2){
+    // 2점: 결손 비중 비례 배분
+    if(totalDeficit > 0){
+      TICKERS.forEach(t => { buyAmts[t.id] = Math.round(monthly * deficits[t.id] / totalDeficit); });
+    } else {
+      TICKERS.forEach(t => { buyAmts[t.id] = Math.round(monthly * t.target / 100); });
+    }
+  } else {
+    // 3점: 방어자산 중 비중 최저 매수
+    let minComp = null, minPct = Infinity;
+    TICKERS.filter(t => DEFENSE.includes(t.id)).forEach(t => {
+      if(curPcts[t.id] < minPct){ minPct = curPcts[t.id]; minComp = t.id; }
+    });
+    if(minComp) buyAmts[minComp] = monthly;
+  }
 
-  let totalBuy = 0;
+  // 반올림 오차 보정
+  const sumBuy = Object.values(buyAmts).reduce((a,b) => a+b, 0);
+  const diff = monthly - sumBuy;
+  if(diff !== 0){
+    const maxComp = Object.entries(buyAmts).sort((a,b) => b[1]-a[1])[0];
+    if(maxComp) buyAmts[maxComp[0]] += diff;
+  }
+
+  // 렌더링
+  const mpsColor = {3:'var(--green)',2:'var(--blue)',1:'#ffc107',0:'var(--red)'}[mpsScore];
+  let html2 = `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;">
+    <div style="display:grid;grid-template-columns:55px 1fr 70px 70px 90px;padding:8px 14px;background:var(--bg3);font-size:10px;color:var(--text3);gap:4px;">
+      <div>종목</div><div>현재 → 목표</div><div style="text-align:right;">결손</div><div style="text-align:right;">목표잔액</div><div style="text-align:right;">매수금액</div>
+    </div>`;
+
   TICKERS.forEach(t => {
-    const curPct = total > 0 ? (vals[t.id] / total) * 100 : 0;
-    const deficit = deficits[t.id];
-    const buyRatio = useDeficit ? (deficit / totalDeficit) : (t.target / 100);
-    const buyAmt = Math.round(monthly * buyRatio);
-    totalBuy += buyAmt;
+    const cur = curPcts[t.id];
+    const def = deficits[t.id];
+    const buyAmt = buyAmts[t.id] || 0;
+    const targetAmt = total > 0 ? Math.round(total * t.target / 100) : 0;
+    const barW = t.target > 0 ? Math.min(100, (cur / t.target) * 100) : 0;
+    const isMain = buyAmt > 0;
 
-    const isDeficit = deficit > 0;
-    const barWidth = Math.min(100, (curPct / t.target) * 100);
-    const barColor = curPct >= t.target ? 'var(--green)' : t.color;
-
-    html += `<div style="padding:10px 14px;border-bottom:1px solid var(--border);">
-      <div style="display:grid;grid-template-columns:55px 1fr 70px 70px 90px;align-items:center;gap:4px;margin-bottom:6px;">
+    html2 += `<div style="padding:10px 14px;border-bottom:1px solid var(--border);${isMain?'background:rgba(201,168,76,0.04);':''}">
+      <div style="display:grid;grid-template-columns:55px 1fr 70px 70px 90px;align-items:center;gap:4px;margin-bottom:5px;">
         <span style="font-size:12px;font-weight:700;color:${t.color};">${t.id}</span>
-        <div style="font-size:11px;color:var(--text2);">
-          <span style="color:${curPct>=t.target?'var(--green)':'var(--red)'};">${curPct.toFixed(1)}%</span>
+        <div style="font-size:11px;">
+          <span style="color:${cur>=t.target?'var(--green)':'var(--red)'};">${cur.toFixed(1)}%</span>
           <span style="color:var(--text3);"> → ${t.target}%</span>
         </div>
-        <div style="text-align:right;font-size:11px;color:${isDeficit?'var(--red)':'var(--text3)'};">
-          ${isDeficit ? '-'+deficit.toFixed(1)+'%p' : '✓'}
+        <div style="text-align:right;font-size:11px;color:${def>0?'var(--red)':'var(--text3)'};">
+          ${def>0?'-'+def.toFixed(1)+'%p':'✓'}
         </div>
-        <div style="text-align:right;font-size:10px;color:var(--text3);">
-          ${useDeficit&&isDeficit ? (deficit/totalDeficit*100).toFixed(0)+'%' : '—'}
-        </div>
-        <div style="text-align:right;font-size:13px;font-weight:700;color:${isDeficit||!useDeficit?'var(--accent)':'var(--text3)'};">
-          ${isDeficit||!useDeficit ? buyAmt.toLocaleString()+'만' : '0만'}
+        <div style="text-align:right;font-size:10px;color:var(--text3);">${targetAmt>0?targetAmt.toLocaleString()+'만':'—'}</div>
+        <div style="text-align:right;font-size:${isMain?'14':'12'}px;font-weight:${isMain?'700':'400'};color:${isMain?'var(--accent)':'var(--text3)'};">
+          ${buyAmt>0?buyAmt.toLocaleString()+'만':'—'}
         </div>
       </div>
       <div style="background:var(--bg3);border-radius:3px;height:4px;overflow:hidden;">
-        <div style="height:4px;border-radius:3px;background:${barColor};width:${barWidth}%;transition:width 0.5s;"></div>
+        <div style="height:4px;border-radius:3px;background:${cur>=t.target?'var(--green)':t.color};width:${barW}%;"></div>
       </div>
     </div>`;
   });
-  html += '</div>';
 
-  // 요약
-  html += `<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-      <span style="font-size:12px;color:var(--text2);">총 매수 예정</span>
-      <span style="font-size:15px;font-weight:700;color:var(--accent);">${totalBuy.toLocaleString()}만원</span>
+  const ruleDesc = {3:'🛡 3점 (과열) — 방어자산 비중 최저 종목',2:'⚖ 2점 (보통) — 결손 비중 비례 배분',1:'⚡ 1점 (하락) — 비중 최저 1종목 집중',0:'🔥 0점 (공포) — 비중 최저 1종목 집중'}[mpsScore];
+  html2 += `</div><div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+      <span style="font-size:11px;color:${mpsColor};font-weight:600;">${ruleDesc}</span>
+      <span style="font-size:15px;font-weight:700;color:var(--accent);">${monthly.toLocaleString()}만원</span>
     </div>
-    <div style="font-size:10px;color:var(--text3);line-height:1.8;">
-      ${useDeficit
-        ? '✅ 결손 비중 기준 배분 — 결손이 클수록 더 많이 매수'
-        : '✅ 모든 종목 목표 비중 달성 — 목표 비중 기준 균등 배분'}
-      <br>매수일: 매월 22일 밤 12:30~03:00 KST | SGOV 15% 확인 후 결손 비중 순 매수
-    </div>
+    <div style="font-size:10px;color:var(--text3);">매수일: 매월 22일 밤 12:30~03:00 KST | SGOV 15% 확인 후 집행</div>
   </div>`;
 
-  document.getElementById('buy-result').innerHTML = html;
+  document.getElementById('buy-result').innerHTML = html2;
 }
 
 function calcTQQQ(){
