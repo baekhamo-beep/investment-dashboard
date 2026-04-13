@@ -751,6 +751,136 @@ async function pushToGitHub(msg){
   }
 }
 
+function renderTrackerChart(){
+  const canvas = document.getElementById('tracker-chart');
+  if(!canvas) return;
+
+  const age     = parseInt(document.getElementById('tr-age').value||trackerData.settings.start_age||35);
+  const monthly = parseFloat(document.getElementById('tr-monthly').value||trackerData.settings.monthly_deposit||100);
+  const cagr    = parseFloat(document.getElementById('tr-cagr').value||trackerData.settings.cagr||16.4);
+  const vol     = trackerData.settings.volatility||17.5;
+  const records = trackerData.records||[];
+  const startAssetInput = parseFloat((document.getElementById('tr-start-asset')||{}).value||0);
+  const startAsset = startAssetInput>0?startAssetInput:(records.length>0?records[0].asset:0);
+
+  const W = canvas.offsetWidth||800;
+  const H = 320;
+  const dpr = window.devicePixelRatio||1;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#0f1525'; ctx.fillRect(0,0,W,H);
+
+  if(!startAsset&&!records.length){
+    ctx.fillStyle='#5a6080'; ctx.font='13px Segoe UI';
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText('설정을 입력하면 시나리오 선이 표시됩니다', W/2, H/2);
+    const msg=document.getElementById('tracker-chart-msg');
+    if(msg) msg.textContent='';
+    return;
+  }
+
+  const startYM=records.length>0?records[0].ym:`${new Date().getFullYear()}-${String(new Date().getMonth()+1).padStart(2,'0')}`;
+  const [sy,sm]=startYM.split('-').map(Number);
+  const endYear=sy+30;
+
+  function calcScenario(rate){
+    const mr=(1+rate/100)**(1/12)-1;
+    const pts=[]; let a=startAsset;
+    for(let y=sy;y<=endYear;y++){
+      for(let m=(y===sy?sm:1);m<=12;m++){
+        pts.push({ym:`${y}-${String(m).padStart(2,'0')}`,val:Math.max(0,Math.round(a))});
+        a=a*(1+mr)+monthly;
+      }
+    }
+    return pts;
+  }
+
+  const s_cons=calcScenario(Math.max(0.1,cagr-vol));
+  const s_mid=calcScenario(cagr);
+  const s_opt=calcScenario(cagr+vol);
+  const allYMs=s_mid.map(p=>p.ym);
+  const maxVal=Math.max(...s_opt.map(p=>p.val),...(records.length?records.map(r=>r.asset):[startAsset||1]));
+
+  const PAD={t:20,r:16,b:40,l:76};
+  const CW=W-PAD.l-PAD.r, CH=H-PAD.t-PAD.b;
+
+  function xPos(ym){const idx=allYMs.indexOf(ym);return idx<0?PAD.l:PAD.l+(idx/Math.max(1,allYMs.length-1))*CW;}
+  function yPos(val){return PAD.t+CH*(1-val/maxVal);}
+
+  // 그리드
+  for(let i=0;i<=4;i++){
+    const y=PAD.t+(i/4)*CH;
+    const val=Math.round(maxVal*(1-i/4));
+    ctx.strokeStyle='#1e2740'; ctx.lineWidth=1; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
+    ctx.fillStyle='#5a6080'; ctx.font='10px Segoe UI'; ctx.textAlign='right'; ctx.textBaseline='middle';
+    const lbl=val>=10000?Math.floor(val/10000)+'억'+(val%10000>=1000?(val%10000/1000).toFixed(0)+'천':''):val.toLocaleString()+'만';
+    ctx.fillText(lbl,PAD.l-6,y);
+  }
+
+  // 낙관-보수 영역
+  ctx.beginPath();
+  s_opt.forEach((p,i)=>{i===0?ctx.moveTo(xPos(p.ym),yPos(p.val)):ctx.lineTo(xPos(p.ym),yPos(p.val));});
+  [...s_cons].reverse().forEach(p=>ctx.lineTo(xPos(p.ym),yPos(p.val)));
+  ctx.closePath(); ctx.fillStyle='rgba(74,158,255,0.07)'; ctx.fill();
+
+  // 시나리오 선
+  function drawLine(pts,color,dash){
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.setLineDash(dash);
+    pts.forEach((p,i)=>{i===0?ctx.moveTo(xPos(p.ym),yPos(p.val)):ctx.lineTo(xPos(p.ym),yPos(p.val));});
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+  drawLine(s_cons,'#9aa0b8',[4,4]);
+  drawLine(s_opt,'#4caf7d',[4,4]);
+  drawLine(s_mid,'#4a9eff',[6,3]);
+
+  // 실제 자산 선
+  if(records.length>=2){
+    ctx.beginPath(); ctx.strokeStyle='#c9a84c'; ctx.lineWidth=2.5; ctx.setLineDash([]);
+    records.forEach((r,i)=>{i===0?ctx.moveTo(xPos(r.ym),yPos(r.asset)):ctx.lineTo(xPos(r.ym),yPos(r.asset));});
+    ctx.stroke();
+  }
+  // 점 + 라벨
+  records.forEach(r=>{
+    const x=xPos(r.ym),y=yPos(r.asset);
+    ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2);
+    ctx.fillStyle='#c9a84c'; ctx.fill();
+    ctx.strokeStyle='#0f1525'; ctx.lineWidth=2; ctx.stroke();
+    const lbl=r.asset>=10000?Math.floor(r.asset/10000)+'억':r.asset.toLocaleString()+'만';
+    ctx.fillStyle='#e8c97a'; ctx.font='bold 9px Segoe UI';
+    ctx.textAlign='center'; ctx.textBaseline='bottom';
+    ctx.fillText(lbl,x,y-8);
+  });
+
+  // X축 레이블 (5년 단위, 나이 포함)
+  ctx.fillStyle='#5a6080'; ctx.font='9px Segoe UI'; ctx.textAlign='center'; ctx.textBaseline='top';
+  for(let y=sy;y<=endYear;y+=5){
+    const ym=`${y}-${String(sm).padStart(2,'0')}`;
+    if(allYMs.includes(ym)){
+      const x=xPos(ym);
+      ctx.fillText(`${y}(${age+(y-sy)}세)`,x,H-PAD.b+4);
+      ctx.strokeStyle='#1e2740'; ctx.lineWidth=1; ctx.setLineDash([2,3]);
+      ctx.beginPath(); ctx.moveTo(x,PAD.t); ctx.lineTo(x,H-PAD.b); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // 중립 대비 현재 위치
+  if(records.length>0){
+    const last=records[records.length-1];
+    const midPt=s_mid.find(p=>p.ym===last.ym);
+    const msgEl=document.getElementById('tracker-chart-msg');
+    if(midPt&&msgEl){
+      const diff=last.asset-midPt.val;
+      msgEl.textContent=`현재 중립 시나리오 대비 ${diff>=0?'+':''}${Math.round(diff).toLocaleString()}만원`;
+      msgEl.style.color=diff>=0?'var(--green)':'var(--red)';
+    }
+  }
+}
+
 function renderTrackerTable(){
   const records = [...trackerData.records].reverse();
   if(!records.length){
