@@ -529,6 +529,72 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
 </div>
 
+  <!-- ⑦ 자산 트래커 -->
+  <div class="content panel" id="tab-tracker">
+
+    <!-- 설정 -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+      <div class="section-title">트래커 설정</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">시작 나이</div>
+          <input class="inp" id="tr-age" type="number" placeholder="35" style="padding:6px 8px;">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">월 적립금 (만원)</div>
+          <input class="inp" id="tr-monthly" type="number" placeholder="100" style="padding:6px 8px;">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">목표 CAGR (%)</div>
+          <input class="inp" id="tr-cagr" type="number" placeholder="16.4" step="0.1" style="padding:6px 8px;" value="16.4">
+        </div>
+      </div>
+      <button onclick="saveTrackerSettings()" class="btn btn-gold" style="font-size:11px;padding:6px 14px;">설정 저장</button>
+    </div>
+
+    <!-- 이번 달 기록 -->
+    <div style="background:var(--bg2);border:1px solid var(--accent-border);border-radius:8px;padding:14px;margin-bottom:12px;">
+      <div class="section-title">이번 달 자산 기록</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:flex-end;">
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">연월</div>
+          <input class="inp" id="tr-ym" type="month" style="padding:6px 8px;">
+        </div>
+        <div>
+          <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">총 자산 (만원)</div>
+          <div style="display:flex;gap:6px;">
+            <input class="inp" id="tr-asset" type="number" placeholder="직접 입력" style="padding:6px 8px;">
+            <button onclick="syncPortToTracker()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:6px 10px;font-size:10px;cursor:pointer;white-space:nowrap;">포트 연동</button>
+          </div>
+        </div>
+        <div>
+          <button onclick="addTrackerRecord()" class="btn btn-gold" style="font-size:11px;padding:7px 16px;white-space:nowrap;">기록 저장</button>
+        </div>
+      </div>
+      <div id="tr-save-status" style="font-size:11px;color:var(--text3);margin-top:8px;"></div>
+    </div>
+
+    <!-- GitHub Token 입력 (저장용) -->
+    <div id="tr-token-wrap" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:12px;">
+      <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">GitHub Token (기록 저장 시 필요 — 세션 중에만 유지)</div>
+      <div style="display:flex;gap:8px;">
+        <input class="inp" id="tr-token" type="password" placeholder="ghp_..." style="padding:6px 8px;font-size:11px;">
+        <button onclick="document.getElementById('tr-token-wrap').style.display='none'" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:6px 10px;font-size:10px;cursor:pointer;">접기</button>
+      </div>
+    </div>
+
+    <!-- 차트 -->
+    <div class="section-title">실제 자산 vs 시나리오</div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+      <canvas id="tracker-chart" style="width:100%;height:320px;"></canvas>
+    </div>
+
+    <!-- 기록 테이블 -->
+    <div class="section-title">월별 기록</div>
+    <div id="tr-table"><div style="color:var(--text3);font-size:12px;">기록이 없습니다. 이번 달 자산을 입력하고 저장해보세요.</div></div>
+
+  </div>
+
 <script>
 const DATA_URL="./data.json";
 const TICKERS=[
@@ -570,7 +636,270 @@ async function loadData(){
     }
     if(d.usd_krw){usdKrw=d.usd_krw;document.getElementById('rate-display').textContent='1$ = '+usdKrw.toLocaleString()+'원';}
     if(d.kiwoom_price){kiwoomPrice=d.kiwoom_price;}
-    buildPortInputs();
+    
+/* ── 자산 트래커 ── */
+let trackerData = { settings:{start_age:35,monthly_deposit:100,cagr:16.4,volatility:17.5,start_asset:0}, records:[] };
+const TRACKER_PATH = "docs/history.json";
+const REPO_OWNER = "baekhamo-beep";
+const REPO_NAME  = "investment-dashboard";
+
+async function loadTrackerData(){
+  try{
+    const res = await fetch('./history.json?t='+Date.now());
+    const d = await res.json();
+    trackerData = d;
+    // 설정 반영
+    if(d.settings){
+      document.getElementById('tr-age').value = d.settings.start_age||'';
+      document.getElementById('tr-monthly').value = d.settings.monthly_deposit||'';
+      document.getElementById('tr-cagr').value = d.settings.cagr||16.4;
+    }
+    renderTrackerTable();
+    renderTrackerChart();
+    console.log('트래커 데이터 로드:', d.records?.length, '건');
+  }catch(e){ console.log('history.json 로드 실패:', e); }
+}
+
+function syncPortToTracker(){
+  let total=0;
+  if(typeof TICKERS!=='undefined') TICKERS.forEach(t=>{total+=getTickerValueKRW(t.id);});
+  if(total>0){
+    document.getElementById('tr-asset').value=Math.round(total);
+    showToast('포트폴리오 총액 연동: '+Math.round(total).toLocaleString()+'만원');
+  } else {
+    showToast('포트폴리오 탭에서 수량을 먼저 입력하세요');
+  }
+}
+
+function saveTrackerSettings(){
+  trackerData.settings = {
+    start_age: parseInt(document.getElementById('tr-age').value||35),
+    monthly_deposit: parseFloat(document.getElementById('tr-monthly').value||100),
+    cagr: parseFloat(document.getElementById('tr-cagr').value||16.4),
+    volatility: 17.5,
+    start_asset: trackerData.records.length>0?trackerData.records[0].asset:0,
+  };
+  pushToGitHub('설정 저장');
+}
+
+async function addTrackerRecord(){
+  const ym = document.getElementById('tr-ym').value;
+  const asset = parseFloat(document.getElementById('tr-asset').value||0);
+  if(!ym||!asset){ showToast('연월과 자산을 입력하세요'); return; }
+
+  // 중복 체크
+  const exists = trackerData.records.findIndex(r=>r.ym===ym);
+  const record = { ym, asset, recorded_at: new Date().toISOString() };
+
+  if(exists>=0){
+    trackerData.records[exists] = record;
+    showToast('기존 기록 업데이트: '+ym);
+  } else {
+    trackerData.records.push(record);
+    trackerData.records.sort((a,b)=>a.ym.localeCompare(b.ym));
+    showToast('기록 저장: '+ym+' '+asset.toLocaleString()+'만원');
+  }
+
+  // 시작 자산 업데이트
+  if(trackerData.records.length>0){
+    trackerData.settings.start_asset = trackerData.records[0].asset;
+  }
+
+  renderTrackerTable();
+  renderTrackerChart();
+  await pushToGitHub(ym+' 자산 기록');
+}
+
+async function deleteTrackerRecord(ym){
+  if(!confirm(ym+' 기록을 삭제할까요?')) return;
+  trackerData.records = trackerData.records.filter(r=>r.ym!==ym);
+  renderTrackerTable();
+  renderTrackerChart();
+  await pushToGitHub(ym+' 기록 삭제');
+}
+
+async function pushToGitHub(msg){
+  const token = document.getElementById('tr-token').value.trim();
+  if(!token){ document.getElementById('tr-save-status').textContent='⚠️ GitHub Token을 입력하세요'; return; }
+  document.getElementById('tr-save-status').textContent='저장 중...';
+  try{
+    // 현재 SHA 가져오기
+    const r1 = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${TRACKER_PATH}`,
+      {headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'}});
+    const d1 = await r1.json();
+    const sha = d1.sha;
+
+    // 업로드
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(trackerData, null, 2))));
+    const r2 = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${TRACKER_PATH}`,{
+      method:'PUT',
+      headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','Content-Type':'application/json'},
+      body: JSON.stringify({message:'tracker: '+msg, content, sha})
+    });
+    if(r2.ok){
+      document.getElementById('tr-save-status').textContent='✅ GitHub 저장 완료 — '+new Date().toLocaleTimeString('ko-KR');
+    } else {
+      document.getElementById('tr-save-status').textContent='❌ 저장 실패 — Token 확인 필요';
+    }
+  }catch(e){
+    document.getElementById('tr-save-status').textContent='❌ 오류: '+e.message;
+  }
+}
+
+function renderTrackerTable(){
+  const records = [...trackerData.records].reverse();
+  if(!records.length){
+    document.getElementById('tr-table').innerHTML='<div style="color:var(--text3);font-size:12px;">기록이 없습니다.</div>';
+    return;
+  }
+  let html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
+  html+=`<div style="display:grid;grid-template-columns:90px 1fr 1fr 40px;padding:8px 14px;background:var(--bg3);font-size:10px;color:var(--text3);">
+    <div>연월</div><div style="text-align:right;">총 자산</div><div style="text-align:right;">전월 대비</div><div></div>
+  </div>`;
+  records.forEach((r,i)=>{
+    const prev = records[i+1];
+    const diff = prev ? r.asset - prev.asset : null;
+    const diffColor = diff===null?'var(--text3)':diff>=0?'var(--green)':'var(--red)';
+    const diffStr = diff===null?'—':(diff>=0?'+':'')+diff.toLocaleString()+'만';
+    html+=`<div style="display:grid;grid-template-columns:90px 1fr 1fr 40px;padding:10px 14px;border-bottom:1px solid var(--border);align-items:center;">
+      <div style="font-size:12px;color:var(--text1);font-weight:600;">${r.ym}</div>
+      <div style="text-align:right;font-size:13px;font-weight:700;color:var(--accent);">${r.asset.toLocaleString()}만원</div>
+      <div style="text-align:right;font-size:11px;color:${diffColor};">${diffStr}</div>
+      <div style="text-align:right;"><button onclick="deleteTrackerRecord('${r.ym}')" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:12px;">✕</button></div>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('tr-table').innerHTML=html;
+}
+
+function renderTrackerChart(){
+  const canvas = document.getElementById('tracker-chart');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth||800;
+  const H = 320;
+  canvas.width=W; canvas.height=H;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#161d30';
+  ctx.fillRect(0,0,W,H);
+
+  const records = trackerData.records;
+  const settings = trackerData.settings;
+  if(!records.length || !settings.start_age || !settings.cagr){
+    ctx.fillStyle='#5a6080'; ctx.font='13px Segoe UI'; ctx.textAlign='center';
+    ctx.fillText('설정과 기록을 추가하면 차트가 표시됩니다', W/2, H/2);
+    return;
+  }
+
+  // 시나리오 계산
+  const base = settings.cagr/100;
+  const vol  = (settings.volatility||17.5)/100;
+  const startAsset = settings.start_asset||records[0].asset;
+  const monthly = settings.monthly_deposit||0;
+  const startYM = records[0].ym;
+  const startYear = parseInt(startYM.split('-')[0]);
+  const startMonth = parseInt(startYM.split('-')[1]);
+  const endYear = startYear + 30;
+
+  function calcScenario(cagr){
+    const pts=[];
+    const mr=(1+cagr)**(1/12)-1;
+    let a=startAsset;
+    for(let y=startYear;y<=endYear;y++){
+      for(let m=1;m<=12;m++){
+        if(y===startYear&&m<startMonth) continue;
+        pts.push({ym:`${y}-${String(m).padStart(2,'0')}`,val:Math.round(a)});
+        a=a*(1+mr)+monthly;
+      }
+    }
+    return pts;
+  }
+
+  const s_cons = calcScenario(Math.max(0.01, base-vol));
+  const s_mid  = calcScenario(base);
+  const s_opt  = calcScenario(base+vol);
+
+  // X축: 전체 시간 범위
+  const allYMs = s_mid.map(p=>p.ym);
+  const maxVal = Math.max(...s_opt.map(p=>p.val), ...records.map(r=>r.asset));
+
+  const PAD={t:20,r:20,b:40,l:70};
+  const CW=W-PAD.l-PAD.r, CH=H-PAD.t-PAD.b;
+
+  function xPos(ym){
+    const idx=allYMs.indexOf(ym);
+    return PAD.l+(idx/Math.max(1,allYMs.length-1))*CW;
+  }
+  function yPos(val){
+    return PAD.t+CH-(val/maxVal)*CH;
+  }
+
+  // 그리드
+  ctx.strokeStyle='#1e2740'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=PAD.t+(i/4)*CH;
+    ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
+    ctx.fillStyle='#5a6080'; ctx.font='10px Segoe UI'; ctx.textAlign='right';
+    ctx.fillText(Math.round(maxVal*(1-i/4)).toLocaleString()+'만', PAD.l-6, y+4);
+  }
+
+  // 낙관-보수 영역
+  ctx.beginPath();
+  s_opt.forEach((p,i)=>{ i===0?ctx.moveTo(xPos(p.ym),yPos(p.val)):ctx.lineTo(xPos(p.ym),yPos(p.val)); });
+  s_cons.slice().reverse().forEach(p=>ctx.lineTo(xPos(p.ym),yPos(p.val)));
+  ctx.closePath();
+  ctx.fillStyle='rgba(74,158,255,0.08)'; ctx.fill();
+
+  // 시나리오 선들
+  function drawLine(pts, color, dash=[]){
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=1.5; ctx.setLineDash(dash);
+    pts.forEach((p,i)=>{ i===0?ctx.moveTo(xPos(p.ym),yPos(p.val)):ctx.lineTo(xPos(p.ym),yPos(p.val)); });
+    ctx.stroke(); ctx.setLineDash([]);
+  }
+  drawLine(s_cons,'#9aa0b8',[4,4]);
+  drawLine(s_opt, '#4caf7d',[4,4]);
+  drawLine(s_mid, '#4a9eff',[6,3]);
+
+  // 실제 자산 선 (굵게)
+  if(records.length>=2){
+    ctx.beginPath(); ctx.strokeStyle='#c9a84c'; ctx.lineWidth=2.5; ctx.setLineDash([]);
+    records.forEach((r,i)=>{ i===0?ctx.moveTo(xPos(r.ym),yPos(r.asset)):ctx.lineTo(xPos(r.ym),yPos(r.asset)); });
+    ctx.stroke();
+  }
+  // 실제 자산 점
+  records.forEach(r=>{
+    ctx.beginPath();
+    ctx.arc(xPos(r.ym),yPos(r.asset),5,0,Math.PI*2);
+    ctx.fillStyle='#c9a84c'; ctx.fill();
+    ctx.strokeStyle='#0a0e1a'; ctx.lineWidth=2; ctx.stroke();
+  });
+
+  // X축 레이블 (연도)
+  ctx.fillStyle='#5a6080'; ctx.font='10px Segoe UI'; ctx.textAlign='center'; ctx.setLineDash([]);
+  for(let y=startYear;y<=endYear;y+=3){
+    const ym=`${y}-01`;
+    if(allYMs.includes(ym)){
+      ctx.fillText(y, xPos(ym), H-PAD.b+16);
+      ctx.beginPath(); ctx.strokeStyle='#1e2740'; ctx.lineWidth=1;
+      ctx.moveTo(xPos(ym),PAD.t); ctx.lineTo(xPos(ym),H-PAD.b); ctx.stroke();
+    }
+  }
+
+  // 범례
+  const legend=[['실제 자산','#c9a84c',false],['낙관(μ+σ)','#4caf7d',true],['중립(μ)','#4a9eff',true],['보수(μ-σ)','#9aa0b8',true]];
+  let lx=PAD.l;
+  legend.forEach(([label,color,dash])=>{
+    ctx.strokeStyle=color; ctx.lineWidth=dash?1.5:2.5;
+    if(dash) ctx.setLineDash([4,3]); else ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(lx,16); ctx.lineTo(lx+24,16); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9aa0b8'; ctx.font='10px Segoe UI'; ctx.textAlign='left';
+    ctx.fillText(label, lx+28, 20);
+    lx+=80;
+  });
+}
+
+buildPortInputs();
     updatePriceDisplay();
     // MPS 자동 계산 반영
     if(d.mps&&d.nasdaq){
@@ -1368,6 +1697,9 @@ calcDday();
 const _saved=localStorage.getItem('inv_portfolio');
 if(_saved){const _d=JSON.parse(_saved);TICKERS.forEach(t=>{const el=document.getElementById('qty-'+t.id);if(el&&_d[t.id])el.value=_d[t.id];});}
 loadData();
+loadTrackerData();
+// 오늘 날짜를 tr-ym 기본값으로
+const _now=new Date();document.getElementById("tr-ym").value=`${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,"0")}`;
 </script>
 </body>
 </html>
