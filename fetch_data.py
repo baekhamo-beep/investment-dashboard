@@ -1,4 +1,4 @@
-import json, os, requests
+import json, os, requests, re
 from datetime import datetime, timezone
 import yfinance as yf
 
@@ -28,7 +28,6 @@ def get_vix():
     return round(float(df["Close"].dropna().squeeze().iloc[-1]), 2)
 
 def get_etf_prices():
-    """ETF 현재가 수집"""
     tickers = ["QLD", "SPMO", "SCHD", "AVUV", "SGOV"]
     prices = {}
     for t in tickers:
@@ -43,7 +42,6 @@ def get_etf_prices():
     return prices
 
 def get_usd_krw():
-    """달러/원 환율"""
     try:
         df = yf.download("USDKRW=X", period="2d", interval="1d", progress=False, auto_adjust=True)
         rate = round(float(df["Close"].dropna().squeeze().iloc[-1]), 1)
@@ -52,6 +50,43 @@ def get_usd_krw():
     except Exception as e:
         print(f"  환율 오류: {e}")
         return None
+
+def get_kiwoom_etf_price():
+    """KIWOOM 미국S&P500모멘텀 (0137V0) 가격 - 네이버 금융에서 스크래핑"""
+    try:
+        # 네이버 금융 API
+        url = "https://api.finance.naver.com/siseJson.naver?symbol=0137V0&requestType=1&startTime=&endTime=&timeframe=day&count=1&requestType=1"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36", "Referer": "https://finance.naver.com"}
+        r = requests.get(url, headers=headers, timeout=10)
+        # 응답 파싱
+        text = r.text.strip()
+        # 숫자만 추출 (종가)
+        nums = re.findall(r'\d+', text)
+        if len(nums) >= 5:
+            price = int(nums[4])  # 종가 위치
+            if 1000 < price < 1000000:  # 합리적인 가격 범위
+                print(f"  KIWOOM(0137V0): {price:,}원")
+                return price
+    except Exception as e:
+        print(f"  KIWOOM 네이버 오류: {e}")
+
+    # fallback: KRX API
+    try:
+        today = datetime.now().strftime("%Y%m%d")
+        url2 = f"https://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd"
+        data = {"bld": "dbms/MDC/STAT/standard/MDCSTAT04901", "isuCd": "KR7013770002", "strtDd": today, "endDd": today}
+        r2 = requests.post(url2, data=data, timeout=10, headers={"User-Agent": "Mozilla/5.0"})
+        d = r2.json()
+        if d.get("output"):
+            price = int(d["output"][0]["TDD_CLSPRC"].replace(",", ""))
+            print(f"  KIWOOM(KRX): {price:,}원")
+            return price
+    except Exception as e:
+        print(f"  KIWOOM KRX 오류: {e}")
+
+    # 최종 fallback: SPMO 가격 × 환율로 추정
+    print("  KIWOOM: 스크래핑 실패 — None 반환")
+    return None
 
 def get_cnn_fear_greed():
     try:
@@ -88,6 +123,8 @@ print("ETF 현재가 수집...")
 etf_prices = get_etf_prices()
 print("환율 수집...")
 usd_krw = get_usd_krw()
+print("KIWOOM ETF 수집...")
+kiwoom_price = get_kiwoom_etf_price()
 print("CNN F&G 수집...")
 fg = get_cnn_fear_greed()
 
@@ -100,10 +137,11 @@ data = {
         "current_price": qqq["current_price"],
         "peak_price":    qqq["peak_price"],
     },
-    "vix":        vix,
-    "fear_greed": fg,
-    "etf_prices": etf_prices,
-    "usd_krw":    usd_krw,
+    "vix":         vix,
+    "fear_greed":  fg,
+    "etf_prices":  etf_prices,
+    "usd_krw":     usd_krw,
+    "kiwoom_price": kiwoom_price,  # 원화 가격 (원)
 }
 
 with open("docs/data.json", "w") as f:
