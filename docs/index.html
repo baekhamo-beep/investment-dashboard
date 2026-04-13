@@ -582,11 +582,17 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <!-- ③ 차트 -->
     <div class="section-title">실제 자산 vs 시나리오</div>
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;">
-      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px;">
+      <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:10px;align-items:center;">
         <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:20px;height:3px;background:#c9a84c;border-radius:2px;"></div>실제 자산</div>
         <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:20px;height:2px;background:#4caf7d;border-radius:2px;border-top:2px dashed #4caf7d;"></div>낙관(μ+σ)</div>
         <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:20px;height:2px;background:#4a9eff;border-radius:2px;border-top:2px dashed #4a9eff;"></div>중립(μ)</div>
         <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:20px;height:2px;background:#9aa0b8;border-radius:2px;border-top:2px dashed #9aa0b8;"></div>보수(μ-σ)</div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:6px;">
+          <span style="font-size:10px;color:var(--text3);">로그 스케일</span>
+          <div id="log-toggle" onclick="toggleLogScale()" style="width:30px;height:16px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;position:relative;cursor:pointer;">
+            <div id="log-dot" style="width:12px;height:12px;background:var(--text3);border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s;"></div>
+          </div>
+        </div>
       </div>
       <canvas id="tracker-chart" width="800" height="320" style="width:100%;display:block;max-height:320px;"></canvas>
       <div id="tracker-chart-msg" style="font-size:11px;color:var(--text3);margin-top:8px;"></div>
@@ -1574,6 +1580,15 @@ loadTrackerData();
 const _now=new Date();document.getElementById("tr-ym").value=`${_now.getFullYear()}-${String(_now.getMonth()+1).padStart(2,"0")}`;
 
 
+let trackerLogScale = false;
+function toggleLogScale(){
+  trackerLogScale = !trackerLogScale;
+  const toggle = document.getElementById('log-toggle');
+  const dot = document.getElementById('log-dot');
+  if(toggle){ toggle.style.background = trackerLogScale ? 'var(--green)' : 'var(--bg3)'; toggle.style.border = trackerLogScale ? 'none' : '1px solid var(--border2)'; }
+  if(dot){ dot.style.left = trackerLogScale ? '16px' : '2px'; dot.style.background = trackerLogScale ? '#fff' : 'var(--text3)'; }
+  renderTrackerChart();
+}
 let trackerData = { settings:{start_age:35,monthly_deposit:100,cagr:16.4,volatility:17.5,start_asset:0}, records:[] };
 const TRACKER_PATH = "docs/history.json";
 const REPO_OWNER = "baekhamo-beep";
@@ -1741,12 +1756,26 @@ function renderTrackerChart(){
   const CW=W-PAD.l-PAD.r, CH=H-PAD.t-PAD.b;
 
   function xPos(ym){const idx=allYMs.indexOf(ym);return idx<0?PAD.l:PAD.l+(idx/Math.max(1,allYMs.length-1))*CW;}
-  function yPos(val){return PAD.t+CH*(1-val/maxVal);}
+  const minVal = Math.max(1, startAsset * 0.5);
+  function yPos(val){
+    if(trackerLogScale){
+      const logMin=Math.log(minVal), logMax=Math.log(maxVal);
+      return PAD.t+CH*(1-(Math.log(Math.max(1,val))-logMin)/(logMax-logMin));
+    }
+    return PAD.t+CH*(1-val/maxVal);
+  }
+  // 로그스케일 그리드값 계산
+  function getGridVals(){
+    if(!trackerLogScale) return [0,0.25,0.5,0.75,1].map(r=>Math.round(maxVal*r));
+    const logMin=Math.log(minVal), logMax=Math.log(maxVal);
+    return [0,0.25,0.5,0.75,1].map(r=>Math.round(Math.exp(logMin+r*(logMax-logMin))));
+  }
 
   // 그리드
+  const gridVals = getGridVals();
   for(let i=0;i<=4;i++){
-    const y=PAD.t+(i/4)*CH;
-    const val=Math.round(maxVal*(1-i/4));
+    const val = gridVals[i];
+    const y = yPos(val);
     ctx.strokeStyle='#1e2740'; ctx.lineWidth=1; ctx.setLineDash([]);
     ctx.beginPath(); ctx.moveTo(PAD.l,y); ctx.lineTo(W-PAD.r,y); ctx.stroke();
     ctx.fillStyle='#5a6080'; ctx.font='10px Segoe UI'; ctx.textAlign='right'; ctx.textBaseline='middle';
