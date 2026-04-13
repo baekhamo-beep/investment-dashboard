@@ -461,7 +461,51 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
           <span class="inp-unit">만원</span>
         </div>
       </div>
-      <div id="buy-result"><div style="color:var(--text3);font-size:12px;">총 자산과 월 매수 금액을 입력하세요.</div></div>
+      <div id="buy-result"><div style="color:var(--text3);font-size:12px;">월 매수 금액을 입력하세요.</div></div>
+
+      <!-- MPS 점수별 DCA 룰 설명 -->
+      <div style="margin-top:14px;">
+        <div class="section-title">MPS 점수별 DCA 룰 (헌법 세칙 2-5)</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <div style="min-width:52px;text-align:center;padding-top:2px;">
+              <div style="font-size:17px;font-weight:700;color:var(--red);">0~1점</div>
+              <div style="font-size:9px;color:var(--text3);margin-top:2px;">공포/하락</div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:5px;">⚡ 비중 최저 1종목 집중 매수</div>
+              <div style="font-size:11px;color:var(--text2);line-height:1.7;">현재 비중이 가장 낮은 종목 하나에 월 적립금 전액 투입. 하락장에서 가장 많이 빠진 종목의 수량을 공격적으로 확보하는 전략.</div>
+              <div style="font-size:10px;color:var(--text3);background:var(--bg3);border-radius:4px;padding:4px 8px;margin-top:6px;">예) SGOV 0% → SPMO 6% → QLD 18% 순일 때 → SGOV 전액 매수</div>
+            </div>
+          </div>
+
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <div style="min-width:52px;text-align:center;padding-top:2px;">
+              <div style="font-size:17px;font-weight:700;color:var(--blue);">2점</div>
+              <div style="font-size:9px;color:var(--text3);margin-top:2px;">보통</div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:5px;">⚖ 결손 비중 비례 배분</div>
+              <div style="font-size:11px;color:var(--text2);line-height:1.7;">목표 대비 결손이 있는 종목에 결손 크기 비례로 월 적립금 배분. 결손 없는 종목은 0원. 균형 잡힌 포트폴리오 유지가 목적.</div>
+              <div style="font-size:10px;color:var(--text3);background:var(--bg3);border-radius:4px;padding:4px 8px;margin-top:6px;">예) QLD -2%p, SCHD -1%p, SPMO -1%p → 50 : 25 : 25 배분</div>
+            </div>
+          </div>
+
+          <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
+            <div style="min-width:52px;text-align:center;padding-top:2px;">
+              <div style="font-size:17px;font-weight:700;color:var(--green);">3점</div>
+              <div style="font-size:9px;color:var(--text3);margin-top:2px;">과열</div>
+            </div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:5px;">🛡 방어자산 비중 최저 종목 매수</div>
+              <div style="font-size:11px;color:var(--text2);line-height:1.7;">시장 과열 시 공격자산 대신 SCHD·AVUV·SGOV 중 비중이 가장 낮은 종목 전액 매수. 자연스럽게 방어 포지션을 강화하고 SGOV 탄약 확보.</div>
+              <div style="font-size:10px;color:var(--text3);background:var(--bg3);border-radius:4px;padding:4px 8px;margin-top:6px;">예) AVUV 9% → SGOV 10% → SCHD 22% 순일 때 → AVUV 전액 매수</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
     <div class="sub-panel" id="sub-tqqq">
       <div class="section-title">TQQQ 손익 추적</div>
