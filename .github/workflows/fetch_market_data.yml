@@ -2,7 +2,9 @@ name: Fetch Market Data
 
 on:
   schedule:
-    - cron: '0 0,12 * * *'
+    # 미국 장 시간 (한국시간 23:30~06:00) 30분마다 + 장외 1회
+    - cron: '0,30 14,15,16,17,18,19,20,21 * * 1-5'  # 평일 UTC 14~21시 (한국 23~06시)
+    - cron: '0 0,12 * * *'                            # 매일 00:00 / 12:00 UTC 백업
   workflow_dispatch:
 
 jobs:
