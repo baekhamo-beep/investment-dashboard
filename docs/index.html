@@ -376,6 +376,19 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
       </div>
     </div>
 
+    <!-- 현금흐름 이벤트 -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:10px;">
+      <div style="padding:10px 14px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;" onclick="toggleCashflow()">
+        <span style="font-size:11px;color:var(--text2);font-weight:600;">💰 현금흐름 이벤트 (목돈 유입/유출)</span>
+        <span id="cf-arrow" style="font-size:12px;color:var(--text3);">▼</span>
+      </div>
+      <div id="cf-panel" style="display:none;padding:0 14px 14px;">
+        <div style="font-size:10px;color:var(--text3);margin-bottom:10px;">특정 연도에 발생하는 목돈을 입력하세요. 유입은 양수(+), 유출은 음수(-)</div>
+        <div id="cf-events"></div>
+        <button onclick="addCashflowEvent()" style="width:100%;padding:7px;background:var(--bg3);border:1px dashed var(--border2);color:var(--text2);border-radius:5px;font-size:11px;cursor:pointer;margin-top:6px;">+ 이벤트 추가</button>
+      </div>
+    </div>
+
     <button class="btn btn-gold" onclick="calcMilestone()" style="margin-bottom:12px;">마일스톤 계산</button>
     <div id="milestone-result"><div style="color:var(--text3);font-size:12px;">위 정보를 입력하면 연도별 자산 마일스톤이 계산됩니다.</div></div>
   </div>
@@ -826,6 +839,38 @@ function toggleOpt(type){
   calcMilestone();
 }
 
+function getCashflowEvents(){
+  const events=[];
+  document.querySelectorAll('.cf-event-row').forEach(row=>{
+    const yr=parseInt(row.querySelector('.cf-year').value||0);
+    const amt=parseFloat(row.querySelector('.cf-amt').value||0);
+    if(yr>0&&amt!==0) events.push({year:yr,amount:amt});
+  });
+  return events;
+}
+
+function toggleCashflow(){
+  const p=document.getElementById('cf-panel'),a=document.getElementById('cf-arrow');
+  const open=p.style.display==='none';
+  p.style.display=open?'block':'none';
+  a.textContent=open?'▲':'▼';
+}
+
+let cfCount=0;
+function addCashflowEvent(){
+  cfCount++;
+  const div=document.createElement('div');
+  div.className='cf-event-row';
+  div.style.cssText='display:grid;grid-template-columns:80px 120px 1fr 30px;gap:6px;align-items:center;margin-bottom:6px;';
+  div.innerHTML=`
+    <input class="inp cf-year" type="number" placeholder="연도" style="padding:5px 8px;font-size:11px;" oninput="calcMilestone()">
+    <input class="inp cf-amt" type="number" placeholder="금액(만원) ±" style="padding:5px 8px;font-size:11px;" oninput="calcMilestone()">
+    <input class="inp" type="text" placeholder="메모 (예: 퇴직금, 주택구입)" style="padding:5px 8px;font-size:11px;">
+    <button onclick="this.closest('.cf-event-row').remove();calcMilestone();" style="background:rgba(224,92,92,0.2);border:none;color:var(--red);border-radius:4px;cursor:pointer;font-size:13px;padding:4px;">✕</button>
+  `;
+  document.getElementById('cf-events').appendChild(div);
+}
+
 function calcMilestone(){
   if(document.getElementById('ms-custom-wrap')&&document.getElementById('ms-custom-wrap').style.display!=='none'){
     msCagr=parseFloat(document.getElementById('ms-cagr-custom').value||10);
@@ -836,6 +881,8 @@ function calcMilestone(){
   const vol=parseFloat((document.getElementById('ms-vol')||{}).value||17.5)/100;
   const infl=inflOn?parseFloat((document.getElementById('ms-infl')||{}).value||2.5)/100:0;
   const tax=taxOn?parseFloat((document.getElementById('ms-tax')||{}).value||15.4)/100:0;
+  const cfEvents=getCashflowEvents();
+  const curYear=new Date().getFullYear();
   if(!age||!asset){const el=document.getElementById('milestone-result');if(el)el.innerHTML='<div style="color:var(--text3);font-size:12px;">나이와 현재 자산을 입력하세요.</div>';return;}
   const base=msCagr/100;
   const scenarios=[
@@ -854,10 +901,25 @@ function calcMilestone(){
     const years=targetAge-age;if(years<0)return null;
     const netCagr=cagr*(1-tax)-infl;
     const mr=(1+netCagr)**(1/12)-1;
-    let a=asset*(1+netCagr)**years;
-    const months=years*12;
-    if(monthly>0&&Math.abs(mr)>0.00001) a+=monthly*((1+mr)**months-1)/mr*(1+mr);
-    else if(monthly>0) a+=monthly*months;
+    // 연도별 시뮬레이션 (현금흐름 반영)
+    let a=asset;
+    const startYear=curYear;
+    const endYear=curYear+years;
+    for(let y=startYear;y<endYear;y++){
+      // 해당 연도 현금흐름 이벤트
+      const evt=cfEvents.filter(e=>e.year===y);
+      evt.forEach(e=>{a+=e.amount;});
+      // 1년 복리 성장
+      a=a*(1+netCagr);
+      // 월 적립 연간 합산 (연말 기준)
+      if(monthly>0){
+        if(Math.abs(mr)>0.00001) a+=monthly*((1+mr)**12-1)/mr*(1+mr);
+        else a+=monthly*12;
+      }
+    }
+    // 마지막 연도 이벤트
+    const lastEvt=cfEvents.filter(e=>e.year===endYear);
+    lastEvt.forEach(e=>{a+=e.amount;});
     return Math.round(a);
   }
   const fmt=v=>v===null?'—':(v>=10000?Math.floor(v/10000)+'억'+(v%10000>0?' '+(v%10000).toLocaleString()+'만':''):v.toLocaleString()+'만')+'원';
