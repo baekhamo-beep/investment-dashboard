@@ -402,6 +402,15 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
     <button class="btn btn-gold" onclick="calcMilestone()" style="margin-bottom:12px;">마일스톤 계산</button>
     <div id="milestone-result"><div style="color:var(--text3);font-size:12px;">위 정보를 입력하면 연도별 자산 마일스톤이 계산됩니다.</div></div>
+    <!-- 은퇴 전환 안내 -->
+    <div style="margin-top:14px;background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:8px;padding:14px 16px;display:flex;align-items:center;gap:14px;">
+      <div style="font-size:24px;">🏖</div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:var(--accent2);margin-bottom:4px;">은퇴 전환 스케줄은 대자금 투입 탭으로 이동했어요</div>
+        <div style="font-size:11px;color:var(--text2);line-height:1.6;">보수/중립/낙관 3가지 시나리오 + 물가·세금 반영 + 현금흐름 이벤트까지 포함한<br>더 강력한 마일스톤 계산기를 이용하세요.</div>
+        <button onclick="switchTab('bigmoney',document.querySelectorAll('.tab')[2])" style="margin-top:8px;background:var(--accent);color:#0a0e1a;border:none;border-radius:5px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;">③ 대자금 투입 탭으로 이동 →</button>
+      </div>
+    </div>
   </div>
 
   <!-- ④ AI 조언 -->
@@ -426,7 +435,6 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
       <button class="sub-tab active" onclick="switchSub('buy',this)">매수 계산기</button>
       <button class="sub-tab" onclick="switchSub('tqqq',this)">TQQQ 손익</button>
       <button class="sub-tab" onclick="switchSub('sim',this)">하락 시뮬레이터</button>
-      <button class="sub-tab" onclick="switchSub('retire',this)">은퇴 전환</button>
     </div>
     <div class="sub-panel active" id="sub-buy">
       <div class="section-title">월 적립 매수 계산기 (헌법 DCA 룰)</div>
@@ -524,14 +532,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
       </div>
       <div id="sim-result"><div style="color:var(--text3);font-size:12px;">총 자산과 나스닥 예상 하락률을 입력하세요.</div></div>
     </div>
-    <div class="sub-panel" id="sub-retire">
-      <div class="section-title">은퇴 전환 스케줄 (헌법 제6조)</div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div class="input-row"><span class="input-label">은퇴 목표 연도</span><input class="inp" id="retire-year" type="number" placeholder="2045" oninput="calcRetire()"><span class="inp-unit">년</span></div>
-        <div class="input-row"><span class="input-label">현재 총 자산</span><input class="inp" id="retire-total" type="number" placeholder="50000" oninput="calcRetire()"><span class="inp-unit">만원</span></div>
-      </div>
-      <div id="retire-result"><div style="color:var(--text3);font-size:12px;">은퇴 목표 연도를 입력하세요.</div></div>
-    </div>
+
   </div>
 
 </div>
@@ -1303,20 +1304,6 @@ function calcSim(){
     <div style="margin-top:8px;font-size:10px;color:var(--text3);">
       ※ 베타 계수: 2020~2025 실제 월별 수익률 기반 계산 (QLD 2.04 / SPMO 0.71 / SCHD 0.43 / AVUV 0.65 / SGOV 0.00)
     </div>`;
-}
-
-function calcRetire(){
-  const retireYear=parseInt(document.getElementById('retire-year').value||0);
-  const total=parseFloat(document.getElementById('retire-total').value||0);
-  const curYear=new Date().getFullYear(),yearsLeft=retireYear-curYear;
-  if(!retireYear||yearsLeft<=0){document.getElementById('retire-result').innerHTML='<div style="color:var(--text3);font-size:12px;">유효한 은퇴 연도를 입력하세요.</div>';return;}
-  const schedule=[{y:7,qld:15,schd:30,sgov:20},{y:5,qld:10,schd:35,sgov:20},{y:3,qld:0,schd:40,sgov:25},{y:0,qld:0,schd:45,sgov:30}];
-  let html='<div class="retire-bar">';
-  schedule.forEach(s=>{const yr=retireYear-s.y,active=yearsLeft<=s.y+1&&yearsLeft>=(s.y===0?-1:s.y-1);html+=`<div class="retire-step${active?' active':''}"><div class="retire-step-year">${yr}년${s.y===0?' (은퇴)':` (D-${s.y}년)`}</div><div class="retire-step-val">QLD ${s.qld}%</div><div class="retire-step-label">SCHD ${s.schd}%<br>SGOV ${s.sgov}%</div></div>`;});
-  html+='</div>';
-  html+=`<div class="result-box"><div class="result-row"><div class="result-label">은퇴까지</div><div class="result-val" style="color:var(--accent);">${yearsLeft}년 남음</div></div><div class="result-row"><div class="result-label">현재 권장 QLD 비중</div><div class="result-val">${yearsLeft>=7?'20% (정상 운항)':'단계 축소 중'}</div></div>${total?`<div class="result-row"><div class="result-label">현재 자산</div><div class="result-val">${total.toLocaleString()}만원</div></div>`:''}</div>
-  <div class="status-box ${yearsLeft>=7?'safe':yearsLeft>=3?'warn':'danger'}" style="margin-top:10px;"><div class="status-title" style="color:${yearsLeft>=7?'var(--green)':yearsLeft>=3?'#ffc107':'var(--red)'};">${yearsLeft>=7?'성장 극대화 단계 — 원래 비중 유지':yearsLeft>=5?'은퇴 7년 전 — QLD 15%로 축소 시작':yearsLeft>=3?'은퇴 5년 전 — QLD 10%로 추가 축소':yearsLeft>0?'은퇴 3년 전 — QLD 0% 완전 제거':'은퇴 시점 도달'}</div><div class="status-desc">헌법 제6조: 7년 전부터 QLD 단계적 축소 → SGOV, SCHD로 이동</div></div>`;
-  document.getElementById('retire-result').innerHTML=html;
 }
 
 /* ── AI 조언 ── */
