@@ -764,7 +764,7 @@ function renderTrackerChart(){
   const vol     = trackerData.settings.volatility||17.5;
   const records = trackerData.records||[];
   const startAssetInput = parseFloat((document.getElementById('tr-start-asset')||{}).value||0);
-  const startAsset = startAssetInput>0?startAssetInput:(records.length>0?records[0].asset:0);
+  const startAsset = startAssetInput>0?startAssetInput:(records.length>0?records[0].asset:10000);
 
   const W = 800;
   const H = 320;
@@ -774,10 +774,11 @@ function renderTrackerChart(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle='#0f1525'; ctx.fillRect(0,0,W,H);
 
-  if(!startAsset&&!records.length){
+  // 나이나 CAGR 없으면 안내만 표시
+  if(!age || !cagr){
     ctx.fillStyle='#5a6080'; ctx.font='13px Segoe UI';
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText('설정을 입력하면 시나리오 선이 표시됩니다', W/2, H/2);
+    ctx.fillText('나이와 CAGR을 입력하면 시나리오가 표시됩니다', W/2, H/2);
     const msg=document.getElementById('tracker-chart-msg');
     if(msg) msg.textContent='';
     return;
