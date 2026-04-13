@@ -15,12 +15,18 @@ def get_nasdaq():
     cur   = float(close.iloc[-1])
     peak  = float(close.max())
     ma200 = float(close.rolling(200).mean().iloc[-1])
+    # 6개월 전 가격 (약 126 거래일)
+    idx_6m = max(0, len(close) - 126)
+    price_6m_ago = float(close.iloc[idx_6m])
+    momentum_6m = round((cur / price_6m_ago - 1) * 100, 2)
     return {
-        "drawdown_pct":  round((cur / peak - 1) * 100, 2),
-        "rsi":           calc_rsi(close),
-        "ma200_dev_pct": round((cur / ma200 - 1) * 100, 2),
-        "current_price": round(cur, 2),
-        "peak_price":    round(peak, 2),
+        "drawdown_pct":   round((cur / peak - 1) * 100, 2),
+        "rsi":            calc_rsi(close),
+        "ma200_dev_pct":  round((cur / ma200 - 1) * 100, 2),
+        "current_price":  round(cur, 2),
+        "peak_price":     round(peak, 2),
+        "momentum_6m":    momentum_6m,   # 6개월 수익률 (%)
+        "above_ma200":    cur > ma200,   # 200일MA 위/아래
     }
 
 def get_vix():
@@ -52,28 +58,11 @@ def get_usd_krw():
         return None
 
 def get_kiwoom_etf_price():
-    """KIWOOM 미국S&P500모멘텀 (0137V0) - 네이버 금융 현재가"""
     code = "0137V0"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
         "Referer": "https://finance.naver.com",
     }
-
-    # 방법 1: 네이버 금융 현재가 API
-    try:
-        url = f"https://finance.naver.com/item/main.naver?code={code}"
-        r = requests.get(url, headers=headers, timeout=10)
-        # 현재가 파싱
-        match = re.search(r'"now":\s*"?([\d,]+)"?', r.text)
-        if match:
-            price = int(match.group(1).replace(",", ""))
-            if 1000 < price < 1000000:
-                print(f"  KIWOOM(naver1): {price:,}원")
-                return price
-    except Exception as e:
-        print(f"  방법1 오류: {e}")
-
-    # 방법 2: 네이버 금융 시세 JSON
     try:
         url2 = f"https://polling.finance.naver.com/api/realtime/domestic/stock/{code}"
         r2 = requests.get(url2, headers=headers, timeout=10)
@@ -83,36 +72,7 @@ def get_kiwoom_etf_price():
             print(f"  KIWOOM(naver2): {price:,}원")
             return price
     except Exception as e:
-        print(f"  방법2 오류: {e}")
-
-    # 방법 3: 네이버 증권 검색 API
-    try:
-        url3 = f"https://m.stock.naver.com/api/stock/{code}/basic"
-        r3 = requests.get(url3, headers=headers, timeout=10)
-        d = r3.json()
-        price = int(str(d.get("closePrice","0")).replace(",",""))
-        if 1000 < price < 1000000:
-            print(f"  KIWOOM(naver3): {price:,}원")
-            return price
-    except Exception as e:
-        print(f"  방법3 오류: {e}")
-
-    # 방법 4: 네이버 금융 모바일
-    try:
-        url4 = f"https://m.finance.naver.com/domestic/item.nhn?code={code}"
-        r4 = requests.get(url4, headers=headers, timeout=10)
-        match2 = re.search(r'<em[^>]*class="[^"]*price[^"]*"[^>]*>([\d,]+)</em>', r4.text)
-        if not match2:
-            match2 = re.search(r'([\d,]+)</em>', r4.text)
-        if match2:
-            price = int(match2.group(1).replace(",",""))
-            if 1000 < price < 1000000:
-                print(f"  KIWOOM(naver4): {price:,}원")
-                return price
-    except Exception as e:
-        print(f"  방법4 오류: {e}")
-
-    print(f"  KIWOOM: 모든 방법 실패 — None 반환")
+        print(f"  KIWOOM 오류: {e}")
     return None
 
 def get_cnn_fear_greed():
@@ -121,16 +81,16 @@ def get_cnn_fear_greed():
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
             "Referer": "https://www.cnn.com/markets/fear-and-greed",
         }
-        url = "https://production.dataviz.cnn.io/index/fearandgreed/graphdata"
-        r = requests.get(url, headers=headers, timeout=15)
+        r = requests.get("https://production.dataviz.cnn.io/index/fearandgreed/graphdata", headers=headers, timeout=15)
         d = r.json()
         score = round(float(d["fear_and_greed"]["score"]), 1)
         rating = d["fear_and_greed"]["rating"]
-        prev_close = round(float(d["fear_and_greed"]["previous_close"]), 1)
-        prev_1w    = round(float(d["fear_and_greed"]["previous_1_week"]), 1)
-        prev_1m    = round(float(d["fear_and_greed"]["previous_1_month"]), 1)
         print(f"  CNN F&G: {score} ({rating})")
-        return {"value": score, "classification": rating, "prev_close": prev_close, "prev_1w": prev_1w, "prev_1m": prev_1m, "source": "CNN Business"}
+        return {"value": score, "classification": rating,
+                "prev_close": round(float(d["fear_and_greed"]["previous_close"]), 1),
+                "prev_1w":    round(float(d["fear_and_greed"]["previous_1_week"]), 1),
+                "prev_1m":    round(float(d["fear_and_greed"]["previous_1_month"]), 1),
+                "source": "CNN Business"}
     except Exception as e:
         print(f"  CNN F&G 오류: {e}")
         try:
@@ -155,24 +115,38 @@ kiwoom_price = get_kiwoom_etf_price()
 print("CNN F&G 수집...")
 fg = get_cnn_fear_greed()
 
+# MPS 자동 계산
+mps_trend     = 1 if qqq["above_ma200"] else 0
+mps_momentum  = 1 if qqq["momentum_6m"] > 0 else 0
+mps_vix       = 1 if vix < 20 else 0
+mps_total     = mps_trend + mps_momentum + mps_vix
+
 data = {
-    "updated_utc":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    "updated_utc":   datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     "nasdaq": {
         "drawdown_pct":  qqq["drawdown_pct"],
         "rsi":           qqq["rsi"],
         "ma200_dev_pct": qqq["ma200_dev_pct"],
         "current_price": qqq["current_price"],
         "peak_price":    qqq["peak_price"],
+        "momentum_6m":   qqq["momentum_6m"],
+        "above_ma200":   qqq["above_ma200"],
     },
-    "vix":          vix,
-    "fear_greed":   fg,
-    "etf_prices":   etf_prices,
-    "usd_krw":      usd_krw,
-    "kiwoom_price": kiwoom_price,
+    "vix":           vix,
+    "fear_greed":    fg,
+    "etf_prices":    etf_prices,
+    "usd_krw":       usd_krw,
+    "kiwoom_price":  kiwoom_price,
+    "mps": {
+        "trend":    mps_trend,
+        "momentum": mps_momentum,
+        "vix":      mps_vix,
+        "total":    mps_total,
+    },
 }
 
 with open("docs/data.json", "w") as f:
     json.dump(data, f, indent=2)
 
-print("\n✅ 저장 완료")
+print(f"\n✅ 저장 완료 | MPS: {mps_total}점 (추세:{mps_trend} 모멘텀:{mps_momentum} VIX:{mps_vix})")
 print(json.dumps(data, indent=2, ensure_ascii=False))
