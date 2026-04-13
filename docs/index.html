@@ -924,34 +924,52 @@ function calcMilestone(){
   }
   const fmt=v=>v===null?'—':(v>=10000?Math.floor(v/10000)+'억'+(v%10000>0?' '+(v%10000).toLocaleString()+'만':''):v.toLocaleString()+'만')+'원';
   const ms=[30,35,40,45,50,55,60,65,70].filter(m=>m>=age);
-  let html=`<div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">
-    ${scenarios.map(s=>`<div style="flex:1;min-width:80px;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);">${s.emoji} ${s.name}</div><div style="font-size:13px;font-weight:700;color:${s.color};">${(s.cagr*100).toFixed(1)}%</div><div style="font-size:9px;color:var(--text3);">실질 연수익률</div></div>`).join('')}
-  </div>
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
-    <div style="display:grid;grid-template-columns:50px repeat(3,1fr) 90px;padding:8px 12px;background:var(--bg3);font-size:10px;color:var(--text3);gap:4px;">
-      <div>나이</div>${scenarios.map(s=>`<div style="color:${s.color};">${s.name}</div>`).join('')}<div style="text-align:right;">단계</div>
-    </div>`;
+
+  // 시나리오 헤더
+  let html=`<div style="display:flex;gap:8px;margin-bottom:14px;">
+    ${scenarios.map(s=>`<div style="flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;">
+      <div style="font-size:11px;color:var(--text3);margin-bottom:4px;">${s.emoji} ${s.name}</div>
+      <div style="font-size:15px;font-weight:700;color:${s.color};">${(s.cagr*100).toFixed(1)}%</div>
+      <div style="font-size:9px;color:var(--text3);margin-top:2px;">실질 연수익률</div>
+    </div>`).join('')}
+  </div>`;
+
   ms.forEach(m=>{
     const vals=scenarios.map(s=>calcAt(m,s.cagr));
-    const mid=vals[1]||0;
-    const level=getLevel(mid);
-    const income=Math.round(mid*0.04/12);
-    const prog=Math.min(100,Math.round(mid/50000*100));
-    html+=`<div style="border-bottom:1px solid var(--border);">
-      <div style="display:grid;grid-template-columns:50px repeat(3,1fr) 90px;padding:10px 12px;align-items:center;gap:4px;">
-        <div style="font-size:13px;font-weight:700;color:var(--text1);">${m}세</div>
-        ${vals.map((v,i)=>`<div style="font-size:11px;font-weight:600;color:${scenarios[i].color};">${fmt(v)}</div>`).join('')}
-        <div style="text-align:right;"><span style="color:${level.color};border:1px solid ${level.color};border-radius:4px;padding:2px 5px;font-size:9px;font-weight:700;">${level.name}</span></div>
+    const incomes=vals.map(v=>v===null?null:Math.round(v*0.04/12));
+    const levels=vals.map(v=>v===null?FIRE[0]:getLevel(v));
+    const midLevel=levels[1];
+    // 해당 나이 현금흐름 이벤트
+    const evtsThisAge=cfEvents.filter(e=>{
+      const evtAge=age+(e.year-curYear);
+      return evtAge===m;
+    });
+    html+=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+        <div style="font-size:18px;font-weight:700;color:var(--text1);">${m}세</div>
+        <span style="color:${midLevel.color};border:1px solid ${midLevel.color};border-radius:5px;padding:3px 10px;font-size:11px;font-weight:700;">${midLevel.name}</span>
       </div>
-      <div style="padding:0 12px 8px;display:flex;align-items:center;gap:8px;">
-        <div style="flex:1;background:var(--bg3);border-radius:3px;height:4px;overflow:hidden;"><div style="height:4px;border-radius:3px;background:${level.color};width:${prog}%;"></div></div>
-        <div style="font-size:10px;color:var(--text3);">월 ${income.toLocaleString()}만원 가용</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:${evtsThisAge.length>0?'10px':'0'};">
+        ${vals.map((v,i)=>{
+          const inc=incomes[i];
+          const lv=levels[i];
+          return `<div style="background:var(--bg3);border-radius:8px;padding:10px;border-left:3px solid ${scenarios[i].color};">
+            <div style="font-size:10px;color:${scenarios[i].color};margin-bottom:5px;font-weight:600;">${scenarios[i].emoji} ${scenarios[i].name}</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text1);margin-bottom:5px;">${fmt(v)}</div>
+            <div style="font-size:11px;color:var(--text2);margin-bottom:5px;">월 ${inc?inc.toLocaleString()+'만원':'—'}</div>
+            <span style="font-size:9px;color:${lv.color};border:1px solid ${lv.color};border-radius:3px;padding:1px 5px;">${lv.name}</span>
+          </div>`;
+        }).join('')}
       </div>
+      ${evtsThisAge.length>0?`<div style="border-top:1px solid var(--border);padding-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+        ${evtsThisAge.map(e=>`<span style="font-size:10px;padding:3px 8px;border-radius:4px;background:${e.amount>0?'rgba(76,175,125,0.15)':'rgba(224,92,92,0.15)'};color:${e.amount>0?'var(--green)':'var(--red)'};border:1px solid ${e.amount>0?'rgba(76,175,125,0.3)':'rgba(224,92,92,0.3)'};">💰 ${e.amount>0?'+':''}${e.amount.toLocaleString()}만원</span>`).join('')}
+      </div>`:''}
     </div>`;
   });
-  html+=`</div>
-  <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;">${FIRE.map(l=>`<span style="font-size:10px;color:${l.color};">■ ${l.name}</span>`).join('')}</div>
-  <div style="margin-top:4px;font-size:10px;color:var(--text3);">CAGR ${msCagr}% | 물가 ${inflOn?parseFloat((document.getElementById('ms-infl')||{}).value||2.5)+'%':'미적용'} | 세금 ${taxOn?parseFloat((document.getElementById('ms-tax')||{}).value||15.4)+'%':'미적용'} | 월 가용 = 자산×4%÷12</div>`;
+
+  html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">${FIRE.map(l=>`<span style="font-size:10px;color:${l.color};">■ ${l.name}</span>`).join('')}</div>
+  <div style="margin-top:6px;font-size:10px;color:var(--text3);">CAGR ${msCagr}% | 물가 ${inflOn?parseFloat((document.getElementById('ms-infl')||{}).value||2.5)+'%':'미적용'} | 세금 ${taxOn?parseFloat((document.getElementById('ms-tax')||{}).value||15.4)+'%':'미적용'} | 월 가용 = 자산×4%÷12</div>`;
+
   const el=document.getElementById('milestone-result');if(el)el.innerHTML=html;
 }
 
