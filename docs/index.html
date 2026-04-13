@@ -358,6 +358,19 @@ async function loadData(){
       usdKrw=d.usd_krw;
       document.getElementById('rate-display').textContent='1$ = '+usdKrw.toLocaleString()+'원';
     }
+    // ETF 가격 & 환율 반영
+    if(d.etf_prices){
+      etfPrices=d.etf_prices;
+      TICKERS.forEach(t=>{
+        const el=document.getElementById('price-'+t.id);
+        if(el&&etfPrices[t.id]) el.textContent='$'+etfPrices[t.id];
+      });
+      document.getElementById('etf-price-status').textContent='ETF 현재가 기준: '+new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
+    }
+    if(d.usd_krw){
+      usdKrw=d.usd_krw;
+      document.getElementById('rate-display').textContent='1$ = '+usdKrw.toLocaleString()+'원';
+    }
     const updKST=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='마지막 업데이트: '+updKST+' KST (12시간마다 자동 갱신)';
     document.getElementById('data-dot').classList.remove('pulse');
@@ -691,6 +704,9 @@ function showAnswer(key){document.getElementById('ai-answer').innerHTML=ANSWERS[
 
 buildPortInputs();
 drawPie({},0);
+// 저장된 포트폴리오 자동 불러오기
+const _saved=localStorage.getItem('inv_portfolio');
+if(_saved){const _d=JSON.parse(_saved);TICKERS.forEach(t=>{const el=document.getElementById('qty-'+t.id);if(el&&_d[t.id])el.value=_d[t.id];});updateTotal();}
 // 저장된 포트폴리오 자동 불러오기
 const _saved=localStorage.getItem('inv_portfolio');
 if(_saved){const _d=JSON.parse(_saved);TICKERS.forEach(t=>{const el=document.getElementById('qty-'+t.id);if(el&&_d[t.id])el.value=_d[t.id];});updateTotal();}
