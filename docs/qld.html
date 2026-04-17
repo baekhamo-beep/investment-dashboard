@@ -490,6 +490,63 @@ function renderTodayChecklist(){
 }
 
 // ── 포트폴리오 ───────────────────────────────────────────────────
+let qldUseDollar = false;
+let qldUsdKrw = 1350;
+
+function toggleQldCurrency(){
+  qldUseDollar = !qldUseDollar;
+  document.getElementById('qld-toggle-dot').style.left = qldUseDollar ? '16px' : '2px';
+  document.getElementById('qld-currency-label').textContent = qldUseDollar ? '달러' : '원화';
+  calcPort();
+}
+
+function saveQldPort(){
+  const data={qld:document.getElementById('p-qld-qty').value||'0',sgov:document.getElementById('p-sgov-qty').value||'0'};
+  localStorage.setItem('qld_portfolio',JSON.stringify(data));
+  showToast('포트폴리오 저장 완료!');
+}
+
+function loadQldPort(){
+  const data=JSON.parse(localStorage.getItem('qld_portfolio')||'{}');
+  if(!Object.keys(data).length){showToast('저장된 포트폴리오가 없습니다');return;}
+  if(data.qld) document.getElementById('p-qld-qty').value=data.qld;
+  if(data.sgov) document.getElementById('p-sgov-qty').value=data.sgov;
+  calcPort();
+  showToast('불러오기 완료!');
+}
+
+function drawQldPie(qldVal, sgovVal){
+  const canvas=document.getElementById('qld-pie');
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,200,200);
+  const total=qldVal+sgovVal;
+  if(!total){
+    ctx.fillStyle='#1e2740';ctx.beginPath();ctx.arc(100,100,90,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(100,100,50,0,Math.PI*2);ctx.fillStyle='#0a0e1a';ctx.fill();
+    const lg=document.getElementById('qld-pie-legend');if(lg)lg.innerHTML='';
+    return;
+  }
+  const colors=['#4a9eff','#9aa0b8'];
+  const vals=[qldVal,sgovVal];
+  const labels=['QLD','SGOV'];
+  let start=-Math.PI/2;
+  vals.forEach((v,i)=>{
+    if(v<=0) return;
+    const slice=v/total*Math.PI*2;
+    ctx.beginPath();ctx.moveTo(100,100);ctx.arc(100,100,90,start,start+slice);ctx.closePath();
+    ctx.fillStyle=colors[i];ctx.fill();ctx.strokeStyle='#0a0e1a';ctx.lineWidth=2;ctx.stroke();
+    start+=slice;
+  });
+  ctx.beginPath();ctx.arc(100,100,50,0,Math.PI*2);ctx.fillStyle='#0a0e1a';ctx.fill();
+  const totalLabel=qldUseDollar?'$'+total.toFixed(0):Math.round(total*qldUsdKrw/10000).toLocaleString()+'만';
+  ctx.fillStyle='#4a9eff';ctx.font='bold 12px Segoe UI';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillText(totalLabel,100,95);
+  ctx.fillStyle='#9aa0b8';ctx.font='10px Segoe UI';ctx.fillText(qldUseDollar?'USD':'만원',100,111);
+  const lg=document.getElementById('qld-pie-legend');
+  if(lg) lg.innerHTML=vals.map((v,i)=>`<div style="display:flex;align-items:center;gap:4px;"><div style="width:10px;height:10px;border-radius:2px;background:${colors[i]};"></div>${labels[i]} ${total>0?(v/total*100).toFixed(1)+'%':'0%'}</div>`).join('');
+}
+
 function calcPort(){
   const qldPrice=parseFloat(document.getElementById('p-qld-price').textContent.replace('$','')||0);
   const sgovPrice=parseFloat(document.getElementById('p-sgov-price').textContent.replace('$','')||0);
