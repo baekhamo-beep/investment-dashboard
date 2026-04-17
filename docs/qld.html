@@ -561,8 +561,8 @@ function drawQldPie(qldVal, sgovVal){
 }
 
 function calcPort(){
-  const qldPrice=parseFloat(document.getElementById('p-qld-price').textContent.replace('$','')||0);
-  const sgovPrice=parseFloat(document.getElementById('p-sgov-price').textContent.replace('$','')||0);
+  const qldPrice=qldEtfPrices.QLD||0;
+  const sgovPrice=qldEtfPrices.SGOV||0;
   const qldQty=parseFloat(document.getElementById('p-qld-qty').value||0);
   const sgovQty=parseFloat(document.getElementById('p-sgov-qty').value||0);
 
