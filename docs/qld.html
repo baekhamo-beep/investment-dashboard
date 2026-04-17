@@ -164,6 +164,17 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <!-- 오늘의 액션 -->
     <div id="action-banner" class="action-banner standby" style="opacity:0;transition:opacity 0.5s;"></div>
 
+    <!-- 근거 문장 -->
+    <div id="reasoning-wrap" style="margin-top:-6px;margin-bottom:14px;display:none;">
+      <div onclick="toggleReasoning()" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px 6px 0 0;border-bottom:none;">
+        <span style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;">📋 판단 근거</span>
+        <span id="reasoning-icon" style="font-size:10px;color:var(--text3);margin-left:auto;">▼ 펼치기</span>
+      </div>
+      <div id="reasoning-body" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:0 0 6px 6px;padding:12px 14px;">
+        <div id="reasoning-text" style="font-size:11px;color:var(--text2);line-height:1.9;"></div>
+      </div>
+    </div>
+
     <!-- 핵심 지표 -->
     <div class="sec">핵심 지표</div>
     <div class="g4">
@@ -614,6 +625,88 @@ async function loadState(){
 }
 
 // 오늘의 액션 배너
+function toggleReasoning(){
+  const body = document.getElementById('reasoning-body');
+  const icon = document.getElementById('reasoning-icon');
+  if(!body || !icon) return;
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  icon.textContent = isOpen ? '▼ 펼치기' : '▲ 접기';
+}
+
+function renderReasoning(state, nd, ma200below, cycle){
+  const wrap = document.getElementById('reasoning-wrap');
+  const textEl = document.getElementById('reasoning-text');
+  if(!wrap || !textEl) return;
+
+  const dips = cycle?.dip_triggered || [false,false,false,false,false];
+  const rt = cycle?.recovery_triggered || [false,false,false];
+  const inRecovery = cycle?.in_recovery_mode || false;
+  const thr = [-12,-18,-25,-35,-45];
+  const pct = [5,8,10,12,15];
+  const thrLabel = ['1단계','2단계','3단계','4단계','5단계'];
+
+  let lines = [];
+
+  // 공통 조건 체크
+  const cond200 = ma200below;
+  const condNd = nd !== null;
+
+  if(state === 'dip'){
+    // 어느 단계인지 찾기
+    let activeStage = -1;
+    for(let i=4;i>=0;i--){ if(nd<=thr[i] && !dips[i]){ activeStage=i; break; } }
+
+    lines.push(`<span style="color:var(--text3);">📌 하락장 조건 판단 과정</span>`);
+    lines.push(`${cond200 ? '✅' : '❌'} QQQ 200일선 <b>${cond200 ? '아래' : '위'}</b> → 하락장 트리거 ${cond200 ? '활성' : '비활성'}`);
+    lines.push(`${condNd && nd <= thr[activeStage] ? '✅' : '❌'} ATH 대비 <b>${nd !== null ? nd.toFixed(1) : '—'}%</b> 하락 → ${thrLabel[activeStage]}(${thr[activeStage]}%) 도달`);
+
+    // 이전 단계 실행 여부
+    for(let i=0;i<activeStage;i++){
+      lines.push(`${dips[i] ? '✅' : '⚠️'} ${thrLabel[i]}(${thr[i]}%) ${dips[i] ? '이미 실행 완료' : '미실행 — 사이클 탭 확인 필요'}`);
+    }
+    lines.push(`${!dips[activeStage] ? '✅' : '⚠️'} ${thrLabel[activeStage]}(${thr[activeStage]}%) <b>${!dips[activeStage] ? '미실행 → 실행 유효' : '이미 실행 완료 → 이번 사이클 재발동 없음'}</b>`);
+    lines.push(`<span style="color:var(--accent2);font-weight:700;">→ 규칙 해석: SGOV에서 전체계좌 ${pct[activeStage]}%를 QLD로 이동. 익일 시가 시장가 집행.</span>`);
+
+  } else if(state === 'recovery'){
+    lines.push(`<span style="color:var(--text3);">📌 회복모드 판단 과정</span>`);
+    lines.push(`✅ 하락장 매수 실행 이력 있음 → 회복모드 진입 상태`);
+    if(!rt[0]){
+      lines.push(`❌ ATH 돌파 미달성 → 1단계 리밸런싱 대기 중`);
+      lines.push(`<span style="color:var(--accent2);font-weight:700;">→ 규칙 해석: QQQ가 ATH를 돌파하는 날 QLD 85% / SGOV 15%로 리밸런싱 집행.</span>`);
+    } else if(!rt[1]){
+      lines.push(`✅ ATH 돌파 완료 → 1단계 실행 완료`);
+      lines.push(`❌ ATH 돌파 시점 기준 +20% 미달성 → 2단계 대기 중`);
+      lines.push(`<span style="color:var(--accent2);font-weight:700;">→ 규칙 해석: ATH 돌파 당일 종가 기준 +20% 달성 시 QLD 65% / SGOV 35%로 리밸런싱.</span>`);
+    } else if(!rt[2]){
+      lines.push(`✅ ATH 돌파 완료 → 1단계 실행 완료`);
+      lines.push(`✅ ATH+20% 달성 → 2단계 실행 완료`);
+      lines.push(`❌ ATH 돌파 시점 기준 +30% 미달성 → 3단계 대기 중`);
+      lines.push(`<span style="color:var(--accent2);font-weight:700;">→ 규칙 해석: +30% 달성 시 QLD 50% / SGOV 50% 리밸런싱 후 회복모드 종료.</span>`);
+    }
+
+  } else if(state === 'dca'){
+    const isLow = (cycle?.target_sgov_ratio || 65) <= 5;
+    lines.push(`<span style="color:var(--text3);">📌 DCA 실행 판단 과정</span>`);
+    lines.push(`✅ 오늘은 매월 22일 → 정기 적립 매수일`);
+    lines.push(`${isLow ? '⚠️' : '✅'} SGOV 비중 ${isLow ? '5% 이하 → 탄약 부족 모드' : '5% 초과 → 일반 모드'}`);
+    lines.push(`<span style="color:var(--accent2);font-weight:700;">→ 규칙 해석: ${isLow ? 'QLD 70% / SGOV 30%' : 'QLD 50% / SGOV 50%'} 비율로 적립 매수 집행.</span>`);
+
+  } else {
+    // standby
+    lines.push(`<span style="color:var(--text3);">📌 대기 판단 과정</span>`);
+    lines.push(`${cond200 ? '⚠️ QQQ 200일선 아래 — 낙폭 모니터링 중' : '✅ QQQ 200일선 위 → 하락 트리거 비활성'}`);
+    if(nd !== null){
+      const nextThr = thr.find(t => nd > t);
+      lines.push(`✅ ATH 대비 ${nd.toFixed(1)}% → ${nextThr !== undefined ? '다음 트리거 '+nextThr+'% 까지 '+(nd-nextThr).toFixed(1)+'%p 여유' : '트리거 미도달'}`);
+    }
+    lines.push(`<span style="color:var(--green);font-weight:700;">→ 규칙 해석: 현재 발동 조건 미충족. 정기 DCA 루틴 유지. 매월 22일 적립 매수.</span>`);
+  }
+
+  textEl.innerHTML = lines.map(l => `<div style="margin-bottom:5px;">${l}</div>`).join('');
+  wrap.style.display = 'block';
+}
+
 function renderActionBanner(){
   const nd=mkt.nasdaq, ma200below=mkt.ma200!==null&&mkt.ma200<0;
   const now=new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);
@@ -652,6 +745,8 @@ function renderActionBanner(){
   const tagText={standby:'STANDBY',dca:'DCA 실행',dip:'하락장 매수',recovery:'회복 모드'};
   const el=document.getElementById('action-banner');if(!el)return;
   el.className='action-banner '+state;
+  // 근거 문장 생성
+  renderReasoning(state, nd, ma200below, cycle);
   el.innerHTML=`<div class="ab-top"><div class="ab-dot ${state}"></div><div class="ab-tag ${state}">${tagText[state]}</div><div class="ab-date">${dateLabel}</div></div><div class="ab-main ${state}">${main}</div><div class="ab-sub">${sub}</div><div class="ab-chips">${chips.map(c=>`<div class="ab-chip${c.hi?' hi':''}">${c.t}</div>`).join('')}</div>`;
 }
 
