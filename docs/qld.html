@@ -180,7 +180,25 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
   <!-- ② 포트폴리오 -->
   <div class="content panel" id="tab-port">
-    <div class="section-title">현재 포트폴리오</div>
+    <!-- 상단 컨트롤 -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+      <div style="font-size:11px;color:var(--text3);">환율: <span id="qld-rate-display" style="color:var(--accent);">로딩중...</span></div>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
+        <!-- 원화/달러 토글 -->
+        <div onclick="toggleQldCurrency()" style="display:flex;align-items:center;gap:6px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:5px 10px;cursor:pointer;user-select:none;">
+          <span style="font-size:11px;color:var(--text2);">₩</span>
+          <div style="width:30px;height:16px;background:var(--bg2);border-radius:8px;position:relative;border:1px solid var(--border2);">
+            <div id="qld-toggle-dot" style="width:12px;height:12px;background:var(--accent);border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s;"></div>
+          </div>
+          <span style="font-size:11px;color:var(--text2);">$</span>
+          <span style="font-size:11px;font-weight:700;color:var(--accent2);" id="qld-currency-label">원화</span>
+        </div>
+        <button onclick="saveQldPort()" style="background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent2);border-radius:5px;padding:5px 10px;font-size:11px;cursor:pointer;font-weight:600;">저장</button>
+        <button onclick="loadQldPort()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:5px 10px;font-size:11px;cursor:pointer;">불러오기</button>
+      </div>
+    </div>
+
+    <!-- 포트폴리오 입력 테이블 -->
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:12px;">
       <div style="display:grid;grid-template-columns:60px 90px 1fr 100px 80px;padding:8px 14px;background:var(--bg3);font-size:10px;color:var(--text3);">
         <div>종목</div><div>현재가</div><div style="text-align:center;">보유 수량</div><div style="text-align:right;">평가금액</div><div style="text-align:right;">현재비중</div>
@@ -205,7 +223,15 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
       <button class="btn btn-blue" onclick="calcPort()">리밸런싱 계산</button>
       <div style="font-size:12px;color:var(--text2);">총액: <span id="p-total" style="color:var(--accent);font-weight:700;">—</span></div>
     </div>
-    <div id="port-result"></div>
+
+    <div class="grid2">
+      <div id="port-result"></div>
+      <div>
+        <div class="section-title">포트폴리오 구성</div>
+        <canvas id="qld-pie" width="200" height="200" style="display:block;margin:0 auto;"></canvas>
+        <div id="qld-pie-legend" style="display:flex;gap:10px;justify-content:center;margin-top:8px;font-size:11px;color:var(--text2);"></div>
+      </div>
+    </div>
   </div>
 
   <!-- ③ DCA 계산기 -->
@@ -301,7 +327,7 @@ async function loadData(){
       mkt.nasdaq=d.nasdaq.drawdown_pct;
       mkt.ma200=d.nasdaq.ma200_dev_pct;
       mkt.qqq_price=d.nasdaq.current_price;
-      setCard('d-nasdaq', mkt.nasdaq.toFixed(1)+'%',
+      const _sign=mkt.nasdaq>0?'+':'';setCard('d-nasdaq', _sign+mkt.nasdaq.toFixed(1)+'%',
         mkt.nasdaq<=-12?'매수 신호':mkt.nasdaq<0?'하락 중':'상승 중',
         mkt.nasdaq<=-12?'var(--red)':mkt.nasdaq<0?'var(--gold)':'var(--green)');
       const ma200ok = mkt.ma200>0;
@@ -323,6 +349,12 @@ async function loadData(){
       setCard('d-fg', mkt.fg,
         mkt.fg>=80?'극단 탐욕':mkt.fg<=25?'극단 공포':'중립',
         mkt.fg>=80?'var(--red)':mkt.fg<=25?'var(--green)':'var(--gold)');
+    }
+    // 환율 업데이트
+    if(d.usd_krw){
+      qldUsdKrw=d.usd_krw;
+      const rateEl=document.getElementById('qld-rate-display');
+      if(rateEl) rateEl.textContent='1$ = '+d.usd_krw.toLocaleString()+'원';
     }
     // ETF 가격 업데이트
     if(d.etf_prices){
@@ -468,8 +500,14 @@ function calcPort(){
   const sgovVal=sgovQty*sgovPrice;
   const total=qldVal+sgovVal;
 
-  document.getElementById('p-qld-val').textContent=qldVal>0?'$'+qldVal.toFixed(0):'—';
-  document.getElementById('p-sgov-val').textContent=sgovVal>0?'$'+sgovVal.toFixed(0):'—';
+  const fmt = v => {
+    if(v<=0) return '—';
+    if(qldUseDollar) return '$'+v.toFixed(0);
+    return Math.round(v*qldUsdKrw/10000).toLocaleString()+'만';
+  };
+  document.getElementById('p-qld-val').textContent=fmt(qldVal);
+  document.getElementById('p-sgov-val').textContent=fmt(sgovVal);
+  drawQldPie(qldVal, sgovVal);
 
   if(total>0){
     const qldPct=(qldVal/total*100);
@@ -478,7 +516,7 @@ function calcPort(){
     document.getElementById('p-qld-pct').style.color=Math.abs(qldPct-35)>7?'var(--red)':'var(--green)';
     document.getElementById('p-sgov-pct').textContent=sgovPct.toFixed(1)+'%';
     document.getElementById('p-sgov-pct').style.color=Math.abs(sgovPct-65)>7?'var(--red)':'var(--green)';
-    document.getElementById('p-total').textContent='$'+total.toFixed(0);
+    document.getElementById('p-total').textContent=qldUseDollar?'$'+total.toFixed(0):Math.round(total*qldUsdKrw/10000).toLocaleString()+'만원';
 
     // 리밸런싱 필요 여부
     const cycle=qldState?.cycle;
@@ -663,6 +701,9 @@ function resetCycle(){
 // 초기화
 loadData();
 loadState();
+// 저장된 포트폴리오 자동 로드
+const _qldSaved=localStorage.getItem('qld_portfolio');
+if(_qldSaved){try{const _d=JSON.parse(_qldSaved);if(_d.qld)document.getElementById('p-qld-qty').value=_d.qld;if(_d.sgov)document.getElementById('p-sgov-qty').value=_d.sgov;}catch(e){}}
 // localStorage에서 상태 복원
 const saved=localStorage.getItem('qld_state');
 if(saved){ try{ qldState=JSON.parse(saved); }catch(e){} }
