@@ -13,561 +13,529 @@
   --text1:#e8eaf0;--text2:#9aa0b8;--text3:#5a6080;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
 }
-body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;}
-.header{background:var(--bg1);border-bottom:1px solid var(--accent-border);padding:14px 20px;display:flex;align-items:center;gap:12px;}
-.header-icon{width:32px;height:32px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:16px;}
-.header-title{font-size:15px;font-weight:600;color:var(--accent2);}
-.header-sub{font-size:11px;color:var(--text2);margin-top:2px;}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
+body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;min-height:100vh;}
+.header{background:var(--bg1);border-bottom:1px solid var(--accent-border);padding:12px 20px;display:flex;align-items:center;gap:12px;}
+.header-icon{width:30px;height:30px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.header-title{font-size:14px;font-weight:700;color:var(--accent2);}
+.header-sub{font-size:10px;color:var(--text3);margin-top:1px;}
+.live-wrap{margin-left:auto;display:flex;align-items:center;gap:6px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.tabs{display:flex;background:var(--bg1);border-bottom:1px solid var(--border);overflow-x:auto;}
-.tab{padding:11px 14px;font-size:12px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;}
+.strategy-tabs{display:flex;background:var(--bg0);border-bottom:2px solid var(--border);padding:0 16px;}
+.strategy-tab{padding:9px 16px;font-size:11px;font-weight:600;cursor:pointer;border-bottom:3px solid transparent;color:var(--text3);transition:all 0.2s;margin-bottom:-2px;}
+.strategy-tab.elite:hover{color:var(--gold);}
+.strategy-tab.elite-active{border-color:var(--gold);color:var(--gold);}
+.strategy-tab.qld-active{border-color:var(--accent);color:var(--accent2);}
+.tabs{display:flex;background:var(--bg1);border-bottom:1px solid var(--border);}
+.tab{flex:1;padding:11px 8px;font-size:11px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;text-align:center;transition:all 0.2s;}
 .tab:hover{color:var(--text1);}
 .tab.active{color:var(--accent2);border-bottom-color:var(--accent);background:var(--accent-dim);}
-.content{padding:16px;max-width:900px;margin:0 auto;}
+.content{padding:14px 16px;max-width:860px;margin:0 auto;}
 .panel{display:none;}.panel.active{display:block;}
-.section-title{font-size:11px;font-weight:600;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.sec{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;margin-top:18px;}
+.sec:first-child{margin-top:0;}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
-.card-label{font-size:10px;color:var(--text3);margin-bottom:4px;}
+.card-label{font-size:10px;color:var(--text3);margin-bottom:3px;}
 .card-value{font-size:20px;font-weight:700;}
-.card-sub{font-size:11px;color:var(--text2);margin-top:3px;}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-.status-box{border-radius:8px;padding:14px 16px;margin-bottom:12px;}
-.status-box.safe{background:rgba(76,175,125,0.1);border:1px solid rgba(76,175,125,0.3);}
-.status-box.warn{background:rgba(255,193,7,0.1);border:1px solid rgba(255,193,7,0.3);}
-.status-box.danger{background:rgba(224,92,92,0.1);border:1px solid rgba(224,92,92,0.3);}
-.status-box.info{background:rgba(74,158,255,0.1);border:1px solid rgba(74,158,255,0.3);}
-.status-title{font-size:13px;font-weight:700;margin-bottom:4px;}
-.status-desc{font-size:11px;color:var(--text2);line-height:1.6;}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;}
-.btn-blue{background:var(--accent);color:#fff;}.btn-blue:hover{background:var(--accent2);color:#0a0e1a;}
+.card-sub{font-size:10px;color:var(--text2);margin-top:3px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.divider{border:none;border-top:1px solid var(--border);margin:14px 0;}
 .inp{background:var(--bg3);border:1px solid var(--border2);color:var(--text1);border-radius:5px;padding:7px 10px;font-size:12px;width:100%;outline:none;}
 .inp:focus{border-color:var(--accent-border);}
-.input-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.input-label{font-size:11px;color:var(--text2);width:100px;flex-shrink:0;}
-.inp-unit{font-size:11px;color:var(--text3);width:36px;flex-shrink:0;}
-.divider{border:none;border-top:1px solid var(--border);margin:14px 0;}
-.action-box{background:var(--bg3);border-radius:6px;padding:10px 12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;}
-.action-num{background:var(--accent);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;}
-.action-text{font-size:12px;color:var(--text1);line-height:1.6;}
-.badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700;}
-.pulse{animation:pulse 1.5s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-.data-updated{font-size:10px;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px;}
-.data-dot{width:5px;height:5px;border-radius:50%;background:var(--green);}
-.cycle-steps{display:flex;align-items:center;gap:0;margin:14px 0;overflow-x:auto;}
-.cycle-step{flex:1;min-width:80px;text-align:center;padding:10px 6px;background:var(--bg3);border:1px solid var(--border);font-size:10px;position:relative;}
-.cycle-step:not(:last-child)::after{content:'→';position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:12px;z-index:1;}
-.cycle-step.active{background:var(--accent-dim);border-color:var(--accent-border);}
-.cycle-step.done{background:rgba(76,175,125,0.1);border-color:rgba(76,175,125,0.3);}
-.cycle-step-label{font-weight:700;color:var(--text1);margin-bottom:3px;}
-.cycle-step.active .cycle-step-label{color:var(--accent2);}
-.cycle-step.done .cycle-step-label{color:var(--green);}
-.quick-btn{background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;width:100%;}
-.quick-btn:hover{border-color:var(--accent-border);color:var(--accent2);}
-.quick-btn-title{font-weight:600;color:var(--text1);font-size:11px;display:block;margin-bottom:2px;}
-.quick-btn-sub{font-size:10px;color:var(--text3);}
-.ai-rule-block{border-left:3px solid var(--accent);padding-left:12px;margin-bottom:14px;}
-.ai-rule-title{font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:4px;}
-.ai-rule-body{font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-line;}
-#lock-screen{position:fixed;inset:0;background:#0a0e1a;display:flex;align-items:center;justify-content:center;z-index:9999;}
-.lock-box{background:#0f1525;border:1px solid rgba(74,158,255,0.35);border-radius:12px;padding:36px 32px;width:320px;text-align:center;}
-.lock-icon{font-size:32px;margin-bottom:16px;}
-.lock-title{font-size:16px;font-weight:600;color:var(--accent2);margin-bottom:6px;}
-.lock-sub{font-size:11px;color:#9aa0b8;margin-bottom:24px;}
-.lock-input{width:100%;background:#1e2740;border:1px solid rgba(255,255,255,0.12);color:#e8eaf0;border-radius:6px;padding:10px 14px;font-size:14px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:12px;}
-.lock-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;}
-.lock-error{font-size:11px;color:#e05c5c;margin-top:8px;min-height:16px;}
-#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.3s;pointer-events:none;}
-@media(max-width:600px){.grid4{grid-template-columns:repeat(2,1fr);}.grid3{grid-template-columns:1fr 1fr;}.grid2{grid-template-columns:1fr;}}
-
-/* ── 오늘의 액션 배너 ── */
-.action-banner{
-  position:relative;overflow:hidden;border-radius:10px;padding:20px 22px;
-  margin-bottom:16px;cursor:default;transition:transform 0.2s;
-}
-.action-banner:hover{transform:translateY(-1px);}
-.action-banner::before{
-  content:'';position:absolute;inset:0;opacity:0.07;
-  background:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 8px);
-  pointer-events:none;
-}
-.action-banner.standby{background:linear-gradient(135deg,#0d1f17 0%,#0f2a1a 100%);border:1px solid rgba(76,175,125,0.4);box-shadow:0 0 24px rgba(76,175,125,0.08);}
-.action-banner.dca{background:linear-gradient(135deg,#1a1500 0%,#221c00 100%);border:1px solid rgba(201,168,76,0.5);box-shadow:0 0 24px rgba(201,168,76,0.12);}
-.action-banner.dip{background:linear-gradient(135deg,#1f0d0d 0%,#2a0f0f 100%);border:1px solid rgba(224,92,92,0.5);box-shadow:0 0 28px rgba(224,92,92,0.15);}
-.action-banner.recovery{background:linear-gradient(135deg,#0a0f1f 0%,#0d1525 100%);border:1px solid rgba(74,158,255,0.5);box-shadow:0 0 24px rgba(74,158,255,0.12);}
-.action-banner.overheat{background:linear-gradient(135deg,#1a0e00 0%,#221400 100%);border:1px solid rgba(255,140,0,0.5);box-shadow:0 0 24px rgba(255,140,0,0.12);}
-.ab-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.ab-tag{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:3px;opacity:0.9;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;}
+.btn-blue{background:var(--accent);color:#fff;}
+.btn-blue:hover{opacity:0.9;}
+.sub-tabs{display:flex;gap:6px;margin-bottom:14px;}
+.sub-tab{padding:6px 14px;font-size:11px;font-weight:600;border-radius:5px;border:1px solid var(--border2);color:var(--text2);cursor:pointer;background:var(--bg3);}
+.sub-tab.active{background:var(--accent-dim);border-color:var(--accent-border);color:var(--accent2);}
+.sub-panel{display:none;}.sub-panel.active{display:block;}
+.action-banner{position:relative;overflow:hidden;border-radius:10px;padding:18px 20px;margin-bottom:14px;}
+.action-banner::before{content:'';position:absolute;inset:0;opacity:0.06;background:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 8px);pointer-events:none;}
+.action-banner.standby{background:linear-gradient(135deg,#0d1f17,#0f2a1a);border:1px solid rgba(76,175,125,0.4);box-shadow:0 0 20px rgba(76,175,125,0.07);}
+.action-banner.dca{background:linear-gradient(135deg,#1a1500,#221c00);border:1px solid rgba(201,168,76,0.5);box-shadow:0 0 20px rgba(201,168,76,0.1);}
+.action-banner.dip{background:linear-gradient(135deg,#1f0d0d,#2a0f0f);border:1px solid rgba(224,92,92,0.5);box-shadow:0 0 24px rgba(224,92,92,0.12);}
+.action-banner.recovery{background:linear-gradient(135deg,#0a0f1f,#0d1525);border:1px solid rgba(74,158,255,0.5);box-shadow:0 0 20px rgba(74,158,255,0.1);}
+.ab-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ab-tag{font-size:9px;font-weight:800;letter-spacing:2px;padding:2px 7px;border-radius:3px;}
 .ab-tag.standby{background:rgba(76,175,125,0.2);color:#4caf7d;}
 .ab-tag.dca{background:rgba(201,168,76,0.2);color:#c9a84c;}
 .ab-tag.dip{background:rgba(224,92,92,0.2);color:#e05c5c;}
 .ab-tag.recovery{background:rgba(74,158,255,0.2);color:#4a9eff;}
-.ab-tag.overheat{background:rgba(255,140,0,0.2);color:#ff8c00;}
-.ab-date{font-size:10px;color:rgba(255,255,255,0.3);margin-left:auto;letter-spacing:1px;}
-.ab-main{font-size:22px;font-weight:800;letter-spacing:-0.3px;line-height:1.2;margin-bottom:8px;font-family:'Segoe UI',sans-serif;}
+.ab-date{font-size:10px;color:rgba(255,255,255,0.25);margin-left:auto;}
+.ab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ab-dot.standby{background:#4caf7d;}
+.ab-dot.dca{background:#c9a84c;animation:ab-p 1.2s infinite;}
+.ab-dot.dip{background:#e05c5c;animation:ab-p 0.8s infinite;}
+.ab-dot.recovery{background:#4a9eff;animation:ab-p 1.5s infinite;}
+@keyframes ab-p{0%,100%{opacity:1}50%{opacity:0.3}}
+.ab-main{font-size:20px;font-weight:800;line-height:1.2;margin-bottom:6px;}
 .ab-main.standby{color:#4caf7d;}
 .ab-main.dca{color:#c9a84c;}
 .ab-main.dip{color:#ff7070;}
 .ab-main.recovery{color:#7dc4ff;}
-.ab-main.overheat{color:#ffb347;}
-.ab-sub{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;}
-.ab-detail{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
-.ab-chip{font-size:10px;font-weight:600;padding:4px 10px;border-radius:4px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.08);}
-.ab-chip.hi{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.15);}
-@keyframes ab-pulse{0%,100%{opacity:1}50%{opacity:0.5}}
-.ab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:1px;}
-.ab-dot.standby{background:#4caf7d;}
-.ab-dot.dca{background:#c9a84c;animation:ab-pulse 1.2s infinite;}
-.ab-dot.dip{background:#e05c5c;animation:ab-pulse 0.8s infinite;}
-.ab-dot.recovery{background:#4a9eff;animation:ab-pulse 1.5s infinite;}
-.ab-dot.overheat{background:#ff8c00;animation:ab-pulse 1s infinite;}
+.ab-sub{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.6;}
+.ab-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+.ab-chip{font-size:10px;font-weight:600;padding:3px 8px;border-radius:3px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.07);}
+.ab-chip.hi{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.75);border-color:rgba(255,255,255,0.13);}
+.status-box{border-radius:8px;padding:12px 14px;margin-bottom:10px;}
+.status-box.safe{background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.25);}
+.status-box.warn{background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.25);}
+.status-box.danger{background:rgba(224,92,92,0.08);border:1px solid rgba(224,92,92,0.25);}
+.status-title{font-size:12px;font-weight:700;margin-bottom:3px;}
+.status-desc{font-size:11px;color:var(--text2);line-height:1.6;}
+.order-action{border-radius:6px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;}
+.order-badge{border-radius:5px;padding:4px 9px;font-size:11px;font-weight:800;white-space:nowrap;flex-shrink:0;}
+.rule-block{border-left:3px solid var(--accent);padding:0 0 0 12px;margin-bottom:12px;}
+.rule-title{font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:3px;}
+.rule-body{font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-line;}
+.perf-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;}
+.perf-val{font-size:26px;font-weight:800;margin:4px 0;}
+.perf-desc{font-size:11px;color:var(--text2);margin-bottom:10px;}
+.compare-bar{display:flex;flex-direction:column;gap:5px;}
+.compare-row{display:flex;flex-direction:column;gap:2px;}
+.compare-label{display:flex;justify-content:space-between;font-size:10px;}
+.compare-track{background:var(--bg3);border-radius:3px;height:5px;overflow:hidden;}
+.compare-fill{height:5px;border-radius:3px;}
+.perf-tip{margin-top:10px;font-size:10px;color:var(--text3);background:var(--bg3);border-radius:4px;padding:6px 8px;line-height:1.6;}
+.cycle-step{flex:1;min-width:70px;text-align:center;padding:8px 4px;background:var(--bg3);border:1px solid var(--border);font-size:10px;position:relative;}
+.cycle-step:not(:last-child)::after{content:'→';position:absolute;right:-8px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:11px;z-index:1;}
+.cycle-step.active{background:var(--accent-dim);border-color:var(--accent-border);}
+.cycle-step.done{background:rgba(76,175,125,0.08);border-color:rgba(76,175,125,0.25);}
+.cycle-label{font-weight:700;color:var(--text1);margin-bottom:2px;font-size:10px;}
+.cycle-step.active .cycle-label{color:var(--accent2);}
+.cycle-step.done .cycle-label{color:var(--green);}
+.check-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;cursor:pointer;margin-bottom:6px;}
+#lock-screen{position:fixed;inset:0;background:#0a0e1a;display:flex;align-items:center;justify-content:center;z-index:9999;}
+.lock-box{background:#0f1525;border:1px solid rgba(74,158,255,0.35);border-radius:12px;padding:32px 28px;width:300px;text-align:center;}
+.lock-input{width:100%;background:#1e2740;border:1px solid rgba(255,255,255,0.12);color:#e8eaf0;border-radius:6px;padding:9px 14px;font-size:14px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:10px;}
+.lock-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:9px;font-size:13px;font-weight:700;cursor:pointer;}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:7px 18px;border-radius:6px;font-size:12px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.3s;pointer-events:none;}
+@media(max-width:600px){.g4{grid-template-columns:1fr 1fr;}.g2,.g3{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div id="toast"></div>
-
 <div id="lock-screen">
   <div class="lock-box">
-    <div class="lock-icon">⚡</div>
-    <div class="lock-title">QLD Hybrid 사령부</div>
-    <div class="lock-sub">접근 권한이 필요합니다</div>
-    <input class="lock-input" id="lock-pw" type="password" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkPW()">
+    <div style="font-size:28px;margin-bottom:12px;">⚡</div>
+    <div style="font-size:15px;font-weight:700;color:var(--accent2);margin-bottom:4px;">QLD Hybrid 사령부</div>
+    <div style="font-size:11px;color:var(--text3);margin-bottom:20px;">접근 권한이 필요합니다</div>
+    <input class="lock-input" id="lock-pw" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkPW()">
     <button class="lock-btn" onclick="checkPW()">입장</button>
-    <div class="lock-error" id="lock-err"></div>
+    <div style="font-size:11px;color:var(--red);margin-top:8px;min-height:16px;" id="lock-err"></div>
   </div>
 </div>
 
 <div class="app">
-  <!-- 전략 전환 탭 -->
-  <div style="display:flex;background:#0a0e1a;border-bottom:2px solid rgba(255,255,255,0.07);">
-    <div onclick="location.href='./index.html'" style="padding:10px 20px;font-size:12px;font-weight:600;color:#5a6080;border-bottom:3px solid transparent;cursor:pointer;margin-bottom:-2px;transition:color 0.2s;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='#5a6080'">⚖ Elite 5 Hybrid</div>
-    <div style="padding:10px 20px;font-size:12px;font-weight:700;color:var(--accent2);border-bottom:3px solid var(--accent);cursor:default;margin-bottom:-2px;">⚡ QLD Hybrid</div>
+  <div class="strategy-tabs">
+    <div class="strategy-tab elite" onclick="location.href='./index.html'" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='var(--text3)'">⚖ Elite 5 Hybrid</div>
+    <div class="strategy-tab qld-active">⚡ QLD Hybrid</div>
   </div>
-
   <div class="header">
     <div class="header-icon">⚡</div>
     <div>
       <div class="header-title">QLD Hybrid 사령부</div>
-      <div class="header-sub">수익률 극대화 전략 (CAGR : 21.15% · MDD : -50.46% · Sharpe : 0.80 · Calmar : 0.42)</div>
+      <div class="header-sub">수익률 극대화 전략 · CAGR 21.15% · MDD -50.46% · Sharpe 0.80 · Calmar 0.42</div>
     </div>
-    <div class="header-right">
+    <div class="live-wrap">
       <div class="live-dot"></div>
       <span style="font-size:10px;color:var(--green);">LIVE</span>
-      <span style="font-size:10px;color:var(--text3);margin-left:8px;" id="live-time">—</span>
+      <span style="font-size:10px;color:var(--text3);margin-left:6px;" id="live-time">—</span>
     </div>
   </div>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('diag',this)">① 상황 진단</div>
-    <div class="tab" onclick="switchTab('port',this)">② 포트폴리오</div>
-    <div class="tab" onclick="switchTab('analysis',this)">③ 전략 분석</div>
-    <div class="tab" onclick="switchTab('dca',this)">④ DCA 계산기</div>
-    <div class="tab" onclick="switchTab('cycle',this)">⑤ 사이클 관리</div>
-    <div class="tab" onclick="switchTab('ai',this)">⑥ AI 조언</div>
+    <div class="tab active" onclick="switchTab('dash',this)">① 대시보드</div>
+    <div class="tab" onclick="switchTab('order',this)">② 주문/리밸런싱</div>
+    <div class="tab" onclick="switchTab('cycle',this)">③ 사이클 기록</div>
+    <div class="tab" onclick="switchTab('guide',this)">④ 전략 설명서</div>
   </div>
 
-  <!-- ① 상황 진단 -->
-  <div class="content panel active" id="tab-diag">
-    <div id="qld-action-banner" class="action-banner standby" style="opacity:0;transition:opacity 0.4s;"></div>
-    <div class="data-updated">
-      <div class="data-dot pulse" id="data-dot"></div>
-      <span id="data-updated-text">데이터 불러오는 중...</span>
+  <!-- ① 대시보드 -->
+  <div class="content panel active" id="tab-dash">
+    <div style="display:flex;align-items:center;margin-bottom:12px;">
+      <div style="font-size:10px;color:var(--text3);" id="data-updated-text">로딩 중...</div>
+      <div class="live-dot" style="margin:0 6px;" id="data-dot"></div>
       <button onclick="loadData()" style="margin-left:auto;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:4px;padding:3px 8px;font-size:10px;cursor:pointer;">새로고침</button>
     </div>
-    <div class="section-title">핵심 지표</div>
-    <div class="grid4">
-      <div class="card"><div class="card-label">나스닥 하락률</div><div class="card-value" id="d-nasdaq">—</div><div class="card-sub pulse" id="d-nasdaq-sub">로딩중...</div></div>
-      <div class="card"><div class="card-label">200일선 위치</div><div class="card-value" id="d-ma200">—</div><div class="card-sub" id="d-ma200-sub">로딩중...</div></div>
-      <div class="card"><div class="card-label">VIX</div><div class="card-value" id="d-vix">—</div><div class="card-sub" id="d-vix-sub">로딩중...</div></div>
-      <div class="card"><div class="card-label">F&amp;G 지수</div><div class="card-value" id="d-fg">—</div><div class="card-sub" id="d-fg-sub">로딩중...</div></div>
+
+    <!-- 오늘의 액션 -->
+    <div id="action-banner" class="action-banner standby" style="opacity:0;transition:opacity 0.5s;"></div>
+
+    <!-- 핵심 지표 -->
+    <div class="sec">핵심 지표</div>
+    <div class="g4">
+      <div class="card"><div class="card-label">나스닥</div><div class="card-value" id="d-nasdaq" style="font-size:18px;">—</div><div class="card-sub" id="d-nasdaq-sub">로딩중...</div></div>
+      <div class="card"><div class="card-label">200일선</div><div class="card-value" id="d-ma200" style="font-size:18px;">—</div><div class="card-sub" id="d-ma200-sub">로딩중...</div></div>
+      <div class="card"><div class="card-label">VIX</div><div class="card-value" id="d-vix" style="font-size:18px;">—</div><div class="card-sub" id="d-vix-sub">로딩중...</div></div>
+      <div class="card"><div class="card-label">F&amp;G</div><div class="card-value" id="d-fg" style="font-size:18px;">—</div><div class="card-sub" id="d-fg-sub">로딩중...</div></div>
     </div>
+
+    <!-- 상태 -->
     <div id="diag-status"></div>
-    <div class="section-title">하락장 매수 트리거 (5단계)</div>
+
+    <!-- 하락장 트리거 -->
+    <div class="sec">하락장 매수 트리거 (5단계)</div>
     <div id="dip-stages"></div>
-    <hr class="divider">
-    <div class="section-title">상승장 복귀 단계 (회복모드)</div>
+
+    <div class="divider"></div>
+
+    <!-- 상승 복귀 -->
+    <div class="sec">상승장 복귀 (회복모드)</div>
     <div id="recovery-stages"></div>
-    <hr class="divider">
-    <div class="section-title">오늘 체크리스트</div>
+
+    <div class="divider"></div>
+
+    <!-- 오늘 체크리스트 -->
+    <div class="sec">오늘 체크리스트</div>
     <div id="today-checklist"></div>
   </div>
 
-  <!-- ② 포트폴리오 -->
-  <div class="content panel" id="tab-port">
-
-    <!-- 상단 컨트롤 -->
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-      <div style="font-size:11px;color:var(--text3);">환율: <span id="qld-rate-display" style="color:var(--accent);">로딩중...</span></div>
-      <div style="margin-left:auto;display:flex;gap:6px;align-items:center;">
-        <div onclick="toggleQldCurrency()" style="display:flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--border2);border-radius:6px;padding:4px 10px;cursor:pointer;user-select:none;">
-          <span style="font-size:11px;color:var(--text2);">₩</span>
-          <div style="width:28px;height:15px;background:var(--bg2);border-radius:8px;position:relative;border:1px solid var(--border2);">
-            <div id="qld-toggle-dot" style="width:11px;height:11px;background:var(--accent);border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s;"></div>
-          </div>
-          <span style="font-size:11px;color:var(--text2);">$</span>
-          <span style="font-size:11px;font-weight:700;color:var(--accent2);" id="qld-currency-label">원화</span>
-        </div>
-        <button onclick="saveQldPort()" style="background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent2);border-radius:5px;padding:4px 10px;font-size:11px;cursor:pointer;font-weight:600;">저장</button>
-        <button onclick="loadQldPort()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:5px;padding:4px 10px;font-size:11px;cursor:pointer;">불러오기</button>
-      </div>
+  <!-- ② 주문/리밸런싱 -->
+  <div class="content panel" id="tab-order">
+    <div class="sub-tabs">
+      <div class="sub-tab active" onclick="switchSub('portfolio',this)">포트폴리오</div>
+      <div class="sub-tab" onclick="switchSub('dca',this)">DCA 계산기</div>
     </div>
 
-    <!-- 보유 수량 입력 (심플) -->
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:12px;">
-      <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1.5px;margin-bottom:14px;">내 포트폴리오</div>
-
-      <!-- QLD 행 -->
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-        <div style="width:48px;font-size:14px;font-weight:800;color:var(--accent);">QLD</div>
-        <div style="flex:1;position:relative;">
-          <input class="inp" id="p-qld-qty" type="number" placeholder="0" min="0"
-            style="padding:8px 40px 8px 12px;font-size:15px;font-weight:700;text-align:right;"
-            oninput="updatePortLive()">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);">주</span>
-        </div>
-        <div style="text-align:right;min-width:80px;">
-          <div style="font-size:11px;color:var(--text3);" id="p-qld-price-disp">—</div>
-          <div style="font-size:13px;font-weight:700;color:var(--text1);" id="p-qld-val">—</div>
-        </div>
-        <div style="min-width:52px;text-align:right;">
-          <div style="font-size:13px;font-weight:700;" id="p-qld-pct">—</div>
-          <div style="font-size:9px;color:var(--text3);">현재</div>
+    <!-- 포트폴리오 서브탭 -->
+    <div class="sub-panel active" id="sub-portfolio">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--text3);">환율: <span id="qld-rate-display" style="color:var(--accent);">—</span></div>
+        <div style="margin-left:auto;display:flex;gap:6px;">
+          <div onclick="toggleQldCurrency()" style="display:flex;align-items:center;gap:5px;background:var(--bg3);border:1px solid var(--border2);border-radius:5px;padding:4px 9px;cursor:pointer;user-select:none;">
+            <span style="font-size:10px;color:var(--text2);">₩</span>
+            <div style="width:26px;height:14px;background:var(--bg2);border-radius:7px;position:relative;border:1px solid var(--border2);">
+              <div id="qld-toggle-dot" style="width:10px;height:10px;background:var(--accent);border-radius:50%;position:absolute;top:2px;left:2px;transition:left 0.2s;"></div>
+            </div>
+            <span style="font-size:10px;color:var(--text2);">$</span>
+            <span style="font-size:10px;font-weight:700;color:var(--accent2);" id="qld-currency-label">원화</span>
+          </div>
+          <button onclick="saveQldPort()" style="background:var(--accent-dim);border:1px solid var(--accent-border);color:var(--accent2);border-radius:4px;padding:4px 9px;font-size:10px;cursor:pointer;font-weight:600;">저장</button>
+          <button onclick="loadQldPort()" style="background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:4px;padding:4px 9px;font-size:10px;cursor:pointer;">불러오기</button>
         </div>
       </div>
 
-      <!-- 구분선 + 비중 바 -->
-      <div style="margin-bottom:12px;">
-        <div style="display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--bg3);">
-          <div id="port-bar-qld" style="height:6px;background:var(--accent);border-radius:3px 0 0 3px;transition:width 0.4s;width:35%;"></div>
-          <div id="port-bar-sgov" style="height:6px;background:#9aa0b8;transition:width 0.4s;width:65%;"></div>
+      <!-- 입력 -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:12px;">
+        <div style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.5px;margin-bottom:14px;">내 포트폴리오</div>
+        <!-- QLD -->
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div style="width:44px;font-size:13px;font-weight:800;color:var(--accent);">QLD</div>
+          <div style="flex:1;position:relative;">
+            <input class="inp" id="p-qld-qty" type="number" placeholder="0" min="0" style="padding:8px 36px 8px 10px;font-size:15px;font-weight:700;text-align:right;" oninput="updatePortLive()">
+            <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);">주</span>
+          </div>
+          <div style="text-align:right;min-width:76px;">
+            <div style="font-size:10px;color:var(--text3);" id="p-qld-price-disp">—</div>
+            <div style="font-size:13px;font-weight:700;" id="p-qld-val">—</div>
+          </div>
+          <div style="min-width:46px;text-align:right;">
+            <div style="font-size:13px;font-weight:700;" id="p-qld-pct">—</div>
+            <div style="font-size:9px;color:var(--text3);">현재</div>
+          </div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:3px;">
-          <span id="port-bar-qld-label">QLD 35%</span>
-          <span id="port-bar-sgov-label">SGOV 65%</span>
+        <!-- 비중 바 -->
+        <div style="margin-bottom:12px;">
+          <div style="display:flex;height:5px;border-radius:3px;overflow:hidden;background:var(--bg3);">
+            <div id="port-bar-qld" style="height:5px;background:var(--accent);transition:width 0.4s;width:35%;"></div>
+            <div id="port-bar-sgov" style="height:5px;background:#9aa0b8;transition:width 0.4s;width:65%;"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:2px;">
+            <span id="port-bar-qld-label">QLD 35%</span><span id="port-bar-sgov-label">SGOV 65%</span>
+          </div>
+        </div>
+        <!-- SGOV -->
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:44px;font-size:13px;font-weight:800;color:var(--text2);">SGOV</div>
+          <div style="flex:1;position:relative;">
+            <input class="inp" id="p-sgov-qty" type="number" placeholder="0" min="0" style="padding:8px 36px 8px 10px;font-size:15px;font-weight:700;text-align:right;" oninput="updatePortLive()">
+            <span style="position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);">주</span>
+          </div>
+          <div style="text-align:right;min-width:76px;">
+            <div style="font-size:10px;color:var(--text3);" id="p-sgov-price-disp">—</div>
+            <div style="font-size:13px;font-weight:700;" id="p-sgov-val">—</div>
+          </div>
+          <div style="min-width:46px;text-align:right;">
+            <div style="font-size:13px;font-weight:700;" id="p-sgov-pct">—</div>
+            <div style="font-size:9px;color:var(--text3);">현재</div>
+          </div>
+        </div>
+        <!-- 총액 -->
+        <div style="border-top:1px solid var(--border);margin-top:14px;padding-top:10px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:11px;color:var(--text3);">총 평가금액</span>
+          <span style="font-size:16px;font-weight:800;color:var(--accent);" id="p-total">—</span>
         </div>
       </div>
 
-      <!-- SGOV 행 -->
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="width:48px;font-size:14px;font-weight:800;color:var(--text2);">SGOV</div>
-        <div style="flex:1;position:relative;">
-          <input class="inp" id="p-sgov-qty" type="number" placeholder="0" min="0"
-            style="padding:8px 40px 8px 12px;font-size:15px;font-weight:700;text-align:right;"
-            oninput="updatePortLive()">
-          <span style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--text3);">주</span>
-        </div>
-        <div style="text-align:right;min-width:80px;">
-          <div style="font-size:11px;color:var(--text3);" id="p-sgov-price-disp">—</div>
-          <div style="font-size:13px;font-weight:700;color:var(--text1);" id="p-sgov-val">—</div>
-        </div>
-        <div style="min-width:52px;text-align:right;">
-          <div style="font-size:13px;font-weight:700;" id="p-sgov-pct">—</div>
-          <div style="font-size:9px;color:var(--text3);">현재</div>
-        </div>
-      </div>
+      <button onclick="generateOrder()" style="width:100%;background:linear-gradient(135deg,var(--accent),#2d7fd4);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:12px;letter-spacing:0.3px;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
+        📋 오늘의 주문안 생성
+      </button>
 
-      <!-- 총액 -->
-      <div style="border-top:1px solid var(--border);margin-top:14px;padding-top:12px;display:flex;align-items:center;justify-content:space-between;">
-        <span style="font-size:11px;color:var(--text3);">총 평가금액</span>
-        <span style="font-size:16px;font-weight:800;color:var(--accent);" id="p-total">—</span>
-      </div>
+      <div id="port-order"></div>
     </div>
 
-    <!-- 주문안 생성 버튼 -->
-    <button onclick="generateOrder()" style="width:100%;background:linear-gradient(135deg,var(--accent) 0%,#2d7fd4 100%);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;letter-spacing:0.5px;margin-bottom:12px;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-      📋 오늘의 주문안 생성
-    </button>
-
-    <!-- 주문안 결과 -->
-    <div id="port-order"></div>
-
-    <!-- 도넛 차트 (접기 가능) -->
-    <div style="margin-top:14px;">
-      <div onclick="togglePieChart()" style="display:flex;align-items:center;gap:6px;cursor:pointer;margin-bottom:8px;">
-        <div style="font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1.5px;">포트폴리오 구성</div>
-        <span id="pie-toggle-icon" style="font-size:10px;color:var(--text3);">▼</span>
-      </div>
-      <div id="pie-wrap" style="display:none;text-align:center;">
-        <canvas id="qld-pie" width="180" height="180" style="display:block;margin:0 auto;"></canvas>
-        <div id="qld-pie-legend" style="display:flex;gap:10px;justify-content:center;margin-top:8px;font-size:11px;color:var(--text2);"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ③ 전략 분석 -->
-  <div class="content panel" id="tab-analysis">
-
-    <!-- 전략 포지셔닝 -->
-    <div style="background:linear-gradient(135deg,#0d1525 0%,#111e35 100%);border:1px solid rgba(74,158,255,0.25);border-radius:10px;padding:20px 22px;margin-bottom:14px;position:relative;overflow:hidden;">
-      <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(74,158,255,0.02) 0,rgba(74,158,255,0.02) 1px,transparent 1px,transparent 8px);"></div>
-      <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(74,158,255,0.6);margin-bottom:8px;">STRATEGY POSITIONING</div>
-      <div style="font-size:20px;font-weight:800;color:#7dc4ff;margin-bottom:6px;">리스크 통제형 성장 전략</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.7;">QQQ의 폭발적 수익성과 SGOV의 방어력을 결합.<br>하락장에서 탄약을 비축하고, 저점에서 레버리지로 수익을 극대화하는 구조.</div>
-      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
-        <div style="background:rgba(74,158,255,0.1);border:1px solid rgba(74,158,255,0.2);border-radius:5px;padding:5px 12px;font-size:10px;font-weight:700;color:#7dc4ff;">2종목 단순 구조</div>
-        <div style="background:rgba(76,175,125,0.1);border:1px solid rgba(76,175,125,0.2);border-radius:5px;padding:5px 12px;font-size:10px;font-weight:700;color:#4caf7d;">규칙 기반 자동화</div>
-        <div style="background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:5px;padding:5px 12px;font-size:10px;font-weight:700;color:#c9a84c;">하락장 역발상 매수</div>
-        <div style="background:rgba(155,127,232,0.1);border:1px solid rgba(155,127,232,0.2);border-radius:5px;padding:5px 12px;font-size:10px;font-weight:700;color:#9b7fe8;">감정 개입 제로</div>
-      </div>
-    </div>
-
-    <!-- 백테스트 성과 카드 -->
-    <div class="section-title">백테스트 성과 (2010~2025, 15년)</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-
-      <!-- CAGR -->
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <div style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:1px;">CAGR · 연평균 수익률</div>
-          <div style="font-size:9px;color:rgba(76,175,125,0.8);background:rgba(76,175,125,0.1);padding:2px 6px;border-radius:3px;font-weight:700;">장기 성장력</div>
+    <!-- DCA 서브탭 -->
+    <div class="sub-panel" id="sub-dca">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+          <span style="font-size:11px;color:var(--text2);width:100px;">월 적립금</span>
+          <input class="inp" id="dca-monthly" type="number" placeholder="100" oninput="calcDCA()">
+          <span style="font-size:11px;color:var(--text3);width:36px;">만원</span>
         </div>
-        <div style="font-size:28px;font-weight:800;color:#4caf7d;margin-bottom:4px;">21.15%</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">1,000만원 투자 시 15년 후 약 1억 7천만원</div>
-        <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">비교</div>
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">21.15%</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#4caf7d;border-radius:3px;width:100%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">QQQ (나스닥)</span><span style="color:#9b7fe8;font-weight:700;">17~18%</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#9b7fe8;border-radius:3px;width:83%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">VOO (S&amp;P500)</span><span style="color:#4a9eff;font-weight:700;">10~11%</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#4a9eff;border-radius:3px;width:50%;"></div></div>
-          </div>
-        </div>
-        <div style="margin-top:10px;font-size:10px;color:var(--text3);background:var(--bg3);border-radius:5px;padding:6px 8px;line-height:1.6;">
-          💡 VOO 대비 약 <span style="color:#4caf7d;font-weight:700;">+10%p</span> 높음. 15년 복리 효과로 최종 자산 차이가 극적으로 벌어집니다.
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:11px;color:var(--text2);width:100px;">현재 SGOV 비중</span>
+          <input class="inp" id="dca-sgov-pct" type="number" placeholder="65" step="0.1" oninput="calcDCA()">
+          <span style="font-size:11px;color:var(--text3);width:36px;">%</span>
         </div>
       </div>
-
-      <!-- MDD -->
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <div style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:1px;">MDD · 최대 낙폭</div>
-          <div style="font-size:9px;color:rgba(224,92,92,0.8);background:rgba(224,92,92,0.1);padding:2px 6px;border-radius:3px;font-weight:700;">최악의 구간 손실</div>
+      <div id="dca-result"><div style="color:var(--text3);font-size:12px;">월 적립금을 입력하세요.</div></div>
+      <div class="divider"></div>
+      <div class="sec">DCA 규칙</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
+          <div style="min-width:56px;text-align:center;"><div style="font-size:13px;font-weight:700;color:var(--green);">일반</div><div style="font-size:9px;color:var(--text3);">SGOV &gt;5%</div></div>
+          <div><div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:3px;">QLD 50% / SGOV 50%</div><div style="font-size:11px;color:var(--text2);">매월 22일 정기매수 (휴일이면 다음 영업일)</div></div>
         </div>
-        <div style="font-size:28px;font-weight:800;color:#e05c5c;margin-bottom:4px;">-50.46%</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">역대 최악 구간에서 절반 가까이 하락. 그러나 이미 알고 감내하는 리스크.</div>
-        <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">비교 (낮을수록 좋음)</div>
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">QQQ 단독 보유</span><span style="color:#e05c5c;font-weight:700;">-83%</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#e05c5c;border-radius:3px;width:100%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">VOO (S&amp;P500)</span><span style="color:#ffc107;font-weight:700;">-55%</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#ffc107;border-radius:3px;width:66%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">-50.46%</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#4caf7d;border-radius:3px;width:61%;"></div></div>
-          </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
+          <div style="min-width:56px;text-align:center;"><div style="font-size:13px;font-weight:700;color:var(--red);">부족</div><div style="font-size:9px;color:var(--text3);">SGOV ≤5%</div></div>
+          <div><div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:3px;">QLD 70% / SGOV 30%</div><div style="font-size:11px;color:var(--text2);">탄약 보충 우선 — SGOV 비중 회복 필요</div></div>
         </div>
-        <div style="margin-top:10px;font-size:10px;color:var(--text3);background:var(--bg3);border-radius:5px;padding:6px 8px;line-height:1.6;">
-          💡 QQQ 단독(-83%)보다 <span style="color:#4caf7d;font-weight:700;">32%p 낮음</span>. SGOV 탄약이 하락폭을 제어합니다.
-        </div>
-      </div>
-
-      <!-- Sharpe -->
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <div style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:1px;">Sharpe Ratio · 샤프 지수</div>
-          <div style="font-size:9px;color:rgba(74,158,255,0.8);background:rgba(74,158,255,0.1);padding:2px 6px;border-radius:3px;font-weight:700;">변동성 대비 효율</div>
-        </div>
-        <div style="font-size:28px;font-weight:800;color:#4a9eff;margin-bottom:4px;">0.80</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">감내하는 변동성 1단위당 얼마나 수익을 냈는지. 1.0 이상이면 우수.</div>
-        <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">비교</div>
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">VOO (S&amp;P500)</span><span style="color:#4a9eff;font-weight:700;">0.75~0.85</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#4a9eff;border-radius:3px;width:80%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">0.80</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#4caf7d;border-radius:3px;width:80%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">QQQ 단독</span><span style="color:#9b7fe8;font-weight:700;">0.75~0.85</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#9b7fe8;border-radius:3px;width:80%;"></div></div>
-          </div>
-        </div>
-        <div style="margin-top:10px;font-size:10px;color:var(--text3);background:var(--bg3);border-radius:5px;padding:6px 8px;line-height:1.6;">
-          💡 QQQ보다 <span style="color:#4caf7d;font-weight:700;">2배 높은 수익</span>을 내면서 샤프는 동일. 효율이 훨씬 좋습니다.
-        </div>
-      </div>
-
-      <!-- Calmar -->
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <div style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:1px;">Calmar Ratio · 칼마 비율</div>
-          <div style="font-size:9px;color:rgba(201,168,76,0.8);background:rgba(201,168,76,0.1);padding:2px 6px;border-radius:3px;font-weight:700;">손실 대비 성장력</div>
-        </div>
-        <div style="font-size:28px;font-weight:800;color:#c9a84c;margin-bottom:4px;">0.42</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:12px;">CAGR ÷ MDD의 절댓값. 감내한 최대 손실 대비 얼마나 성장했는지.</div>
-        <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">비교 (높을수록 좋음)</div>
-        <div style="display:flex;flex-direction:column;gap:5px;">
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#c9a84c;font-weight:700;">0.42</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#c9a84c;border-radius:3px;width:100%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">QQQ 단독</span><span style="color:#9b7fe8;font-weight:700;">0.21~0.25</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#9b7fe8;border-radius:3px;width:55%;"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px;"><span style="color:var(--text2);">VOO (S&amp;P500)</span><span style="color:#4a9eff;font-weight:700;">0.18~0.22</span></div>
-            <div style="background:var(--bg3);border-radius:3px;height:6px;overflow:hidden;"><div style="height:6px;background:#4a9eff;border-radius:3px;width:48%;"></div></div>
-          </div>
-        </div>
-        <div style="margin-top:10px;font-size:10px;color:var(--text3);background:var(--bg3);border-radius:5px;padding:6px 8px;line-height:1.6;">
-          💡 VOO 대비 <span style="color:#c9a84c;font-weight:700;">약 2배</span>. 같은 고통을 감내하고 훨씬 더 성장합니다.
-        </div>
-      </div>
-
-    </div>
-
-    <!-- 하락장 생존 기록 -->
-    <div class="section-title">주요 하락장 생존 기록</div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-          <div style="font-size:12px;font-weight:700;color:var(--text1);">2020 코로나 쇼크</div>
-          <div style="font-size:10px;color:var(--text3);">2020.02 ~ 2020.03 (약 33일)</div>
-          <div style="margin-left:auto;font-size:11px;font-weight:700;color:#4caf7d;">완전 회복 6개월</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-          <div style="background:var(--bg3);border-radius:5px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);">QLD Hybrid</div><div style="font-size:14px;font-weight:700;color:#4caf7d;">~-35%</div><div style="font-size:9px;color:var(--text3);">SGOV 탄약 덕분</div></div>
-          <div style="background:var(--bg3);border-radius:5px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);">QQQ 단독</div><div style="font-size:14px;font-weight:700;color:#e05c5c;">~-28%</div><div style="font-size:9px;color:var(--text3);">빠른 V자 반등</div></div>
-          <div style="background:var(--bg3);border-radius:5px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);">VOO</div><div style="font-size:14px;font-weight:700;color:#ffc107;">~-34%</div><div style="font-size:9px;color:var(--text3);">18개월 회복</div></div>
-        </div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-          <div style="font-size:12px;font-weight:700;color:var(--text1);">2022 금리 인상 충격</div>
-          <div style="font-size:10px;color:var(--text3);">2021.12 ~ 2022.10 (약 10개월)</div>
-          <div style="margin-left:auto;font-size:11px;font-weight:700;color:#4caf7d;">완전 회복 2년</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-          <div style="background:var(--bg3);border-radius:5px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);">QLD Hybrid</div><div style="font-size:14px;font-weight:700;color:#4caf7d;">~-50%</div><div style="font-size:9px;color:var(--text3);">하락 매수로 물량 확보</div></div>
-          <div style="background:var(--bg3);border-radius:5px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);">QQQ 단독</div><div style="font-size:14px;font-weight:700;color:#e05c5c;">~-35%</div><div style="font-size:9px;color:var(--text3);">2년 반 회복</div></div>
-          <div style="background:var(--bg3);border-radius:5px;padding:8px;text-align:center;"><div style="font-size:10px;color:var(--text3);">VOO</div><div style="font-size:14px;font-weight:700;color:#ffc107;">~-25%</div><div style="font-size:9px;color:var(--text3);">2년 회복</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 이 전략이 맞는 사람 -->
-    <div class="section-title">이 전략이 맞는 사람 / 아닌 사람</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-      <div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.25);border-radius:8px;padding:14px;">
-        <div style="font-size:11px;font-weight:700;color:#4caf7d;margin-bottom:10px;">✅ 맞는 사람</div>
-        <div style="display:flex;flex-direction:column;gap:7px;font-size:11px;color:var(--text2);line-height:1.5;">
-          <div>· 투자 기간 10년 이상 확보된 분</div>
-          <div>· -50% 하락을 "기회"로 볼 수 있는 분</div>
-          <div>· 규칙을 지키는 것에서 만족감을 얻는 분</div>
-          <div>· 단순한 구조를 선호하는 분 (2종목)</div>
-          <div>· 매월 22일 기계적 실행이 가능한 분</div>
-        </div>
-      </div>
-      <div style="background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.25);border-radius:8px;padding:14px;">
-        <div style="font-size:11px;font-weight:700;color:#e05c5c;margin-bottom:10px;">❌ 아닌 사람</div>
-        <div style="display:flex;flex-direction:column;gap:7px;font-size:11px;color:var(--text2);line-height:1.5;">
-          <div>· 5년 내 목돈이 필요한 분</div>
-          <div>· -30% 이상 손실 시 멘탈이 흔들리는 분</div>
-          <div>· 시장 뉴스에 반응해 매매하고 싶은 분</div>
-          <div>· 안정적인 배당 수익이 필요한 분</div>
-          <div>· 레버리지 ETF에 심리적 거부감이 있는 분</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 핵심 요약 -->
-    <div style="background:linear-gradient(135deg,#0d1a2e 0%,#111e35 100%);border:1px solid rgba(74,158,255,0.2);border-radius:8px;padding:14px 16px;">
-      <div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:8px;">📌 한 줄 요약</div>
-      <div style="font-size:13px;color:var(--text1);line-height:1.8;">
-        "QQQ 수준의 수익(+21%)을 내면서, QQQ 하락의 60%만 맞는 전략.<br>
-        <span style="color:#4a9eff;">단, MDD -50%는 각오하고 시작해야 하며, 그 구간에서 규칙을 지키는 것이 핵심입니다.</span>"
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ④ DCA 계산기 -->
-  <div class="content panel" id="tab-dca">
-    <div class="section-title">월 적립 매수 계산기</div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-      <div class="input-row"><span class="input-label">월 적립금</span><input class="inp" id="dca-monthly" type="number" placeholder="100" oninput="calcDCA()"><span class="inp-unit">만원</span></div>
-      <div class="input-row"><span class="input-label">현재 SGOV 비중</span><input class="inp" id="dca-sgov-pct" type="number" placeholder="65" step="0.1" oninput="calcDCA()"><span class="inp-unit">%</span></div>
-    </div>
-    <div id="dca-result"><div style="color:var(--text3);font-size:12px;">월 적립금을 입력하세요.</div></div>
-    <hr class="divider">
-    <div class="section-title">DCA 규칙 안내</div>
-    <div style="display:flex;flex-direction:column;gap:6px;">
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;">
-        <div style="min-width:60px;text-align:center;"><div style="font-size:14px;font-weight:700;color:var(--green);">일반</div><div style="font-size:9px;color:var(--text3);">SGOV &gt; 5%</div></div>
-        <div><div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:4px;">QLD 50% / SGOV 50%</div><div style="font-size:11px;color:var(--text2);">매월 22일 정기매수 (휴일이면 다음 영업일)</div></div>
-      </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;">
-        <div style="min-width:60px;text-align:center;"><div style="font-size:14px;font-weight:700;color:var(--red);">부족</div><div style="font-size:9px;color:var(--text3);">SGOV ≤ 5%</div></div>
-        <div><div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:4px;">QLD 70% / SGOV 30%</div><div style="font-size:11px;color:var(--text2);">탄약 보충 우선 — SGOV 비중 회복 필요</div></div>
       </div>
     </div>
   </div>
 
-  <!-- ④ 사이클 관리 -->
+  <!-- ③ 사이클 기록 -->
   <div class="content panel" id="tab-cycle">
-    <div class="section-title">현재 사이클 상태</div>
-    <div id="cycle-status"></div>
-    <hr class="divider">
-    <div class="section-title">사이클 흐름</div>
-    <div class="cycle-steps" id="cycle-steps"></div>
-    <hr class="divider">
-    <div class="section-title">ATH 및 사이클 설정</div>
-    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-      <div class="input-row"><span class="input-label">QQQ ATH 가격</span><input class="inp" id="ath-price" type="number" placeholder="534.00" step="0.01"><span class="inp-unit">$</span></div>
-      <div class="input-row"><span class="input-label">ATH 날짜</span><input class="inp" id="ath-date" type="date"></div>
-      <div class="input-row"><span class="input-label">현재 QQQ 가격</span><input class="inp" id="cur-qqq" type="number" placeholder="490.00" step="0.01" oninput="calcCycleStatus()"><span class="inp-unit">$</span></div>
-      <div style="margin-top:10px;">
-        <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">GitHub Token (저장 시 필요 · 세션 중에만 유지)</div>
-        <input class="inp" id="cycle-token" type="password" placeholder="ghp_..." style="padding:6px 8px;font-size:11px;margin-bottom:8px;">
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-blue" onclick="saveCycleSettings()">설정 저장</button>
-        <button onclick="resetCycle()" style="background:rgba(224,92,92,0.2);border:1px solid rgba(224,92,92,0.3);color:var(--red);border-radius:6px;padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;">사이클 초기화</button>
-      </div>
-      <div id="cycle-save-status" style="font-size:11px;color:var(--text3);margin-top:8px;min-height:16px;"></div>
+    <div class="sub-tabs">
+      <div class="sub-tab active" onclick="switchSub('cycle-state',this)">사이클 관리</div>
+      <div class="sub-tab" onclick="switchSub('cycle-perf',this)">전략 성과</div>
     </div>
-    <div class="section-title">하락 단계 발동 기록</div>
-    <div id="dip-check-list"></div>
-    <hr class="divider">
-    <div class="section-title">상승 복귀 단계 발동 기록</div>
-    <div id="recovery-check-list"></div>
+
+    <!-- 사이클 관리 -->
+    <div class="sub-panel active" id="sub-cycle-state">
+      <div class="sec">현재 사이클 상태</div>
+      <div id="cycle-status"></div>
+
+      <div class="sec">사이클 흐름</div>
+      <div style="display:flex;align-items:center;overflow-x:auto;margin-bottom:14px;" id="cycle-steps"></div>
+
+      <div class="sec">ATH 설정</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--text2);width:100px;">QQQ ATH 가격</span>
+          <input class="inp" id="ath-price" type="number" placeholder="534.00" step="0.01">
+          <span style="font-size:11px;color:var(--text3);width:24px;">$</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+          <span style="font-size:11px;color:var(--text2);width:100px;">ATH 날짜</span>
+          <input class="inp" id="ath-date" type="date">
+          <span style="width:24px;"></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:11px;color:var(--text2);width:100px;">현재 QQQ</span>
+          <input class="inp" id="cur-qqq" type="number" placeholder="490.00" step="0.01" oninput="calcCycleStatus()">
+          <span style="font-size:11px;color:var(--text3);width:24px;">$</span>
+        </div>
+        <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">GitHub Token (저장 시 필요)</div>
+        <input class="inp" id="cycle-token" type="password" placeholder="ghp_..." style="font-size:11px;margin-bottom:10px;">
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-blue" onclick="saveCycleSettings()" style="font-size:11px;padding:7px 14px;">설정 저장</button>
+          <button onclick="resetCycle()" style="background:rgba(224,92,92,0.15);border:1px solid rgba(224,92,92,0.3);color:var(--red);border-radius:6px;padding:7px 14px;font-size:11px;font-weight:600;cursor:pointer;">사이클 초기화</button>
+        </div>
+        <div id="cycle-save-status" style="font-size:11px;color:var(--text3);margin-top:8px;min-height:14px;"></div>
+      </div>
+
+      <div class="sec">하락 단계 발동 기록</div>
+      <div id="dip-check-list"></div>
+      <div class="divider"></div>
+      <div class="sec">상승 복귀 단계 발동 기록</div>
+      <div id="recovery-check-list"></div>
+    </div>
+
+    <!-- 전략 성과 -->
+    <div class="sub-panel" id="sub-cycle-perf">
+      <div style="background:linear-gradient(135deg,#0d1525,#111e35);border:1px solid rgba(74,158,255,0.2);border-radius:10px;padding:18px 20px;margin-bottom:14px;">
+        <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(74,158,255,0.5);margin-bottom:6px;">STRATEGY POSITIONING</div>
+        <div style="font-size:18px;font-weight:800;color:#7dc4ff;margin-bottom:5px;">리스크 통제형 성장 전략</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.7;">QQQ의 폭발적 수익성 + SGOV의 방어력을 결합.<br>하락에서 탄약을 비축하고, 저점에서 레버리지로 수익을 극대화.</div>
+      </div>
+      <div class="sec">백테스트 성과 (2010~2025)</div>
+      <div class="g2" style="margin-bottom:10px;">
+        <div class="perf-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div style="font-size:10px;color:var(--text3);">CAGR · 연평균 수익률</div><div style="font-size:9px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 6px;border-radius:3px;font-weight:700;">장기 성장력</div></div>
+          <div class="perf-val" style="color:#4caf7d;">21.15%</div>
+          <div class="perf-desc">1,000만원 → 15년 후 약 1억 7천만원</div>
+          <div class="compare-bar">
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">21.15%</span></div><div class="compare-track"><div class="compare-fill" style="background:#4caf7d;width:100%;"></div></div></div>
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QQQ</span><span style="color:#9b7fe8;font-weight:700;">17~18%</span></div><div class="compare-track"><div class="compare-fill" style="background:#9b7fe8;width:83%;"></div></div></div>
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">VOO</span><span style="color:#4a9eff;font-weight:700;">10~11%</span></div><div class="compare-track"><div class="compare-fill" style="background:#4a9eff;width:50%;"></div></div></div>
+          </div>
+          <div class="perf-tip">💡 VOO 대비 <span style="color:#4caf7d;font-weight:700;">+10%p</span>. 복리로 15년이면 자산 차이가 극적으로 벌어집니다.</div>
+        </div>
+        <div class="perf-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div style="font-size:10px;color:var(--text3);">MDD · 최대 낙폭</div><div style="font-size:9px;background:rgba(224,92,92,0.15);color:#e05c5c;padding:2px 6px;border-radius:3px;font-weight:700;">최악의 손실</div></div>
+          <div class="perf-val" style="color:#e05c5c;">-50.46%</div>
+          <div class="perf-desc">이미 알고 감내하는 리스크. 규칙이 버텨줍니다.</div>
+          <div class="compare-bar">
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QQQ 단독</span><span style="color:#e05c5c;font-weight:700;">-83%</span></div><div class="compare-track"><div class="compare-fill" style="background:#e05c5c;width:100%;"></div></div></div>
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">VOO</span><span style="color:#ffc107;font-weight:700;">-55%</span></div><div class="compare-track"><div class="compare-fill" style="background:#ffc107;width:66%;"></div></div></div>
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">-50.46%</span></div><div class="compare-track"><div class="compare-fill" style="background:#4caf7d;width:61%;"></div></div></div>
+          </div>
+          <div class="perf-tip">💡 QQQ 단독(-83%)보다 <span style="color:#4caf7d;font-weight:700;">32%p 낮음</span>. SGOV 탄약이 하락폭을 제어합니다.</div>
+        </div>
+        <div class="perf-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div style="font-size:10px;color:var(--text3);">Sharpe · 변동성 대비 효율</div><div style="font-size:9px;background:rgba(74,158,255,0.15);color:#4a9eff;padding:2px 6px;border-radius:3px;font-weight:700;">리스크 효율</div></div>
+          <div class="perf-val" style="color:#4a9eff;">0.80</div>
+          <div class="perf-desc">변동성 1단위당 수익. 1.0 이상이면 우수.</div>
+          <div class="compare-bar">
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">0.80</span></div><div class="compare-track"><div class="compare-fill" style="background:#4caf7d;width:80%;"></div></div></div>
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">VOO</span><span style="color:#4a9eff;font-weight:700;">0.75~0.85</span></div><div class="compare-track"><div class="compare-fill" style="background:#4a9eff;width:80%;"></div></div></div>
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QQQ</span><span style="color:#9b7fe8;font-weight:700;">0.75~0.85</span></div><div class="compare-track"><div class="compare-fill" style="background:#9b7fe8;width:80%;"></div></div></div>
+          </div>
+          <div class="perf-tip">💡 QQQ보다 <span style="color:#4caf7d;font-weight:700;">2배 높은 수익</span>을 내면서 샤프는 동일. 효율이 훨씬 좋습니다.</div>
+        </div>
+        <div class="perf-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div style="font-size:10px;color:var(--text3);">Calmar · 손실 대비 성장</div><div style="font-size:9px;background:rgba(201,168,76,0.15);color:#c9a84c;padding:2px 6px;border-radius:3px;font-weight:700;">성장 효율</div></div>
+          <div class="perf-val" style="color:#c9a84c;">0.42</div>
+          <div class="perf-desc">CAGR ÷ MDD. 같은 고통으로 얼마나 성장했는가.</div>
+          <div class="compare-bar">
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#c9a84c;font-weight:700;">0.42</span></div><div class="compare-track"><div class="compare-fill" style="background:#c9a84c;width:100%;"></div></div></div>
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QQQ</span><span style="color:#9b7fe8;font-weight:700;">0.21~0.25</span></div><div class="compare-track"><div class="compare-fill" style="background:#9b7fe8;width:55%;"></div></div></div>
+            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">VOO</span><span style="color:#4a9eff;font-weight:700;">0.18~0.22</span></div><div class="compare-track"><div class="compare-fill" style="background:#4a9eff;width:48%;"></div></div></div>
+          </div>
+          <div class="perf-tip">💡 VOO 대비 <span style="color:#c9a84c;font-weight:700;">약 2배</span>. 같은 고통을 감내하고 훨씬 더 성장합니다.</div>
+        </div>
+      </div>
+
+      <div class="sec">이 전략이 맞는 사람 / 아닌 사람</div>
+      <div class="g2">
+        <div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.2);border-radius:8px;padding:14px;">
+          <div style="font-size:11px;font-weight:700;color:#4caf7d;margin-bottom:8px;">✅ 맞는 사람</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);">
+            <div>· 투자 기간 10년 이상</div>
+            <div>· -50% 하락을 기회로 볼 수 있는 분</div>
+            <div>· 규칙 지키기에서 만족감을 얻는 분</div>
+            <div>· 단순한 2종목 구조를 선호하는 분</div>
+            <div>· 매월 22일 기계적 실행이 가능한 분</div>
+          </div>
+        </div>
+        <div style="background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.2);border-radius:8px;padding:14px;">
+          <div style="font-size:11px;font-weight:700;color:#e05c5c;margin-bottom:8px;">❌ 아닌 사람</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);">
+            <div>· 5년 내 목돈이 필요한 분</div>
+            <div>· -30% 이상 손실 시 멘탈 흔들리는 분</div>
+            <div>· 시장 뉴스에 반응해 매매하고 싶은 분</div>
+            <div>· 안정적인 배당 수익이 필요한 분</div>
+            <div>· 레버리지 ETF에 거부감이 있는 분</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- ⑤ AI 조언 -->
-  <div class="content panel" id="tab-ai">
-    <div style="background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--accent2);margin-bottom:14px;">
-      ⚡ QLD Hybrid 전략 규칙 기반 정적 답변 제공
+  <!-- ④ 전략 설명서 -->
+  <div class="content panel" id="tab-guide">
+    <div class="sub-tabs">
+      <div class="sub-tab active" onclick="switchSub('guide-rules',this)">운용 규칙</div>
+      <div class="sub-tab" onclick="switchSub('guide-faq',this)">빠른 답변</div>
     </div>
-    <div class="section-title">빠른 질문</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-      <button class="quick-btn" onclick="showQldAnswer('dca')"><span class="quick-btn-title">DCA 매수 규칙</span><span class="quick-btn-sub">월 적립 비율 및 날짜</span></button>
-      <button class="quick-btn" onclick="showQldAnswer('dip')"><span class="quick-btn-title">하락장 매수 절차</span><span class="quick-btn-sub">5단계 트리거 + 발동 조건</span></button>
-      <button class="quick-btn" onclick="showQldAnswer('recovery')"><span class="quick-btn-title">상승장 복귀 절차</span><span class="quick-btn-sub">ATH 기준 3단계 리밸런싱</span></button>
-      <button class="quick-btn" onclick="showQldAnswer('cycle')"><span class="quick-btn-title">사이클 정의</span><span class="quick-btn-sub">초기화 조건 및 흐름</span></button>
-      <button class="quick-btn" onclick="showQldAnswer('checklist')"><span class="quick-btn-title">실행 체크리스트</span><span class="quick-btn-sub">매일/월 1회 확인 항목</span></button>
-      <button class="quick-btn" onclick="showQldAnswer('forbidden')"><span class="quick-btn-title">금지사항</span><span class="quick-btn-sub">절대 하지 말아야 할 것</span></button>
+
+    <!-- 운용 규칙 -->
+    <div class="sub-panel active" id="sub-guide-rules">
+      <div class="sec">전략 구조</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
+        <div style="display:grid;grid-template-columns:60px 1fr 80px;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;color:var(--text3);margin-bottom:6px;"><span>종목</span><span>역할</span><span style="text-align:right;">비중</span></div>
+        <div style="display:grid;grid-template-columns:60px 1fr 80px;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);align-items:center;">
+          <span style="font-size:13px;font-weight:800;color:var(--accent);">QLD</span>
+          <span style="font-size:11px;color:var(--text2);">나스닥 2배 레버리지 · 수익 엔진</span>
+          <span style="font-size:13px;font-weight:700;color:var(--accent);text-align:right;">35%</span>
+        </div>
+        <div style="display:grid;grid-template-columns:60px 1fr 80px;gap:8px;padding:8px 0;align-items:center;">
+          <span style="font-size:13px;font-weight:800;color:var(--text2);">SGOV</span>
+          <span style="font-size:11px;color:var(--text2);">단기국채 · 탄약 저장소 + 무위험 수익</span>
+          <span style="font-size:13px;font-weight:700;color:var(--text2);text-align:right;">65%</span>
+        </div>
+      </div>
+
+      <div class="sec">DCA 규칙</div>
+      <div class="rule-block"><div class="rule-title">정기 매수일</div><div class="rule-body">매월 22일 (휴일이면 다음 영업일)</div></div>
+      <div class="rule-block"><div class="rule-title">일반 모드 (SGOV &gt; 5%)</div><div class="rule-body">QLD 50% / SGOV 50% 비율로 매수</div></div>
+      <div class="rule-block"><div class="rule-title">탄약 부족 모드 (SGOV ≤ 5%)</div><div class="rule-body">QLD 70% / SGOV 30%로 변경 → SGOV 비중 회복 우선</div></div>
+
+      <div class="sec">하락장 매수 규칙</div>
+      <div class="rule-block"><div class="rule-title">발동 조건 (AND 둘 다 충족)</div><div class="rule-body">① QQQ가 200일선 아래\n② QQQ가 직전 ATH 대비 낙폭 도달</div></div>
+      <div class="rule-block"><div class="rule-title">1단계 -12%</div><div class="rule-body">전체계좌의 5%만큼 SGOV 매도 → QLD 매수</div></div>
+      <div class="rule-block"><div class="rule-title">2단계 -18%</div><div class="rule-body">전체계좌의 8%만큼 SGOV 매도 → QLD 매수</div></div>
+      <div class="rule-block"><div class="rule-title">3단계 -25%</div><div class="rule-body">전체계좌의 10%만큼 SGOV 매도 → QLD 매수</div></div>
+      <div class="rule-block"><div class="rule-title">4단계 -35%</div><div class="rule-body">전체계좌의 12%만큼 SGOV 매도 → QLD 매수</div></div>
+      <div class="rule-block"><div class="rule-title">5단계 -45%</div><div class="rule-body">전체계좌의 15%만큼 SGOV 매도 → QLD 매수</div></div>
+      <div class="rule-block"><div class="rule-title">동시 신호 처리</div><div class="rule-body">여러 단계 동시 충족 시 비율 합산하여 한번에 실행</div></div>
+      <div class="rule-block"><div class="rule-title">SGOV 부족 시</div><div class="rule-body">잔액 부족하면 해당 단계는 실행된 것으로 간주. 이후 동일 단계 재실행 없음</div></div>
+
+      <div class="sec">상승장 복귀 (회복모드)</div>
+      <div class="rule-block"><div class="rule-title">발동 조건</div><div class="rule-body">하락장 매수 1회 이상 발생한 이후 → 회복모드 진입</div></div>
+      <div class="rule-block"><div class="rule-title">1단계: ATH 돌파</div><div class="rule-body">QQQ 전고점 돌파 → QLD 85% / SGOV 15% 리밸런싱</div></div>
+      <div class="rule-block"><div class="rule-title">2단계: ATH+20%</div><div class="rule-body">ATH 돌파 시점 기준 +20% → QLD 65% / SGOV 35% 리밸런싱</div></div>
+      <div class="rule-block"><div class="rule-title">3단계: ATH+30%</div><div class="rule-body">ATH 돌파 시점 기준 +30% → QLD 50% / SGOV 50% → 회복모드 종료</div></div>
+      <div class="rule-block"><div class="rule-title">기준점 주의</div><div class="rule-body">+20%, +30%는 ATH 돌파 시점의 QQQ 종가를 기준으로 계산</div></div>
+
+      <div class="sec">사이클 정의</div>
+      <div class="rule-block"><div class="rule-title">흐름</div><div class="rule-body">① ATH 형성 → ② 하락(200일선 하회) → ③ 단계별 매수 → ④ 반등 → ⑤ ATH 돌파 → ⑥ 85/15→65/35→50/50 복귀 → ⑦ 초기화</div></div>
+      <div class="rule-block"><div class="rule-title">초기 설정 (1회성)</div><div class="rule-body">35/65는 시작점 리스크를 줄이기 위한 1회성. 이후에는 50/50이 기본</div></div>
+      <div class="rule-block"><div class="rule-title">초기화 조건</div><div class="rule-body">복귀 3단계(50/50) 완료 후 새로운 ATH 형성 시 초기화 → 새 사이클 진입</div></div>
+
+      <div class="sec">금지사항</div>
+      <div style="background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.2);border-radius:8px;padding:14px;margin-bottom:10px;">
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="color:var(--red);font-weight:700;">①</span><span style="color:var(--text1);">하락장에서 매수 생략</span></div>
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="color:var(--red);font-weight:700;">②</span><span style="color:var(--text1);">상승장에서 리밸런싱 지연</span></div>
+          <div style="display:flex;gap:8px;font-size:12px;"><span style="color:var(--red);font-weight:700;">③</span><span style="color:var(--text1);">임의 판단 개입</span></div>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:var(--text3);">이 전략은 "규칙 기반"이 핵심. 감정이나 예측으로 변경 금지.</div>
+      </div>
+
+      <div class="sec">실행 체크리스트</div>
+      <div class="rule-block"><div class="rule-title">매일</div><div class="rule-body">① QQQ 현재가 vs ATH (낙폭 계산)\n② QQQ vs 200일선 확인</div></div>
+      <div class="rule-block"><div class="rule-title">월 1회 (22일)</div><div class="rule-body">① 적립금 투입\n② SGOV 비중 5% 이하인가? → YES: 70/30 | NO: 50/50</div></div>
+      <div class="rule-block"><div class="rule-title">하락장 발생 시</div><div class="rule-body">① QQQ &lt; 200일선인가?\n② ATH 대비 낙폭 몇 %인가?\n③ 해당 단계 이미 실행했는가?\n→ 미실행이면 SGOV 매도 → QLD 매수</div></div>
+      <div class="rule-block"><div class="rule-title">ATH 돌파 시</div><div class="rule-body">① 회복모드 진입여부 확인\n② 상승 단계별 리밸런싱 즉시 집행</div></div>
     </div>
-    <div class="section-title">답변</div>
-    <div id="qld-ai-answer" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;min-height:160px;">
-      <span style="color:var(--text3);font-size:12px;">위 버튼을 누르면 QLD Hybrid 규칙 기반 답변이 표시됩니다.</span>
+
+    <!-- 빠른 답변 -->
+    <div class="sub-panel" id="sub-guide-faq">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <button class="quick-btn" onclick="showQldAnswer('dca')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
+          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">DCA 매수 규칙</div>
+          <div style="font-size:10px;color:var(--text3);">월 적립 비율 및 날짜</div>
+        </button>
+        <button onclick="showQldAnswer('dip')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
+          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">하락장 매수 절차</div>
+          <div style="font-size:10px;color:var(--text3);">5단계 트리거</div>
+        </button>
+        <button onclick="showQldAnswer('recovery')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
+          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">상승장 복귀 절차</div>
+          <div style="font-size:10px;color:var(--text3);">ATH 기준 3단계</div>
+        </button>
+        <button onclick="showQldAnswer('cycle')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
+          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">사이클 정의</div>
+          <div style="font-size:10px;color:var(--text3);">초기화 조건 및 흐름</div>
+        </button>
+        <button onclick="showQldAnswer('checklist')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
+          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">실행 체크리스트</div>
+          <div style="font-size:10px;color:var(--text3);">매일/월 1회 확인</div>
+        </button>
+        <button onclick="showQldAnswer('forbidden')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
+          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">금지사항</div>
+          <div style="font-size:10px;color:var(--text3);">절대 하지 말아야 할 것</div>
+        </button>
+      </div>
+      <div class="sec">답변</div>
+      <div id="qld-ai-answer" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;min-height:140px;">
+        <span style="color:var(--text3);font-size:12px;">위 버튼을 누르면 규칙 기반 답변이 표시됩니다.</span>
+      </div>
     </div>
   </div>
 
@@ -575,271 +543,189 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
 <script>
 (function(){
-  async function sha256(str){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+  async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
   if(sessionStorage.getItem('inv_auth')==='ok')document.getElementById('lock-screen').style.display='none';
   window.checkPW=async function(){
-    const pw=document.getElementById('lock-pw').value;
-    const h=await sha256(pw),t=await sha256('9155');
+    const h=await sha256(document.getElementById('lock-pw').value),t=await sha256('9155');
     if(h===t){sessionStorage.setItem('inv_auth','ok');document.getElementById('lock-screen').style.display='none';}
-    else{document.getElementById('lock-err').textContent='비밀번호가 틀렸습니다';document.getElementById('lock-pw').value='';document.getElementById('lock-pw').focus();}
+    else{document.getElementById('lock-err').textContent='비밀번호가 틀렸습니다';document.getElementById('lock-pw').value='';}
   };
 })();
 
-const DATA_URL='./data.json';
-const STATE_URL='./qld_state.json';
+const DATA_URL='./data.json', STATE_URL='./qld_state.json';
 let mkt={nasdaq:null,vix:null,ma200:null,fg:null,qqq_price:null};
-let qldState=null;
-let qldUseDollar=false;
-let qldUsdKrw=1350;
+let qldState=null, qldUseDollar=false, qldUsdKrw=1350;
 let qldEtfPrices={QLD:0,SGOV:0};
 
-function updateTime(){const kst=new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);document.getElementById('live-time').textContent=kst.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' KST';}
+// 시계
+function updateTime(){const n=new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);document.getElementById('live-time').textContent=n.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+' KST';}
 setInterval(updateTime,1000);updateTime();
 
+// 탭 전환
 function switchTab(id,el){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   el.classList.add('active');
 }
+function switchSub(id,el){
+  const panel=el.closest('.panel');
+  panel.querySelectorAll('.sub-panel').forEach(p=>p.classList.remove('active'));
+  panel.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('sub-'+id).classList.add('active');
+  el.classList.add('active');
+}
 
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';setTimeout(()=>{t.style.opacity='0';},2500);}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.opacity='1';setTimeout(()=>t.style.opacity='0',2500);}
+function setCard(id,val,sub,color){const e=document.getElementById(id);if(!e)return;e.textContent=val;e.style.color=color;const s=document.getElementById(id+'-sub');if(s){s.textContent=sub;}}
 
+// 데이터 로드
 async function loadData(){
-  document.getElementById('data-updated-text').textContent='데이터 불러오는 중...';
   try{
-    const res=await fetch(DATA_URL+'?t='+Date.now());
-    const d=await res.json();
+    const d=await fetch(DATA_URL+'?t='+Date.now()).then(r=>r.json());
     if(d.nasdaq){
-      mkt.nasdaq=d.nasdaq.drawdown_pct;
-      mkt.ma200=d.nasdaq.ma200_dev_pct;
-      mkt.qqq_price=d.nasdaq.current_price;
-      const sign=mkt.nasdaq>0?'+':'';
-      setCard('d-nasdaq',sign+mkt.nasdaq.toFixed(1)+'%',mkt.nasdaq<=-12?'매수 신호':mkt.nasdaq<0?'하락 중':'상승 중',mkt.nasdaq<=-12?'var(--red)':mkt.nasdaq<0?'var(--gold)':'var(--green)');
-      setCard('d-ma200',mkt.ma200.toFixed(1)+'%',mkt.ma200>0?'200일선 위 (상승 궤도)':'200일선 아래 (하락 궤도)',mkt.ma200>0?'var(--green)':'var(--red)');
-      if(!document.getElementById('cur-qqq').value)document.getElementById('cur-qqq').value=mkt.qqq_price;
+      mkt.nasdaq=d.nasdaq.drawdown_pct; mkt.ma200=d.nasdaq.ma200_dev_pct; mkt.qqq_price=d.nasdaq.current_price;
+      const s=mkt.nasdaq>0?'+':'';
+      setCard('d-nasdaq',s+mkt.nasdaq.toFixed(1)+'%',mkt.nasdaq<=-12?'매수 신호':mkt.nasdaq<0?'하락 중':'상승 중',mkt.nasdaq<=-12?'var(--red)':mkt.nasdaq<0?'var(--gold)':'var(--green)');
+      setCard('d-ma200',mkt.ma200.toFixed(1)+'%',mkt.ma200>0?'200일선 위':'200일선 아래',mkt.ma200>0?'var(--green)':'var(--red)');
+      const cq=document.getElementById('cur-qqq');if(cq&&!cq.value)cq.value=mkt.qqq_price;
     }
     if(d.vix){mkt.vix=d.vix;setCard('d-vix',d.vix.toFixed(1),d.vix>=40?'극단 공포':d.vix>=25?'주의':'안정',d.vix>=40?'var(--red)':d.vix>=25?'var(--gold)':'var(--green)');}
     if(d.fear_greed?.value!=null){mkt.fg=d.fear_greed.value;setCard('d-fg',mkt.fg,mkt.fg>=80?'극단 탐욕':mkt.fg<=25?'극단 공포':'중립',mkt.fg>=80?'var(--red)':mkt.fg<=25?'var(--green)':'var(--gold)');}
-    if(d.usd_krw){qldUsdKrw=d.usd_krw;const el=document.getElementById('qld-rate-display');if(el)el.textContent='1$ = '+d.usd_krw.toLocaleString()+'원';}
-    if(d.etf_prices){
-      if(d.etf_prices.QLD)qldEtfPrices.QLD=d.etf_prices.QLD;
-      if(d.etf_prices.SGOV)qldEtfPrices.SGOV=d.etf_prices.SGOV;
-      updateQldPriceDisplay();
-    }
+    if(d.usd_krw){qldUsdKrw=d.usd_krw;const e=document.getElementById('qld-rate-display');if(e)e.textContent='1$ = '+d.usd_krw.toLocaleString()+'원';}
+    if(d.etf_prices){if(d.etf_prices.QLD)qldEtfPrices.QLD=d.etf_prices.QLD;if(d.etf_prices.SGOV)qldEtfPrices.SGOV=d.etf_prices.SGOV;updateQldPriceDisplay();}
     const upd=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
-    document.getElementById('data-updated-text').textContent='업데이트: '+upd+' KST';
-    document.getElementById('data-dot').classList.remove('pulse');
-    renderQldActionBanner();
-    const _qb=document.getElementById('qld-action-banner');if(_qb)_qb.style.opacity='1';
-    renderDiagStatus();renderDipStages();renderRecoveryStages();renderTodayChecklist();calcPort();
+    document.getElementById('data-updated-text').textContent='업데이트: '+upd;
+    renderActionBanner(); const ab=document.getElementById('action-banner');if(ab)ab.style.opacity='1';
+    renderDiagStatus(); renderDipStages(); renderRecoveryStages(); renderTodayChecklist();
   }catch(e){document.getElementById('data-updated-text').textContent='데이터 로드 실패';}
 }
 
 async function loadState(){
   try{
-    const res=await fetch(STATE_URL+'?t='+Date.now());
-    qldState=await res.json();
-    renderCycleStatus();renderCycleSteps();renderDipCheckList();renderRecoveryCheckList();
-    renderQldActionBanner();const _qb2=document.getElementById('qld-action-banner');if(_qb2)_qb2.style.opacity='1';
-    if(qldState.cycle.ath_price)document.getElementById('ath-price').value=qldState.cycle.ath_price;
-    if(qldState.cycle.ath_date)document.getElementById('ath-date').value=qldState.cycle.ath_date;
+    qldState=await fetch(STATE_URL+'?t='+Date.now()).then(r=>r.json());
   }catch(e){
-    qldState={cycle:{phase:'normal',ath_price:0,ath_date:'',dip_triggered:[false,false,false,false,false],recovery_triggered:[false,false,false],in_recovery_mode:false,target_qld_ratio:35,target_sgov_ratio:65}};
+    qldState={cycle:{ath_price:0,ath_date:'',dip_triggered:[false,false,false,false,false],recovery_triggered:[false,false,false],in_recovery_mode:false,target_qld_ratio:35,target_sgov_ratio:65}};
   }
+  renderCycleStatus(); renderCycleSteps(); renderDipCheckList(); renderRecoveryCheckList();
+  renderActionBanner(); const ab=document.getElementById('action-banner');if(ab)ab.style.opacity='1';
+  if(qldState.cycle.ath_price){const e=document.getElementById('ath-price');if(e)e.value=qldState.cycle.ath_price;}
+  if(qldState.cycle.ath_date){const e=document.getElementById('ath-date');if(e)e.value=qldState.cycle.ath_date;}
 }
 
-function setCard(id,val,sub,color){
-  const el=document.getElementById(id);if(!el)return;
-  el.textContent=val;el.style.color=color;
-  const s=document.getElementById(id+'-sub');if(s){s.textContent=sub;s.classList.remove('pulse');}
-}
+// 오늘의 액션 배너
+function renderActionBanner(){
+  const nd=mkt.nasdaq, ma200below=mkt.ma200!==null&&mkt.ma200<0;
+  const now=new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);
+  const days=['일','월','화','수','목','금','토'];
+  const dateLabel=now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0')+' '+days[now.getDay()]+'요일';
+  const isDay22=now.getDate()===22;
+  const cycle=qldState?.cycle;
+  const inRecovery=cycle?.in_recovery_mode||false;
+  let state='standby',main='',sub='',chips=[];
 
-
-function renderQldActionBanner(){
-  const nd = mkt.nasdaq;
-  const ma200below = mkt.ma200!==null&&mkt.ma200<0;
-  const now = new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);
-  const dateStr = now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0');
-  const dayNames=['일','월','화','수','목','금','토'];
-  const dateLabel = dateStr+' '+dayNames[now.getDay()]+'요일';
-  const isDay22 = now.getDate()===22;
-  const cycle = qldState?.cycle;
-  const inRecovery = cycle?.in_recovery_mode||false;
-
-  let state='standby', mainText='', subText='', chips=[];
-
-  // 1) 회복모드 리밸런싱
   if(inRecovery){
     const rt=cycle.recovery_triggered||[false,false,false];
-    if(!rt[0]&&nd!==null&&nd>=0){
-      state='recovery';mainText='ATH 돌파 — QLD 85% / SGOV 15% 리밸런싱';
-      subText='상승 복귀 1단계 · 즉시 리밸런싱 집행 (익일 시가 시장가)';
-      chips=[{t:'ATH 돌파',hi:true},{t:'목표 QLD 85%',hi:true}];
-    } else if(rt[0]&&!rt[1]){
-      state='recovery';mainText='ATH+20% 도달 확인 후 QLD 65% / SGOV 35%';
-      subText='상승 복귀 2단계 · ATH 돌파 시점 종가 기준 +20% 달성 시 집행';
-      chips=[{t:'회복 2단계',hi:true},{t:'목표 QLD 65%',hi:true}];
-    } else if(rt[1]&&!rt[2]){
-      state='recovery';mainText='ATH+30% 도달 확인 후 QLD 50% / SGOV 50%';
-      subText='상승 복귀 3단계 · 완료 시 회복모드 종료 · 새 사이클 준비';
-      chips=[{t:'회복 3단계',hi:true},{t:'목표 QLD 50%',hi:true}];
-    }
+    if(!rt[0]){state='recovery';main='ATH 돌파 — QLD 85% / SGOV 15% 리밸런싱';sub='상승 복귀 1단계 · 즉시 집행 (익일 시가 시장가)';chips=[{t:'ATH 돌파',hi:true},{t:'목표 QLD 85%',hi:true}];}
+    else if(!rt[1]){state='recovery';main='ATH+20% 도달 확인 — QLD 65% / SGOV 35%';sub='상승 복귀 2단계 · ATH 돌파 시점 종가 기준 +20%';chips=[{t:'회복 2단계',hi:true},{t:'목표 QLD 65%',hi:true}];}
+    else if(!rt[2]){state='recovery';main='ATH+30% 도달 확인 — QLD 50% / SGOV 50%';sub='상승 복귀 3단계 완료 시 회복모드 종료';chips=[{t:'회복 3단계',hi:true},{t:'목표 QLD 50%',hi:true}];}
   }
-
-  // 2) 하락장 트리거
   if(state==='standby'&&ma200below&&nd!==null){
     const dips=cycle?.dip_triggered||[false,false,false,false,false];
-    const thresholds=[-12,-18,-25,-35,-45];
-    const pcts=[5,8,10,12,15];
-    for(let i=4;i>=0;i--){
-      if(nd<=thresholds[i]&&!dips[i]){
-        state='dip';mainText=`${i+1}단계 발동 — 전체계좌 ${pcts[i]}% → QLD 매수`;
-        subText=`QQQ 200일선 아래 + ATH 대비 ${thresholds[i]}% 하락 · 즉시 집행`;
-        chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'200일선 아래',hi:true},{t:'SGOV→QLD',hi:true}];
-        break;
-      }
-    }
+    const thr=[-12,-18,-25,-35,-45],pct=[5,8,10,12,15];
+    for(let i=4;i>=0;i--){if(nd<=thr[i]&&!dips[i]){state='dip';main=`${i+1}단계 발동 — 전체계좌 ${pct[i]}% → QLD 매수`;sub=`QQQ 200일선 아래 + ATH 대비 ${thr[i]}% · 즉시 집행`;chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'200일선 아래',hi:true}];break;}}
   }
-
-  // 3) DCA 실행일
   if(state==='standby'&&isDay22){
-    const sgovPct=cycle?.target_sgov_ratio||65;
-    const isLow=sgovPct<=5;
-    state='dca';mainText='오늘은 DCA 매수일 (22일)';
-    subText=isLow?'SGOV 5% 이하 — QLD 70% / SGOV 30% 비율로 매수':'QLD 50% / SGOV 50% 비율로 매수';
+    state='dca';main='오늘은 DCA 매수일 (22일)';
+    const isLow=(cycle?.target_sgov_ratio||65)<=5;
+    sub=isLow?'SGOV ≤5% — QLD 70% / SGOV 30%':'QLD 50% / SGOV 50% 비율로 매수';
     chips=[{t:'22일 매수일',hi:true},{t:isLow?'탄약 부족':'일반 모드',hi:isLow}];
   }
-
-  // 4) 대기
   if(state==='standby'){
-    const next22=new Date(now);
-    if(now.getDate()>22)next22.setMonth(next22.getMonth()+1);
-    next22.setDate(22);
-    const daysLeft=Math.ceil((next22-now)/(1000*60*60*24));
-    const ma200str=mkt.ma200!=null?(mkt.ma200>0?'200일선 위':'200일선 아래'):'—';
-    mainText='대기 — 규칙 준수 중';
-    subText=`200일선 ${mkt.ma200>0?'위 (하락 트리거 비활성)':'아래 (낙폭 모니터링 중)'} · DCA까지 D-${daysLeft}일`;
-    chips=[{t:'나스닥 '+(nd!=null?(nd>0?'+':'')+nd.toFixed(1):'—')+'%',hi:false},{t:ma200str,hi:mkt.ma200<0},{t:'D-'+daysLeft,hi:false}];
+    const next22=new Date(now);if(now.getDate()>22)next22.setMonth(next22.getMonth()+1);next22.setDate(22);
+    const daysLeft=Math.ceil((next22-now)/(864e5));
+    main='대기 — 규칙 준수 중';
+    sub=(mkt.ma200>0?'200일선 위 (하락 트리거 비활성)':'200일선 아래 (낙폭 모니터링 중)')+' · DCA까지 D-'+daysLeft+'일';
+    chips=[{t:'나스닥 '+(nd!=null?(nd>0?'+':'')+nd.toFixed(1):'—')+'%',hi:false},{t:'D-'+daysLeft,hi:false}];
   }
 
-  const el=document.getElementById('qld-action-banner');
-  if(!el)return;
+  const tagText={standby:'STANDBY',dca:'DCA 실행',dip:'하락장 매수',recovery:'회복 모드'};
+  const el=document.getElementById('action-banner');if(!el)return;
   el.className='action-banner '+state;
-  el.innerHTML=`
-    <div class="ab-top">
-      <div class="ab-dot ${state}"></div>
-      <div class="ab-tag ${state}">${{standby:'STANDBY',dca:'DCA 실행',dip:'하락장 매수',recovery:'회복 모드',overheat:'과열 재충전'}[state]}</div>
-      <div class="ab-date">${dateLabel}</div>
-    </div>
-    <div class="ab-main ${state}">${mainText}</div>
-    <div class="ab-sub">${subText}</div>
-    <div class="ab-detail">${chips.map(c=>`<div class="ab-chip${c.hi?' hi':''}">${c.t}</div>`).join('')}</div>
-  `;
+  el.innerHTML=`<div class="ab-top"><div class="ab-dot ${state}"></div><div class="ab-tag ${state}">${tagText[state]}</div><div class="ab-date">${dateLabel}</div></div><div class="ab-main ${state}">${main}</div><div class="ab-sub">${sub}</div><div class="ab-chips">${chips.map(c=>`<div class="ab-chip${c.hi?' hi':''}">${c.t}</div>`).join('')}</div>`;
 }
 
+// 상황 진단
 function renderDiagStatus(){
-  const nd=mkt.nasdaq,ma=mkt.ma200;
-  const ma200below=ma!==null&&ma<0;
+  const ma200below=mkt.ma200!==null&&mkt.ma200<0;
   let html='';
-  if(nd===null){html='<div class="status-box info"><div class="status-title" style="color:var(--accent)">데이터 로딩 중</div></div>';}
-  else if(ma200below&&nd<=-12){html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">🚨 하락장 매수 조건 충족!</div><div class="status-desc">QQQ 200일선 아래 + ATH 대비 -12% 이상 → 하락 단계 확인 후 매수 집행</div></div>';}
-  else if(ma200below){html='<div class="status-box warn"><div class="status-title" style="color:var(--gold)">⚠ QQQ 200일선 아래 — 하락장 감시 중</div><div class="status-desc">200일선 아래 진입. ATH 대비 낙폭이 트리거 구간 도달 시 매수 집행.</div></div>';}
-  else{html='<div class="status-box safe"><div class="status-title" style="color:var(--green)">✅ 정상 운항 — 200일선 위</div><div class="status-desc">QQQ 200일선 위. 정기 DCA 루틴 유지. 매월 22일 적립 매수.</div></div>';}
+  if(mkt.nasdaq===null)html='<div class="status-box info" style="background:rgba(74,158,255,0.08);border:1px solid rgba(74,158,255,0.25);"><div class="status-title" style="color:var(--accent)">데이터 로딩 중</div></div>';
+  else if(ma200below&&mkt.nasdaq<=-12)html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">🚨 하락장 매수 조건 충족!</div><div class="status-desc">QQQ 200일선 아래 + ATH 대비 -12% 이상 → 사이클 탭에서 단계 확인 후 매수 집행</div></div>';
+  else if(ma200below)html='<div class="status-box warn"><div class="status-title" style="color:var(--gold)">⚠ QQQ 200일선 아래 — 낙폭 모니터링 중</div><div class="status-desc">ATH 대비 낙폭이 트리거 구간 도달 시 매수 집행. 지금은 대기.</div></div>';
+  else html='<div class="status-box safe"><div class="status-title" style="color:var(--green)">✅ 정상 운항 — 200일선 위</div><div class="status-desc">하락 트리거 비활성. 정기 DCA 루틴 유지. 매월 22일 적립 매수.</div></div>';
   document.getElementById('diag-status').innerHTML=html;
 }
 
 function renderDipStages(){
-  const stages=[
-    {pct:-12,label:'1단계 본격 매수',action:'전체계좌 5% → QLD'},
-    {pct:-18,label:'2단계 핵심 승부처',action:'전체계좌 8% → QLD'},
-    {pct:-25,label:'3단계 공포의 절정',action:'전체계좌 10% → QLD'},
-    {pct:-35,label:'4단계 최후의 한발',action:'전체계좌 12% → QLD'},
-    {pct:-45,label:'5단계 아직 한발',action:'전체계좌 15% → QLD'},
-  ];
-  const nd=mkt.nasdaq,ma200below=mkt.ma200!==null&&mkt.ma200<0;
-  let html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
-  html+=`<div style="padding:8px 14px;background:${ma200below?'rgba(224,92,92,0.1)':'rgba(76,175,125,0.1)'};border-bottom:1px solid var(--border);font-size:11px;color:${ma200below?'var(--red)':'var(--green)'};">발동 조건: QQQ 200일선 ${ma200below?'아래 ✅':'위 ❌'} + ATH 대비 낙폭 도달</div>`;
+  const stages=[{p:-12,l:'1단계 본격 매수',a:'전체계좌 5%'},{p:-18,l:'2단계 핵심 승부처',a:'전체계좌 8%'},{p:-25,l:'3단계 공포의 절정',a:'전체계좌 10%'},{p:-35,l:'4단계 최후의 한발',a:'전체계좌 12%'},{p:-45,l:'5단계 아직 한발',a:'전체계좌 15%'}];
+  const ma200below=mkt.ma200!==null&&mkt.ma200<0;
+  let html=`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;"><div style="padding:7px 14px;background:${ma200below?'rgba(224,92,92,0.08)':'rgba(76,175,125,0.08)'};border-bottom:1px solid var(--border);font-size:11px;color:${ma200below?'var(--red)':'var(--green)'};">발동 조건: 200일선 ${ma200below?'아래 ✅':'위 ❌'} + ATH 대비 낙폭</div>`;
   stages.forEach((s,i)=>{
-    const triggered=nd!==null&&nd<=s.pct&&ma200below;
-    const dipDone=qldState?.cycle?.dip_triggered?.[i]||false;
-    html+=`<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);${triggered?'background:rgba(224,92,92,0.07);':''}">
-      <div style="width:8px;height:8px;border-radius:50%;background:${dipDone?'var(--green)':triggered?'var(--red)':'var(--bg3)'}"></div>
-      <div style="font-size:11px;font-weight:700;color:${triggered?'var(--red)':dipDone?'var(--green)':'var(--text3)'};width:38px;">${s.pct}%</div>
-      <div style="font-size:11px;color:${triggered?'var(--text1)':dipDone?'var(--text2)':'var(--text3)'};flex:1;">${s.label}</div>
-      <div style="font-size:11px;color:${triggered?'var(--red)':'var(--text3)'}">${s.action}</div>
-      ${dipDone?'<span class="badge" style="background:rgba(76,175,125,0.2);color:var(--green);">완료</span>':triggered?'<span class="badge" style="background:rgba(224,92,92,0.2);color:var(--red);">발동!</span>':''}
+    const triggered=mkt.nasdaq!==null&&mkt.nasdaq<=s.p&&ma200below;
+    const done=qldState?.cycle?.dip_triggered?.[i]||false;
+    html+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);${triggered?'background:rgba(224,92,92,0.05);':''}">
+      <div style="width:7px;height:7px;border-radius:50%;background:${done?'var(--green)':triggered?'var(--red)':'var(--bg3)'}"></div>
+      <div style="font-size:11px;font-weight:700;color:${triggered?'var(--red)':done?'var(--green)':'var(--text3)'};width:36px;">${s.p}%</div>
+      <div style="font-size:11px;flex:1;color:${triggered?'var(--text1)':'var(--text2)'};">${s.l}</div>
+      <div style="font-size:10px;color:var(--text3);">${s.a} → QLD</div>
+      ${done?'<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.15);color:var(--green);border-radius:3px;">완료</span>':triggered?'<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(224,92,92,0.2);color:var(--red);border-radius:3px;">발동!</span>':''}
     </div>`;
   });
-  html+='</div>';
-  document.getElementById('dip-stages').innerHTML=html;
+  document.getElementById('dip-stages').innerHTML=html+'</div>';
 }
 
 function renderRecoveryStages(){
-  const stages=[
-    {label:'1단계 ATH 돌파',desc:'QQQ ATH 신고가',target:'QLD 85% / SGOV 15%'},
-    {label:'2단계 ATH+20%',desc:'ATH 돌파 후 +20% 상승',target:'QLD 65% / SGOV 35%'},
-    {label:'3단계 ATH+30%',desc:'ATH 돌파 후 +30% 상승',target:'QLD 50% / SGOV 50%'},
-  ];
+  const stages=[{l:'1단계 ATH 돌파',d:'QQQ ATH 신고가',t:'QLD 85% / SGOV 15%'},{l:'2단계 ATH+20%',d:'돌파 후 +20%',t:'QLD 65% / SGOV 35%'},{l:'3단계 ATH+30%',d:'돌파 후 +30%',t:'QLD 50% / SGOV 50%'}];
   const inRecovery=qldState?.cycle?.in_recovery_mode||false;
-  let html='';
-  if(!inRecovery){html='<div style="color:var(--text3);font-size:12px;padding:10px;">회복모드 미진입 — 하락장 매수 1회 이상 발동 후 활성화됩니다.</div>';}
-  else{
-    html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
-    stages.forEach((s,i)=>{
-      const done=qldState?.cycle?.recovery_triggered?.[i]||false;
-      html+=`<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);${done?'background:rgba(76,175,125,0.05);':''}">
-        <div style="width:8px;height:8px;border-radius:50%;background:${done?'var(--green)':'var(--bg3)'}"></div>
-        <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:${done?'var(--green)':'var(--text2)'};">${s.label}</div><div style="font-size:10px;color:var(--text3);">${s.desc}</div></div>
-        <div style="font-size:11px;color:${done?'var(--green)':'var(--text3)'};">${s.target}</div>
-        ${done?'<span class="badge" style="background:rgba(76,175,125,0.2);color:var(--green);">완료</span>':''}
-      </div>`;
-    });
-    html+='</div>';
-  }
-  document.getElementById('recovery-stages').innerHTML=html;
+  if(!inRecovery){document.getElementById('recovery-stages').innerHTML='<div style="color:var(--text3);font-size:12px;padding:8px 0;">회복모드 미진입 — 하락장 매수 1회 이상 후 활성화</div>';return;}
+  let html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
+  stages.forEach((s,i)=>{
+    const done=qldState?.cycle?.recovery_triggered?.[i]||false;
+    html+=`<div style="display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--border);${done?'background:rgba(76,175,125,0.04);':''}">
+      <div style="width:7px;height:7px;border-radius:50%;background:${done?'var(--green)':'var(--bg3)'}"></div>
+      <div style="flex:1;"><div style="font-size:11px;font-weight:700;color:${done?'var(--green)':'var(--text2)'};">${s.l}</div><div style="font-size:10px;color:var(--text3);">${s.d}</div></div>
+      <div style="font-size:11px;color:${done?'var(--green)':'var(--text3)'};">${s.t}</div>
+      ${done?'<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.15);color:var(--green);border-radius:3px;">완료</span>':''}
+    </div>`;
+  });
+  document.getElementById('recovery-stages').innerHTML=html+'</div>';
 }
 
 function renderTodayChecklist(){
-  const nd=mkt.nasdaq,ma=mkt.ma200;
-  const ma200below=ma!==null&&ma<0;
+  const ma200below=mkt.ma200!==null&&mkt.ma200<0;
   const items=[
-    {label:'QQQ 현재가 vs ATH 확인',sub:'ATH 대비 낙폭 계산',done:nd!==null},
-    {label:'QQQ vs 200일선 확인',sub:ma200below?'200일선 아래 — 하락장 감시':'200일선 위 — 정상',done:ma!==null,warn:ma200below},
-    {label:'해당 하락 단계 이미 실행했는가?',sub:'사이클 관리 탭에서 확인',done:false},
-    {label:'매월 22일 적립 매수',sub:'SGOV 5% 이하 여부 확인 후 비율 결정',done:false},
+    {l:'QQQ 현재가 vs ATH 확인',s:'ATH 대비 낙폭 계산',done:mkt.nasdaq!==null},
+    {l:'QQQ vs 200일선 확인',s:ma200below?'200일선 아래 — 낙폭 모니터링':'200일선 위 — 정상',done:mkt.ma200!==null,warn:ma200below},
+    {l:'해당 하락 단계 실행 여부',s:'사이클 기록 탭에서 확인',done:false},
+    {l:'매월 22일 적립 매수',s:'SGOV 5% 이하 여부 확인 후 비율 결정',done:false},
   ];
-  let html='<div style="display:flex;flex-direction:column;gap:6px;">';
+  let html='<div style="display:flex;flex-direction:column;gap:5px;">';
   items.forEach(item=>{
-    html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:1px solid ${item.warn?'rgba(255,193,7,0.3)':'var(--border)'};border-radius:6px;">
-      <div style="width:16px;height:16px;border-radius:3px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:10px;background:${item.done?'var(--green)':'var(--bg3)'};color:${item.done?'#0a0e1a':'var(--text3)'};">${item.done?'✓':''}</div>
-      <div><div style="font-size:12px;color:var(--text1);">${item.label}</div><div style="font-size:10px;color:${item.warn?'var(--gold)':'var(--text3)'};">${item.sub}</div></div>
+    html+=`<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg2);border:1px solid ${item.warn?'rgba(255,193,7,0.25)':'var(--border)'};border-radius:6px;">
+      <div style="width:15px;height:15px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;background:${item.done?'var(--green)':'var(--bg3)'};color:${item.done?'#0a0e1a':'var(--text3)'};">${item.done?'✓':''}</div>
+      <div><div style="font-size:11px;color:var(--text1);">${item.l}</div><div style="font-size:10px;color:${item.warn?'var(--gold)':'var(--text3)'};">${item.s}</div></div>
     </div>`;
   });
-  html+='</div>';
-  document.getElementById('today-checklist').innerHTML=html;
+  document.getElementById('today-checklist').innerHTML=html+'</div>';
 }
 
-// ── 포트폴리오 ────────────────────────────────────────────────────
-let pieVisible = false;
-
-function togglePieChart(){
-  pieVisible = !pieVisible;
-  document.getElementById('pie-wrap').style.display = pieVisible ? 'block' : 'none';
-  document.getElementById('pie-toggle-icon').textContent = pieVisible ? '▲' : '▼';
-  if(pieVisible) drawQldPie(
-    (qldEtfPrices.QLD||0) * parseFloat(document.getElementById('p-qld-qty').value||0),
-    (qldEtfPrices.SGOV||0) * parseFloat(document.getElementById('p-sgov-qty').value||0)
-  );
-}
-
+// 포트폴리오
 function updateQldPriceDisplay(){
-  const qp=qldEtfPrices.QLD, sp=qldEtfPrices.SGOV;
-  const fmtP = v => qldUseDollar ? '$'+v : Math.round(v*qldUsdKrw).toLocaleString()+'원';
-  const qdEl=document.getElementById('p-qld-price-disp');
-  const sdEl=document.getElementById('p-sgov-price-disp');
-  if(qdEl && qp>0) qdEl.textContent = fmtP(qp)+'/주';
-  if(sdEl && sp>0) sdEl.textContent = fmtP(sp)+'/주';
+  const qp=qldEtfPrices.QLD,sp=qldEtfPrices.SGOV;
+  const fmt=v=>qldUseDollar?'$'+v:Math.round(v*qldUsdKrw).toLocaleString()+'원';
+  const qd=document.getElementById('p-qld-price-disp');const sd=document.getElementById('p-sgov-price-disp');
+  if(qd&&qp>0)qd.textContent=fmt(qp)+'/주';
+  if(sd&&sp>0)sd.textContent=fmt(sp)+'/주';
   updatePortLive();
 }
 
@@ -850,240 +736,160 @@ function toggleQldCurrency(){
   updateQldPriceDisplay();
 }
 
-function saveQldPort(){
-  const data={qld:document.getElementById('p-qld-qty').value||'0',sgov:document.getElementById('p-sgov-qty').value||'0'};
-  localStorage.setItem('qld_portfolio',JSON.stringify(data));
-  showToast('포트폴리오 저장 완료!');
-}
-
+function saveQldPort(){localStorage.setItem('qld_portfolio',JSON.stringify({qld:document.getElementById('p-qld-qty').value||'0',sgov:document.getElementById('p-sgov-qty').value||'0'}));showToast('저장 완료!');}
 function loadQldPort(){
-  const data=JSON.parse(localStorage.getItem('qld_portfolio')||'{}');
-  if(!Object.keys(data).length){showToast('저장된 포트폴리오가 없습니다');return;}
-  if(data.qld) document.getElementById('p-qld-qty').value=data.qld;
-  if(data.sgov) document.getElementById('p-sgov-qty').value=data.sgov;
-  updatePortLive(); showToast('불러오기 완료!');
+  const d=JSON.parse(localStorage.getItem('qld_portfolio')||'{}');
+  if(!Object.keys(d).length){showToast('저장된 포트폴리오 없음');return;}
+  if(d.qld)document.getElementById('p-qld-qty').value=d.qld;
+  if(d.sgov)document.getElementById('p-sgov-qty').value=d.sgov;
+  updatePortLive();showToast('불러오기 완료!');
 }
 
-function fmtAmt(usd){
-  if(!usd || usd<=0) return '—';
-  return qldUseDollar ? '$'+usd.toFixed(0) : Math.round(usd*qldUsdKrw/10000).toLocaleString()+'만원';
-}
+function fmtAmt(usd){if(!usd||usd<=0)return '—';return qldUseDollar?'$'+usd.toFixed(0):Math.round(usd*qldUsdKrw/10000).toLocaleString()+'만원';}
 
 function updatePortLive(){
-  const qp=qldEtfPrices.QLD||0, sp=qldEtfPrices.SGOV||0;
-  const qq=parseFloat(document.getElementById('p-qld-qty').value||0);
-  const sq=parseFloat(document.getElementById('p-sgov-qty').value||0);
-  const qv=qq*qp, sv=sq*sp, total=qv+sv;
-  const qPct=total>0?qv/total*100:0;
-  const sPct=total>0?sv/total*100:0;
-
-  // 금액 표시
-  document.getElementById('p-qld-val').textContent = qv>0?fmtAmt(qv):'—';
-  document.getElementById('p-sgov-val').textContent = sv>0?fmtAmt(sv):'—';
-  document.getElementById('p-total').textContent = total>0?fmtAmt(total):'—';
-
-  // 비중 표시
+  const qp=qldEtfPrices.QLD||0,sp=qldEtfPrices.SGOV||0;
+  const qq=parseFloat(document.getElementById('p-qld-qty')?.value||0);
+  const sq=parseFloat(document.getElementById('p-sgov-qty')?.value||0);
+  const qv=qq*qp,sv=sq*sp,total=qv+sv;
+  const qPct=total>0?qv/total*100:0,sPct=total>0?sv/total*100:0;
   const c=qldState?.cycle;
-  const tQLD=c?.target_qld_ratio||35, tSGOV=c?.target_sgov_ratio||65;
-  const qDiff=qPct-tQLD;
-  document.getElementById('p-qld-pct').textContent = total>0?qPct.toFixed(1)+'%':'—';
-  document.getElementById('p-qld-pct').style.color = total>0?(Math.abs(qDiff)>7?'var(--red)':'var(--green)'):'var(--text3)';
-  document.getElementById('p-sgov-pct').textContent = total>0?sPct.toFixed(1)+'%':'—';
+  const tQLD=c?.target_qld_ratio||35;
 
-  // 비중 바
-  const barQld=document.getElementById('port-bar-qld');
-  const barSgov=document.getElementById('port-bar-sgov');
+  const fmt=v=>v>0?fmtAmt(v):'—';
+  const qve=document.getElementById('p-qld-val');const sve=document.getElementById('p-sgov-val');const te=document.getElementById('p-total');
+  if(qve)qve.textContent=fmt(qv);if(sve)sve.textContent=fmt(sv);if(te)te.textContent=total>0?fmtAmt(total):'—';
+
+  const qpe=document.getElementById('p-qld-pct');const spe=document.getElementById('p-sgov-pct');
+  if(qpe){qpe.textContent=total>0?qPct.toFixed(1)+'%':'—';qpe.style.color=total>0?(Math.abs(qPct-tQLD)>7?'var(--red)':'var(--green)'):'var(--text3)';}
+  if(spe){spe.textContent=total>0?sPct.toFixed(1)+'%':'—';}
+
+  const bq=document.getElementById('port-bar-qld');const bs=document.getElementById('port-bar-sgov');
+  const lq=document.getElementById('port-bar-qld-label');const ls=document.getElementById('port-bar-sgov-label');
   if(total>0){
-    barQld.style.width=qPct+'%';
-    barSgov.style.width=sPct+'%';
-    document.getElementById('port-bar-qld-label').textContent='QLD '+qPct.toFixed(1)+'%';
-    document.getElementById('port-bar-sgov-label').textContent='SGOV '+sPct.toFixed(1)+'%';
+    if(bq)bq.style.width=qPct+'%';if(bs)bs.style.width=sPct+'%';
+    if(lq)lq.textContent='QLD '+qPct.toFixed(1)+'%';if(ls)ls.textContent='SGOV '+sPct.toFixed(1)+'%';
   }
-
-  // 도넛 갱신
-  if(pieVisible) drawQldPie(qv, sv);
 }
 
 function generateOrder(){
-  const qp=qldEtfPrices.QLD||0, sp=qldEtfPrices.SGOV||0;
-  const qq=parseFloat(document.getElementById('p-qld-qty').value||0);
-  const sq=parseFloat(document.getElementById('p-sgov-qty').value||0);
-  const qv=qq*qp, sv=sq*sp, total=qv+sv;
+  const qp=qldEtfPrices.QLD||0,sp=qldEtfPrices.SGOV||0;
+  const qq=parseFloat(document.getElementById('p-qld-qty')?.value||0);
+  const sq=parseFloat(document.getElementById('p-sgov-qty')?.value||0);
+  const qv=qq*qp,sv=sq*sp,total=qv+sv;
+  const el=document.getElementById('port-order');
 
-  if(!total || !qp || !sp){
-    document.getElementById('port-order').innerHTML=`
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:12px;color:var(--text3);">
-        수량을 입력하면 주문안이 생성됩니다.
-      </div>`;
+  if(!total||!qp||!sp){el.innerHTML='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:12px;color:var(--text3);">수량을 입력하면 주문안이 생성됩니다.</div>';return;}
+
+  const c=qldState?.cycle;
+  const tQLD=(c?.target_qld_ratio||35)/100,tSGOV=(c?.target_sgov_ratio||65)/100;
+  const qPct=qv/total*100;
+  if(Math.abs(qPct-tQLD*100)<7){
+    el.innerHTML=`<div style="background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.25);border-radius:10px;padding:16px 18px;"><div style="font-size:14px;font-weight:800;color:#4caf7d;margin-bottom:5px;">✅ 리밸런싱 불필요</div><div style="font-size:11px;color:var(--text2);">현재 비중 QLD ${qPct.toFixed(1)}% — 목표 ${(tQLD*100).toFixed(0)}% 대비 ±7% 이내</div><div style="margin-top:8px;font-size:10px;color:var(--text3);">다음 액션: 매월 22일 DCA 적립 매수</div></div>`;
     return;
   }
 
-  const c=qldState?.cycle;
-  const tQLD=(c?.target_qld_ratio||35)/100;
-  const tSGOV=(c?.target_sgov_ratio||65)/100;
-  const targetQldAmt=total*tQLD;
-  const targetSgovAmt=total*tSGOV;
-  const qldDiff=targetQldAmt-qv;   // 양수: 매수 필요, 음수: 매도 필요
-  const sgovDiff=targetSgovAmt-sv;
+  const qldNeed=total*tQLD-qv;
+  const isBuyQld=qldNeed>0;
+  const sellName=isBuyQld?'SGOV':'QLD',buyName=isBuyQld?'QLD':'SGOV';
+  const sellP=isBuyQld?sp:qp,buyP=isBuyQld?qp:sp;
+  const sellCnt=Math.floor(Math.abs(qldNeed)/sellP),buyCnt=Math.floor(Math.abs(qldNeed)/buyP);
+  const sellAmt=sellCnt*sellP,buyAmt=buyCnt*buyP;
+  const afterQldPct=isBuyQld?((qv+buyAmt)/total*100):((qv-sellAmt)/total*100);
 
-  const qPct=qv/total*100;
-  const threshold=7; // ±7% 이상만 리밸런싱
-
-  let html2='';
-
-  if(Math.abs(qPct-(tQLD*100))<threshold){
-    // 리밸런싱 불필요
-    html2=`<div style="background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.25);border-radius:10px;padding:18px 20px;">
-      <div style="font-size:14px;font-weight:800;color:#4caf7d;margin-bottom:6px;">✅ 리밸런싱 불필요</div>
-      <div style="font-size:12px;color:var(--text2);line-height:1.7;">현재 비중 QLD ${qPct.toFixed(1)}% — 목표 ${(tQLD*100).toFixed(0)}% 대비 ±${threshold}% 이내</div>
-      <div style="margin-top:10px;font-size:11px;color:var(--text3);">다음 액션: 매월 22일 DCA 적립 매수</div>
-    </div>`;
-  } else {
-    // 주문안 생성
-    const isBuyQld = qldDiff>0;
-    const shares = isBuyQld
-      ? {buy:{name:'QLD',cnt:Math.floor(Math.abs(qldDiff)/qp),price:qp},sell:{name:'SGOV',cnt:Math.floor(Math.abs(qldDiff)/sp),price:sp}}
-      : {buy:{name:'SGOV',cnt:Math.floor(Math.abs(sgovDiff)/sp),price:sp},sell:{name:'QLD',cnt:Math.floor(Math.abs(qldDiff)/qp),price:qp}};
-
-    const sellAmt=shares.sell.cnt*shares.sell.price;
-    const buyAmt=shares.buy.cnt*shares.buy.price;
-    const afterQldPct=isBuyQld
-      ? ((qv+buyAmt)/total*100)
-      : ((qv-sellAmt)/total*100);
-
-    html2=`<div style="background:var(--bg2);border:1px solid var(--accent-border);border-radius:10px;overflow:hidden;">
-      <div style="background:var(--accent-dim);padding:12px 16px;display:flex;align-items:center;gap:8px;">
-        <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:var(--accent2);">TODAY'S ORDER</div>
-        <div style="margin-left:auto;font-size:10px;color:var(--text3);">${new Date().toLocaleDateString('ko-KR')}</div>
+  el.innerHTML=`<div style="background:var(--bg2);border:1px solid var(--accent-border);border-radius:10px;overflow:hidden;">
+    <div style="background:var(--accent-dim);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:var(--accent2);">TODAY'S ORDER</div>
+      <div style="font-size:10px;color:var(--text3);">${new Date().toLocaleDateString('ko-KR')}</div>
+    </div>
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
+      <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">비중 변화</div>
+      <div style="font-size:13px;font-weight:700;">QLD <span style="color:var(--text2);">${qPct.toFixed(1)}%</span> → <span style="color:var(--accent2);">${afterQldPct.toFixed(1)}%</span> <span style="font-size:10px;color:var(--text3);">(목표 ${(tQLD*100).toFixed(0)}%)</span></div>
+    </div>
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <div style="background:rgba(224,92,92,0.15);border:1px solid rgba(224,92,92,0.3);border-radius:5px;padding:4px 9px;font-size:10px;font-weight:800;color:#e05c5c;flex-shrink:0;">1. 매도</div>
+        <div><div style="font-size:16px;font-weight:800;color:var(--text1);margin-bottom:3px;">${sellName} ${sellCnt}주</div><div style="font-size:11px;color:var(--text3);">${fmtAmt(sellAmt)} · @${qldUseDollar?'$'+sellP:Math.round(sellP*qldUsdKrw).toLocaleString()+'원'}/주</div></div>
       </div>
-
-      <!-- 현재→목표 -->
-      <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
-        <div style="font-size:11px;color:var(--text3);margin-bottom:8px;">비중 변화</div>
-        <div style="display:flex;align-items:center;gap:8px;font-size:13px;">
-          <span style="font-weight:700;color:var(--text2);">QLD ${qPct.toFixed(1)}%</span>
-          <span style="color:var(--text3);">→</span>
-          <span style="font-weight:800;color:var(--accent2);">QLD ${afterQldPct.toFixed(1)}%</span>
-          <span style="font-size:10px;color:var(--text3);">(목표 ${(tQLD*100).toFixed(0)}%)</span>
-        </div>
+    </div>
+    <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:flex-start;gap:10px;">
+        <div style="background:rgba(76,175,125,0.15);border:1px solid rgba(76,175,125,0.3);border-radius:5px;padding:4px 9px;font-size:10px;font-weight:800;color:#4caf7d;flex-shrink:0;">2. 매수</div>
+        <div><div style="font-size:16px;font-weight:800;color:var(--text1);margin-bottom:3px;">${buyName} ${buyCnt}주</div><div style="font-size:11px;color:var(--text3);">${fmtAmt(buyAmt)} · @${qldUseDollar?'$'+buyP:Math.round(buyP*qldUsdKrw).toLocaleString()+'원'}/주</div></div>
       </div>
-
-      <!-- 주문 1: 매도 -->
-      <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
-        <div style="display:flex;align-items:flex-start;gap:12px;">
-          <div style="background:rgba(224,92,92,0.15);border:1px solid rgba(224,92,92,0.3);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:800;color:#e05c5c;white-space:nowrap;">1. 매도</div>
-          <div style="flex:1;">
-            <div style="font-size:16px;font-weight:800;color:var(--text1);margin-bottom:4px;">${shares.sell.name} ${shares.sell.cnt}주</div>
-            <div style="font-size:11px;color:var(--text3);">${fmtAmt(sellAmt)} · @${qldUseDollar?'$'+shares.sell.price:Math.round(shares.sell.price*qldUsdKrw).toLocaleString()+'원'}/주</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 주문 2: 매수 -->
-      <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
-        <div style="display:flex;align-items:flex-start;gap:12px;">
-          <div style="background:rgba(76,175,125,0.15);border:1px solid rgba(76,175,125,0.3);border-radius:6px;padding:5px 10px;font-size:11px;font-weight:800;color:#4caf7d;white-space:nowrap;">2. 매수</div>
-          <div style="flex:1;">
-            <div style="font-size:16px;font-weight:800;color:var(--text1);margin-bottom:4px;">${shares.buy.name} ${shares.buy.cnt}주</div>
-            <div style="font-size:11px;color:var(--text3);">${fmtAmt(buyAmt)} · @${qldUseDollar?'$'+shares.buy.price:Math.round(shares.buy.price*qldUsdKrw).toLocaleString()+'원'}/주</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 안내 -->
-      <div style="padding:10px 16px;font-size:10px;color:var(--text3);line-height:1.7;">
-        ※ 전일 종가 기준 · 익일 시가 시장가 집행<br>
-        ※ 실제 체결가 차이로 주수가 달라질 수 있습니다
-      </div>
-    </div>`;
-  }
-
-  document.getElementById('port-order').innerHTML=html2;
+    </div>
+    <div style="padding:8px 14px;font-size:10px;color:var(--text3);line-height:1.6;">※ 전일 종가 기준 · 익일 시가 시장가 집행 · 실제 체결가 차이로 주수 달라질 수 있음</div>
+  </div>`;
 }
 
-// 구 calcPort 호환용
-function calcPort(){ updatePortLive(); }
-
-// ── DCA ──────────────────────────────────────────────────────────
+// DCA
 function calcDCA(){
-  const monthly=parseFloat(document.getElementById('dca-monthly').value||0);
-  const sgovPct=parseFloat(document.getElementById('dca-sgov-pct').value||65);
+  const monthly=parseFloat(document.getElementById('dca-monthly')?.value||0);
+  const sgovPct=parseFloat(document.getElementById('dca-sgov-pct')?.value||65);
   if(!monthly){document.getElementById('dca-result').innerHTML='<div style="color:var(--text3);font-size:12px;">월 적립금을 입력하세요.</div>';return;}
   const isLow=sgovPct<=5;
-  const qldAmt=Math.round(monthly*(isLow?0.7:0.5));
-  const sgovAmt=Math.round(monthly*(isLow?0.3:0.5));
+  const qAmt=Math.round(monthly*(isLow?0.7:0.5)),sAmt=Math.round(monthly*(isLow?0.3:0.5));
   document.getElementById('dca-result').innerHTML=`<div style="background:var(--bg2);border:1px solid ${isLow?'rgba(224,92,92,0.3)':'var(--accent-border)'};border-radius:8px;padding:14px;">
     <div style="font-size:12px;font-weight:700;color:${isLow?'var(--red)':'var(--accent2)'};margin-bottom:10px;">${isLow?'⚠ SGOV 5% 이하 — 탄약 보충 모드':'✅ 일반 DCA 모드'}</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="card"><div class="card-label">QLD 매수 (${isLow?70:50}%)</div><div class="card-value" style="color:var(--accent);font-size:18px;">${qldAmt.toLocaleString()}만</div></div>
-      <div class="card"><div class="card-label">SGOV 매수 (${isLow?30:50}%)</div><div class="card-value" style="color:var(--text2);font-size:18px;">${sgovAmt.toLocaleString()}만</div></div>
+      <div class="card"><div class="card-label">QLD 매수 (${isLow?70:50}%)</div><div class="card-value" style="color:var(--accent);font-size:18px;">${qAmt.toLocaleString()}만</div></div>
+      <div class="card"><div class="card-label">SGOV 매수 (${isLow?30:50}%)</div><div class="card-value" style="color:var(--text2);font-size:18px;">${sAmt.toLocaleString()}만</div></div>
     </div>
     <div style="margin-top:10px;font-size:10px;color:var(--text3);">매수일: 매월 22일 (휴일이면 다음 영업일)</div>
   </div>`;
 }
 
-// ── 사이클 ───────────────────────────────────────────────────────
+// 사이클
 function calcCycleStatus(){
-  const ath=parseFloat(document.getElementById('ath-price').value||0);
-  const cur=parseFloat(document.getElementById('cur-qqq').value||mkt.qqq_price||0);
+  const ath=parseFloat(document.getElementById('ath-price')?.value||0);
+  const cur=parseFloat(document.getElementById('cur-qqq')?.value||mkt.qqq_price||0);
   if(!ath||!cur)return;
-  const dd=(cur/ath-1)*100;
-  renderCycleStatus(ath,cur,dd);
+  renderCycleStatus(ath,cur,(cur/ath-1)*100);
 }
 
 function renderCycleStatus(ath,cur,dd){
   if(!qldState)return;
-  const cycle=qldState.cycle;
-  const athP=ath||cycle.ath_price||0,curP=cur||mkt.qqq_price||0;
+  const c=qldState.cycle;
+  const athP=ath||c.ath_price||0,curP=cur||mkt.qqq_price||0;
   const ddP=dd!=null?dd:(athP&&curP?(curP/athP-1)*100:null);
-  document.getElementById('cycle-status').innerHTML=`<div class="grid3">
-    <div class="card"><div class="card-label">사이클 페이즈</div><div class="card-value" style="font-size:16px;color:${cycle.in_recovery_mode?'var(--gold)':'var(--green)'};">${cycle.in_recovery_mode?'회복 모드':'정상'}</div></div>
-    <div class="card"><div class="card-label">목표 QLD 비중</div><div class="card-value" style="font-size:18px;color:var(--accent);">${cycle.target_qld_ratio||35}%</div></div>
-    <div class="card"><div class="card-label">ATH 대비 낙폭</div><div class="card-value" style="font-size:18px;color:${ddP&&ddP<=-12?'var(--red)':'var(--text1)'};">${ddP!=null?ddP.toFixed(1)+'%':'—'}</div></div>
+  const el=document.getElementById('cycle-status');if(!el)return;
+  el.innerHTML=`<div class="g3" style="margin-bottom:12px;">
+    <div class="card"><div class="card-label">사이클 페이즈</div><div class="card-value" style="font-size:15px;color:${c.in_recovery_mode?'var(--gold)':'var(--green)'};">${c.in_recovery_mode?'회복 모드':'정상'}</div></div>
+    <div class="card"><div class="card-label">목표 QLD</div><div class="card-value" style="font-size:16px;color:var(--accent);">${c.target_qld_ratio||35}%</div></div>
+    <div class="card"><div class="card-label">ATH 대비</div><div class="card-value" style="font-size:16px;color:${ddP&&ddP<=-12?'var(--red)':'var(--text1)'};">${ddP!=null?ddP.toFixed(1)+'%':'—'}</div></div>
   </div>`;
 }
 
 function renderCycleSteps(){
   if(!qldState)return;
   const c=qldState.cycle;
-  const steps=[
-    {label:'초기',sub:'35/65',active:!c.in_recovery_mode&&!c.dip_triggered?.some(Boolean)},
-    {label:'하락 감지',sub:'200일선↓',active:mkt.ma200<0},
-    {label:'매수 실행',sub:'단계별',active:c.dip_triggered?.some(Boolean)},
-    {label:'ATH 돌파',sub:'85/15',active:c.recovery_triggered?.[0]},
-    {label:'ATH+20%',sub:'65/35',active:c.recovery_triggered?.[1]},
-    {label:'ATH+30%',sub:'50/50',active:c.recovery_triggered?.[2]},
-    {label:'초기화',sub:'새 사이클',active:false},
-  ];
-  document.getElementById('cycle-steps').innerHTML=steps.map(s=>`<div class="cycle-step${s.active?' active':''}"><div class="cycle-step-label">${s.label}</div><div style="font-size:9px;color:var(--text3);">${s.sub}</div></div>`).join('');
+  const steps=[{l:'초기',s:'35/65',active:!c.in_recovery_mode&&!c.dip_triggered?.some(Boolean)},{l:'하락 감지',s:'200일선↓',active:mkt.ma200<0},{l:'매수 실행',s:'단계별',active:c.dip_triggered?.some(Boolean)},{l:'ATH 돌파',s:'85/15',active:c.recovery_triggered?.[0]},{l:'ATH+20%',s:'65/35',active:c.recovery_triggered?.[1]},{l:'ATH+30%',s:'50/50',active:c.recovery_triggered?.[2]},{l:'초기화',s:'새 사이클',active:false}];
+  const el=document.getElementById('cycle-steps');if(!el)return;
+  el.innerHTML=steps.map(s=>`<div class="cycle-step${s.active?' active':''}"><div class="cycle-label">${s.l}</div><div style="font-size:9px;color:var(--text3);">${s.s}</div></div>`).join('');
 }
 
 function renderDipCheckList(){
   const labels=['1단계 -12% (5%)','2단계 -18% (8%)','3단계 -25% (10%)','4단계 -35% (12%)','5단계 -45% (15%)'];
   const triggered=qldState?.cycle?.dip_triggered||[false,false,false,false,false];
-  let html='<div style="display:flex;flex-direction:column;gap:6px;">';
-  labels.forEach((l,i)=>{
-    html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:1px solid ${triggered[i]?'rgba(76,175,125,0.3)':'var(--border)'};border-radius:6px;cursor:pointer;" onclick="toggleDip(${i})">
-      <div style="width:16px;height:16px;border-radius:3px;background:${triggered[i]?'var(--green)':'var(--bg3)'};display:flex;align-items:center;justify-content:center;font-size:10px;color:${triggered[i]?'#0a0e1a':'var(--text3)'};">${triggered[i]?'✓':''}</div>
-      <span style="font-size:12px;color:var(--text1);flex:1;">${l}</span>
-      ${triggered[i]?'<span class="badge" style="background:rgba(76,175,125,0.2);color:var(--green);">실행완료</span>':'<span style="font-size:10px;color:var(--text3);">클릭으로 완료 처리</span>'}
-    </div>`;
-  });
-  document.getElementById('dip-check-list').innerHTML=html+'</div>';
+  const el=document.getElementById('dip-check-list');if(!el)return;
+  el.innerHTML='<div style="display:flex;flex-direction:column;gap:5px;">'+labels.map((l,i)=>`
+    <div class="check-row" style="background:var(--bg2);border:1px solid ${triggered[i]?'rgba(76,175,125,0.25)':'var(--border)'};" onclick="toggleDip(${i})">
+      <div style="width:15px;height:15px;border-radius:3px;background:${triggered[i]?'var(--green)':'var(--bg3)'};display:flex;align-items:center;justify-content:center;font-size:9px;color:${triggered[i]?'#0a0e1a':'var(--text3)'};">${triggered[i]?'✓':''}</div>
+      <span style="font-size:11px;color:var(--text1);flex:1;">${l}</span>
+      ${triggered[i]?'<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.15);color:var(--green);border-radius:3px;">완료</span>':'<span style="font-size:10px;color:var(--text3);">클릭으로 완료</span>'}
+    </div>`).join('')+'</div>';
 }
 
 function renderRecoveryCheckList(){
   const labels=['1단계 ATH 돌파 → QLD 85% / SGOV 15%','2단계 ATH+20% → QLD 65% / SGOV 35%','3단계 ATH+30% → QLD 50% / SGOV 50%'];
   const triggered=qldState?.cycle?.recovery_triggered||[false,false,false];
-  let html='<div style="display:flex;flex-direction:column;gap:6px;">';
-  labels.forEach((l,i)=>{
-    html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg2);border:1px solid ${triggered[i]?'rgba(74,158,255,0.3)':'var(--border)'};border-radius:6px;cursor:pointer;" onclick="toggleRecovery(${i})">
-      <div style="width:16px;height:16px;border-radius:3px;background:${triggered[i]?'var(--accent)':'var(--bg3)'};display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;">${triggered[i]?'✓':''}</div>
-      <span style="font-size:12px;color:var(--text1);flex:1;">${l}</span>
-      ${triggered[i]?'<span class="badge" style="background:var(--accent-dim);color:var(--accent2);">완료</span>':'<span style="font-size:10px;color:var(--text3);">클릭으로 완료 처리</span>'}
-    </div>`;
-  });
-  document.getElementById('recovery-check-list').innerHTML=html+'</div>';
+  const el=document.getElementById('recovery-check-list');if(!el)return;
+  el.innerHTML='<div style="display:flex;flex-direction:column;gap:5px;">'+labels.map((l,i)=>`
+    <div class="check-row" style="background:var(--bg2);border:1px solid ${triggered[i]?'rgba(74,158,255,0.25)':'var(--border)'};" onclick="toggleRecovery(${i})">
+      <div style="width:15px;height:15px;border-radius:3px;background:${triggered[i]?'var(--accent)':'var(--bg3)'};display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;">${triggered[i]?'✓':''}</div>
+      <span style="font-size:11px;color:var(--text1);flex:1;">${l}</span>
+      ${triggered[i]?'<span style="font-size:9px;font-weight:700;padding:2px 6px;background:var(--accent-dim);color:var(--accent2);border-radius:3px;">완료</span>':'<span style="font-size:10px;color:var(--text3);">클릭으로 완료</span>'}
+    </div>`).join('')+'</div>';
 }
 
 function toggleDip(i){
@@ -1096,43 +902,36 @@ function toggleDip(i){
   else if(rt[0]){qldState.cycle.target_qld_ratio=85;qldState.cycle.target_sgov_ratio=15;}
   else{qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;}
   renderDipCheckList();renderRecoveryCheckList();renderCycleStatus();renderCycleSteps();
-  renderDipStages();renderRecoveryStages();
-  showToast('사이클 변경됨 — 설정 저장 버튼으로 GitHub에 저장하세요');
+  renderDipStages();renderRecoveryStages();renderActionBanner();
+  showToast('변경됨 — 설정 저장으로 GitHub에 저장하세요');
 }
 
 function toggleRecovery(i){
   if(!qldState)return;
   qldState.cycle.recovery_triggered[i]=!qldState.cycle.recovery_triggered[i];
   const rt=qldState.cycle.recovery_triggered;
-  const ratios=[[85,15],[65,35],[50,50]];
-  for(let j=2;j>=0;j--){
-    if(rt[j]){qldState.cycle.target_qld_ratio=ratios[j][0];qldState.cycle.target_sgov_ratio=ratios[j][1];break;}
-    if(j===0&&!rt[0]){qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;}
-  }
-  renderDipCheckList();renderRecoveryCheckList();renderCycleStatus();renderCycleSteps();
-  showToast('사이클 변경됨 — 설정 저장 버튼으로 GitHub에 저장하세요');
+  const r=[[85,15],[65,35],[50,50]];
+  for(let j=2;j>=0;j--){if(rt[j]){qldState.cycle.target_qld_ratio=r[j][0];qldState.cycle.target_sgov_ratio=r[j][1];break;}if(j===0&&!rt[0]){qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;}}
+  renderDipCheckList();renderRecoveryCheckList();renderCycleStatus();renderCycleSteps();renderActionBanner();
+  showToast('변경됨 — 설정 저장으로 GitHub에 저장하세요');
 }
 
 async function saveCycleSettings(){
   if(!qldState)return;
-  qldState.cycle.ath_price=parseFloat(document.getElementById('ath-price').value||0);
-  qldState.cycle.ath_date=document.getElementById('ath-date').value;
-  const token=document.getElementById('cycle-token').value.trim();
+  qldState.cycle.ath_price=parseFloat(document.getElementById('ath-price')?.value||0);
+  qldState.cycle.ath_date=document.getElementById('ath-date')?.value||'';
+  const token=document.getElementById('cycle-token')?.value.trim();
   const statusEl=document.getElementById('cycle-save-status');
-  if(!token){if(statusEl)statusEl.textContent='⚠️ GitHub Token을 입력하세요';showToast('Token 입력 후 저장하세요');return;}
+  if(!token){if(statusEl)statusEl.textContent='⚠️ GitHub Token 입력 필요';showToast('Token 입력 후 저장');return;}
   if(statusEl)statusEl.textContent='저장 중...';
   try{
-    const r1=await fetch('https://api.github.com/repos/baekhamo-beep/investment-dashboard/contents/docs/qld_state.json',
-      {headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'}});
+    const r1=await fetch('https://api.github.com/repos/baekhamo-beep/investment-dashboard/contents/docs/qld_state.json',{headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'}});
     const d1=await r1.json();
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(qldState,null,2))));
-    const r2=await fetch('https://api.github.com/repos/baekhamo-beep/investment-dashboard/contents/docs/qld_state.json',{
-      method:'PUT',headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'cycle: update qld state',content,sha:d1.sha})
-    });
-    if(r2.ok){if(statusEl)statusEl.textContent='✅ GitHub 저장 완료 — '+new Date().toLocaleString('ko-KR');showToast('✅ GitHub에 저장 완료!');}
-    else{if(statusEl)statusEl.textContent='❌ 저장 실패 — Token 확인 필요';showToast('저장 실패');}
-  }catch(e){if(statusEl)statusEl.textContent='❌ 오류: '+e.message;}
+    const r2=await fetch('https://api.github.com/repos/baekhamo-beep/investment-dashboard/contents/docs/qld_state.json',{method:'PUT',headers:{'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify({message:'cycle: update state',content,sha:d1.sha})});
+    if(r2.ok){if(statusEl)statusEl.textContent='✅ 저장 완료 — '+new Date().toLocaleString('ko-KR');showToast('✅ GitHub 저장 완료!');}
+    else{if(statusEl)statusEl.textContent='❌ 저장 실패 — Token 확인';showToast('저장 실패');}
+  }catch(e){if(statusEl)statusEl.textContent='❌ '+e.message;}
   renderCycleStatus();renderCycleSteps();
 }
 
@@ -1143,60 +942,28 @@ function resetCycle(){
   qldState.cycle.recovery_triggered=[false,false,false];
   qldState.cycle.in_recovery_mode=false;
   qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;
-  renderDipCheckList();renderRecoveryCheckList();renderCycleStatus();renderCycleSteps();
-  showToast('초기화 완료 — 설정 저장 버튼으로 GitHub에 저장하세요');
+  renderDipCheckList();renderRecoveryCheckList();renderCycleStatus();renderCycleSteps();renderActionBanner();
+  showToast('초기화 완료 — 설정 저장으로 GitHub에 저장하세요');
 }
 
-// ── AI 조언 ──────────────────────────────────────────────────────
-const QLD_ANSWERS={
-  dca:[
-    {title:'정기 매수 날짜',body:'매월 22일 정기매수 (휴일이면 다음 영업일)'},
-    {title:'일반 모드 (SGOV > 5%)',body:'QLD 50% / SGOV 50% 비율로 매수'},
-    {title:'탄약 부족 모드 (SGOV ≤ 5%)',body:'QLD 70% / SGOV 30%로 변경 → SGOV 비중 회복 우선'},
-  ],
-  dip:[
-    {title:'발동 조건 (AND 둘 다 충족)',body:'① QQQ가 200일선 아래\n② QQQ가 직전 ATH 대비 낙폭 도달'},
-    {title:'1단계 -12%',body:'전체계좌의 5%만큼 SGOV 매도 → QLD 매수'},
-    {title:'2단계 -18%',body:'전체계좌의 8%만큼 SGOV 매도 → QLD 매수'},
-    {title:'3단계 -25%',body:'전체계좌의 10%만큼 SGOV 매도 → QLD 매수'},
-    {title:'4단계 -35%',body:'전체계좌의 12%만큼 SGOV 매도 → QLD 매수'},
-    {title:'5단계 -45%',body:'전체계좌의 15%만큼 SGOV 매도 → QLD 매수'},
-    {title:'동시 신호 처리',body:'여러 단계가 동시 충족 시 해당 비율 모두 합산하여 한번에 실행'},
-    {title:'SGOV 부족 시',body:'잔액 부족한 경우 해당 단계는 실행된 것으로 간주. 이후 동일 단계 재실행 없음'},
-  ],
-  recovery:[
-    {title:'발동 조건',body:'하락장 매수가 1회 이상 발생한 이후 → 회복모드 진입'},
-    {title:'1단계: ATH 돌파',body:'QQQ가 전고점(ATH) 돌파 → QLD 85% / SGOV 15% 리밸런싱'},
-    {title:'2단계: ATH+20%',body:'ATH 돌파 시점 기준 +20% 상승 → QLD 65% / SGOV 35% 리밸런싱'},
-    {title:'3단계: ATH+30%',body:'ATH 돌파 시점 기준 +30% 상승 → QLD 50% / SGOV 50% 리밸런싱 → 회복모드 종료'},
-    {title:'기준점 주의',body:'+20%, +30%는 ATH 돌파가 발생한 시점의 QQQ 종가를 기준으로 계산'},
-  ],
-  cycle:[
-    {title:'사이클 흐름',body:'① ATH 형성 → ② 하락(200일선 하회) → ③ 단계별 매수 → ④ 반등 → ⑤ ATH 돌파 → ⑥ 85/15→65/35→50/50 복귀 → ⑦ 초기화'},
-    {title:'초기 설정 (1회성)',body:'35/65는 시작점 리스크를 줄이기 위한 1회성 설정. 이후에는 50/50이 기본'},
-    {title:'사이클 초기화 조건',body:'상승장 복귀 3단계(50/50) 완료 이후, 새로운 ATH 형성 시 초기화하고 새 사이클 진입'},
-    {title:'ATH 기준',body:'QQQ 전일 종가 기준으로 갱신. 단, 하락 트리거 초기화는 복귀 3단계 완료 후의 새 ATH에서만 적용'},
-  ],
-  checklist:[
-    {title:'매일 확인',body:'① QQQ 현재가 vs ATH (낙폭 계산)\n② QQQ vs 200일선 (위/아래 확인)'},
-    {title:'하락장 체크',body:'① QQQ < 200일선인가?\n② ATH 대비 낙폭 몇 %인가?\n③ 해당 단계 이미 실행했는가?\n→ 미실행이면 SGOV 매도 → QLD 매수'},
-    {title:'상승장 체크',body:'① ATH 돌파했는가?\n② ATH 돌파 기준 +20%, +30% 도달했는가?\n→ 해당되면 리밸런싱 실행'},
-    {title:'월 1회 체크',body:'① 적립금 투입 (매월 22일)\n② SGOV 비중 5% 이하인가?\n→ YES: 70/30 | NO: 50/50'},
-  ],
-  forbidden:[
-    {title:'절대 금지 3가지',body:'① 하락장에서 매수 생략\n② 상승장에서 리밸런싱 지연\n③ 임의 판단 개입'},
-    {title:'전략의 핵심',body:'이 전략은 "규칙 기반"이 핵심. 감정이나 시장 예측으로 임의 변경 금지'},
-  ],
+// AI 빠른 답변
+const QLD_ANS={
+  dca:[{t:'정기 매수일',b:'매월 22일 (휴일이면 다음 영업일)'},{t:'일반 모드 (SGOV > 5%)',b:'QLD 50% / SGOV 50%'},{t:'탄약 부족 (SGOV ≤ 5%)',b:'QLD 70% / SGOV 30% → SGOV 비중 회복 우선'}],
+  dip:[{t:'발동 조건 (AND)',b:'① QQQ 200일선 아래\n② ATH 대비 낙폭 도달'},{t:'1단계 -12%',b:'전체계좌 5% SGOV 매도 → QLD 매수'},{t:'2단계 -18%',b:'전체계좌 8% SGOV 매도 → QLD 매수'},{t:'3단계 -25%',b:'전체계좌 10% SGOV 매도 → QLD 매수'},{t:'4단계 -35%',b:'전체계좌 12% SGOV 매도 → QLD 매수'},{t:'5단계 -45%',b:'전체계좌 15% SGOV 매도 → QLD 매수'},{t:'동시 신호',b:'여러 단계 동시 충족 시 비율 합산하여 한번에 실행'}],
+  recovery:[{t:'발동 조건',b:'하락 매수 1회 이상 후 → 회복모드 진입'},{t:'1단계: ATH 돌파',b:'QLD 85% / SGOV 15% 리밸런싱'},{t:'2단계: ATH+20%',b:'QLD 65% / SGOV 35% 리밸런싱'},{t:'3단계: ATH+30%',b:'QLD 50% / SGOV 50% → 회복모드 종료'},{t:'기준점',b:'+20%, +30%는 ATH 돌파 시점의 QQQ 종가 기준'}],
+  cycle:[{t:'흐름',b:'ATH → 하락(200일선↓) → 단계 매수 → ATH 돌파 → 85/15→65/35→50/50 → 초기화'},{t:'초기 35/65',b:'1회성 설정. 이후에는 50/50이 기본'},{t:'초기화 조건',b:'복귀 3단계 완료 + 새 ATH 형성 시'}],
+  checklist:[{t:'매일',b:'① QQQ vs ATH 낙폭\n② QQQ vs 200일선'},{t:'하락장',b:'① 200일선 아래?\n② 낙폭 몇 %?\n③ 해당 단계 미실행 → SGOV 매도 → QLD 매수'},{t:'월 1회 (22일)',b:'① 적립금 투입\n② SGOV 5% 이하? → YES:70/30 | NO:50/50'}],
+  forbidden:[{t:'금지 3가지',b:'① 하락장 매수 생략\n② 상승장 리밸런싱 지연\n③ 임의 판단 개입'},{t:'전략 핵심',b:'규칙 기반이 핵심. 감정으로 변경 금지.'}],
 };
-
 function showQldAnswer(key){
-  const answers=QLD_ANSWERS[key];if(!answers)return;
-  document.getElementById('qld-ai-answer').innerHTML=answers.map(b=>`<div class="ai-rule-block"><div class="ai-rule-title">${b.title}</div><div class="ai-rule-body">${b.body}</div></div>`).join('');
+  const ans=QLD_ANS[key];if(!ans)return;
+  const el=document.getElementById('qld-ai-answer');if(!el)return;
+  el.innerHTML=ans.map(a=>`<div style="border-left:3px solid var(--accent);padding-left:12px;margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:3px;">${a.t}</div><div style="font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-line;">${a.b}</div></div>`).join('');
 }
 
-// ── 초기화 ────────────────────────────────────────────────────────
-const _qldSaved=localStorage.getItem('qld_portfolio');
-if(_qldSaved){try{const _d=JSON.parse(_qldSaved);if(_d.qld)document.getElementById('p-qld-qty').value=_d.qld;if(_d.sgov)document.getElementById('p-sgov-qty').value=_d.sgov;}catch(e){}}
+// 초기화
+const _s=localStorage.getItem('qld_portfolio');
+if(_s){try{const d=JSON.parse(_s);if(d.qld)document.getElementById('p-qld-qty').value=d.qld;if(d.sgov)document.getElementById('p-sgov-qty').value=d.sgov;}catch(e){}}
 loadData();
 loadState();
 </script>
