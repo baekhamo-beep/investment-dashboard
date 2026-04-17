@@ -168,9 +168,9 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div id="reasoning-wrap" style="margin-top:-6px;margin-bottom:14px;display:none;">
       <div onclick="toggleReasoning()" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px 6px 0 0;border-bottom:none;">
         <span style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;">📋 판단 근거</span>
-        <span id="reasoning-icon" style="font-size:10px;color:var(--text3);margin-left:auto;">▼ 펼치기</span>
+        <span id="reasoning-icon" style="font-size:10px;color:var(--text3);margin-left:auto;">▲ 접기</span>
       </div>
-      <div id="reasoning-body" style="display:none;background:var(--bg2);border:1px solid var(--border);border-radius:0 0 6px 6px;padding:12px 14px;">
+      <div id="reasoning-body" style="display:block;background:var(--bg2);border:1px solid var(--border);border-radius:0 0 6px 6px;padding:12px 14px;">
         <div id="reasoning-text" style="font-size:11px;color:var(--text2);line-height:1.9;"></div>
       </div>
     </div>
@@ -632,6 +632,9 @@ function toggleReasoning(){
   const isOpen = body.style.display !== 'none';
   body.style.display = isOpen ? 'none' : 'block';
   icon.textContent = isOpen ? '▼ 펼치기' : '▲ 접기';
+  // 헤더 border-radius 조정
+  const header = body.previousElementSibling;
+  if(header) header.style.borderRadius = isOpen ? '6px' : '6px 6px 0 0';
 }
 
 function renderReasoning(state, nd, ma200below, cycle){
