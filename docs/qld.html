@@ -358,8 +358,9 @@ async function loadData(){
     }
     // ETF 가격 업데이트
     if(d.etf_prices){
-      if(d.etf_prices.QLD) document.getElementById('p-qld-price').textContent='$'+d.etf_prices.QLD;
-      if(d.etf_prices.SGOV) document.getElementById('p-sgov-price').textContent='$'+d.etf_prices.SGOV;
+      if(d.etf_prices.QLD){ qldEtfPrices.QLD=d.etf_prices.QLD; }
+      if(d.etf_prices.SGOV){ qldEtfPrices.SGOV=d.etf_prices.SGOV; }
+      updateQldPriceDisplay();
     }
     const upd=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='업데이트: '+upd+' KST';
@@ -493,10 +494,22 @@ function renderTodayChecklist(){
 let qldUseDollar = false;
 let qldUsdKrw = 1350;
 
+let qldEtfPrices = {QLD:0, SGOV:0};
+
+function updateQldPriceDisplay(){
+  const qp = qldEtfPrices.QLD;
+  const sp = qldEtfPrices.SGOV;
+  const qEl = document.getElementById('p-qld-price');
+  const sEl = document.getElementById('p-sgov-price');
+  if(qEl && qp>0) qEl.textContent = qldUseDollar ? '$'+qp : Math.round(qp*qldUsdKrw).toLocaleString()+'원';
+  if(sEl && sp>0) sEl.textContent = qldUseDollar ? '$'+sp : Math.round(sp*qldUsdKrw).toLocaleString()+'원';
+}
+
 function toggleQldCurrency(){
   qldUseDollar = !qldUseDollar;
   document.getElementById('qld-toggle-dot').style.left = qldUseDollar ? '16px' : '2px';
   document.getElementById('qld-currency-label').textContent = qldUseDollar ? '달러' : '원화';
+  updateQldPriceDisplay();
   calcPort();
 }
 
@@ -588,12 +601,42 @@ function calcPort(){
       const qldTarget=total*targetQLD/100;
       const sgovTarget=total*targetSGOV/100;
       const qldNeed=qldTarget-qldVal;
-      html+=`<div class="action-box"><div class="action-num">${qldNeed>0?'↑':'↓'}</div><div class="action-text">
-        <span style="color:var(--accent);font-weight:700;">QLD</span>
-        ${qldNeed>0?'<span style="color:var(--green)"> 매수</span>':'<span style="color:var(--red)"> 매도</span>'}
-        <b> $${Math.abs(qldNeed).toFixed(0)}</b>
-        <span style="color:var(--text3);font-size:11px;"> (${qldDiff>0?'+':''}${qldDiff.toFixed(1)}%p)</span>
-      </div></div>`;
+      const qldShares=qldPrice>0?Math.round(Math.abs(qldNeed)/qldPrice):0;
+      const sgovShares=sgovPrice>0?Math.round(Math.abs(qldNeed)/sgovPrice):0;
+      const amtStr=qldUseDollar?'$'+Math.abs(qldNeed).toFixed(0):Math.round(Math.abs(qldNeed)*qldUsdKrw/10000).toLocaleString()+'만원';
+      const qldPriceStr=qldUseDollar?'$'+qldPrice:'₩'+Math.round(qldPrice*qldUsdKrw).toLocaleString();
+      const sgovPriceStr=qldUseDollar?'$'+sgovPrice:'₩'+Math.round(sgovPrice*qldUsdKrw).toLocaleString();
+      if(qldNeed<0){
+        // QLD 매도 → SGOV 매수
+        html+=`<div class="action-box"><div class="action-num">↓</div><div class="action-text">
+          <span style="color:var(--accent);font-weight:700;">QLD</span>
+          <span style="color:var(--red);"> 매도</span>
+          <b> ${amtStr}</b>
+          <span style="color:var(--accent2);font-size:11px;"> (약 ${qldShares}주 @ ${qldPriceStr})</span>
+          <span style="color:var(--text3);font-size:11px;"> ${qldDiff>0?'+':''}${qldDiff.toFixed(1)}%p</span>
+        </div></div>
+        <div class="action-box"><div class="action-num">↑</div><div class="action-text">
+          <span style="color:var(--text2);font-weight:700;">SGOV</span>
+          <span style="color:var(--green);"> 매수</span>
+          <b> ${amtStr}</b>
+          <span style="color:var(--accent2);font-size:11px;"> (약 ${sgovShares}주 @ ${sgovPriceStr})</span>
+        </div></div>`;
+      } else {
+        // SGOV 매도 → QLD 매수
+        html+=`<div class="action-box"><div class="action-num">↓</div><div class="action-text">
+          <span style="color:var(--text2);font-weight:700;">SGOV</span>
+          <span style="color:var(--red);"> 매도</span>
+          <b> ${amtStr}</b>
+          <span style="color:var(--accent2);font-size:11px;"> (약 ${sgovShares}주 @ ${sgovPriceStr})</span>
+        </div></div>
+        <div class="action-box"><div class="action-num">↑</div><div class="action-text">
+          <span style="color:var(--accent);font-weight:700;">QLD</span>
+          <span style="color:var(--green);"> 매수</span>
+          <b> ${amtStr}</b>
+          <span style="color:var(--accent2);font-size:11px;"> (약 ${qldShares}주 @ ${qldPriceStr})</span>
+          <span style="color:var(--text3);font-size:11px;"> ${qldDiff>0?'+':''}${qldDiff.toFixed(1)}%p</span>
+        </div></div>`;
+      }
     } else {
       html+=`<div style="color:var(--green);font-size:12px;">✅ 리밸런싱 불필요 — 목표 비중 범위 내</div>`;
     }
