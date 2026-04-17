@@ -123,6 +123,48 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .lock-error{font-size:11px;color:#e05c5c;margin-top:8px;min-height:16px;}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#c9a84c;color:#0a0e1a;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 @media(max-width:600px){.grid4{grid-template-columns:repeat(2,1fr);}.grid3{grid-template-columns:1fr 1fr;}.grid2{grid-template-columns:1fr;}.quick-btn-grid{grid-template-columns:1fr;}.port-table-header,.port-table-row{grid-template-columns:50px 70px 1fr 80px 60px;}}
+
+/* ── 오늘의 액션 배너 ── */
+.action-banner{
+  position:relative;overflow:hidden;border-radius:10px;padding:20px 22px;
+  margin-bottom:16px;cursor:default;transition:transform 0.2s;
+}
+.action-banner:hover{transform:translateY(-1px);}
+.action-banner::before{
+  content:'';position:absolute;inset:0;opacity:0.07;
+  background:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 8px);
+  pointer-events:none;
+}
+.action-banner.standby{background:linear-gradient(135deg,#0d1f17 0%,#0f2a1a 100%);border:1px solid rgba(76,175,125,0.4);box-shadow:0 0 24px rgba(76,175,125,0.08);}
+.action-banner.dca{background:linear-gradient(135deg,#1a1500 0%,#221c00 100%);border:1px solid rgba(201,168,76,0.5);box-shadow:0 0 24px rgba(201,168,76,0.12);}
+.action-banner.dip{background:linear-gradient(135deg,#1f0d0d 0%,#2a0f0f 100%);border:1px solid rgba(224,92,92,0.5);box-shadow:0 0 28px rgba(224,92,92,0.15);}
+.action-banner.recovery{background:linear-gradient(135deg,#0a0f1f 0%,#0d1525 100%);border:1px solid rgba(74,158,255,0.5);box-shadow:0 0 24px rgba(74,158,255,0.12);}
+.action-banner.overheat{background:linear-gradient(135deg,#1a0e00 0%,#221400 100%);border:1px solid rgba(255,140,0,0.5);box-shadow:0 0 24px rgba(255,140,0,0.12);}
+.ab-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ab-tag{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:3px;opacity:0.9;}
+.ab-tag.standby{background:rgba(76,175,125,0.2);color:#4caf7d;}
+.ab-tag.dca{background:rgba(201,168,76,0.2);color:#c9a84c;}
+.ab-tag.dip{background:rgba(224,92,92,0.2);color:#e05c5c;}
+.ab-tag.recovery{background:rgba(74,158,255,0.2);color:#4a9eff;}
+.ab-tag.overheat{background:rgba(255,140,0,0.2);color:#ff8c00;}
+.ab-date{font-size:10px;color:rgba(255,255,255,0.3);margin-left:auto;letter-spacing:1px;}
+.ab-main{font-size:22px;font-weight:800;letter-spacing:-0.3px;line-height:1.2;margin-bottom:8px;font-family:'Segoe UI',sans-serif;}
+.ab-main.standby{color:#4caf7d;}
+.ab-main.dca{color:#c9a84c;}
+.ab-main.dip{color:#ff7070;}
+.ab-main.recovery{color:#7dc4ff;}
+.ab-main.overheat{color:#ffb347;}
+.ab-sub{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;}
+.ab-detail{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.ab-chip{font-size:10px;font-weight:600;padding:4px 10px;border-radius:4px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.08);}
+.ab-chip.hi{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.15);}
+@keyframes ab-pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.ab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:1px;}
+.ab-dot.standby{background:#4caf7d;}
+.ab-dot.dca{background:#c9a84c;animation:ab-pulse 1.2s infinite;}
+.ab-dot.dip{background:#e05c5c;animation:ab-pulse 0.8s infinite;}
+.ab-dot.recovery{background:#4a9eff;animation:ab-pulse 1.5s infinite;}
+.ab-dot.overheat{background:#ff8c00;animation:ab-pulse 1s infinite;}
 </style>
 </head>
 <body>
@@ -180,6 +222,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
   <!-- ① 상황 진단 -->
   <div class="content panel active" id="tab-diag">
+    <div id="action-banner" class="action-banner standby" style="opacity:0;transition:opacity 0.4s;"></div>
     <div class="data-updated">
       <div class="data-dot pulse" id="data-dot"></div>
       <span id="data-updated-text">데이터 불러오는 중...</span>
@@ -798,12 +841,86 @@ buildPortInputs();
     const updKST=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='마지막 업데이트: '+updKST+' KST';
     document.getElementById('data-dot').classList.remove('pulse');
+    renderActionBanner();
+    const _b=document.getElementById('action-banner');if(_b)_b.style.opacity='1';
     renderDiagStatus();renderDipStages();renderBullSignals();
     updateTotal();
   }catch(e){document.getElementById('data-updated-text').textContent='데이터 로드 실패 — 수동 입력을 사용하세요';renderDiagStatus();renderDipStages();renderBullSignals();}
 }
 
 function setCard(id,val,sub,color){const el=document.getElementById(id);el.textContent=val;el.style.color=color;const s=document.getElementById(id+'-sub');s.textContent=sub;s.classList.remove('pulse');}
+
+
+function renderActionBanner(){
+  const nd = mkt.nasdaq;
+  const vx = mkt.vix;
+  const rsi = mkt.rsi;
+  const ma_dev = mkt.ma200;
+  const fg = mkt.fg;
+
+  // 날짜
+  const now = new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);
+  const dateStr = now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0');
+  const dayNames=['일','월','화','수','목','금','토'];
+  const dateLabel = dateStr+' '+dayNames[now.getDay()]+'요일';
+
+  // 22일 DCA 여부
+  const isDay22 = now.getDate()===22;
+
+  // 상태 판단 (우선순위 순)
+  let state='standby', mainText='', subText='', chips=[];
+
+  // 1) 하락장 트리거
+  if(nd!==null&&nd<=-45){state='dip';mainText='5단계 발동 — SGOV 20% → TQQQ 매수';subText='나스닥 전고점 대비 '+nd.toFixed(1)+'% 하락 · 즉시 집행 (익일 시가 시장가)';chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'VIX '+((vx||0).toFixed(0)),hi:vx>=40},{t:'SGOV → TQQQ',hi:true}];}
+  else if(nd!==null&&nd<=-35){state='dip';mainText='4단계 발동 — SGOV 30% → TQQQ 매수';subText='나스닥 전고점 대비 '+nd.toFixed(1)+'% 하락 · 즉시 집행 (익일 시가 시장가)';chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'VIX '+((vx||0).toFixed(0)),hi:vx>=40},{t:'SGOV → TQQQ',hi:true}];}
+  else if(nd!==null&&nd<=-25){state='dip';mainText='3단계 발동 — SGOV 40% → QLD 매수';subText='나스닥 전고점 대비 '+nd.toFixed(1)+'% 하락 · 즉시 집행 (익일 시가 시장가)';chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'VIX '+((vx||0).toFixed(0)),hi:vx>=40},{t:'SGOV → QLD',hi:true}];}
+  else if(nd!==null&&nd<=-18){state='dip';mainText='2단계 발동 — SGOV 30% → QLD 매수';subText='나스닥 전고점 대비 '+nd.toFixed(1)+'% 하락 · 즉시 집행 (익일 시가 시장가)';chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'SGOV → QLD',hi:true}];}
+  else if(nd!==null&&nd<=-12){state='dip';mainText='1단계 발동 — SGOV 30% → QLD 매수';subText='나스닥 전고점 대비 '+nd.toFixed(1)+'% 하락 · 즉시 집행 (익일 시가 시장가)';chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'SGOV → QLD',hi:true}];}
+  // 2) 과열 재충전
+  else if(nd!==null){
+    let sigCount=0;
+    if(rsi!=null&&rsi>=70)sigCount++;
+    if(fg!=null&&fg>=80)sigCount++;
+    if(ma_dev!=null&&ma_dev>=15)sigCount++;
+    if(sigCount>=2){
+      state='overheat';
+      const allThree=sigCount>=3;
+      mainText=(allThree?'강한 과열 신호 — SGOV '+'15%':'과열 신호 — SGOV 7.5%')+'까지 재충전';
+      subText='SPMO(1순위) / QLD(2순위) 목표 초과분 매도 → SGOV 충전';
+      chips=[{t:'RSI '+(rsi||'—'),hi:rsi>=70},{t:'F&G '+(fg||'—'),hi:fg>=80},{t:'이격도 '+(ma_dev!=null?ma_dev.toFixed(1):'—')+'%',hi:ma_dev>=15}];
+    }
+  }
+
+  // 3) DCA 실행일
+  if(state==='standby'&&isDay22){
+    state='dca';mainText='오늘은 DCA 매수일 (22일)';subText='SGOV 15% 확인 후 결손 비중 순으로 매수 집행';chips=[{t:'매수일 22일',hi:true},{t:'MPS '+((autoMPS?autoMPS.total:'—'))+'점',hi:true}];
+  }
+
+  // 4) 대기
+  if(state==='standby'){
+    // 다음 22일까지 며칠
+    const next22 = new Date(now);
+    if(now.getDate()>22)next22.setMonth(next22.getMonth()+1);
+    next22.setDate(22);
+    const daysLeft=Math.ceil((next22-now)/(1000*60*60*24));
+    mainText='대기 — 헌법 준수 중';subText='트리거 미발동 · 정기 DCA까지 D-'+daysLeft+'일';
+    chips=[{t:'나스닥 '+(nd!=null?(nd>0?'+':'')+nd.toFixed(1):'—')+'%',hi:false},{t:'VIX '+((vx||'—')),hi:false},{t:'D-'+daysLeft,hi:false}];
+  }
+
+  const el=document.getElementById('action-banner');
+  if(!el)return;
+  el.className='action-banner '+state;
+  el.innerHTML=`
+    <div class="ab-top">
+      <div class="ab-dot ${state}"></div>
+      <div class="ab-tag ${state}">${{standby:'STANDBY',dca:'DCA 실행',dip:'하락장 매수',recovery:'회복 모드',overheat:'과열 재충전'}[state]}</div>
+      <div class="ab-date">${dateLabel}</div>
+    </div>
+    <div class="ab-main ${state}">${mainText}</div>
+    <div class="ab-sub">${subText}</div>
+    <div class="ab-detail">${chips.map(c=>`<div class="ab-chip${c.hi?' hi':''}">${c.t}</div>`).join('')}</div>
+  `;
+}
 
 function renderDiagStatus(){
   const nd=mkt.nasdaq,vx=mkt.vix;let html='';
