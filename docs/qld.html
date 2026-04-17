@@ -101,45 +101,6 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="lock-error" id="lock-err"></div>
   </div>
 </div>
-  <!-- ⑤ AI 조언 -->
-  <div class="content panel" id="tab-ai">
-    <div style="background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--accent2);margin-bottom:14px;">
-      ⚡ QLD Hybrid 전략 규칙 기반 정적 답변 제공
-    </div>
-
-    <div class="section-title">빠른 질문</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-      <button onclick="showQldAnswer('dca')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
-        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">DCA 매수 규칙</div>
-        <div style="font-size:10px;color:var(--text3);">월 적립 비율 및 날짜</div>
-      </button>
-      <button onclick="showQldAnswer('dip')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
-        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">하락장 매수 절차</div>
-        <div style="font-size:10px;color:var(--text3);">5단계 트리거 + 발동 조건</div>
-      </button>
-      <button onclick="showQldAnswer('recovery')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
-        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">상승장 복귀 절차</div>
-        <div style="font-size:10px;color:var(--text3);">ATH 기준 3단계 리밸런싱</div>
-      </button>
-      <button onclick="showQldAnswer('cycle')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
-        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">사이클 정의</div>
-        <div style="font-size:10px;color:var(--text3);">초기화 조건 및 흐름</div>
-      </button>
-      <button onclick="showQldAnswer('checklist')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
-        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">실행 체크리스트</div>
-        <div style="font-size:10px;color:var(--text3);">매일/월 1회 확인 항목</div>
-      </button>
-      <button onclick="showQldAnswer('forbidden')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
-        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">금지사항</div>
-        <div style="font-size:10px;color:var(--text3);">절대 하지 말아야 할 것</div>
-      </button>
-    </div>
-
-    <div class="section-title">답변</div>
-    <div id="qld-ai-answer" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;min-height:160px;font-size:12px;line-height:1.8;">
-      <span style="color:var(--text3);">위 버튼을 누르면 QLD Hybrid 규칙 기반 답변이 표시됩니다.</span>
-    </div>
-  </div>
 
 <script>
 (function(){
