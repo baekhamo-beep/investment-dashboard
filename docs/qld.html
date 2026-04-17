@@ -83,6 +83,48 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .lock-error{font-size:11px;color:#e05c5c;margin-top:8px;min-height:16px;}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:8px 20px;border-radius:6px;font-size:12px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 @media(max-width:600px){.grid4{grid-template-columns:repeat(2,1fr);}.grid3{grid-template-columns:1fr 1fr;}.grid2{grid-template-columns:1fr;}}
+
+/* ── 오늘의 액션 배너 ── */
+.action-banner{
+  position:relative;overflow:hidden;border-radius:10px;padding:20px 22px;
+  margin-bottom:16px;cursor:default;transition:transform 0.2s;
+}
+.action-banner:hover{transform:translateY(-1px);}
+.action-banner::before{
+  content:'';position:absolute;inset:0;opacity:0.07;
+  background:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 1px,transparent 8px);
+  pointer-events:none;
+}
+.action-banner.standby{background:linear-gradient(135deg,#0d1f17 0%,#0f2a1a 100%);border:1px solid rgba(76,175,125,0.4);box-shadow:0 0 24px rgba(76,175,125,0.08);}
+.action-banner.dca{background:linear-gradient(135deg,#1a1500 0%,#221c00 100%);border:1px solid rgba(201,168,76,0.5);box-shadow:0 0 24px rgba(201,168,76,0.12);}
+.action-banner.dip{background:linear-gradient(135deg,#1f0d0d 0%,#2a0f0f 100%);border:1px solid rgba(224,92,92,0.5);box-shadow:0 0 28px rgba(224,92,92,0.15);}
+.action-banner.recovery{background:linear-gradient(135deg,#0a0f1f 0%,#0d1525 100%);border:1px solid rgba(74,158,255,0.5);box-shadow:0 0 24px rgba(74,158,255,0.12);}
+.action-banner.overheat{background:linear-gradient(135deg,#1a0e00 0%,#221400 100%);border:1px solid rgba(255,140,0,0.5);box-shadow:0 0 24px rgba(255,140,0,0.12);}
+.ab-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ab-tag{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:3px 8px;border-radius:3px;opacity:0.9;}
+.ab-tag.standby{background:rgba(76,175,125,0.2);color:#4caf7d;}
+.ab-tag.dca{background:rgba(201,168,76,0.2);color:#c9a84c;}
+.ab-tag.dip{background:rgba(224,92,92,0.2);color:#e05c5c;}
+.ab-tag.recovery{background:rgba(74,158,255,0.2);color:#4a9eff;}
+.ab-tag.overheat{background:rgba(255,140,0,0.2);color:#ff8c00;}
+.ab-date{font-size:10px;color:rgba(255,255,255,0.3);margin-left:auto;letter-spacing:1px;}
+.ab-main{font-size:22px;font-weight:800;letter-spacing:-0.3px;line-height:1.2;margin-bottom:8px;font-family:'Segoe UI',sans-serif;}
+.ab-main.standby{color:#4caf7d;}
+.ab-main.dca{color:#c9a84c;}
+.ab-main.dip{color:#ff7070;}
+.ab-main.recovery{color:#7dc4ff;}
+.ab-main.overheat{color:#ffb347;}
+.ab-sub{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;}
+.ab-detail{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.ab-chip{font-size:10px;font-weight:600;padding:4px 10px;border-radius:4px;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.08);}
+.ab-chip.hi{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.15);}
+@keyframes ab-pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.ab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:1px;}
+.ab-dot.standby{background:#4caf7d;}
+.ab-dot.dca{background:#c9a84c;animation:ab-pulse 1.2s infinite;}
+.ab-dot.dip{background:#e05c5c;animation:ab-pulse 0.8s infinite;}
+.ab-dot.recovery{background:#4a9eff;animation:ab-pulse 1.5s infinite;}
+.ab-dot.overheat{background:#ff8c00;animation:ab-pulse 1s infinite;}
 </style>
 </head>
 <body>
@@ -129,6 +171,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
   <!-- ① 상황 진단 -->
   <div class="content panel active" id="tab-diag">
+    <div id="qld-action-banner" class="action-banner standby" style="opacity:0;transition:opacity 0.4s;"></div>
     <div class="data-updated">
       <div class="data-dot pulse" id="data-dot"></div>
       <span id="data-updated-text">데이터 불러오는 중...</span>
@@ -333,6 +376,8 @@ async function loadData(){
     const upd=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='업데이트: '+upd+' KST';
     document.getElementById('data-dot').classList.remove('pulse');
+    renderQldActionBanner();
+    const _qb=document.getElementById('qld-action-banner');if(_qb)_qb.style.opacity='1';
     renderDiagStatus();renderDipStages();renderRecoveryStages();renderTodayChecklist();calcPort();
   }catch(e){document.getElementById('data-updated-text').textContent='데이터 로드 실패';}
 }
@@ -342,6 +387,7 @@ async function loadState(){
     const res=await fetch(STATE_URL+'?t='+Date.now());
     qldState=await res.json();
     renderCycleStatus();renderCycleSteps();renderDipCheckList();renderRecoveryCheckList();
+    renderQldActionBanner();const _qb2=document.getElementById('qld-action-banner');if(_qb2)_qb2.style.opacity='1';
     if(qldState.cycle.ath_price)document.getElementById('ath-price').value=qldState.cycle.ath_price;
     if(qldState.cycle.ath_date)document.getElementById('ath-date').value=qldState.cycle.ath_date;
   }catch(e){
@@ -353,6 +399,89 @@ function setCard(id,val,sub,color){
   const el=document.getElementById(id);if(!el)return;
   el.textContent=val;el.style.color=color;
   const s=document.getElementById(id+'-sub');if(s){s.textContent=sub;s.classList.remove('pulse');}
+}
+
+
+function renderQldActionBanner(){
+  const nd = mkt.nasdaq;
+  const ma200below = mkt.ma200!==null&&mkt.ma200<0;
+  const now = new Date(Date.now()+(9*60+new Date().getTimezoneOffset())*60000);
+  const dateStr = now.getFullYear()+'.'+(now.getMonth()+1).toString().padStart(2,'0')+'.'+now.getDate().toString().padStart(2,'0');
+  const dayNames=['일','월','화','수','목','금','토'];
+  const dateLabel = dateStr+' '+dayNames[now.getDay()]+'요일';
+  const isDay22 = now.getDate()===22;
+  const cycle = qldState?.cycle;
+  const inRecovery = cycle?.in_recovery_mode||false;
+
+  let state='standby', mainText='', subText='', chips=[];
+
+  // 1) 회복모드 리밸런싱
+  if(inRecovery){
+    const rt=cycle.recovery_triggered||[false,false,false];
+    if(!rt[0]&&nd!==null&&nd>=0){
+      state='recovery';mainText='ATH 돌파 — QLD 85% / SGOV 15% 리밸런싱';
+      subText='상승 복귀 1단계 · 즉시 리밸런싱 집행 (익일 시가 시장가)';
+      chips=[{t:'ATH 돌파',hi:true},{t:'목표 QLD 85%',hi:true}];
+    } else if(rt[0]&&!rt[1]){
+      state='recovery';mainText='ATH+20% 도달 확인 후 QLD 65% / SGOV 35%';
+      subText='상승 복귀 2단계 · ATH 돌파 시점 종가 기준 +20% 달성 시 집행';
+      chips=[{t:'회복 2단계',hi:true},{t:'목표 QLD 65%',hi:true}];
+    } else if(rt[1]&&!rt[2]){
+      state='recovery';mainText='ATH+30% 도달 확인 후 QLD 50% / SGOV 50%';
+      subText='상승 복귀 3단계 · 완료 시 회복모드 종료 · 새 사이클 준비';
+      chips=[{t:'회복 3단계',hi:true},{t:'목표 QLD 50%',hi:true}];
+    }
+  }
+
+  // 2) 하락장 트리거
+  if(state==='standby'&&ma200below&&nd!==null){
+    const dips=cycle?.dip_triggered||[false,false,false,false,false];
+    const thresholds=[-12,-18,-25,-35,-45];
+    const pcts=[5,8,10,12,15];
+    for(let i=4;i>=0;i--){
+      if(nd<=thresholds[i]&&!dips[i]){
+        state='dip';mainText=`${i+1}단계 발동 — 전체계좌 ${pcts[i]}% → QLD 매수`;
+        subText=`QQQ 200일선 아래 + ATH 대비 ${thresholds[i]}% 하락 · 즉시 집행`;
+        chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'200일선 아래',hi:true},{t:'SGOV→QLD',hi:true}];
+        break;
+      }
+    }
+  }
+
+  // 3) DCA 실행일
+  if(state==='standby'&&isDay22){
+    const sgovPct=cycle?.target_sgov_ratio||65;
+    const isLow=sgovPct<=5;
+    state='dca';mainText='오늘은 DCA 매수일 (22일)';
+    subText=isLow?'SGOV 5% 이하 — QLD 70% / SGOV 30% 비율로 매수':'QLD 50% / SGOV 50% 비율로 매수';
+    chips=[{t:'22일 매수일',hi:true},{t:isLow?'탄약 부족':'일반 모드',hi:isLow}];
+  }
+
+  // 4) 대기
+  if(state==='standby'){
+    const next22=new Date(now);
+    if(now.getDate()>22)next22.setMonth(next22.getMonth()+1);
+    next22.setDate(22);
+    const daysLeft=Math.ceil((next22-now)/(1000*60*60*24));
+    const ma200str=mkt.ma200!=null?(mkt.ma200>0?'200일선 위':'200일선 아래'):'—';
+    mainText='대기 — 규칙 준수 중';
+    subText=`200일선 ${mkt.ma200>0?'위 (하락 트리거 비활성)':'아래 (낙폭 모니터링 중)'} · DCA까지 D-${daysLeft}일`;
+    chips=[{t:'나스닥 '+(nd!=null?(nd>0?'+':'')+nd.toFixed(1):'—')+'%',hi:false},{t:ma200str,hi:mkt.ma200<0},{t:'D-'+daysLeft,hi:false}];
+  }
+
+  const el=document.getElementById('qld-action-banner');
+  if(!el)return;
+  el.className='action-banner '+state;
+  el.innerHTML=`
+    <div class="ab-top">
+      <div class="ab-dot ${state}"></div>
+      <div class="ab-tag ${state}">${{standby:'STANDBY',dca:'DCA 실행',dip:'하락장 매수',recovery:'회복 모드',overheat:'과열 재충전'}[state]}</div>
+      <div class="ab-date">${dateLabel}</div>
+    </div>
+    <div class="ab-main ${state}">${mainText}</div>
+    <div class="ab-sub">${subText}</div>
+    <div class="ab-detail">${chips.map(c=>`<div class="ab-chip${c.hi?' hi':''}">${c.t}</div>`).join('')}</div>
+  `;
 }
 
 function renderDiagStatus(){
