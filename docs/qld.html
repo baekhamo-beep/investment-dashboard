@@ -820,7 +820,7 @@ function toggleRecovery(i){
     if(j===0 && !rt[0]){qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;}
   }
   renderDipCheckList(); renderRecoveryCheckList(); renderCycleStatus(); renderCycleSteps();
-  showToast('저장하려면 GitHub Token 입력 후 설정 저장 버튼을 누르세요');
+  showToast('사이클 변경됨 — 설정 저장 버튼으로 GitHub에 저장하세요');
 }
 
 async function saveCycleSettings(){
