@@ -549,9 +549,9 @@ function calcCycleStatus(){
 function renderCycleStatus(ath,cur,dd){
   if(!qldState) return;
   const cycle=qldState.cycle;
-  const athP=ath||cycle.ath_price||0;
-  const curP=cur||mkt.qqq_price||0;
-  const ddP=dd|||(athP&&curP?(curP/athP-1)*100:null);
+  const athP=ath||(cycle.ath_price)||0;
+  const curP=cur||(mkt.qqq_price)||0;
+  const ddP=dd!=null?dd:(athP&&curP?(curP/athP-1)*100:null);
 
   let html=`<div class="grid3">
     <div class="card"><div class="card-label">현재 사이클 페이즈</div><div class="card-value" style="font-size:16px;color:${cycle.in_recovery_mode?'var(--gold)':'var(--green)'};">${cycle.in_recovery_mode?'회복 모드':'정상'}</div></div>
@@ -633,7 +633,7 @@ function toggleRecovery(i){
   const ratios=[[85,15],[65,35],[50,50]];
   for(let j=2;j>=0;j--){
     if(rt[j]){qldState.cycle.target_qld_ratio=ratios[j][0];qldState.cycle.target_sgov_ratio=ratios[j][1];break;}
-    if(j===0&&!rt[0]){qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;}
+    if(j===0 && !rt[0]){qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;}
   }
   renderDipCheckList(); renderRecoveryCheckList(); renderCycleStatus(); renderCycleSteps();
   showToast('저장하려면 GitHub Token 입력 후 설정 저장 버튼을 누르세요');
