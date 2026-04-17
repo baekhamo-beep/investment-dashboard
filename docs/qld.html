@@ -101,6 +101,46 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="lock-error" id="lock-err"></div>
   </div>
 </div>
+  <!-- ⑤ AI 조언 -->
+  <div class="content panel" id="tab-ai">
+    <div style="background:var(--accent-dim);border:1px solid var(--accent-border);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--accent2);margin-bottom:14px;">
+      ⚡ QLD Hybrid 전략 규칙 기반 정적 답변 제공
+    </div>
+
+    <div class="section-title">빠른 질문</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+      <button onclick="showQldAnswer('dca')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
+        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">DCA 매수 규칙</div>
+        <div style="font-size:10px;color:var(--text3);">월 적립 비율 및 날짜</div>
+      </button>
+      <button onclick="showQldAnswer('dip')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
+        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">하락장 매수 절차</div>
+        <div style="font-size:10px;color:var(--text3);">5단계 트리거 + 발동 조건</div>
+      </button>
+      <button onclick="showQldAnswer('recovery')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
+        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">상승장 복귀 절차</div>
+        <div style="font-size:10px;color:var(--text3);">ATH 기준 3단계 리밸런싱</div>
+      </button>
+      <button onclick="showQldAnswer('cycle')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
+        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">사이클 정의</div>
+        <div style="font-size:10px;color:var(--text3);">초기화 조건 및 흐름</div>
+      </button>
+      <button onclick="showQldAnswer('checklist')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
+        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">실행 체크리스트</div>
+        <div style="font-size:10px;color:var(--text3);">매일/월 1회 확인 항목</div>
+      </button>
+      <button onclick="showQldAnswer('forbidden')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--accent-border)';this.style.color='var(--accent2)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--text2)'">
+        <div style="font-weight:600;color:var(--text1);margin-bottom:2px;">금지사항</div>
+        <div style="font-size:10px;color:var(--text3);">절대 하지 말아야 할 것</div>
+      </button>
+    </div>
+
+    <div class="section-title">답변</div>
+    <div id="qld-ai-answer" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;min-height:160px;font-size:12px;line-height:1.8;">
+      <span style="color:var(--text3);">위 버튼을 누르면 QLD Hybrid 규칙 기반 답변이 표시됩니다.</span>
+    </div>
+  </div>
+
 <script>
 (function(){
   async function sha256(str){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
@@ -139,6 +179,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="tab" onclick="switchTab('port',this)">② 포트폴리오</div>
     <div class="tab" onclick="switchTab('dca',this)">③ DCA 계산기</div>
     <div class="tab" onclick="switchTab('cycle',this)">④ 사이클 관리</div>
+    <div class="tab" onclick="switchTab('ai',this)">⑤ AI 조언</div>
   </div>
 
   <!-- ① 상황 진단 -->
@@ -799,6 +840,68 @@ function resetCycle(){
 }
 
 // 초기화
+const QLD_ANSWERS = {
+  dca: [
+    {title:'정기 매수 날짜', body:'매월 22일 정기매수 (휴일이면 다음 영업일)'},
+    {title:'일반 모드 (SGOV > 5%)', body:'QLD 50% / SGOV 50% 비율로 매수'},
+    {title:'탄약 부족 모드 (SGOV ≤ 5%)', body:'QLD 70% / SGOV 30%로 변경 → SGOV 비중 회복 우선'},
+  ],
+  dip: [
+    {title:'발동 조건 (AND 둘 다 충족)', body:'① QQQ가 200일선 아래
+② QQQ가 직전 ATH 대비 낙폭 도달'},
+    {title:'1단계 -12%', body:'전체계좌의 5%만큼 SGOV 매도 → QLD 매수'},
+    {title:'2단계 -18%', body:'전체계좌의 8%만큼 SGOV 매도 → QLD 매수'},
+    {title:'3단계 -25%', body:'전체계좌의 10%만큼 SGOV 매도 → QLD 매수'},
+    {title:'4단계 -35%', body:'전체계좌의 12%만큼 SGOV 매도 → QLD 매수'},
+    {title:'5단계 -45%', body:'전체계좌의 15%만큼 SGOV 매도 → QLD 매수'},
+    {title:'동시 신호 처리', body:'여러 단계가 동시 충족 시 해당 비율 모두 합산하여 한번에 실행'},
+    {title:'SGOV 부족 시', body:'잔액 부족한 경우 해당 단계는 실행된 것으로 간주. 이후 동일 단계 재실행 없음'},
+  ],
+  recovery: [
+    {title:'발동 조건', body:'하락장 매수가 1회 이상 발생한 이후 → 회복모드 진입'},
+    {title:'1단계: ATH 돌파', body:'QQQ가 전고점(ATH) 돌파 → QLD 85% / SGOV 15% 리밸런싱'},
+    {title:'2단계: ATH+20%', body:'ATH 돌파 시점 기준 +20% 상승 → QLD 65% / SGOV 35% 리밸런싱'},
+    {title:'3단계: ATH+30%', body:'ATH 돌파 시점 기준 +30% 상승 → QLD 50% / SGOV 50% 리밸런싱 → 회복모드 종료'},
+    {title:'기준점 주의', body:'+20%, +30%는 ATH 돌파가 발생한 시점의 QQQ 종가를 기준으로 계산'},
+  ],
+  cycle: [
+    {title:'사이클 흐름', body:'① ATH 형성 → ② 하락(200일선 하회) → ③ 단계별 매수 → ④ 반등 → ⑤ ATH 돌파 → ⑥ 85/15→65/35→50/50 복귀 → ⑦ 초기화'},
+    {title:'초기 설정 (1회성)', body:'35/65는 시작점 리스크를 줄이기 위한 1회성 설정. 이후에는 50/50이 기본'},
+    {title:'사이클 초기화 조건', body:'상승장 복귀 3단계(50/50) 완료 이후, 새로운 ATH 형성 시 초기화하고 새 사이클 진입'},
+    {title:'ATH 기준', body:'QQQ 전일 종가 기준으로 갱신. 단, 하락 트리거 초기화는 복귀 3단계 완료 후의 새 ATH에서만 적용'},
+  ],
+  checklist: [
+    {title:'매일 확인', body:'① QQQ 현재가 vs ATH (낙폭 계산)
+② QQQ vs 200일선 (위/아래 확인)'},
+    {title:'하락장 체크', body:'① QQQ < 200일선인가?
+② ATH 대비 낙폭 몇 %인가?
+③ 해당 단계 이미 실행했는가?
+→ 미실행이면 SGOV 매도 → QLD 매수'},
+    {title:'상승장 체크', body:'① ATH 돌파했는가?
+② ATH 돌파 기준 +20%, +30% 도달했는가?
+→ 해당되면 리밸런싱 실행'},
+    {title:'월 1회 체크', body:'① 적립금 투입 (매월 22일)
+② SGOV 비중 5% 이하인가?
+→ YES: 70/30 | NO: 50/50'},
+  ],
+  forbidden: [
+    {title:'절대 금지 3가지', body:'① 하락장에서 매수 생략
+② 상승장에서 리밸런싱 지연
+③ 임의 판단 개입'},
+    {title:'전략의 핵심', body:'이 전략은 "규칙 기반"이 핵심. 감정이나 시장 예측으로 임의 변경 금지'},
+  ],
+};
+
+function showQldAnswer(key){
+  const answers=QLD_ANSWERS[key];
+  if(!answers) return;
+  document.getElementById('qld-ai-answer').innerHTML=answers.map(b=>`
+    <div style="border-left:3px solid var(--accent);padding-left:12px;margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:4px;">${b.title}</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-line;">${b.body}</div>
+    </div>`).join('');
+}
+
 loadData();
 loadState();
 // 저장된 포트폴리오 자동 로드
