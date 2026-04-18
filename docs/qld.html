@@ -327,6 +327,12 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
     <!-- 사이클 관리 -->
     <div class="sub-panel active" id="sub-cycle-state">
+      <!-- 사이클 모드 배너 -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">
+        <div style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:1px;">현재 모드</div>
+        <div style="font-size:13px;font-weight:700;" id="cycle-mode-label">—</div>
+        <div style="margin-left:auto;font-size:10px;color:var(--text3);">첫 사이클 완료(+30% 달성) 시 영구 50/50 전환</div>
+      </div>
       <div class="sec">현재 사이클 상태</div>
       <div id="cycle-status"></div>
 
@@ -616,7 +622,7 @@ async function loadState(){
   try{
     qldState=await fetch(STATE_URL+'?t='+Date.now()).then(r=>r.json());
   }catch(e){
-    qldState={cycle:{ath_price:0,ath_date:'',dip_triggered:[false,false,false,false,false],recovery_triggered:[false,false,false],in_recovery_mode:false,target_qld_ratio:35,target_sgov_ratio:65}};
+    qldState={cycle:{ath_price:0,ath_date:'',dip_triggered:[false,false,false,false,false],recovery_triggered:[false,false,false],in_recovery_mode:false,target_qld_ratio:35,target_sgov_ratio:65,first_cycle_completed:false}};
   }
   renderCycleStatus(); renderCycleSteps(); renderDipCheckList(); renderRecoveryCheckList();
   renderActionBanner(); const ab=document.getElementById('action-banner');if(ab)ab.style.opacity='1';
@@ -946,6 +952,12 @@ function calcCycleStatus(){
 }
 
 function renderCycleStatus(ath,cur,dd){
+  const firstDone = qldState?.cycle?.first_cycle_completed || false;
+  const modeLabel = firstDone ? '실전 모드 (50/50 기본)' : '훈련 모드 (35/65 초기)';
+  const modeColor = firstDone ? 'var(--accent2)' : 'var(--gold)';
+  const el2 = document.getElementById('cycle-mode-label');
+  if(el2){ el2.textContent = modeLabel; el2.style.color = modeColor; }
+
   if(!qldState)return;
   const c=qldState.cycle;
   const athP=ath||c.ath_price||0,curP=cur||mkt.qqq_price||0;
@@ -1009,7 +1021,20 @@ function toggleRecovery(i){
   qldState.cycle.recovery_triggered[i]=!qldState.cycle.recovery_triggered[i];
   const rt=qldState.cycle.recovery_triggered;
   const r=[[85,15],[65,35],[50,50]];
-  for(let j=2;j>=0;j--){if(rt[j]){qldState.cycle.target_qld_ratio=r[j][0];qldState.cycle.target_sgov_ratio=r[j][1];break;}if(j===0&&!rt[0]){qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;}}
+  let found=false;
+  for(let j=2;j>=0;j--){
+    if(rt[j]){qldState.cycle.target_qld_ratio=r[j][0];qldState.cycle.target_sgov_ratio=r[j][1];found=true;break;}
+  }
+  // 3단계 완료 시 첫 사이클 완료 플래그
+  if(rt[2]){
+    qldState.cycle.first_cycle_completed=true;
+  }
+  // 아무 단계도 활성화 안된 경우 기본값: 첫 사이클 완료 전이면 35/65, 완료 후면 50/50
+  if(!found){
+    const base = qldState.cycle.first_cycle_completed ? 50 : 35;
+    qldState.cycle.target_qld_ratio = base;
+    qldState.cycle.target_sgov_ratio = 100 - base;
+  }
   renderDipCheckList();renderRecoveryCheckList();renderCycleStatus();renderCycleSteps();renderActionBanner();
   showToast('변경됨 — 설정 저장으로 GitHub에 저장하세요');
 }
@@ -1039,9 +1064,12 @@ function resetCycle(){
   qldState.cycle.dip_triggered=[false,false,false,false,false];
   qldState.cycle.recovery_triggered=[false,false,false];
   qldState.cycle.in_recovery_mode=false;
-  qldState.cycle.target_qld_ratio=50;qldState.cycle.target_sgov_ratio=50;
+  // 첫 사이클 완료 여부에 따라 기본 비중 결정
+  const base = qldState.cycle.first_cycle_completed ? 50 : 35;
+  qldState.cycle.target_qld_ratio = base;
+  qldState.cycle.target_sgov_ratio = 100 - base;
   renderDipCheckList();renderRecoveryCheckList();renderCycleStatus();renderCycleSteps();renderActionBanner();
-  showToast('초기화 완료 — 설정 저장으로 GitHub에 저장하세요');
+  showToast(`초기화 완료 — ${base}/${100-base} 모드 · 설정 저장으로 GitHub에 저장하세요`);
 }
 
 // AI 빠른 답변
