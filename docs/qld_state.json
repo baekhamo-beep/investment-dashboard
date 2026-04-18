@@ -19,7 +19,8 @@
     ],
     "in_recovery_mode": false,
     "target_qld_ratio": 35,
-    "target_sgov_ratio": 65
+    "target_sgov_ratio": 65,
+    "first_cycle_completed": false
   },
   "portfolio": {
     "qld_shares": 0,
