@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-04-20T07:43:12Z",
+  "updated_utc": "2026-04-20T07:49:54Z",
   "nasdaq": {
     "drawdown_pct": 0.0,
     "rsi": 95.5,
@@ -7,11 +7,7 @@
     "current_price": 648.85,
     "peak_price": 648.85,
     "momentum_6m": 8.42,
-    "above_ma200": true,
-    "ma50_dev_pct": 5.87,
-    "return_20d_pct": 7.17,
-    "return_60d_pct": 16.07,
-    "above_ma50": true
+    "above_ma200": true
   },
   "vix": 17.48,
   "fear_greed": {
