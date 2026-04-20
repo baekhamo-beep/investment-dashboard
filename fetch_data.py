@@ -15,18 +15,30 @@ def get_nasdaq():
     cur   = float(close.iloc[-1])
     peak  = float(close.max())
     ma200 = float(close.rolling(200).mean().iloc[-1])
+    ma50  = float(close.rolling(50).mean().iloc[-1])  # SWITCH 전략용
     # 6개월 전 가격 (약 126 거래일)
     idx_6m = max(0, len(close) - 126)
     price_6m_ago = float(close.iloc[idx_6m])
     momentum_6m = round((cur / price_6m_ago - 1) * 100, 2)
+    # SWITCH 전략용 20일/60일 수익률
+    idx_20d = max(0, len(close) - 20)
+    idx_60d = max(0, len(close) - 60)
+    price_20d_ago = float(close.iloc[idx_20d])
+    price_60d_ago = float(close.iloc[idx_60d])
+    return_20d = round((cur / price_20d_ago - 1) * 100, 2)
+    return_60d = round((cur / price_60d_ago - 1) * 100, 2)
     return {
         "drawdown_pct":   round((cur / peak - 1) * 100, 2),
         "rsi":            calc_rsi(close),
         "ma200_dev_pct":  round((cur / ma200 - 1) * 100, 2),
+        "ma50_dev_pct":   round((cur / ma50 - 1) * 100, 2),    # SWITCH: 50일선 대비
+        "return_20d_pct": return_20d,                           # SWITCH: 20일 수익률
+        "return_60d_pct": return_60d,                           # SWITCH: 60일 수익률
         "current_price":  round(cur, 2),
         "peak_price":     round(peak, 2),
-        "momentum_6m":    momentum_6m,   # 6개월 수익률 (%)
-        "above_ma200":    cur > ma200,   # 200일MA 위/아래
+        "momentum_6m":    momentum_6m,
+        "above_ma200":    cur > ma200,
+        "above_ma50":     cur > ma50,
     }
 
 def get_vix():
