@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-04-20T07:27:55Z",
+  "updated_utc": "2026-04-20T07:39:56Z",
   "nasdaq": {
     "drawdown_pct": 0.0,
     "rsi": 95.5,
@@ -13,9 +13,9 @@
   "fear_greed": {
     "value": 68.1,
     "classification": "greed",
-    "prev_close": 62.2,
-    "prev_1w": 36.6,
-    "prev_1m": 20.7,
+    "prev_close": 68.1,
+    "prev_1w": 42.7,
+    "prev_1m": 15.6,
     "source": "CNN Business"
   },
   "etf_prices": {
