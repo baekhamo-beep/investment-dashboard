@@ -1413,7 +1413,7 @@ function renderBuyMPSBanner(){
   }
   const colors={3:'var(--green)',2:'var(--blue)',1:'#ffc107',0:'var(--red)'};
   const labels={3:'시장 만개 — 과열',2:'안전 운행 — 보통',1:'살얼음판 — 하락',0:'폭풍 전야 — 공포'};
-  const rules={3:'방어자산 비중 최저 종목 집중 매수',2:'결손 비중 비례 배분',1:'비중 최저 1종목 집중 매수',0:'비중 최저 1종목 집중 매수'};
+  const rules={3:'방어자산 결손비중 최대 종목 집중 매수 (SCHD·AVUV·SGOV 중 목표 대비 가장 부족한 종목)',2:'결손 비중 비례 배분',1:'비중 최저 1종목 집중 매수',0:'비중 최저 1종목 집중 매수'};
   const c=colors[autoMPS.total];
   const s=document.getElementById('buy-mps-score');
   const l=document.getElementById('buy-mps-label');
@@ -1468,12 +1468,13 @@ function calcBuy(){
       TICKERS.forEach(t => { buyAmts[t.id] = Math.round(monthly * t.target / 100); });
     }
   } else {
-    // 3점: 방어자산 중 비중 최저 매수
-    let minComp = null, minPct = Infinity;
+    // 3점: 방어자산 중 결손비중 최대 종목 매수 (목표 - 현재비중이 가장 큰 종목)
+    let maxDefComp = null, maxDef = -Infinity;
     TICKERS.filter(t => DEFENSE.includes(t.id)).forEach(t => {
-      if(curPcts[t.id] < minPct){ minPct = curPcts[t.id]; minComp = t.id; }
+      const def = t.target - curPcts[t.id]; // 결손 = 목표% - 현재%
+      if(def > maxDef){ maxDef = def; maxDefComp = t.id; }
     });
-    if(minComp) buyAmts[minComp] = monthly;
+    if(maxDefComp) buyAmts[maxDefComp] = monthly;
   }
 
   // 반올림 오차 보정
@@ -1520,7 +1521,7 @@ function calcBuy(){
     </div>`;
   });
 
-  const ruleDesc = {3:'🛡 3점 (과열) — 방어자산 비중 최저 종목',2:'⚖ 2점 (보통) — 결손 비중 비례 배분',1:'⚡ 1점 (하락) — 비중 최저 1종목 집중',0:'🔥 0점 (공포) — 비중 최저 1종목 집중'}[mpsScore];
+  const ruleDesc = {3:'🛡 3점 (과열) — 방어자산 결손비중 최대 종목 (SCHD·AVUV·SGOV)',2:'⚖ 2점 (보통) — 결손 비중 비례 배분',1:'⚡ 1점 (하락) — 비중 최저 1종목 집중',0:'🔥 0점 (공포) — 비중 최저 1종목 집중'}[mpsScore];
   html2 += `</div><div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
       <span style="font-size:11px;color:${mpsColor};font-weight:600;">${ruleDesc}</span>
