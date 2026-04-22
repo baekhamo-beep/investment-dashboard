@@ -7,7 +7,11 @@
     "current_price": 644.33,
     "peak_price": 648.85,
     "momentum_6m": 5.63,
-    "above_ma200": true
+    "above_ma200": true,
+    "ma50_dev_pct": 6.79,
+    "return_20d_pct": 10.33,
+    "return_60d_pct": 3.15,
+    "above_ma50": true
   },
   "vix": 19.5,
   "fear_greed": {
