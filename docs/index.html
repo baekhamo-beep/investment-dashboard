@@ -547,9 +547,9 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
               <div style="font-size:9px;color:var(--text3);margin-top:2px;">과열</div>
             </div>
             <div>
-              <div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:5px;">🛡 방어자산 비중 최저 종목 매수</div>
-              <div style="font-size:11px;color:var(--text2);line-height:1.7;">시장 과열 시 공격자산 대신 SCHD·AVUV·SGOV 중 비중이 가장 낮은 종목 전액 매수. 자연스럽게 방어 포지션을 강화하고 SGOV 탄약 확보.</div>
-              <div style="font-size:10px;color:var(--text3);background:var(--bg3);border-radius:4px;padding:4px 8px;margin-top:6px;">예) AVUV 9% → SGOV 10% → SCHD 22% 순일 때 → AVUV 전액 매수</div>
+              <div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:5px;">🛡 방어자산 결손비중 최저 종목 매수</div>
+              <div style="font-size:11px;color:var(--text2);line-height:1.7;">시장 과열 시 공격자산 대신 SCHD·AVUV·SGOV 중 목표 대비 결손이 가장 큰 종목 전액 매수. (절대 비중 최저가 아닌, 목표 비중 대비 부족한 종목 기준)</div>
+              <div style="font-size:10px;color:var(--text3);background:var(--bg3);border-radius:4px;padding:4px 8px;margin-top:6px;">예) AVUV 결손 -0.2%p · SGOV 결손 -1.8%p · SCHD 초과 시 → SGOV 전액 매수 (결손 큰 순)</div>
             </div>
           </div>
 
@@ -1165,7 +1165,7 @@ function calcBigMoney(){
   const amt=parseFloat(document.getElementById('big-amt').value||0);
   const g={3:{label:'시장 만개',spot:.60,ammo:.25,dca:.15,color:'var(--green)',desc:'즉시 거치 60% / 하락 탄약 25% / DCA 15%'},2:{label:'안전 운행',spot:.50,ammo:.30,dca:.20,color:'var(--blue)',desc:'즉시 거치 50% / 하락 탄약 30% / DCA 20%'},1:{label:'살얼음판',spot:.35,ammo:.40,dca:.25,color:'#ffc107',desc:'즉시 거치 35% / 하락 탄약 40% / DCA 25%'},0:{label:'폭풍 전야',spot:.25,ammo:.50,dca:.25,color:'var(--red)',desc:'즉시 거치 25% / 하락 탄약 50% / DCA 25%'}}[mps];
   const sp=Math.round(amt*g.spot),am=Math.round(amt*g.ammo),dc=Math.round(amt*g.dca),dcm=Math.round(dc/12);
-  const dcaRule=mps<=1?'비중 최저 <b>1종목 집중 매수</b>':mps===2?'결손 비중 비례 매수':'방어자산 비중 최저 — <b>SCHD / AVUV / SGOV</b>';
+  const dcaRule=mps<=1?'비중 최저 <b>1종목 집중 매수</b>':mps===2?'결손 비중 비례 매수':'방어자산 <b>결손비중 최저</b> — SCHD / AVUV / SGOV';
   // 마일스톤 자동 연동
   if(typeof calcMilestone==='function') setTimeout(calcMilestone, 100);
   document.getElementById('bigmoney-result').innerHTML=`<div class="status-box hold" style="margin-bottom:12px;"><div style="display:flex;align-items:center;gap:14px;"><div class="mps-circle" style="border-color:${g.color};"><div style="font-size:22px;font-weight:700;color:${g.color};">${mps}점</div><div style="font-size:9px;color:var(--text3);">MPS</div></div><div><div class="status-title" style="color:${g.color};">${g.label}</div><div class="status-desc">${g.desc}</div></div></div></div><div class="grid3"><div class="card"><div class="card-label">즉시 거치</div><div class="card-value" style="color:var(--green);font-size:17px;">${sp.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">첫 거래일 목표 비중</div></div><div class="card"><div class="card-label">하락 탄약</div><div class="card-value" style="color:var(--red);font-size:17px;">${am.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">SGOV 보관 → 3-3-4-3-2</div></div><div class="card"><div class="card-label">DCA (월)</div><div class="card-value" style="color:var(--blue);font-size:17px;">${dcm.toLocaleString()}<span style="font-size:11px;">만</span></div><div class="card-sub">12개월 분할 (총 ${dc.toLocaleString()}만)</div></div></div><div class="section-title">DCA 종목 선정</div><div class="action-box"><div class="action-num">룰</div><div class="action-text">${dcaRule}</div></div>`;
