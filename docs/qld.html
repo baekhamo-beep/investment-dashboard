@@ -232,7 +232,10 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
       <!-- 입력 -->
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:12px;">
-        <div style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.5px;margin-bottom:14px;">내 포트폴리오</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;">
+          <div style="font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1.5px;">내 포트폴리오</div>
+          <div id="active-target-display" style="margin-left:auto;font-size:10px;"></div>
+        </div>
         <!-- QLD -->
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
           <div style="width:44px;font-size:13px;font-weight:800;color:var(--accent);">QLD</div>
@@ -1099,6 +1102,51 @@ function showToast(msg){const t=document.getElementById('toast');t.textContent=m
 function setCard(id,val,sub,color){const e=document.getElementById(id);if(!e)return;e.textContent=val;e.style.color=color;const s=document.getElementById(id+'-sub');if(s){s.textContent=sub;}}
 
 // 데이터 로드
+
+// 실시간 목표 비중 계산 (트리거 자동 감지)
+function getActiveTargetRatio(){
+  var c = qldState && qldState.cycle;
+  if(!c) return {qld:35, sgov:65, mode:'초기 (35/65)', stage:0, active:false, color:'var(--text2)'};
+
+  var athPrice = c.ath_price || 0;
+  var curQQQ = mkt.qqq_price || 0;
+  var firstDone = c.first_cycle_completed || false;
+  var inRecovery = c.in_recovery_mode || false;
+  var rt = c.recovery_triggered || [false,false,false];
+  var dipAny = (c.dip_triggered||[]).some(function(x){return x;});
+
+  // 하락장 매수 중: 현재 모드는 점진적으로 QLD 비중 증가 중
+  // → target은 현재 설정값 유지 (매수는 SGOV→QLD 단계별 이동이라 목표 변화 없음)
+
+  // 상승장 트리거 실시간 감지 (사이클 탭에서 저장 안 해도 자동 적용)
+  if(athPrice > 0 && curQQQ > 0 && (inRecovery || dipAny || rt.some(function(x){return x;}))){
+    var t3 = athPrice * 1.30;
+    var t2 = athPrice * 1.20;
+    var t1 = athPrice;
+
+    if(curQQQ >= t3){
+      return {qld:50, sgov:50, mode:'3단계 — ATH+30% 도달 (회복 종료)', stage:3, active:true, color:'#c9a84c'};
+    }
+    if(curQQQ >= t2){
+      return {qld:65, sgov:35, mode:'2단계 — ATH+20% 도달', stage:2, active:true, color:'#4a9eff'};
+    }
+    if(curQQQ >= t1){
+      return {qld:85, sgov:15, mode:'1단계 — ATH 돌파 발동', stage:1, active:true, color:'#4caf7d'};
+    }
+  }
+
+  // 트리거 미도달 - 저장된 타겟 사용
+  var baseQld = firstDone ? 50 : 35;
+  return {
+    qld: c.target_qld_ratio || baseQld,
+    sgov: c.target_sgov_ratio || (100-baseQld),
+    mode: firstDone ? '정상 (50/50)' : '훈련 모드 (35/65)',
+    stage: 0,
+    active: false,
+    color: 'var(--text2)'
+  };
+}
+
 async function loadData(){
   try{
     const d=await fetch(DATA_URL+'?t='+Date.now()).then(r=>r.json());
@@ -1492,8 +1540,8 @@ function updatePortLive(){
   const sq=parseFloat(document.getElementById('p-sgov-qty')?.value||0);
   const qv=qq*qp,sv=sq*sp,total=qv+sv;
   const qPct=total>0?qv/total*100:0,sPct=total>0?sv/total*100:0;
-  const c=qldState?.cycle;
-  const tQLD=c?.target_qld_ratio||35;
+  const _activeTgt = getActiveTargetRatio();
+  const tQLD = _activeTgt.qld;
 
   const fmt=v=>v>0?fmtAmt(v):'—';
   const qve=document.getElementById('p-qld-val');const sve=document.getElementById('p-sgov-val');const te=document.getElementById('p-total');
@@ -1509,6 +1557,16 @@ function updatePortLive(){
     if(bq)bq.style.width=qPct+'%';if(bs)bs.style.width=sPct+'%';
     if(lq)lq.textContent='QLD '+qPct.toFixed(1)+'%';if(ls)ls.textContent='SGOV '+sPct.toFixed(1)+'%';
   }
+
+  // 활성 목표 표시
+  const atEl = document.getElementById('active-target-display');
+  if(atEl){
+    if(_activeTgt.active){
+      atEl.innerHTML = '<span style="background:rgba(76,175,125,0.15);color:#4caf7d;padding:3px 8px;border-radius:3px;font-weight:700;">🚨 '+_activeTgt.mode+'</span><span style="color:var(--text3);margin-left:6px;">→ 목표 '+_activeTgt.qld+'/'+_activeTgt.sgov+'</span>';
+    } else {
+      atEl.innerHTML = '<span style="color:'+_activeTgt.color+';font-weight:600;">'+_activeTgt.mode+'</span><span style="color:var(--text3);margin-left:6px;">→ 목표 '+_activeTgt.qld+'/'+_activeTgt.sgov+'</span>';
+    }
+  }
 }
 
 function generateOrder(){
@@ -1520,11 +1578,15 @@ function generateOrder(){
 
   if(!total||!qp||!sp){el.innerHTML='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:12px;color:var(--text3);">수량을 입력하면 주문안이 생성됩니다.</div>';return;}
 
-  const c=qldState?.cycle;
-  const tQLD=(c?.target_qld_ratio||35)/100,tSGOV=(c?.target_sgov_ratio||65)/100;
+  // 실시간 트리거 기반 목표 비중 계산
+  const activeTarget = getActiveTargetRatio();
+  const tQLD = activeTarget.qld/100, tSGOV = activeTarget.sgov/100;
   const qPct=qv/total*100;
   if(Math.abs(qPct-tQLD*100)<7){
-    el.innerHTML=`<div style="background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.25);border-radius:10px;padding:16px 18px;"><div style="font-size:14px;font-weight:800;color:#4caf7d;margin-bottom:5px;">✅ 리밸런싱 불필요</div><div style="font-size:11px;color:var(--text2);">현재 비중 QLD ${qPct.toFixed(1)}% — 목표 ${(tQLD*100).toFixed(0)}% 대비 ±7% 이내</div><div style="margin-top:8px;font-size:10px;color:var(--text3);">다음 액션: 매월 22일 DCA 적립 매수</div></div>`;
+    const msg = activeTarget.active
+      ? '<div style="font-size:14px;font-weight:800;color:#4caf7d;margin-bottom:5px;">✅ 트리거 발동했지만 허용 범위 내</div><div style="font-size:11px;color:var(--text2);">현재 비중 QLD '+qPct.toFixed(1)+'% — 목표 '+(tQLD*100).toFixed(0)+'% 대비 ±7% 이내</div><div style="margin-top:8px;font-size:10px;color:#4caf7d;">'+activeTarget.mode+'</div>'
+      : '<div style="font-size:14px;font-weight:800;color:#4caf7d;margin-bottom:5px;">✅ 리밸런싱 불필요</div><div style="font-size:11px;color:var(--text2);">현재 비중 QLD '+qPct.toFixed(1)+'% — 목표 '+(tQLD*100).toFixed(0)+'% 대비 ±7% 이내</div><div style="margin-top:8px;font-size:10px;color:var(--text3);">다음 액션: 매월 22일 DCA 적립 매수</div>';
+    el.innerHTML='<div style="background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.25);border-radius:10px;padding:16px 18px;">'+msg+'</div>';
     return;
   }
 
@@ -1536,14 +1598,20 @@ function generateOrder(){
   const sellAmt=sellCnt*sellP,buyAmt=buyCnt*buyP;
   const afterQldPct=isBuyQld?((qv+buyAmt)/total*100):((qv-sellAmt)/total*100);
 
-  el.innerHTML=`<div style="background:var(--bg2);border:1px solid var(--accent-border);border-radius:10px;overflow:hidden;">
-    <div style="background:var(--accent-dim);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
-      <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:var(--accent2);">TODAY'S ORDER</div>
+  const triggerBadge = activeTarget.active
+    ? '<span style="background:rgba(76,175,125,0.2);color:#4caf7d;font-size:9px;font-weight:800;padding:2px 8px;border-radius:3px;margin-left:8px;">🚨 트리거 발동</span>'
+    : '';
+  el.innerHTML=`<div style="background:var(--bg2);border:1px solid ${activeTarget.active?'rgba(76,175,125,0.4)':'var(--accent-border)'};border-radius:10px;overflow:hidden;">
+    <div style="background:${activeTarget.active?'rgba(76,175,125,0.1)':'var(--accent-dim)'};padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:${activeTarget.active?'#4caf7d':'var(--accent2)'};">TODAY'S ORDER${triggerBadge}</div>
+        <div style="font-size:10px;color:${activeTarget.color};margin-top:3px;font-weight:600;">${activeTarget.mode} → 목표 QLD ${activeTarget.qld}% / SGOV ${activeTarget.sgov}%</div>
+      </div>
       <div style="font-size:10px;color:var(--text3);">${new Date().toLocaleDateString('ko-KR')}</div>
     </div>
     <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
-      <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">비중 변화</div>
-      <div style="font-size:13px;font-weight:700;">QLD <span style="color:var(--text2);">${qPct.toFixed(1)}%</span> → <span style="color:var(--accent2);">${afterQldPct.toFixed(1)}%</span> <span style="font-size:10px;color:var(--text3);">(목표 ${(tQLD*100).toFixed(0)}%)</span></div>
+      <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">비중 변화 ${activeTarget.active?'<span style="color:#4caf7d;font-weight:700;margin-left:6px;">(트리거 기반 자동 적용)</span>':''}</div>
+      <div style="font-size:13px;font-weight:700;">QLD <span style="color:var(--text2);">${qPct.toFixed(1)}%</span> → <span style="color:${activeTarget.active?'#4caf7d':'var(--accent2)'};">${afterQldPct.toFixed(1)}%</span> <span style="font-size:10px;color:var(--text3);">(목표 ${(tQLD*100).toFixed(0)}%)</span></div>
     </div>
     <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
       <div style="display:flex;align-items:flex-start;gap:10px;">
