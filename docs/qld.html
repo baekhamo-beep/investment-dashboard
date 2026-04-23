@@ -138,7 +138,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="header-icon">⚡</div>
     <div>
       <div class="header-title">QLD Hybrid 사령부</div>
-      <div class="header-sub">수익률 극대화 전략 · CAGR 21.15% · MDD -50.46% · Sharpe 0.80 · Calmar 0.42</div>
+      <div class="header-sub">수익률 극대화 전략 · CAGR 21.43% · MDD -46.53% · Calmar 0.47 · QQQ 대비 최종자산 3배 · 16개 시나리오 검증</div>
     </div>
     <div class="live-wrap">
       <div class="live-dot"></div>
@@ -179,7 +179,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <!-- 핵심 지표 -->
     <div class="sec">핵심 지표</div>
     <div class="g4">
-      <div class="card"><div class="card-label">나스닥</div><div class="card-value" id="d-nasdaq" style="font-size:18px;">—</div><div class="card-sub" id="d-nasdaq-sub">로딩중...</div></div>
+      <div class="card"><div class="card-label">나스닥</div><div class="card-value" id="d-nasdaq" style="font-size:18px;">—</div><div class="card-sub" id="d-nasdaq-sub">로딩중...</div><div class="card-sub" id="d-nasdaq-ath" style="margin-top:2px;font-size:10px;color:var(--text3);">ATH 대비 —</div></div>
       <div class="card"><div class="card-label">200일선</div><div class="card-value" id="d-ma200" style="font-size:18px;">—</div><div class="card-sub" id="d-ma200-sub">로딩중...</div></div>
       <div class="card"><div class="card-label">VIX</div><div class="card-value" id="d-vix" style="font-size:18px;">—</div><div class="card-sub" id="d-vix-sub">로딩중...</div></div>
       <div class="card"><div class="card-label">F&amp;G</div><div class="card-value" id="d-fg" style="font-size:18px;">—</div><div class="card-sub" id="d-fg-sub">로딩중...</div></div>
@@ -796,7 +796,7 @@ async function loadData(){
     const upd=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='업데이트: '+upd;
     renderActionBanner(); const ab=document.getElementById('action-banner');if(ab)ab.style.opacity='1';
-    renderDiagStatus(); renderDipStages(); renderRecoveryStages(); renderTodayChecklist();
+    renderDiagStatus(); renderDipStages(); renderSellTriggers(); renderRecoveryStages(); renderTodayChecklist();
   }catch(e){document.getElementById('data-updated-text').textContent='데이터 로드 실패';}
 }
 
@@ -968,6 +968,36 @@ function renderDipStages(){
     </div>`;
   });
   document.getElementById('dip-stages').innerHTML=html+'</div>';
+}
+
+function renderSellTriggers(){
+  // ATH 돌파 후 리밸런싱 (상승장 매도 트리거)
+  var inRecovery=qldState&&qldState.cycle&&qldState.cycle.in_recovery_mode||false;
+  var rt=qldState&&qldState.cycle&&qldState.cycle.recovery_triggered||[false,false,false];
+  var stages=[
+    {label:'1단계 — ATH 돌파',desc:'QQQ 전고점 돌파 즉시',action:'QLD 85% / SGOV 15%로 리밸런싱',color:'#4caf7d',done:rt[0]},
+    {label:'2단계 — ATH +20%',desc:'ATH 돌파 시점 기준 +20%',action:'QLD 65% / SGOV 35%로 리밸런싱',color:'#4a9eff',done:rt[1]},
+    {label:'3단계 — ATH +30%',desc:'ATH 돌파 시점 기준 +30%',action:'QLD 50% / SGOV 50% → 회복모드 종료',color:'#c9a84c',done:rt[2]},
+  ];
+  var html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
+  if(!inRecovery){
+    html+='<div style="padding:10px 14px;font-size:11px;color:var(--text3);">회복모드 미진입 — 하락장 매수 1회 이상 후 활성화</div>';
+  } else {
+    stages.forEach(function(s){
+      html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);'+(s.done?'background:rgba(76,175,125,0.04);':'')+'">'+
+        '<div style="width:7px;height:7px;border-radius:50%;background:'+(s.done?s.color:'var(--bg3)')+'"></div>'+
+        '<div style="flex:1;">'+
+          '<div style="font-size:11px;font-weight:700;color:'+(s.done?s.color:'var(--text2)')+';">'+s.label+'</div>'+
+          '<div style="font-size:10px;color:var(--text3);">'+s.desc+'</div>'+
+        '</div>'+
+        '<div style="font-size:11px;color:'+(s.done?s.color:'var(--text3)')+';">'+s.action+'</div>'+
+        (s.done?'<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.15);color:var(--green);border-radius:3px;">완료</span>':'')+
+      '</div>';
+    });
+  }
+  html+='</div>';
+  var el=document.getElementById('sell-triggers');
+  if(el)el.innerHTML=html;
 }
 
 function renderRecoveryStages(){
