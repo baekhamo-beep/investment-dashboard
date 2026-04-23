@@ -971,33 +971,101 @@ function renderDipStages(){
 }
 
 function renderSellTriggers(){
-  // ATH 돌파 후 리밸런싱 (상승장 매도 트리거)
-  var inRecovery=qldState&&qldState.cycle&&qldState.cycle.in_recovery_mode||false;
-  var rt=qldState&&qldState.cycle&&qldState.cycle.recovery_triggered||[false,false,false];
-  var stages=[
-    {label:'1단계 — ATH 돌파',desc:'QQQ 전고점 돌파 즉시',action:'QLD 85% / SGOV 15%로 리밸런싱',color:'#4caf7d',done:rt[0]},
-    {label:'2단계 — ATH +20%',desc:'ATH 돌파 시점 기준 +20%',action:'QLD 65% / SGOV 35%로 리밸런싱',color:'#4a9eff',done:rt[1]},
-    {label:'3단계 — ATH +30%',desc:'ATH 돌파 시점 기준 +30%',action:'QLD 50% / SGOV 50% → 회복모드 종료',color:'#c9a84c',done:rt[2]},
-  ];
-  var html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
-  if(!inRecovery){
-    html+='<div style="padding:10px 14px;font-size:11px;color:var(--text3);">회복모드 미진입 — 하락장 매수 1회 이상 후 활성화</div>';
-  } else {
-    stages.forEach(function(s){
-      html+='<div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid var(--border);'+(s.done?'background:rgba(76,175,125,0.04);':'')+'">'+
-        '<div style="width:7px;height:7px;border-radius:50%;background:'+(s.done?s.color:'var(--bg3)')+'"></div>'+
-        '<div style="flex:1;">'+
-          '<div style="font-size:11px;font-weight:700;color:'+(s.done?s.color:'var(--text2)')+';">'+s.label+'</div>'+
-          '<div style="font-size:10px;color:var(--text3);">'+s.desc+'</div>'+
-        '</div>'+
-        '<div style="font-size:11px;color:'+(s.done?s.color:'var(--text3)')+';">'+s.action+'</div>'+
-        (s.done?'<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.15);color:var(--green);border-radius:3px;">완료</span>':'')+
-      '</div>';
-    });
+  var rt=(qldState&&qldState.cycle&&qldState.cycle.recovery_triggered)||[false,false,false];
+  var athPrice=(qldState&&qldState.cycle&&qldState.cycle.ath_price)||0;
+  var curQQQ=mkt.qqq_price||0;
+
+  // ATH 돌파 시점 기준가 (1단계 완료 시점의 QQQ가 기준 — 근사치로 ATH 사용)
+  var breakPrice = athPrice; // ATH 돌파 = 대략 ATH 가격
+  var t2Price = breakPrice > 0 ? (breakPrice * 1.20) : 0;
+  var t3Price = breakPrice > 0 ? (breakPrice * 1.30) : 0;
+
+  function priceStr(p){ return p>0?'$'+p.toFixed(2):'—'; }
+  function reachedStr(cur,target){
+    if(!cur||!target) return '';
+    var diff=((cur-target)/target*100);
+    if(cur>=target) return '<span style="font-size:10px;color:#4caf7d;"> ✅ 도달</span>';
+    return '<span style="font-size:10px;color:var(--text3);"> (현재 $'+cur.toFixed(0)+' · 목표까지 '+Math.abs(diff).toFixed(1)+'%)</span>';
   }
+
+  var stages=[
+    {
+      idx:0,
+      tag:'ATH 돌파',
+      label:'1단계 — ATH 신고점 돌파',
+      desc:'QQQ 전고점('+priceStr(athPrice)+') 돌파 즉시 · 익일 시가 집행',
+      trigger: athPrice>0?'$'+athPrice.toFixed(2)+' 돌파':'ATH 미설정',
+      action:'QLD 85% / SGOV 15%',
+      color:'#4caf7d',
+      done:rt[0],
+      reached: curQQQ>0&&athPrice>0&&curQQQ>=athPrice
+    },
+    {
+      idx:1,
+      tag:'ATH +20%',
+      label:'2단계 — ATH 돌파 후 +20%',
+      desc:'1단계 집행 시점 기준 +20% · ATH 돌파 기준가 × 1.20',
+      trigger: t2Price>0?'$'+t2Price.toFixed(2)+' 도달':'1단계 먼저',
+      action:'QLD 65% / SGOV 35%',
+      color:'#4a9eff',
+      done:rt[1],
+      reached: curQQQ>0&&t2Price>0&&curQQQ>=t2Price
+    },
+    {
+      idx:2,
+      tag:'ATH +30%',
+      label:'3단계 — ATH 돌파 후 +30%',
+      desc:'1단계 집행 시점 기준 +30% · ATH 돌파 기준가 × 1.30',
+      trigger: t3Price>0?'$'+t3Price.toFixed(2)+' 도달':'1단계 먼저',
+      action:'QLD 50% / SGOV 50% (회복모드 종료)',
+      color:'#c9a84c',
+      done:rt[2],
+      reached: curQQQ>0&&t3Price>0&&curQQQ>=t3Price
+    },
+  ];
+
+  var anyActive = stages.some(function(s){ return s.reached&&!s.done; });
+
+  var html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
+
+  // 상태 헤더
+  if(!rt[0]&&!stages[0].reached){
+    // 회복모드 미진입 또는 ATH 미돌파
+    html+='<div style="padding:8px 14px;background:rgba(90,96,128,0.1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">'+
+      '<div style="width:7px;height:7px;border-radius:50%;background:var(--text3);"></div>'+
+      '<span style="font-size:11px;color:var(--text3);">대기 중 — 하락장 매수 후 ATH 돌파 시 순차 발동</span>'+
+    '</div>';
+  } else if(anyActive){
+    html+='<div style="padding:8px 14px;background:rgba(76,175,125,0.08);border-bottom:1px solid rgba(76,175,125,0.2);display:flex;align-items:center;gap:8px;">'+
+      '<div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;animation:ab-pulse 1s infinite;"></div>'+
+      '<span style="font-size:11px;color:#4caf7d;font-weight:700;">🚨 트리거 발동! 리밸런싱 즉시 집행</span>'+
+    '</div>';
+  }
+
+  stages.forEach(function(s){
+    var isActive = s.reached && !s.done;
+    var bgStyle = s.done ? 'background:rgba(76,175,125,0.04);' : isActive ? 'background:rgba('+( s.idx===0?'76,175,125':s.idx===1?'74,158,255':'201,168,76')+',0.08);' : '';
+    var dotColor = s.done ? s.color : isActive ? s.color : 'var(--bg3)';
+    var labelColor = s.done||isActive ? s.color : 'var(--text2)';
+
+    html+='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);'+bgStyle+'">'+
+      '<div style="width:8px;height:8px;border-radius:50%;background:'+dotColor+';'+(isActive?'box-shadow:0 0 6px '+s.color+';':'')+' flex-shrink:0;"></div>'+
+      '<div style="flex:1;">'+
+        '<div style="font-size:11px;font-weight:700;color:'+labelColor+';">'+s.label+'</div>'+
+        '<div style="font-size:10px;color:var(--text3);margin-top:1px;">'+s.desc+'</div>'+
+      '</div>'+
+      '<div style="text-align:right;flex-shrink:0;">'+
+        '<div style="font-size:11px;font-weight:700;color:'+labelColor+';">'+s.trigger+'</div>'+
+        '<div style="font-size:10px;color:var(--text3);">→ '+s.action+'</div>'+
+      '</div>'+
+      (s.done ? '<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.15);color:#4caf7d;border-radius:3px;margin-left:6px;flex-shrink:0;">완료</span>' :
+       isActive ? '<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.2);color:#4caf7d;border-radius:3px;margin-left:6px;flex-shrink:0;animation:ab-pulse 0.8s infinite;">발동!</span>' : '')+
+    '</div>';
+  });
+
   html+='</div>';
   var el=document.getElementById('sell-triggers');
-  if(el)el.innerHTML=html;
+  if(el) el.innerHTML=html;
 }
 
 function renderRecoveryStages(){
