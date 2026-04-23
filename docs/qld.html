@@ -489,124 +489,146 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
   </div>
 </div>
 
-<!-- 시나리오 막대 차트 -->
-<div class="sec">시작 시점별 CAGR — Hybrid vs QLD 단독 (16개 롤링)</div>
-<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px;">
-  <div style="display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap;">
-    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:14px;height:8px;border-radius:2px;background:#4a9eff;"></div>Hybrid (평균 21.43%)</div>
-    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:14px;height:8px;border-radius:2px;background:rgba(224,92,92,0.65);"></div>QLD 단독 (평균 22.63%)</div>
-    <div style="margin-left:auto;font-size:9px;color:var(--text3);">진할수록 해당 전략 우세</div>
+<!-- 수익/위험 2축 비교 차트 -->
+<div class="sec">Hybrid vs QLD — 수익은 비슷, 위험은 다르다</div>
+
+<!-- 핵심 메시지 3개 -->
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
+  <div style="background:rgba(74,158,255,0.06);border:1px solid rgba(74,158,255,0.2);border-radius:8px;padding:11px;text-align:center;">
+    <div style="font-size:9px;color:var(--text3);margin-bottom:4px;">CAGR 차이</div>
+    <div style="font-size:20px;font-weight:800;color:#4a9eff;">-1.2%p</div>
+    <div style="font-size:10px;color:var(--text2);margin-top:2px;">Hybrid가 소폭 낮음</div>
   </div>
-  <div style="display:flex;flex-direction:column;gap:4px;" id="v6-bars"></div>
-  <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:9px;color:var(--text3);">
-    <span>Hybrid 표준편차 <span style="color:#4caf7d;">±1.77%p</span> &nbsp;·&nbsp; QLD 단독 <span style="color:#e05c5c;">±2.06%p</span></span>
-    <span>Hybrid 승(CAGR 기준) <span style="color:#4a9eff;font-weight:700;">3/16</span></span>
+  <div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.25);border-radius:8px;padding:11px;text-align:center;">
+    <div style="font-size:9px;color:var(--text3);margin-bottom:4px;">MDD 차이</div>
+    <div style="font-size:20px;font-weight:800;color:#4caf7d;">+20%p</div>
+    <div style="font-size:10px;color:var(--text2);margin-top:2px;">Hybrid가 훨씬 안전</div>
+  </div>
+  <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:11px;text-align:center;">
+    <div style="font-size:9px;color:var(--text3);margin-bottom:4px;">Calmar 차이</div>
+    <div style="font-size:20px;font-weight:800;color:#c9a84c;">+38%</div>
+    <div style="font-size:10px;color:var(--text2);margin-top:2px;">Hybrid 효율 압도</div>
   </div>
 </div>
 
-<!-- Hybrid vs QLD 트레이드오프 -->
-<div class="sec">Hybrid vs QLD 단독 — 핵심 트레이드오프</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
-  <div style="background:rgba(74,158,255,0.06);border:1px solid rgba(74,158,255,0.2);border-radius:10px;padding:14px;">
-    <div style="font-size:11px;font-weight:800;color:var(--accent2);margin-bottom:10px;">⚡ Hybrid 선택 시</div>
-    <div style="display:flex;flex-direction:column;gap:7px;">
-      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">Calmar <b style="color:#c9a84c;">0.47</b> — QLD 대비 <span style="color:#4caf7d;">+38%↑</span></div></div>
-      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">MDD <b style="color:#ffc107;">-46.5%</b> — QLD -67% 대비 20%p 방어</div></div>
-      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">CAGR 안정성 ±1.77%p (더 예측 가능)</div></div>
-      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#e05c5c;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text2);">최종자산 49.97억 — QLD 64.17억 대비 14억↓</div></div>
-    </div>
+<!-- 산점도: X=MDD, Y=CAGR -->
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;">
+  <div style="display:flex;gap:14px;margin-bottom:10px;align-items:center;flex-wrap:wrap;">
+    <div style="font-size:10px;font-weight:700;color:var(--text2);">리스크-수익 분포 (16개 시나리오)</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:10px;height:10px;border-radius:50%;background:#4a9eff;opacity:0.9;"></div>Hybrid</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:10px;height:10px;border-radius:50%;background:rgba(224,92,92,0.8);"></div>QLD 단독</div>
+    <div style="margin-left:auto;font-size:9px;color:var(--text3);">좌상단 = 저위험·고수익 (유리)</div>
   </div>
-  <div style="background:rgba(224,92,92,0.05);border:1px solid rgba(224,92,92,0.2);border-radius:10px;padding:14px;">
-    <div style="font-size:11px;font-weight:800;color:#e05c5c;margin-bottom:10px;">📈 QLD 단독 선택 시</div>
-    <div style="display:flex;flex-direction:column;gap:7px;">
-      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">최종자산 <b style="color:#4caf7d;">64.17억</b> — Hybrid보다 14억↑</div></div>
-      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">CAGR <b style="color:#4caf7d;">22.63%</b> — 1.2%p 우위</div></div>
-      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#e05c5c;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text2);">MDD <b style="color:#e05c5c;">-67%</b> — 최악 시 -80.48%</div></div>
-      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#e05c5c;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text2);">Calmar 0.34 — 효율 열위</div></div>
-    </div>
+  <svg id="v6sc" viewBox="0 0 360 200" style="width:100%;display:block;"></svg>
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:4px;">
+    <span>X축: MDD 낮을수록 ← 안전</span>
+    <span>Y축: CAGR 높을수록 ↑ 유리</span>
   </div>
-</div>
-<div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--accent2);line-height:1.7;">
-  💡 <b>결론:</b> -67% 낙폭을 실제로 버틸 수 있다면 QLD 단독이 최종 자산은 더 큽니다. Calmar 효율과 심리적 안정성이 우선이라면 Hybrid가 최적입니다.
 </div>
 
-<!-- 인사이트 -->
-<div class="sec">핵심 인사이트</div>
-<div class="v6-insight" style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.2);">
-  <div class="v6-insight-icon" style="background:rgba(76,175,125,0.15);">📊</div>
-  <div><div class="v6-insight-title" style="color:#4caf7d;">시작 시점에 무관하게 안정적</div><div class="v6-insight-desc">16개 시나리오 CAGR 범위 18.35~23.64% · 표준편차 1.77%p · 언제 시작해도 18% 이상 달성.</div></div>
-</div>
-<div class="v6-insight" style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);">
-  <div class="v6-insight-icon" style="background:rgba(201,168,76,0.15);">🏆</div>
-  <div><div class="v6-insight-title" style="color:#c9a84c;">Calmar 4전략 1위 (0.47)</div><div class="v6-insight-desc">QLD 0.34 대비 38% 높음 · QQQ(0.37)보다도 우수 · 같은 낙폭 감내 대비 가장 효율적.</div></div>
-</div>
-<div class="v6-insight" style="background:rgba(74,158,255,0.06);border:1px solid rgba(74,158,255,0.2);">
-  <div class="v6-insight-icon" style="background:rgba(74,158,255,0.15);">💰</div>
-  <div><div class="v6-insight-title" style="color:#4a9eff;">QQQ 대비 최종자산 약 3배</div><div class="v6-insight-desc">평균 49.97억 vs QQQ 16.91억 · SPY 9.62억 대비 5배 · 복리 기간이 길수록 격차 급격히 확대.</div></div>
-</div>
-<div class="v6-insight" style="background:rgba(224,92,92,0.05);border:1px solid rgba(224,92,92,0.15);">
-  <div class="v6-insight-icon" style="background:rgba(224,92,92,0.1);">⚠️</div>
-  <div><div class="v6-insight-title" style="color:#e05c5c;">최대 낙폭 -58.96% 감내 필요</div><div class="v6-insight-desc">2005~2006 시작 시 최악 MDD · 하락장 매수 트리거 작동 전 구간 · 규칙 준수가 회복의 전제조건.</div></div>
-</div>
-
-<!-- 맞는 사람 -->
-<div class="sec">이 전략이 맞는 사람 / 아닌 사람</div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-  <div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.2);border-radius:10px;padding:14px;">
-    <div style="font-size:11px;font-weight:800;color:#4caf7d;margin-bottom:10px;">✅ 맞는 사람</div>
-    <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);">
-      <div>· 투자 기간 10년 이상</div>
-      <div>· -47% 낙폭을 기회로 볼 수 있는 분</div>
-      <div>· Calmar 효율을 우선시하는 분</div>
-      <div>· 단순한 2종목 구조를 선호하는 분</div>
-      <div>· 규칙 기반 자동 실행이 가능한 분</div>
-    </div>
+<!-- 차이 막대: 중앙선 기준 -->
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <div style="font-size:10px;font-weight:700;color:var(--text2);">시작 연도별 CAGR 격차</div>
+    <div style="font-size:9px;color:var(--text3);">파랑 = Hybrid 우위 &nbsp;·&nbsp; 빨강 = QLD 우위</div>
   </div>
-  <div style="background:rgba(224,92,92,0.05);border:1px solid rgba(224,92,92,0.2);border-radius:10px;padding:14px;">
-    <div style="font-size:11px;font-weight:800;color:#e05c5c;margin-bottom:10px;">❌ 아닌 사람</div>
-    <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);">
-      <div>· 5년 내 목돈이 필요한 분</div>
-      <div>· -30% 이상 손실 시 멘탈이 흔들리는 분</div>
-      <div>· 시장 뉴스에 반응해 매매하고 싶은 분</div>
-      <div>· 안정적인 배당 수익이 필요한 분</div>
-      <div>· 레버리지 ETF에 거부감이 있는 분</div>
-    </div>
+  <div style="display:flex;flex-direction:column;gap:4px;" id="v6diff"></div>
+  <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:8px;padding:0 36px;">
+    <span style="color:rgba(224,92,92,0.7);">← QLD 우위</span>
+    <span style="color:var(--accent2);font-weight:700;">중앙 = 동률</span>
+    <span style="color:#4a9eff;">Hybrid 우위 →</span>
   </div>
 </div>
 
 <script>
 (function(){
   var sc=[
-    {y:'2005',h:18.35,q:19.94},{y:'2006',h:18.35,q:19.94},
-    {y:'2007',h:18.58,q:19.91},{y:'2008',h:19.71,q:20.35},
-    {y:'2009',h:23.64,q:26.52},{y:'2010',h:21.51,q:23.82},
-    {y:'2011',h:21.31,q:23.40},{y:'2012',h:21.33,q:24.82},
-    {y:'2013',h:21.49,q:24.36},{y:'2014',h:21.19,q:22.44},
-    {y:'2015',h:21.78,q:21.89},{y:'2016',h:23.34,q:23.14},
-    {y:'2017',h:22.74,q:23.97},{y:'2018',h:22.62,q:21.15},
-    {y:'2019',h:23.62,q:25.49},{y:'2020',h:23.32,q:20.95}
+    {y:'2005',h:18.35,hm:58.96,q:19.94,qm:80.48},
+    {y:'2006',h:18.35,hm:58.96,q:19.94,qm:80.48},
+    {y:'2007',h:18.58,hm:55.77,q:19.91,qm:80.03},
+    {y:'2008',h:19.71,hm:50.55,q:20.35,qm:75.83},
+    {y:'2009',h:23.64,hm:44.33,q:26.52,qm:63.62},
+    {y:'2010',h:21.51,hm:44.21,q:23.82,qm:63.56},
+    {y:'2011',h:21.31,hm:44.13,q:23.40,qm:63.51},
+    {y:'2012',h:21.33,hm:44.03,q:24.82,qm:63.49},
+    {y:'2013',h:21.49,hm:43.91,q:24.36,qm:63.42},
+    {y:'2014',h:21.19,hm:43.73,q:22.44,qm:63.25},
+    {y:'2015',h:21.78,hm:43.56,q:21.89,qm:63.09},
+    {y:'2016',h:23.34,hm:43.43,q:23.14,qm:62.99},
+    {y:'2017',h:22.74,hm:43.05,q:23.97,qm:62.82},
+    {y:'2018',h:22.62,hm:42.59,q:21.15,qm:62.24},
+    {y:'2019',h:23.62,hm:42.12,q:25.49,qm:62.25},
+    {y:'2020',h:23.32,hm:41.19,q:20.95,qm:60.98}
   ];
-  var mx=Math.max.apply(null,sc.map(function(s){return Math.max(s.h,s.q);}));
-  var w=document.getElementById('v6-bars');
-  if(!w)return;
-  sc.forEach(function(s){
-    var hw=(s.h/mx*100).toFixed(1);
-    var qw=(s.q/mx*100).toFixed(1);
-    var hWin=s.h>=s.q;
-    w.innerHTML+='<div style="display:grid;grid-template-columns:30px 1fr 80px;gap:6px;align-items:center;">'+
-      '<span style="font-size:9px;color:var(--text3);text-align:right;">'+s.y+'</span>'+
-      '<div style="display:flex;flex-direction:column;gap:2px;">'+
-        '<div style="height:10px;background:var(--bg3);border-radius:3px;overflow:hidden;position:relative;">'+
-          '<div style="position:absolute;left:0;top:0;height:10px;width:'+hw+'%;background:'+
-          (hWin?'#4a9eff':'rgba(74,158,255,0.4)')+';border-radius:3px;"></div></div>'+
-        '<div style="height:10px;background:var(--bg3);border-radius:3px;overflow:hidden;position:relative;">'+
-          '<div style="position:absolute;left:0;top:0;height:10px;width:'+qw+'%;background:'+
-          (!hWin?'rgba(224,92,92,0.75)':'rgba(224,92,92,0.35)')+';border-radius:3px;"></div></div>'+
-      '</div>'+
-      '<div style="font-size:9px;text-align:right;">'+
-        '<div style="color:'+( hWin?'#4a9eff':'rgba(74,158,255,0.55)')+';font-weight:'+( hWin?'700':'400')+';">'+s.h+'%</div>'+
-        '<div style="color:'+(  !hWin?'rgba(224,92,92,0.9)':'rgba(224,92,92,0.45)')+';font-weight:'+(!hWin?'700':'400')+';">'+s.q+'%</div>'+
-      '</div></div>';
+
+  /* ── 산점도 ── */
+  var svg=document.getElementById('v6sc');
+  if(svg){
+    var pl=34,pr=10,pt=12,pb=26,W=360,H=200;
+    var cw=W-pl-pr, ch=H-pt-pb;
+    var mMin=38,mMax=84,cMin=17,cMax=28;
+    function xp(m){return pl+(m-mMin)/(mMax-mMin)*cw;}
+    function yp(c){return pt+ch-(c-cMin)/(cMax-cMin)*ch;}
+    var s='';
+    /* 그리드 */
+    [40,50,60,70,80].forEach(function(v){
+      var x=xp(v);
+      s+='<line x1="'+x+'" y1="'+pt+'" x2="'+x+'" y2="'+(pt+ch)+'" stroke="#1a2236" stroke-width="1"/>';
+      s+='<text x="'+x+'" y="'+(pt+ch+11)+'" text-anchor="middle" font-size="7.5" fill="#4a5070">'+v+'%</text>';
+    });
+    [18,20,22,24,26].forEach(function(v){
+      var y=yp(v);
+      s+='<line x1="'+pl+'" y1="'+y+'" x2="'+(pl+cw)+'" y2="'+y+'" stroke="#1a2236" stroke-width="1"/>';
+      s+='<text x="'+(pl-4)+'" y="'+(y+3)+'" text-anchor="end" font-size="7.5" fill="#4a5070">'+v+'%</text>';
+    });
+    /* 연결선 */
+    sc.forEach(function(d){
+      s+='<line x1="'+xp(d.hm)+'" y1="'+yp(d.h)+'" x2="'+xp(d.qm)+'" y2="'+yp(d.q)+'" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="2,2"/>';
+    });
+    /* QLD 점 */
+    sc.forEach(function(d){
+      s+='<circle cx="'+xp(d.qm)+'" cy="'+yp(d.q)+'" r="3.8" fill="rgba(224,92,92,0.7)" stroke="rgba(224,92,92,0.25)" stroke-width="1"/>';
+    });
+    /* Hybrid 점 */
+    sc.forEach(function(d){
+      s+='<circle cx="'+xp(d.hm)+'" cy="'+yp(d.h)+'" r="4.5" fill="#4a9eff" stroke="rgba(74,158,255,0.3)" stroke-width="1.5"/>';
+    });
+    /* 평균 링 */
+    s+='<circle cx="'+xp(46.53)+'" cy="'+yp(21.43)+'" r="7" fill="none" stroke="#4a9eff" stroke-width="2"/>';
+    s+='<circle cx="'+xp(67.00)+'" cy="'+yp(22.63)+'" r="7" fill="none" stroke="rgba(224,92,92,0.85)" stroke-width="2"/>';
+    s+='<text x="'+(xp(46.53)+10)+'" y="'+(yp(21.43)-3)+'" font-size="8" fill="#7dc4ff" font-weight="700">Hybrid 평균</text>';
+    s+='<text x="'+(xp(67.00)+10)+'" y="'+(yp(22.63)-3)+'" font-size="8" fill="rgba(230,140,140,0.95)" font-weight="700">QLD 평균</text>';
+    /* 유리 영역 라벨 */
+    s+='<rect x="'+pl+'" y="'+pt+'" width="60" height="14" fill="rgba(76,175,125,0.07)" rx="3"/>';
+    s+='<text x="'+(pl+4)+'" y="'+(pt+9)+'" font-size="7.5" fill="rgba(76,175,125,0.6)">◀ 유리한 영역</text>';
+    /* 축 라벨 */
+    s+='<text x="'+(pl+cw/2)+'" y="'+(pt+ch+23)+'" text-anchor="middle" font-size="8" fill="#5a6080">MDD (%) — 낮을수록 안전</text>';
+    s+='<text x="10" y="'+(pt+ch/2)+'" text-anchor="middle" font-size="8" fill="#5a6080" transform="rotate(-90,10,'+(pt+ch/2)+')">CAGR (%)</text>';
+    svg.innerHTML=s;
+  }
+
+  /* ── 차이 막대 ── */
+  var wrap=document.getElementById('v6diff');
+  if(!wrap) return;
+  var diffs=sc.map(function(d){return d.h-d.q;});
+  var maxAbs=Math.max.apply(null,diffs.map(Math.abs));
+  sc.forEach(function(d,i){
+    var diff=diffs[i];
+    var hWin=diff>=0;
+    var pct=(Math.abs(diff)/maxAbs*46).toFixed(1); // 최대 46% (중앙 50% 기준)
+    var color=hWin?'#4a9eff':'rgba(224,92,92,0.8)';
+    var pos=hWin?'left:50%;':'right:50%;';
+    wrap.innerHTML+=
+      '<div style="display:grid;grid-template-columns:32px 1fr 52px;gap:5px;align-items:center;">'+
+        '<span style="font-size:9px;color:var(--text3);text-align:right;">'+d.y+'</span>'+
+        '<div style="position:relative;height:14px;background:var(--bg3);border-radius:3px;">'+
+          '<div style="position:absolute;left:50%;top:0;width:1px;height:14px;background:rgba(255,255,255,0.1);"></div>'+
+          '<div style="position:absolute;top:2px;height:10px;border-radius:2px;background:'+color+';'+pos+'width:'+pct+'%;"></div>'+
+        '</div>'+
+        '<span style="font-size:9px;font-weight:'+(hWin?'700':'400')+';color:'+color+';text-align:right;">'+
+          (diff>0?'+':'')+diff.toFixed(2)+'%p'+
+        '</span>'+
+      '</div>';
   });
 })();
 </script>
