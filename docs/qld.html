@@ -375,84 +375,243 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
     <!-- 전략 성과 -->
     <div class="sub-panel" id="sub-cycle-perf">
-      <div style="background:linear-gradient(135deg,#0d1525,#111e35);border:1px solid rgba(74,158,255,0.2);border-radius:10px;padding:18px 20px;margin-bottom:14px;">
-        <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(74,158,255,0.5);margin-bottom:6px;">STRATEGY POSITIONING</div>
-        <div style="font-size:18px;font-weight:800;color:#7dc4ff;margin-bottom:5px;">리스크 통제형 성장 전략</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.45);line-height:1.7;">QQQ의 폭발적 수익성 + SGOV의 방어력을 결합.<br>하락에서 탄약을 비축하고, 저점에서 레버리지로 수익을 극대화.</div>
-      </div>
-      <div class="sec">백테스트 성과 (2010~2025)</div>
-      <div class="g2" style="margin-bottom:10px;">
-        <div class="perf-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div style="font-size:10px;color:var(--text3);">CAGR · 연평균 수익률</div><div style="font-size:9px;background:rgba(76,175,125,0.15);color:#4caf7d;padding:2px 6px;border-radius:3px;font-weight:700;">장기 성장력</div></div>
-          <div class="perf-val" style="color:#4caf7d;">21.15%</div>
-          <div class="perf-desc">1,000만원 → 15년 후 약 1억 7천만원</div>
-          <div class="compare-bar">
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">21.15%</span></div><div class="compare-track"><div class="compare-fill" style="background:#4caf7d;width:100%;"></div></div></div>
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QQQ</span><span style="color:#9b7fe8;font-weight:700;">17~18%</span></div><div class="compare-track"><div class="compare-fill" style="background:#9b7fe8;width:83%;"></div></div></div>
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">VOO</span><span style="color:#4a9eff;font-weight:700;">10~11%</span></div><div class="compare-track"><div class="compare-fill" style="background:#4a9eff;width:50%;"></div></div></div>
-          </div>
-          <div class="perf-tip">💡 VOO 대비 <span style="color:#4caf7d;font-weight:700;">+10%p</span>. 복리로 15년이면 자산 차이가 극적으로 벌어집니다.</div>
-        </div>
-        <div class="perf-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div style="font-size:10px;color:var(--text3);">MDD · 최대 낙폭</div><div style="font-size:9px;background:rgba(224,92,92,0.15);color:#e05c5c;padding:2px 6px;border-radius:3px;font-weight:700;">최악의 손실</div></div>
-          <div class="perf-val" style="color:#e05c5c;">-50.46%</div>
-          <div class="perf-desc">이미 알고 감내하는 리스크. 규칙이 버텨줍니다.</div>
-          <div class="compare-bar">
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QQQ 단독</span><span style="color:#e05c5c;font-weight:700;">-83%</span></div><div class="compare-track"><div class="compare-fill" style="background:#e05c5c;width:100%;"></div></div></div>
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">VOO</span><span style="color:#ffc107;font-weight:700;">-55%</span></div><div class="compare-track"><div class="compare-fill" style="background:#ffc107;width:66%;"></div></div></div>
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">-50.46%</span></div><div class="compare-track"><div class="compare-fill" style="background:#4caf7d;width:61%;"></div></div></div>
-          </div>
-          <div class="perf-tip">💡 QQQ 단독(-83%)보다 <span style="color:#4caf7d;font-weight:700;">32%p 낮음</span>. SGOV 탄약이 하락폭을 제어합니다.</div>
-        </div>
-        <div class="perf-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div style="font-size:10px;color:var(--text3);">Sharpe · 변동성 대비 효율</div><div style="font-size:9px;background:rgba(74,158,255,0.15);color:#4a9eff;padding:2px 6px;border-radius:3px;font-weight:700;">리스크 효율</div></div>
-          <div class="perf-val" style="color:#4a9eff;">0.80</div>
-          <div class="perf-desc">변동성 1단위당 수익. 1.0 이상이면 우수.</div>
-          <div class="compare-bar">
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#4caf7d;font-weight:700;">0.80</span></div><div class="compare-track"><div class="compare-fill" style="background:#4caf7d;width:80%;"></div></div></div>
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">VOO</span><span style="color:#4a9eff;font-weight:700;">0.75~0.85</span></div><div class="compare-track"><div class="compare-fill" style="background:#4a9eff;width:80%;"></div></div></div>
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QQQ</span><span style="color:#9b7fe8;font-weight:700;">0.75~0.85</span></div><div class="compare-track"><div class="compare-fill" style="background:#9b7fe8;width:80%;"></div></div></div>
-          </div>
-          <div class="perf-tip">💡 QQQ보다 <span style="color:#4caf7d;font-weight:700;">2배 높은 수익</span>을 내면서 샤프는 동일. 효율이 훨씬 좋습니다.</div>
-        </div>
-        <div class="perf-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;"><div style="font-size:10px;color:var(--text3);">Calmar · 손실 대비 성장</div><div style="font-size:9px;background:rgba(201,168,76,0.15);color:#c9a84c;padding:2px 6px;border-radius:3px;font-weight:700;">성장 효율</div></div>
-          <div class="perf-val" style="color:#c9a84c;">0.42</div>
-          <div class="perf-desc">CAGR ÷ MDD. 같은 고통으로 얼마나 성장했는가.</div>
-          <div class="compare-bar">
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QLD Hybrid</span><span style="color:#c9a84c;font-weight:700;">0.42</span></div><div class="compare-track"><div class="compare-fill" style="background:#c9a84c;width:100%;"></div></div></div>
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">QQQ</span><span style="color:#9b7fe8;font-weight:700;">0.21~0.25</span></div><div class="compare-track"><div class="compare-fill" style="background:#9b7fe8;width:55%;"></div></div></div>
-            <div class="compare-row"><div class="compare-label"><span style="color:var(--text2);">VOO</span><span style="color:#4a9eff;font-weight:700;">0.18~0.22</span></div><div class="compare-track"><div class="compare-fill" style="background:#4a9eff;width:48%;"></div></div></div>
-          </div>
-          <div class="perf-tip">💡 VOO 대비 <span style="color:#c9a84c;font-weight:700;">약 2배</span>. 같은 고통을 감내하고 훨씬 더 성장합니다.</div>
-        </div>
-      </div>
 
-      <div class="sec">이 전략이 맞는 사람 / 아닌 사람</div>
-      <div class="g2">
-        <div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.2);border-radius:8px;padding:14px;">
-          <div style="font-size:11px;font-weight:700;color:#4caf7d;margin-bottom:8px;">✅ 맞는 사람</div>
-          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);">
-            <div>· 투자 기간 10년 이상</div>
-            <div>· -50% 하락을 기회로 볼 수 있는 분</div>
-            <div>· 규칙 지키기에서 만족감을 얻는 분</div>
-            <div>· 단순한 2종목 구조를 선호하는 분</div>
-            <div>· 매월 22일 기계적 실행이 가능한 분</div>
-          </div>
-        </div>
-        <div style="background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.2);border-radius:8px;padding:14px;">
-          <div style="font-size:11px;font-weight:700;color:#e05c5c;margin-bottom:8px;">❌ 아닌 사람</div>
-          <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);">
-            <div>· 5년 내 목돈이 필요한 분</div>
-            <div>· -30% 이상 손실 시 멘탈 흔들리는 분</div>
-            <div>· 시장 뉴스에 반응해 매매하고 싶은 분</div>
-            <div>· 안정적인 배당 수익이 필요한 분</div>
-            <div>· 레버리지 ETF에 거부감이 있는 분</div>
-          </div>
-        </div>
-      </div>
+<style>
+.v6-hero{background:linear-gradient(135deg,#060d1a 0%,#0a1628 50%,#0d1f35 100%);border:1px solid rgba(74,158,255,0.2);border-radius:12px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden;}
+.v6-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(74,158,255,0.015) 20px,rgba(74,158,255,0.015) 21px);pointer-events:none;}
+.v6-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(74,158,255,0.6);background:rgba(74,158,255,0.08);border:1px solid rgba(74,158,255,0.15);border-radius:3px;padding:3px 8px;margin-bottom:10px;}
+.v6-hero-title{font-size:20px;font-weight:800;color:#7dc4ff;margin-bottom:6px;letter-spacing:-0.3px;}
+.v6-hero-sub{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.7;}
+.v6-metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.v6-metric{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;position:relative;overflow:hidden;}
+.v6-metric::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
+.v6-metric.green::after{background:linear-gradient(90deg,#4caf7d,transparent);}
+.v6-metric.red::after{background:linear-gradient(90deg,#e05c5c,transparent);}
+.v6-metric.gold::after{background:linear-gradient(90deg,#c9a84c,transparent);}
+.v6-metric.blue::after{background:linear-gradient(90deg,#4a9eff,transparent);}
+.v6-metric-label{font-size:9px;color:var(--text3);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.v6-metric-val{font-size:22px;font-weight:800;line-height:1;margin-bottom:3px;}
+.v6-metric-sub{font-size:9px;color:var(--text3);}
+.v6-metric-badge{position:absolute;top:8px;right:8px;font-size:8px;font-weight:800;padding:2px 6px;border-radius:3px;}
+.v6-table{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.v6-thead{display:grid;padding:9px 14px;background:var(--bg3);font-size:9px;color:var(--text3);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
+.v6-trow{display:grid;align-items:center;padding:11px 14px;border-top:1px solid var(--border);}
+.v6-trow.hl{background:rgba(74,158,255,0.04);border-top-color:rgba(74,158,255,0.15);}
+.v6-chip{display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;}
+.v6-bar-wrap{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:4px;}
+.v6-bar{height:6px;border-radius:3px;}
+.v6-insight{border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;}
+.v6-insight-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.v6-insight-title{font-size:11px;font-weight:700;margin-bottom:3px;}
+.v6-insight-desc{font-size:10px;color:var(--text2);line-height:1.6;}
+@media(max-width:600px){.v6-metric-grid{grid-template-columns:1fr 1fr;}}
+</style>
+
+<!-- 히어로 배너 -->
+<div class="v6-hero">
+  <div class="v6-badge">v6 백테스트 · 2006~2026 · 16개 시나리오 · 세전 기준</div>
+  <div class="v6-hero-title">QLD Hybrid 전략 성과</div>
+  <div class="v6-hero-sub">거치 1억 + 월 100만 · QLD 35/SGOV 65 시작 · 하락 5단계 매수 + ATH 3단계 복귀<br>
+    QLD 단독보다 <span style="color:#4caf7d;font-weight:700;">MDD 20%p 개선</span> · Calmar <span style="color:#c9a84c;font-weight:700;">0.47 vs 0.34</span> · QQQ 대비 최종자산 <span style="color:#4a9eff;font-weight:700;">3배</span>
+  </div>
+</div>
+
+<!-- 핵심 지표 4개 -->
+<div class="sec">핵심 성과 (16개 시나리오 평균)</div>
+<div class="v6-metric-grid">
+  <div class="v6-metric green">
+    <div class="v6-metric-badge" style="background:rgba(76,175,125,0.15);color:#4caf7d;">평균 CAGR</div>
+    <div class="v6-metric-label" style="margin-top:16px;">연평균 수익률</div>
+    <div class="v6-metric-val" style="color:#4caf7d;">21.43%</div>
+    <div class="v6-metric-sub">범위 18.35 ~ 23.64%</div>
+    <div class="v6-bar-wrap"><div class="v6-bar" style="background:#4caf7d;width:78%;"></div></div>
+  </div>
+  <div class="v6-metric red">
+    <div class="v6-metric-badge" style="background:rgba(224,92,92,0.15);color:#e05c5c;">평균 MDD</div>
+    <div class="v6-metric-label" style="margin-top:16px;">최대 낙폭</div>
+    <div class="v6-metric-val" style="color:#e05c5c;">-46.53%</div>
+    <div class="v6-metric-sub">QLD 단독 -67% 대비 20%p↓</div>
+    <div class="v6-bar-wrap"><div class="v6-bar" style="background:#e05c5c;width:56%;"></div></div>
+  </div>
+  <div class="v6-metric gold">
+    <div class="v6-metric-badge" style="background:rgba(201,168,76,0.15);color:#c9a84c;">🏆 Calmar</div>
+    <div class="v6-metric-label" style="margin-top:16px;">손실 대비 성장</div>
+    <div class="v6-metric-val" style="color:#c9a84c;">0.47</div>
+    <div class="v6-metric-sub">QLD 0.34 · QQQ 0.37 · SPY 0.27</div>
+    <div class="v6-bar-wrap"><div class="v6-bar" style="background:#c9a84c;width:100%;"></div></div>
+  </div>
+  <div class="v6-metric blue">
+    <div class="v6-metric-badge" style="background:rgba(74,158,255,0.15);color:#4a9eff;">평균자산</div>
+    <div class="v6-metric-label" style="margin-top:16px;">세전 최종 평가액</div>
+    <div class="v6-metric-val" style="color:#4a9eff;">49.97억</div>
+    <div class="v6-metric-sub">QQQ 16.9억 대비 약 3배</div>
+    <div class="v6-bar-wrap"><div class="v6-bar" style="background:#4a9eff;width:78%;"></div></div>
+  </div>
+</div>
+
+<!-- 4전략 비교 테이블 -->
+<div class="sec">4전략 직접 비교</div>
+<div class="v6-table">
+  <div class="v6-thead" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
+    <div>전략</div><div style="text-align:right;">CAGR</div><div style="text-align:right;">MDD</div><div style="text-align:right;">Calmar</div><div style="text-align:right;">평균자산</div><div style="text-align:right;">평가</div>
+  </div>
+  <div class="v6-trow hl" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
+    <div><div style="font-size:12px;font-weight:800;color:var(--accent2);">⚡ QLD Hybrid</div><div style="font-size:9px;color:var(--text3);">하락매수+리밸</div></div>
+    <div style="text-align:right;"><div style="font-size:14px;font-weight:800;color:#4caf7d;">21.43%</div><div style="font-size:9px;color:var(--text3);">±1.77%p</div></div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ffc107;">-46.53%</div><div style="font-size:9px;color:var(--text3);">최악 -58.96%</div></div>
+    <div style="text-align:right;font-size:14px;font-weight:800;color:#c9a84c;">0.47</div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#4a9eff;">49.97억</div><div style="font-size:9px;color:var(--text3);">중앙 38.9억</div></div>
+    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(76,175,125,0.2);color:#4caf7d;">🏆 1위</span></div>
+  </div>
+  <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
+    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">📈 QLD 단독</div><div style="font-size:9px;color:var(--text3);">레버리지 100%</div></div>
+    <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:#4caf7d;">22.63%</div><div style="font-size:9px;color:var(--text3);">±2.06%p</div></div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#e05c5c;">-67.00%</div><div style="font-size:9px;color:var(--text3);">최악 -80.48%</div></div>
+    <div style="text-align:right;font-size:14px;font-weight:700;color:var(--text2);">0.34</div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--text2);">64.17억</div><div style="font-size:9px;color:var(--text3);">중앙 56.0억</div></div>
+    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(224,92,92,0.15);color:#e05c5c;">고위험</span></div>
+  </div>
+  <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
+    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">🏛 QQQ</div><div style="font-size:9px;color:var(--text3);">나스닥100</div></div>
+    <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:var(--text2);">13.23%</div><div style="font-size:9px;color:var(--text3);">±0.95%p</div></div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#4a9eff;">-37.39%</div><div style="font-size:9px;color:var(--text3);">최악 -49.17%</div></div>
+    <div style="text-align:right;font-size:14px;font-weight:700;color:var(--text2);">0.37</div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--text2);">16.91억</div><div style="font-size:9px;color:var(--text3);">중앙 15.6억</div></div>
+    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(90,96,128,0.2);color:#9aa0b8;">안전형</span></div>
+  </div>
+  <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
+    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">🏦 SPY</div><div style="font-size:9px;color:var(--text3);">S&P500</div></div>
+    <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:var(--text3);">9.36%</div><div style="font-size:9px;color:var(--text3);">±0.94%p</div></div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#4a9eff;">-36.55%</div><div style="font-size:9px;color:var(--text3);">최악 -48.18%</div></div>
+    <div style="text-align:right;font-size:14px;font-weight:700;color:var(--text3);">0.27</div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--text3);">9.62억</div><div style="font-size:9px;color:var(--text3);">중앙 9.6억</div></div>
+    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(90,96,128,0.15);color:#5a6080;">보수적</span></div>
+  </div>
+</div>
+
+<!-- 시나리오 막대 차트 -->
+<div class="sec">시작 시점별 CAGR — Hybrid vs QLD 단독 (16개 롤링)</div>
+<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px;">
+  <div style="display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:14px;height:8px;border-radius:2px;background:#4a9eff;"></div>Hybrid (평균 21.43%)</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:14px;height:8px;border-radius:2px;background:rgba(224,92,92,0.65);"></div>QLD 단독 (평균 22.63%)</div>
+    <div style="margin-left:auto;font-size:9px;color:var(--text3);">진할수록 해당 전략 우세</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:4px;" id="v6-bars"></div>
+  <div style="margin-top:10px;display:flex;justify-content:space-between;font-size:9px;color:var(--text3);">
+    <span>Hybrid 표준편차 <span style="color:#4caf7d;">±1.77%p</span> &nbsp;·&nbsp; QLD 단독 <span style="color:#e05c5c;">±2.06%p</span></span>
+    <span>Hybrid 승(CAGR 기준) <span style="color:#4a9eff;font-weight:700;">3/16</span></span>
+  </div>
+</div>
+
+<!-- Hybrid vs QLD 트레이드오프 -->
+<div class="sec">Hybrid vs QLD 단독 — 핵심 트레이드오프</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+  <div style="background:rgba(74,158,255,0.06);border:1px solid rgba(74,158,255,0.2);border-radius:10px;padding:14px;">
+    <div style="font-size:11px;font-weight:800;color:var(--accent2);margin-bottom:10px;">⚡ Hybrid 선택 시</div>
+    <div style="display:flex;flex-direction:column;gap:7px;">
+      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">Calmar <b style="color:#c9a84c;">0.47</b> — QLD 대비 <span style="color:#4caf7d;">+38%↑</span></div></div>
+      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">MDD <b style="color:#ffc107;">-46.5%</b> — QLD -67% 대비 20%p 방어</div></div>
+      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">CAGR 안정성 ±1.77%p (더 예측 가능)</div></div>
+      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#e05c5c;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text2);">최종자산 49.97억 — QLD 64.17억 대비 14억↓</div></div>
     </div>
   </div>
+  <div style="background:rgba(224,92,92,0.05);border:1px solid rgba(224,92,92,0.2);border-radius:10px;padding:14px;">
+    <div style="font-size:11px;font-weight:800;color:#e05c5c;margin-bottom:10px;">📈 QLD 단독 선택 시</div>
+    <div style="display:flex;flex-direction:column;gap:7px;">
+      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">최종자산 <b style="color:#4caf7d;">64.17억</b> — Hybrid보다 14억↑</div></div>
+      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text1);">CAGR <b style="color:#4caf7d;">22.63%</b> — 1.2%p 우위</div></div>
+      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#e05c5c;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text2);">MDD <b style="color:#e05c5c;">-67%</b> — 최악 시 -80.48%</div></div>
+      <div style="display:flex;gap:8px;align-items:center;"><div style="width:7px;height:7px;border-radius:50%;background:#e05c5c;flex-shrink:0;"></div><div style="font-size:11px;color:var(--text2);">Calmar 0.34 — 효율 열위</div></div>
+    </div>
+  </div>
+</div>
+<div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;color:var(--accent2);line-height:1.7;">
+  💡 <b>결론:</b> -67% 낙폭을 실제로 버틸 수 있다면 QLD 단독이 최종 자산은 더 큽니다. Calmar 효율과 심리적 안정성이 우선이라면 Hybrid가 최적입니다.
+</div>
+
+<!-- 인사이트 -->
+<div class="sec">핵심 인사이트</div>
+<div class="v6-insight" style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.2);">
+  <div class="v6-insight-icon" style="background:rgba(76,175,125,0.15);">📊</div>
+  <div><div class="v6-insight-title" style="color:#4caf7d;">시작 시점에 무관하게 안정적</div><div class="v6-insight-desc">16개 시나리오 CAGR 범위 18.35~23.64% · 표준편차 1.77%p · 언제 시작해도 18% 이상 달성.</div></div>
+</div>
+<div class="v6-insight" style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);">
+  <div class="v6-insight-icon" style="background:rgba(201,168,76,0.15);">🏆</div>
+  <div><div class="v6-insight-title" style="color:#c9a84c;">Calmar 4전략 1위 (0.47)</div><div class="v6-insight-desc">QLD 0.34 대비 38% 높음 · QQQ(0.37)보다도 우수 · 같은 낙폭 감내 대비 가장 효율적.</div></div>
+</div>
+<div class="v6-insight" style="background:rgba(74,158,255,0.06);border:1px solid rgba(74,158,255,0.2);">
+  <div class="v6-insight-icon" style="background:rgba(74,158,255,0.15);">💰</div>
+  <div><div class="v6-insight-title" style="color:#4a9eff;">QQQ 대비 최종자산 약 3배</div><div class="v6-insight-desc">평균 49.97억 vs QQQ 16.91억 · SPY 9.62억 대비 5배 · 복리 기간이 길수록 격차 급격히 확대.</div></div>
+</div>
+<div class="v6-insight" style="background:rgba(224,92,92,0.05);border:1px solid rgba(224,92,92,0.15);">
+  <div class="v6-insight-icon" style="background:rgba(224,92,92,0.1);">⚠️</div>
+  <div><div class="v6-insight-title" style="color:#e05c5c;">최대 낙폭 -58.96% 감내 필요</div><div class="v6-insight-desc">2005~2006 시작 시 최악 MDD · 하락장 매수 트리거 작동 전 구간 · 규칙 준수가 회복의 전제조건.</div></div>
+</div>
+
+<!-- 맞는 사람 -->
+<div class="sec">이 전략이 맞는 사람 / 아닌 사람</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+  <div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.2);border-radius:10px;padding:14px;">
+    <div style="font-size:11px;font-weight:800;color:#4caf7d;margin-bottom:10px;">✅ 맞는 사람</div>
+    <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);">
+      <div>· 투자 기간 10년 이상</div>
+      <div>· -47% 낙폭을 기회로 볼 수 있는 분</div>
+      <div>· Calmar 효율을 우선시하는 분</div>
+      <div>· 단순한 2종목 구조를 선호하는 분</div>
+      <div>· 규칙 기반 자동 실행이 가능한 분</div>
+    </div>
+  </div>
+  <div style="background:rgba(224,92,92,0.05);border:1px solid rgba(224,92,92,0.2);border-radius:10px;padding:14px;">
+    <div style="font-size:11px;font-weight:800;color:#e05c5c;margin-bottom:10px;">❌ 아닌 사람</div>
+    <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text2);">
+      <div>· 5년 내 목돈이 필요한 분</div>
+      <div>· -30% 이상 손실 시 멘탈이 흔들리는 분</div>
+      <div>· 시장 뉴스에 반응해 매매하고 싶은 분</div>
+      <div>· 안정적인 배당 수익이 필요한 분</div>
+      <div>· 레버리지 ETF에 거부감이 있는 분</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var sc=[
+    {y:'2005',h:18.35,q:19.94},{y:'2006',h:18.35,q:19.94},
+    {y:'2007',h:18.58,q:19.91},{y:'2008',h:19.71,q:20.35},
+    {y:'2009',h:23.64,q:26.52},{y:'2010',h:21.51,q:23.82},
+    {y:'2011',h:21.31,q:23.40},{y:'2012',h:21.33,q:24.82},
+    {y:'2013',h:21.49,q:24.36},{y:'2014',h:21.19,q:22.44},
+    {y:'2015',h:21.78,q:21.89},{y:'2016',h:23.34,q:23.14},
+    {y:'2017',h:22.74,q:23.97},{y:'2018',h:22.62,q:21.15},
+    {y:'2019',h:23.62,q:25.49},{y:'2020',h:23.32,q:20.95}
+  ];
+  var mx=Math.max.apply(null,sc.map(function(s){return Math.max(s.h,s.q);}));
+  var w=document.getElementById('v6-bars');
+  if(!w)return;
+  sc.forEach(function(s){
+    var hw=(s.h/mx*100).toFixed(1);
+    var qw=(s.q/mx*100).toFixed(1);
+    var hWin=s.h>=s.q;
+    w.innerHTML+='<div style="display:grid;grid-template-columns:30px 1fr 80px;gap:6px;align-items:center;">'+
+      '<span style="font-size:9px;color:var(--text3);text-align:right;">'+s.y+'</span>'+
+      '<div style="display:flex;flex-direction:column;gap:2px;">'+
+        '<div style="height:10px;background:var(--bg3);border-radius:3px;overflow:hidden;position:relative;">'+
+          '<div style="position:absolute;left:0;top:0;height:10px;width:'+hw+'%;background:'+
+          (hWin?'#4a9eff':'rgba(74,158,255,0.4)')+';border-radius:3px;"></div></div>'+
+        '<div style="height:10px;background:var(--bg3);border-radius:3px;overflow:hidden;position:relative;">'+
+          '<div style="position:absolute;left:0;top:0;height:10px;width:'+qw+'%;background:'+
+          (!hWin?'rgba(224,92,92,0.75)':'rgba(224,92,92,0.35)')+';border-radius:3px;"></div></div>'+
+      '</div>'+
+      '<div style="font-size:9px;text-align:right;">'+
+        '<div style="color:'+( hWin?'#4a9eff':'rgba(74,158,255,0.55)')+';font-weight:'+( hWin?'700':'400')+';">'+s.h+'%</div>'+
+        '<div style="color:'+(  !hWin?'rgba(224,92,92,0.9)':'rgba(224,92,92,0.45)')+';font-weight:'+(!hWin?'700':'400')+';">'+s.q+'%</div>'+
+      '</div></div>';
+  });
+})();
+</script>
+
+    </div>  </div>
 
   <!-- ④ 전략 설명서 -->
   <div class="content panel" id="tab-guide">
