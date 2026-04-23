@@ -785,7 +785,11 @@ async function loadData(){
     if(d.nasdaq){
       mkt.nasdaq=d.nasdaq.drawdown_pct; mkt.ma200=d.nasdaq.ma200_dev_pct; mkt.qqq_price=d.nasdaq.current_price;
       const s=mkt.nasdaq>0?'+':'';
-      setCard('d-nasdaq',s+mkt.nasdaq.toFixed(1)+'%',mkt.nasdaq<=-12?'매수 신호':mkt.nasdaq<0?'하락 중':'상승 중',mkt.nasdaq<=-12?'var(--red)':mkt.nasdaq<0?'var(--gold)':'var(--green)');
+      // 나스닥 카드: QQQ 현재가 표시
+      var qqqPriceStr = mkt.qqq_price ? '$'+mkt.qqq_price.toFixed(2) : (s+mkt.nasdaq.toFixed(1)+'%');
+      var nasdaqSubStr = mkt.nasdaq<=-12?'매수 신호':mkt.nasdaq<0?'하락 중':'상승 중';
+      var nasdaqColor = mkt.nasdaq<=-12?'var(--red)':mkt.nasdaq<0?'var(--gold)':'var(--green)';
+      setCard('d-nasdaq', qqqPriceStr, nasdaqSubStr, nasdaqColor);
       setCard('d-ma200',mkt.ma200.toFixed(1)+'%',mkt.ma200>0?'200일선 위':'200일선 아래',mkt.ma200>0?'var(--green)':'var(--red)');
       const cq=document.getElementById('cur-qqq');if(cq&&!cq.value)cq.value=mkt.qqq_price;
     }
