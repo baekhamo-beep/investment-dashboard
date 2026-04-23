@@ -179,7 +179,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <!-- 핵심 지표 -->
     <div class="sec">핵심 지표</div>
     <div class="g4">
-      <div class="card"><div class="card-label">나스닥</div><div class="card-value" id="d-nasdaq" style="font-size:18px;">—</div><div class="card-sub" id="d-nasdaq-sub">로딩중...</div><div class="card-sub" id="d-nasdaq-ath" style="margin-top:2px;font-size:10px;color:var(--text3);">ATH 대비 —</div></div>
+      <div class="card"><div class="card-label">나스닥 (ATH 대비)</div><div class="card-value" id="d-nasdaq" style="font-size:18px;">—</div><div class="card-sub" id="d-nasdaq-sub">로딩중...</div><div class="card-sub" id="d-nasdaq-ath" style="margin-top:3px;font-size:11px;font-weight:600;">ATH 대비 —</div></div>
       <div class="card"><div class="card-label">200일선</div><div class="card-value" id="d-ma200" style="font-size:18px;">—</div><div class="card-sub" id="d-ma200-sub">로딩중...</div></div>
       <div class="card"><div class="card-label">VIX</div><div class="card-value" id="d-vix" style="font-size:18px;">—</div><div class="card-sub" id="d-vix-sub">로딩중...</div></div>
       <div class="card"><div class="card-label">F&amp;G</div><div class="card-value" id="d-fg" style="font-size:18px;">—</div><div class="card-sub" id="d-fg-sub">로딩중...</div></div>
@@ -194,9 +194,9 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
     <div class="divider"></div>
 
-    <!-- 상승 복귀 -->
-    <div class="sec">상승장 복귀 (회복모드)</div>
-    <div id="recovery-stages"></div>
+    <!-- 상승장 매도 트리거 -->
+    <div class="sec">상승장 매도 트리거 (ATH 기준 3단계)</div>
+    <div id="sell-triggers"></div>
 
     <div class="divider"></div>
 
@@ -1073,17 +1073,29 @@ function updateNasdaqATH(){
   var el = document.getElementById('d-nasdaq-ath');
   if(!el) return;
   var athPrice = (qldState&&qldState.cycle&&qldState.cycle.ath_price)||0;
-  var curQQQ = mkt.qqq_price||0;
-  if(!athPrice || !curQQQ){ el.textContent='ATH 대비 —'; el.style.color='var(--text3)'; return; }
-  var pct = ((curQQQ - athPrice) / athPrice * 100);
+  var athDate  = (qldState&&qldState.cycle&&qldState.cycle.ath_date)||'';
+  var curQQQ   = mkt.qqq_price||0;
+  if(!athPrice || !curQQQ){
+    el.textContent='전고점 미설정 (사이클 탭에서 입력)';
+    el.style.color='var(--text3)';
+    el.style.fontWeight='400';
+    return;
+  }
+  var pct = (curQQQ - athPrice) / athPrice * 100;
+  // 날짜 포맷: 2025-10-29 → '25.10.29
+  var dateLabel = '';
+  if(athDate){
+    var parts = athDate.split('-');
+    if(parts.length===3) dateLabel = " ('" + parts[0].slice(2) + '.' + parts[1] + '.' + parts[2] + ')';
+  }
   if(pct >= 0){
-    el.textContent = 'ATH('+athPrice.toFixed(0)+'$) 대비 +'+pct.toFixed(1)+'% ↑';
+    el.textContent = '+'+pct.toFixed(1)+'%↑  전고점 $'+athPrice.toFixed(0)+dateLabel;
     el.style.color = 'var(--green)';
-    el.style.fontWeight = '600';
+    el.style.fontWeight = '700';
   } else {
-    el.textContent = 'ATH('+athPrice.toFixed(0)+'$) 대비 '+pct.toFixed(1)+'%';
-    el.style.color = pct<=-12?'var(--red)':pct<=-5?'var(--gold)':'var(--text3)';
-    el.style.fontWeight = pct<=-12?'700':'400';
+    el.textContent = pct.toFixed(1)+'%  전고점 $'+athPrice.toFixed(0)+dateLabel;
+    el.style.color = pct<=-12?'var(--red)':pct<=-5?'var(--gold)':'var(--text2)';
+    el.style.fontWeight = pct<=-12?'700':'500';
   }
 }
 
