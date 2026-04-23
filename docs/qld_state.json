@@ -2,8 +2,8 @@
   "description": "QLD Hybrid 사이클 상태",
   "cycle": {
     "phase": "normal",
-    "ath_price": 0,
-    "ath_date": "",
+    "ath_price": 635.77,
+    "ath_date": "2025-10-29",
     "recovery_ath_price": 0,
     "dip_triggered": [
       false,
