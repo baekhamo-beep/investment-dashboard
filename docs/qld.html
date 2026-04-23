@@ -796,7 +796,7 @@ async function loadData(){
     const upd=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='업데이트: '+upd;
     renderActionBanner(); const ab=document.getElementById('action-banner');if(ab)ab.style.opacity='1';
-    renderDiagStatus(); renderDipStages(); renderSellTriggers(); renderRecoveryStages(); renderTodayChecklist();
+    renderDiagStatus(); renderDipStages(); renderSellTriggers(); renderTodayChecklist();
   }catch(e){document.getElementById('data-updated-text').textContent='데이터 로드 실패';}
 }
 
@@ -808,6 +808,7 @@ async function loadState(){
   }
   renderCycleStatus(); renderCycleSteps(); renderDipCheckList(); renderRecoveryCheckList();
   renderActionBanner(); const ab=document.getElementById('action-banner');if(ab)ab.style.opacity='1';
+  updateNasdaqATH(); renderSellTriggers();
   if(qldState.cycle.ath_price){const e=document.getElementById('ath-price');if(e)e.value=qldState.cycle.ath_price;}
   if(qldState.cycle.ath_date){const e=document.getElementById('ath-date');if(e)e.value=qldState.cycle.ath_date;}
 }
@@ -1066,6 +1067,24 @@ function renderSellTriggers(){
   html+='</div>';
   var el=document.getElementById('sell-triggers');
   if(el) el.innerHTML=html;
+}
+
+function updateNasdaqATH(){
+  var el = document.getElementById('d-nasdaq-ath');
+  if(!el) return;
+  var athPrice = (qldState&&qldState.cycle&&qldState.cycle.ath_price)||0;
+  var curQQQ = mkt.qqq_price||0;
+  if(!athPrice || !curQQQ){ el.textContent='ATH 대비 —'; el.style.color='var(--text3)'; return; }
+  var pct = ((curQQQ - athPrice) / athPrice * 100);
+  if(pct >= 0){
+    el.textContent = 'ATH('+athPrice.toFixed(0)+'$) 대비 +'+pct.toFixed(1)+'% ↑';
+    el.style.color = 'var(--green)';
+    el.style.fontWeight = '600';
+  } else {
+    el.textContent = 'ATH('+athPrice.toFixed(0)+'$) 대비 '+pct.toFixed(1)+'%';
+    el.style.color = pct<=-12?'var(--red)':pct<=-5?'var(--gold)':'var(--text3)';
+    el.style.fontWeight = pct<=-12?'700':'400';
+  }
 }
 
 function renderRecoveryStages(){
