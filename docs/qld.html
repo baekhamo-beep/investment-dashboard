@@ -1109,41 +1109,61 @@ function getActiveTargetRatio(){
   if(!c) return {qld:35, sgov:65, mode:'초기 (35/65)', stage:0, active:false, color:'var(--text2)'};
 
   var athPrice = c.ath_price || 0;
-  var curQQQ = mkt.qqq_price || 0;
+  var curQQQ   = mkt.qqq_price || 0;
   var firstDone = c.first_cycle_completed || false;
-  var inRecovery = c.in_recovery_mode || false;
-  var rt = c.recovery_triggered || [false,false,false];
-  var dipAny = (c.dip_triggered||[]).some(function(x){return x;});
 
-  // 하락장 매수 중: 현재 모드는 점진적으로 QLD 비중 증가 중
-  // → target은 현재 설정값 유지 (매수는 SGOV→QLD 단계별 이동이라 목표 변화 없음)
-
-  // 상승장 트리거 실시간 감지 (사이클 탭에서 저장 안 해도 자동 적용)
-  if(athPrice > 0 && curQQQ > 0 && (inRecovery || dipAny || rt.some(function(x){return x;}))){
-    var t3 = athPrice * 1.30;
-    var t2 = athPrice * 1.20;
-    var t1 = athPrice;
+  // ── 핵심: ATH 가격과 현재가만 있으면 즉시 비교 ──────────
+  // 이전 코드의 문제: (inRecovery || dipAny || rt) 조건 때문에
+  // 초기 사이클(하락 없음)에서도 트리거가 작동하지 않았음
+  // 수정: ATH 가격 설정만 있으면 무조건 실시간 비교
+  if(athPrice > 0 && curQQQ > 0){
+    var t3 = athPrice * 1.30;  // +30%
+    var t2 = athPrice * 1.20;  // +20%
+    var t1 = athPrice;          // ATH 돌파
 
     if(curQQQ >= t3){
-      return {qld:50, sgov:50, mode:'3단계 — ATH+30% 도달 (회복 종료)', stage:3, active:true, color:'#c9a84c'};
+      return {
+        qld:50, sgov:50,
+        mode:'3단계 — ATH +30% 도달 → 회복 완료',
+        desc:'$'+t3.toFixed(2)+' 도달',
+        stage:3, active:true, color:'#c9a84c'
+      };
     }
     if(curQQQ >= t2){
-      return {qld:65, sgov:35, mode:'2단계 — ATH+20% 도달', stage:2, active:true, color:'#4a9eff'};
+      return {
+        qld:65, sgov:35,
+        mode:'2단계 — ATH +20% 도달',
+        desc:'$'+t2.toFixed(2)+' 도달',
+        stage:2, active:true, color:'#4a9eff'
+      };
     }
     if(curQQQ >= t1){
-      return {qld:85, sgov:15, mode:'1단계 — ATH 돌파 발동', stage:1, active:true, color:'#4caf7d'};
+      return {
+        qld:85, sgov:15,
+        mode:'1단계 — ATH 돌파 발동',
+        desc:'$'+t1.toFixed(2)+' 돌파 (현재 $'+curQQQ.toFixed(2)+')',
+        stage:1, active:true, color:'#4caf7d'
+      };
     }
+    // ATH 미돌파 — ATH 대비 얼마나 남았는지 표시
+    var gap = ((t1 - curQQQ) / curQQQ * 100).toFixed(1);
+    return {
+      qld: c.target_qld_ratio || (firstDone?50:35),
+      sgov: c.target_sgov_ratio || (firstDone?50:65),
+      mode: 'ATH 미돌파 (대기) — 전고점까지 '+gap+'% 남음',
+      desc: '전고점 $'+t1.toFixed(2),
+      stage:0, active:false, color:'var(--text3)'
+    };
   }
 
-  // 트리거 미도달 - 저장된 타겟 사용
+  // ATH 미설정 — 저장된 타겟 사용
   var baseQld = firstDone ? 50 : 35;
   return {
     qld: c.target_qld_ratio || baseQld,
     sgov: c.target_sgov_ratio || (100-baseQld),
-    mode: firstDone ? '정상 (50/50)' : '훈련 모드 (35/65)',
-    stage: 0,
-    active: false,
-    color: 'var(--text2)'
+    mode: firstDone ? '정상 (50/50)' : '훈련 모드 (35/65) — 사이클 탭에서 ATH 입력 필요',
+    desc: '',
+    stage: 0, active: false, color: 'var(--text2)'
   };
 }
 
