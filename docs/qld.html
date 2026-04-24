@@ -1377,6 +1377,16 @@ function renderActionBanner(){
       chips=[{t:'트리거 발동',hi:true},{t:'목표 QLD '+_abTgt.qld+'%',hi:true},{t:'SGOV '+_abTgt.sgov+'%',hi:true}];
     }
   }
+  // ATH 돌파 트리거 실시간 감지 (state가 standby여도 체크)
+  if(state==='standby'){
+    const _abTgt = getActiveTargetRatio();
+    if(_abTgt.active){
+      state='recovery';
+      main='🚨 '+_abTgt.mode;
+      sub=_abTgt.desc+' · 즉시 리밸런싱 집행 필요 (익일 시가 시장가)';
+      chips=[{t:'트리거 발동',hi:true},{t:'목표 QLD '+_abTgt.qld+'%',hi:true},{t:'SGOV '+_abTgt.sgov+'%',hi:true}];
+    }
+  }
   if(state==='standby'&&isDay22){
     state='dca';main='오늘은 DCA 매수일 (22일)';
     const _dcaTgt=getActiveTargetRatio();
@@ -1756,6 +1766,16 @@ function renderCycleStatus(ath,cur,dd){
   }
   const el2 = document.getElementById('cycle-mode-label');
   if(el2){ el2.textContent = modeLabel; el2.style.color = modeColor; }
+  const el3 = document.getElementById('cycle-banner-sub');
+  if(el3){
+    if(_tgt.active){
+      el3.textContent = '⚠ '+_tgt.mode+' · '+_tgt.desc;
+      el3.style.color = _tgt.color;
+    } else {
+      el3.textContent = '첫 사이클 완료(+30% 달성) 시 영구 50/50 전환';
+      el3.style.color = 'var(--text3)';
+    }
+  }
   const el3 = document.getElementById('cycle-banner-sub');
   if(el3){
     if(_tgt.active){
