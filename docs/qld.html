@@ -1064,7 +1064,6 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 </div>
 
 <script>
-(function(){
   async function sha256(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
   if(sessionStorage.getItem('inv_auth')==='ok')document.getElementById('lock-screen').style.display='none';
   window.checkPW=async function(){
@@ -1910,8 +1909,6 @@ const _s=localStorage.getItem('qld_portfolio');
 if(_s){try{const d=JSON.parse(_s);if(d.qld)document.getElementById('p-qld-qty').value=d.qld;if(d.sgov)document.getElementById('p-sgov-qty').value=d.sgov;}catch(e){}}
 loadData();
 loadState();
-
-}
 </script>
 </body>
 </html>
