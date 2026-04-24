@@ -1675,9 +1675,17 @@ function calcCycleStatus(){
 }
 
 function renderCycleStatus(ath,cur,dd){
-  const firstDone = qldState?.cycle?.first_cycle_completed || false;
-  const modeLabel = firstDone ? '실전 모드 (50/50 기본)' : '훈련 모드 (35/65 초기)';
-  const modeColor = firstDone ? 'var(--accent2)' : 'var(--gold)';
+  // 실시간 트리거 기반 모드 표시
+  const _tgt = getActiveTargetRatio();
+  let modeLabel, modeColor;
+  if(_tgt.active){
+    modeLabel = '🚨 ' + _tgt.mode + ' → ' + _tgt.qld + '/' + _tgt.sgov;
+    modeColor = _tgt.color;
+  } else {
+    const firstDone = qldState?.cycle?.first_cycle_completed || false;
+    modeLabel = firstDone ? '실전 모드 (50/50 기본)' : _tgt.mode;
+    modeColor = firstDone ? 'var(--accent2)' : 'var(--gold)';
+  }
   const el2 = document.getElementById('cycle-mode-label');
   if(el2){ el2.textContent = modeLabel; el2.style.color = modeColor; }
 
@@ -1686,17 +1694,30 @@ function renderCycleStatus(ath,cur,dd){
   const athP=ath||c.ath_price||0,curP=cur||mkt.qqq_price||0;
   const ddP=dd!=null?dd:(athP&&curP?(curP/athP-1)*100:null);
   const el=document.getElementById('cycle-status');if(!el)return;
+  const _rt = getActiveTargetRatio();
+  const phaseLabel = _rt.active ? _rt.mode.split(' — ')[0] : (c.in_recovery_mode?'회복 모드':'정상');
+  const phaseColor = _rt.active ? _rt.color : (c.in_recovery_mode?'var(--gold)':'var(--green)');
   el.innerHTML=`<div class="g3" style="margin-bottom:12px;">
-    <div class="card"><div class="card-label">사이클 페이즈</div><div class="card-value" style="font-size:15px;color:${c.in_recovery_mode?'var(--gold)':'var(--green)'};">${c.in_recovery_mode?'회복 모드':'정상'}</div></div>
-    <div class="card"><div class="card-label">목표 QLD</div><div class="card-value" style="font-size:16px;color:var(--accent);">${c.target_qld_ratio||35}%</div></div>
-    <div class="card"><div class="card-label">ATH 대비</div><div class="card-value" style="font-size:16px;color:${ddP&&ddP<=-12?'var(--red)':'var(--text1)'};">${ddP!=null?ddP.toFixed(1)+'%':'—'}</div></div>
+    <div class="card"><div class="card-label">사이클 페이즈</div><div class="card-value" style="font-size:${_rt.active?'12':'15'}px;color:${phaseColor};">${phaseLabel}</div></div>
+    <div class="card"><div class="card-label">목표 QLD ${_rt.active?'<span style=\"font-size:9px;background:rgba(76,175,125,0.2);color:#4caf7d;padding:1px 5px;border-radius:3px;margin-left:4px;\">트리거</span>':''}</div><div class="card-value" style="font-size:16px;color:${_rt.active?_rt.color:'var(--accent)'};">${_rt.qld}%</div></div>
+    <div class="card"><div class="card-label">ATH 대비</div><div class="card-value" style="font-size:16px;color:${ddP&&ddP>0?'var(--green)':ddP&&ddP<=-12?'var(--red)':'var(--text1)'};">${ddP!=null?(ddP>0?'+':'')+ddP.toFixed(1)+'%':'—'}</div></div>
   </div>`;
 }
 
 function renderCycleSteps(){
   if(!qldState)return;
   const c=qldState.cycle;
-  const steps=[{l:'초기',s:'35/65',active:!c.in_recovery_mode&&!c.dip_triggered?.some(Boolean)},{l:'하락 감지',s:'200일선↓',active:mkt.ma200<0},{l:'매수 실행',s:'단계별',active:c.dip_triggered?.some(Boolean)},{l:'ATH 돌파',s:'85/15',active:c.recovery_triggered?.[0]},{l:'ATH+20%',s:'65/35',active:c.recovery_triggered?.[1]},{l:'ATH+30%',s:'50/50',active:c.recovery_triggered?.[2]},{l:'초기화',s:'새 사이클',active:false}];
+  const _st = getActiveTargetRatio();
+  // 실시간 트리거 기반으로 현재 단계 active 표시
+  const steps=[
+    {l:'초기',s:'35/65',active:_st.stage===0&&!c.dip_triggered?.some(Boolean)},
+    {l:'하락 감지',s:'200일선↓',active:mkt.ma200<0},
+    {l:'매수 실행',s:'단계별',active:c.dip_triggered?.some(Boolean)},
+    {l:'ATH 돌파',s:'85/15',active:_st.stage===1},
+    {l:'ATH+20%',s:'65/35',active:_st.stage===2},
+    {l:'ATH+30%',s:'50/50',active:_st.stage===3},
+    {l:'초기화',s:'새 사이클',active:false}
+  ];
   const el=document.getElementById('cycle-steps');if(!el)return;
   el.innerHTML=steps.map(s=>`<div class="cycle-step${s.active?' active':''}"><div class="cycle-label">${s.l}</div><div style="font-size:9px;color:var(--text3);">${s.s}</div></div>`).join('');
 }
