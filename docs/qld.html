@@ -1246,6 +1246,8 @@ async function loadState(){
   renderCycleStatus(); renderCycleSteps(); renderDipCheckList(); renderRecoveryCheckList();
   renderActionBanner(); const ab=document.getElementById('action-banner');if(ab)ab.style.opacity='1';
   updateNasdaqATH(); renderSellTriggers();
+  // QQQ 로드 후 트리거 재계산
+  if(qldState){renderCycleStatus();renderCycleSteps();}
   if(qldState.cycle.ath_price){const e=document.getElementById('ath-price');if(e)e.value=qldState.cycle.ath_price;}
   if(qldState.cycle.ath_date){const e=document.getElementById('ath-date');if(e)e.value=qldState.cycle.ath_date;}
 }
@@ -1395,7 +1397,6 @@ function renderActionBanner(){
       ?'🚨 '+_dcaTgt.mode+' · 목표 QLD '+_dcaTgt.qld+'% / SGOV '+_dcaTgt.sgov+'%'
       :isLow?'SGOV ≤5% — QLD 70% / SGOV 30%':'QLD 50% / SGOV 50% 비율로 매수';
     chips=[{t:'22일 매수일',hi:true},{t:_dcaTgt.active?'🚨 트리거 발동':isLow?'탄약 부족':'일반 모드',hi:_dcaTgt.active||isLow}];
-  }
   if(state==='standby'){
     const next22=new Date(now);if(now.getDate()>22)next22.setMonth(next22.getMonth()+1);next22.setDate(22);
     const daysLeft=Math.ceil((next22-now)/(864e5));
@@ -1753,6 +1754,8 @@ function calcCycleStatus(){
 }
 
 function renderCycleStatus(ath,cur,dd){
+  // 인자 없이 호출 시 qldState에서 자동 추출
+  if(ath===undefined && qldState?.cycle){ath=qldState.cycle.ath_price;cur=mkt.qqq_price;dd=ath&&cur?((cur-ath)/ath*100):null;}
   // 실시간 트리거 기반 모드 표시
   const _tgt = getActiveTargetRatio();
   let modeLabel, modeColor;
