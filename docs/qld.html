@@ -107,25 +107,129 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .cycle-step.active .cycle-label{color:var(--accent2);}
 .cycle-step.done .cycle-label{color:var(--green);}
 .check-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:6px;cursor:pointer;margin-bottom:6px;}
-#lock-screen{position:fixed;inset:0;background:#0a0e1a;display:flex;align-items:center;justify-content:center;z-index:9999;}
-.lock-box{background:#0f1525;border:1px solid rgba(74,158,255,0.35);border-radius:12px;padding:32px 28px;width:300px;text-align:center;}
-.lock-input{width:100%;background:#1e2740;border:1px solid rgba(255,255,255,0.12);color:#e8eaf0;border-radius:6px;padding:9px 14px;font-size:14px;outline:none;text-align:center;letter-spacing:2px;margin-bottom:10px;}
-.lock-btn{width:100%;background:var(--accent);color:#fff;border:none;border-radius:6px;padding:9px;font-size:13px;font-weight:700;cursor:pointer;}
+#lock-screen{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;z-index:9999;font-family:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;overflow:hidden;}
+#lock-screen::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,149,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,149,0,0.04) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:1;}
+#lock-screen::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(255,149,0,0.015) 50%);background-size:100% 4px;pointer-events:none;z-index:2;}
+.bb-ticker{background:#0a0600;border-bottom:1px solid #ff9500;padding:8px 0;overflow:hidden;white-space:nowrap;font-size:11px;position:relative;z-index:3;}
+.bb-ticker-content{display:inline-flex;gap:32px;animation:bb-scroll 40s linear infinite;padding-left:100%;font-weight:500;letter-spacing:0.5px;}
+@keyframes bb-scroll{to{transform:translateX(-100%);}}
+.bb-ti{color:#ff9500;}
+.bb-ti .bb-l{color:#664000;margin-right:6px;font-weight:700;}
+.bb-ti .bb-up{color:#00ff66;}
+.bb-ti .bb-dn{color:#ff3333;}
+.bb-sep{color:#553300;}
+.bb-hdr{background:#ff9500;color:#000;padding:6px 16px;display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:1px;position:relative;z-index:3;}
+.bb-hdr-l,.bb-hdr-r{display:flex;gap:16px;align-items:center;}
+.bb-live-dot{display:inline-block;width:6px;height:6px;background:#000;border-radius:50%;margin-right:4px;animation:bb-blink-dot 1.2s infinite;}
+@keyframes bb-blink-dot{0%,50%{opacity:1}51%,100%{opacity:0.3}}
+.lock-box{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;position:relative;z-index:3;background:transparent;border:none;border-radius:0;width:auto;text-align:left;}
+.bb-term{width:100%;max-width:420px;background:#000;border:1px solid #ff9500;box-shadow:0 0 0 1px rgba(255,149,0,0.1),0 0 40px rgba(255,149,0,0.15);}
+.bb-term-hdr{border-bottom:1px solid #ff9500;padding:8px 12px;display:flex;justify-content:space-between;font-size:10px;letter-spacing:1.5px;background:rgba(255,149,0,0.03);}
+.bb-term-title{color:#ff9500;font-weight:700;}
+.bb-term-time{color:#666;}
+.bb-term-body{padding:28px 24px;}
+.bb-ascii{text-align:center;margin-bottom:20px;color:#ff9500;font-size:9px;line-height:1.1;letter-spacing:1px;white-space:pre;font-weight:700;text-shadow:0 0 8px rgba(255,149,0,0.5);}
+.bb-sys{border:1px dashed rgba(255,149,0,0.3);padding:10px 12px;margin-bottom:16px;font-size:10px;line-height:1.8;color:#ff9500;}
+.bb-sys .bb-l2{color:#666;}
+.bb-sys .bb-v{color:#ff9500;font-weight:700;}
+.bb-sys .bb-ok{color:#00ff66;}
+.bb-warn{background:rgba(255,0,0,0.08);border-left:3px solid #ff3333;padding:8px 12px;margin-bottom:16px;font-size:10px;color:#ff6666;letter-spacing:1px;}
+.bb-warn::before{content:'\25B2 ';color:#ff3333;}
+.bb-prompt{font-size:11px;color:#ff9500;margin-bottom:8px;letter-spacing:1px;}
+.bb-prompt::before{content:'> ';color:#00ff66;}
+.bb-cursor{display:inline-block;width:8px;height:12px;background:#ff9500;animation:bb-blink 1s step-end infinite;vertical-align:middle;margin-left:4px;}
+@keyframes bb-blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+.lock-input{width:100%;padding:10px 12px;background:#0a0a0a;border:1px solid #ff9500;color:#ff9500;font-size:13px;font-family:'JetBrains Mono',monospace;letter-spacing:4px;margin-bottom:14px;border-radius:0;text-align:left;outline:none;}
+.lock-input:focus{border-color:#fff;background:#1a0f00;box-shadow:0 0 0 1px #ff9500;}
+.lock-input::placeholder{color:#553300;letter-spacing:2px;}
+.lock-btn{width:100%;padding:12px;background:#ff9500;color:#000;border:1px solid #ff9500;font-size:12px;font-weight:700;letter-spacing:3px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all 0.15s;border-radius:0;}
+.lock-btn:hover{background:#fff;border-color:#fff;}
+.lock-btn::before{content:'[ ';}
+.lock-btn::after{content:' ]';}
+.bb-status{border-top:1px solid #ff9500;padding:6px 12px;display:flex;justify-content:space-between;font-size:9px;color:#666;letter-spacing:1px;background:rgba(255,149,0,0.03);}
+.bb-status .bb-active{color:#00ff66;}
+#lock-err{font-size:11px;color:#ff3333;margin-top:8px;min-height:16px;letter-spacing:1px;}
+
+
+
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:7px 18px;border-radius:6px;font-size:12px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 @media(max-width:600px){.g4{grid-template-columns:1fr 1fr;}.g2,.g3{grid-template-columns:1fr;}}
 </style>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="toast"></div>
 <div id="lock-screen">
-  <div class="lock-box">
-    <div style="font-size:28px;margin-bottom:12px;">⚡</div>
-    <div style="font-size:15px;font-weight:700;color:var(--accent2);margin-bottom:4px;">QLD Hybrid 사령부</div>
-    <div style="font-size:11px;color:var(--text3);margin-bottom:20px;">접근 권한이 필요합니다</div>
-    <input class="lock-input" id="lock-pw" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkPW()">
-    <button class="lock-btn" onclick="checkPW()">입장</button>
-    <div style="font-size:11px;color:var(--red);margin-top:8px;min-height:16px;" id="lock-err"></div>
+  <div class="bb-ticker">
+    <div class="bb-ticker-content">
+      <span class="bb-ti"><span class="bb-l">QLD</span>$87.42 <span class="bb-up">▲ 2.14%</span></span>
+      <span class="bb-sep">│</span>
+      <span class="bb-ti"><span class="bb-l">CAGR</span><span class="bb-up">21.43%</span></span>
+      <span class="bb-sep">│</span>
+      <span class="bb-ti"><span class="bb-l">MDD</span><span class="bb-dn">-46.53%</span></span>
+      <span class="bb-sep">│</span>
+      <span class="bb-ti"><span class="bb-l">ATH</span>$635.77</span>
+      <span class="bb-sep">│</span>
+      <span class="bb-ti"><span class="bb-l">CALMAR</span>0.47</span>
+      <span class="bb-sep">│</span>
+      <span class="bb-ti"><span class="bb-l">CYCLE</span>Day 47</span>
+      <span class="bb-sep">│</span>
+      <span class="bb-ti"><span class="bb-l">QQQ</span>$512.80 <span class="bb-up">▲ 1.07%</span></span>
+      <span class="bb-sep">│</span>
+      <span class="bb-ti"><span class="bb-l">VIX</span>14.2</span>
+      <span class="bb-sep">│</span>
+      <span class="bb-ti"><span class="bb-l">NAV</span>$1.24M</span>
+    </div>
   </div>
+  <div class="bb-hdr">
+    <div class="bb-hdr-l"><span>QLD-TRM</span><span>SYS://AUTH</span></div>
+    <div class="bb-hdr-r"><span><span class="bb-live-dot"></span>LIVE</span><span>SECURE</span></div>
+  </div>
+  <div class="lock-box">
+    <div class="bb-term">
+      <div class="bb-term-hdr">
+        <span class="bb-term-title">QLD.HYBRID.TERMINAL</span>
+        <span class="bb-term-time" id="bb-clock">--.--.-- --:--:--</span>
+      </div>
+      <div class="bb-term-body">
+        <div class="bb-ascii">╔══════════════════════╗
+║   Q L D   H Y B R I D ║
+║   ┌───┐ ┌───┐ ┌─────┐ ║
+║   │ ▲ │ │ ▲ │ │  ●  │ ║
+║   └───┘ └───┘ └─────┘ ║
+╚══════════════════════╝</div>
+        <div class="bb-sys">
+          <div><span class="bb-l2">SYSTEM.......:</span> <span class="bb-v">TACTICAL LEVERAGED ETF CMD</span></div>
+          <div><span class="bb-l2">VERSION......:</span> <span class="bb-v">2.1.3</span></div>
+          <div><span class="bb-l2">BACKTEST.....:</span> <span class="bb-ok">16 SCENARIOS ✓</span></div>
+          <div><span class="bb-l2">CAGR.........:</span> <span class="bb-v">21.43%</span></div>
+          <div><span class="bb-l2">STATUS.......:</span> <span class="bb-ok">● OPERATIONAL</span></div>
+        </div>
+        <div class="bb-warn">AUTHORIZED PERSONNEL ONLY</div>
+        <div class="bb-prompt">ENTER ACCESS CODE<span class="bb-cursor"></span></div>
+        <input class="lock-input" id="lock-pw" type="password" placeholder="****" onkeydown="if(event.key==='Enter')checkPW()">
+        <button class="lock-btn" onclick="checkPW()">AUTHENTICATE</button>
+        <div id="lock-err"></div>
+      </div>
+      <div class="bb-status">
+        <span><span class="bb-active">●</span> CONNECTED</span>
+        <span>SSL/TLS 1.3</span>
+        <span>SESSION: 0x4A2F</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      function tick(){
+        var n=new Date();
+        var p=function(x){return String(x).padStart(2,'0');};
+        var el=document.getElementById('bb-clock');
+        if(el)el.textContent=n.getFullYear()+'.'+p(n.getMonth()+1)+'.'+p(n.getDate())+' '+p(n.getHours())+':'+p(n.getMinutes())+':'+p(n.getSeconds());
+      }
+      tick();setInterval(tick,1000);
+    })();
+  </script>
+</div>
 </div>
 
 <div class="app">
