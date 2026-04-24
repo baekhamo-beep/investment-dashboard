@@ -1779,7 +1779,7 @@ function renderCycleStatus(ath,cur,dd){
       el3.style.color = 'var(--text3)';
     }
   }
-  const el3 = document.getElementById('cycle-banner-sub');
+  el3 = document.getElementById('cycle-banner-sub');
   if(el3){
     if(_tgt.active){
       el3.textContent = '⚠ '+_tgt.mode+' · '+_tgt.desc;
