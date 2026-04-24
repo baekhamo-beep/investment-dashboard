@@ -1338,6 +1338,7 @@ function renderActionBanner(){
       ?'🚨 '+_dcaTgt.mode+' · 목표 QLD '+_dcaTgt.qld+'% / SGOV '+_dcaTgt.sgov+'%'
       :isLow?'SGOV ≤5% — QLD 70% / SGOV 30%':'QLD 50% / SGOV 50% 비율로 매수';
     chips=[{t:'22일 매수일',hi:true},{t:_dcaTgt.active?'🚨 트리거 발동':isLow?'탄약 부족':'일반 모드',hi:_dcaTgt.active||isLow}];
+  }
   if(state==='standby'){
     const next22=new Date(now);if(now.getDate()>22)next22.setMonth(next22.getMonth()+1);next22.setDate(22);
     const daysLeft=Math.ceil((next22-now)/(864e5));
