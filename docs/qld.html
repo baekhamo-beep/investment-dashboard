@@ -336,7 +336,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">
         <div style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:1px;">현재 모드</div>
         <div style="font-size:13px;font-weight:700;" id="cycle-mode-label">—</div>
-        <div style="margin-left:auto;font-size:10px;color:var(--text3);">첫 사이클 완료(+30% 달성) 시 영구 50/50 전환</div>
+        <div id="cycle-banner-sub" style="margin-left:auto;font-size:10px;color:var(--text3);">첫 사이클 완료(+30% 달성) 시 영구 50/50 전환</div>
       </div>
       <div class="sec">현재 사이클 상태</div>
       <div id="cycle-status"></div>
@@ -1357,11 +1357,24 @@ function renderActionBanner(){
     const thr=[-12,-18,-25,-35,-45],pct=[5,8,10,12,15];
     for(let i=4;i>=0;i--){if(nd<=thr[i]&&!dips[i]){state='dip';main=`${i+1}단계 발동 — 전체계좌 ${pct[i]}% → QLD 매수`;sub=`QQQ 200일선 아래 + ATH 대비 ${thr[i]}% · 즉시 집행`;chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'200일선 아래',hi:true}];break;}}
   }
+  // ATH 돌파 트리거 실시간 감지 (state가 standby여도 체크)
+  if(state==='standby'){
+    const _abTgt = getActiveTargetRatio();
+    if(_abTgt.active){
+      state='recovery';
+      main='🚨 '+_abTgt.mode;
+      sub=_abTgt.desc+' · 즉시 리밸런싱 집행 필요 (익일 시가 시장가)';
+      chips=[{t:'트리거 발동',hi:true},{t:'목표 QLD '+_abTgt.qld+'%',hi:true},{t:'SGOV '+_abTgt.sgov+'%',hi:true}];
+    }
+  }
   if(state==='standby'&&isDay22){
     state='dca';main='오늘은 DCA 매수일 (22일)';
+    const _dcaTgt=getActiveTargetRatio();
     const isLow=(cycle?.target_sgov_ratio||65)<=5;
-    sub=isLow?'SGOV ≤5% — QLD 70% / SGOV 30%':'QLD 50% / SGOV 50% 비율로 매수';
-    chips=[{t:'22일 매수일',hi:true},{t:isLow?'탄약 부족':'일반 모드',hi:isLow}];
+    sub=_dcaTgt.active
+      ?'🚨 '+_dcaTgt.mode+' · 목표 QLD '+_dcaTgt.qld+'% / SGOV '+_dcaTgt.sgov+'%'
+      :isLow?'SGOV ≤5% — QLD 70% / SGOV 30%':'QLD 50% / SGOV 50% 비율로 매수';
+    chips=[{t:'22일 매수일',hi:true},{t:_dcaTgt.active?'🚨 트리거 발동':isLow?'탄약 부족':'일반 모드',hi:_dcaTgt.active||isLow}];
   }
   if(state==='standby'){
     const next22=new Date(now);if(now.getDate()>22)next22.setMonth(next22.getMonth()+1);next22.setDate(22);
@@ -1733,6 +1746,16 @@ function renderCycleStatus(ath,cur,dd){
   }
   const el2 = document.getElementById('cycle-mode-label');
   if(el2){ el2.textContent = modeLabel; el2.style.color = modeColor; }
+  const el3 = document.getElementById('cycle-banner-sub');
+  if(el3){
+    if(_tgt.active){
+      el3.textContent = '⚠ '+_tgt.mode+' · '+_tgt.desc;
+      el3.style.color = _tgt.color;
+    } else {
+      el3.textContent = '첫 사이클 완료(+30% 달성) 시 영구 50/50 전환';
+      el3.style.color = 'var(--text3)';
+    }
+  }
 
   if(!qldState)return;
   const c=qldState.cycle;
