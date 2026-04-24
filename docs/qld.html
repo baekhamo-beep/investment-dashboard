@@ -1369,26 +1369,8 @@ function renderActionBanner(){
       chips=[{t:'트리거 발동',hi:true},{t:'목표 QLD '+_abTgt.qld+'%',hi:true},{t:'SGOV '+_abTgt.sgov+'%',hi:true}];
     }
   }
-  // ATH 돌파 트리거 실시간 감지 (state가 standby여도 체크)
-  if(state==='standby'){
-    const _abTgt = getActiveTargetRatio();
-    if(_abTgt.active){
-      state='recovery';
-      main='🚨 '+_abTgt.mode;
-      sub=_abTgt.desc+' · 즉시 리밸런싱 집행 필요 (익일 시가 시장가)';
-      chips=[{t:'트리거 발동',hi:true},{t:'목표 QLD '+_abTgt.qld+'%',hi:true},{t:'SGOV '+_abTgt.sgov+'%',hi:true}];
-    }
-  }
-  // ATH 돌파 트리거 실시간 감지 (state가 standby여도 체크)
-  if(state==='standby'){
-    const _abTgt = getActiveTargetRatio();
-    if(_abTgt.active){
-      state='recovery';
-      main='🚨 '+_abTgt.mode;
-      sub=_abTgt.desc+' · 즉시 리밸런싱 집행 필요 (익일 시가 시장가)';
-      chips=[{t:'트리거 발동',hi:true},{t:'목표 QLD '+_abTgt.qld+'%',hi:true},{t:'SGOV '+_abTgt.sgov+'%',hi:true}];
-    }
-  }
+
+
   if(state==='standby'&&isDay22){
     state='dca';main='오늘은 DCA 매수일 (22일)';
     const _dcaTgt=getActiveTargetRatio();
