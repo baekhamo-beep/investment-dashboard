@@ -1779,16 +1779,6 @@ function renderCycleStatus(ath,cur,dd){
       el3.style.color = 'var(--text3)';
     }
   }
-  el3 = document.getElementById('cycle-banner-sub');
-  if(el3){
-    if(_tgt.active){
-      el3.textContent = '⚠ '+_tgt.mode+' · '+_tgt.desc;
-      el3.style.color = _tgt.color;
-    } else {
-      el3.textContent = '첫 사이클 완료(+30% 달성) 시 영구 50/50 전환';
-      el3.style.color = 'var(--text3)';
-    }
-  }
 
 
   if(!qldState)return;
