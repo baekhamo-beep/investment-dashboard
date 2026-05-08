@@ -4,7 +4,7 @@
     "phase": "normal",
     "ath_price": 635.77,
     "ath_date": "2025-10-29",
-    "recovery_ath_price": 0,
+    "recovery_ath_price": 635.77,
     "dip_triggered": [
       false,
       false,
@@ -13,13 +13,13 @@
       false
     ],
     "recovery_triggered": [
-      false,
+      true,
       false,
       false
     ],
-    "in_recovery_mode": false,
-    "target_qld_ratio": 35,
-    "target_sgov_ratio": 65,
+    "in_recovery_mode": true,
+    "target_qld_ratio": 85,
+    "target_sgov_ratio": 15,
     "first_cycle_completed": false
   },
   "portfolio": {
