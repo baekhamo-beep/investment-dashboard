@@ -8,12 +8,12 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
   --bg0:#0a0e1a;--bg1:#0f1525;--bg2:#161d30;--bg3:#1e2740;
-  --accent:#4a9eff;--accent2:#7dc4ff;--accent-dim:rgba(74,158,255,0.15);--accent-border:rgba(74,158,255,0.35);
+  --accent:#ff9500;--accent2:#ffb84d;--accent-dim:rgba(255,149,0,0.15);--accent-border:rgba(255,149,0,0.35);
   --red:#e05c5c;--green:#4caf7d;--gold:#c9a84c;--purple:#9b7fe8;
   --text1:#e8eaf0;--text2:#9aa0b8;--text3:#5a6080;
   --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
 }
-body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;min-height:100vh;}
+body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;min-height:100vh;}
 .header{background:var(--bg1);border-bottom:1px solid var(--accent-border);padding:12px 20px;display:flex;align-items:center;gap:12px;}
 .header-icon{width:30px;height:30px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;}
 .header-title{font-size:14px;font-weight:700;color:var(--accent2);}
@@ -56,25 +56,25 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .action-banner.standby{background:linear-gradient(135deg,#0d1f17,#0f2a1a);border:1px solid rgba(76,175,125,0.4);box-shadow:0 0 20px rgba(76,175,125,0.07);}
 .action-banner.dca{background:linear-gradient(135deg,#1a1500,#221c00);border:1px solid rgba(201,168,76,0.5);box-shadow:0 0 20px rgba(201,168,76,0.1);}
 .action-banner.dip{background:linear-gradient(135deg,#1f0d0d,#2a0f0f);border:1px solid rgba(224,92,92,0.5);box-shadow:0 0 24px rgba(224,92,92,0.12);}
-.action-banner.recovery{background:linear-gradient(135deg,#0a0f1f,#0d1525);border:1px solid rgba(74,158,255,0.5);box-shadow:0 0 20px rgba(74,158,255,0.1);}
+.action-banner.recovery{background:linear-gradient(135deg,#0a0f1f,#0d1525);border:1px solid rgba(255,149,0,0.5);box-shadow:0 0 20px rgba(255,149,0,0.1);}
 .ab-top{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .ab-tag{font-size:9px;font-weight:800;letter-spacing:2px;padding:2px 7px;border-radius:3px;}
 .ab-tag.standby{background:rgba(76,175,125,0.2);color:#4caf7d;}
 .ab-tag.dca{background:rgba(201,168,76,0.2);color:#c9a84c;}
 .ab-tag.dip{background:rgba(224,92,92,0.2);color:#e05c5c;}
-.ab-tag.recovery{background:rgba(74,158,255,0.2);color:#4a9eff;}
+.ab-tag.recovery{background:rgba(255,149,0,0.2);color:#ff9500;}
 .ab-date{font-size:10px;color:rgba(255,255,255,0.25);margin-left:auto;}
 .ab-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 .ab-dot.standby{background:#4caf7d;}
 .ab-dot.dca{background:#c9a84c;animation:ab-p 1.2s infinite;}
 .ab-dot.dip{background:#e05c5c;animation:ab-p 0.8s infinite;}
-.ab-dot.recovery{background:#4a9eff;animation:ab-p 1.5s infinite;}
+.ab-dot.recovery{background:#ff9500;animation:ab-p 1.5s infinite;}
 @keyframes ab-p{0%,100%{opacity:1}50%{opacity:0.3}}
 .ab-main{font-size:20px;font-weight:800;line-height:1.2;margin-bottom:6px;}
 .ab-main.standby{color:#4caf7d;}
 .ab-main.dca{color:#c9a84c;}
 .ab-main.dip{color:#ff7070;}
-.ab-main.recovery{color:#7dc4ff;}
+.ab-main.recovery{color:#ffb84d;}
 .ab-sub{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.6;}
 .ab-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
 .ab-chip{font-size:10px;font-weight:600;padding:3px 8px;border-radius:3px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.07);}
@@ -156,6 +156,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 @media(max-width:600px){.g4{grid-template-columns:1fr 1fr;}.g2,.g3{grid-template-columns:1fr;}}
 </style>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 </head>
 <body>
 <div id="toast"></div>
@@ -485,10 +486,10 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="sub-panel" id="sub-cycle-perf">
 
 <style>
-.v6-hero{background:linear-gradient(135deg,#060d1a 0%,#0a1628 50%,#0d1f35 100%);border:1px solid rgba(74,158,255,0.2);border-radius:12px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden;}
-.v6-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(74,158,255,0.015) 20px,rgba(74,158,255,0.015) 21px);pointer-events:none;}
-.v6-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(74,158,255,0.6);background:rgba(74,158,255,0.08);border:1px solid rgba(74,158,255,0.15);border-radius:3px;padding:3px 8px;margin-bottom:10px;}
-.v6-hero-title{font-size:20px;font-weight:800;color:#7dc4ff;margin-bottom:6px;letter-spacing:-0.3px;}
+.v6-hero{background:linear-gradient(135deg,#060d1a 0%,#0a1628 50%,#0d1f35 100%);border:1px solid rgba(255,149,0,0.2);border-radius:12px;padding:20px;margin-bottom:14px;position:relative;overflow:hidden;}
+.v6-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,149,0,0.015) 20px,rgba(255,149,0,0.015) 21px);pointer-events:none;}
+.v6-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(255,149,0,0.6);background:rgba(255,149,0,0.08);border:1px solid rgba(255,149,0,0.15);border-radius:3px;padding:3px 8px;margin-bottom:10px;}
+.v6-hero-title{font-size:20px;font-weight:800;color:#ffb84d;margin-bottom:6px;letter-spacing:-0.3px;}
 .v6-hero-sub{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.7;}
 .v6-metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
 .v6-metric{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;position:relative;overflow:hidden;}
@@ -496,7 +497,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .v6-metric.green::after{background:linear-gradient(90deg,#4caf7d,transparent);}
 .v6-metric.red::after{background:linear-gradient(90deg,#e05c5c,transparent);}
 .v6-metric.gold::after{background:linear-gradient(90deg,#c9a84c,transparent);}
-.v6-metric.blue::after{background:linear-gradient(90deg,#4a9eff,transparent);}
+.v6-metric.blue::after{background:linear-gradient(90deg,#ff9500,transparent);}
 .v6-metric-label{font-size:9px;color:var(--text3);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
 .v6-metric-val{font-size:22px;font-weight:800;line-height:1;margin-bottom:3px;}
 .v6-metric-sub{font-size:9px;color:var(--text3);}
@@ -504,7 +505,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .v6-table{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .v6-thead{display:grid;padding:9px 14px;background:var(--bg3);font-size:9px;color:var(--text3);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .v6-trow{display:grid;align-items:center;padding:11px 14px;border-top:1px solid var(--border);}
-.v6-trow.hl{background:rgba(74,158,255,0.04);border-top-color:rgba(74,158,255,0.15);}
+.v6-trow.hl{background:rgba(255,149,0,0.04);border-top-color:rgba(255,149,0,0.15);}
 .v6-chip{display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;}
 .v6-bar-wrap{height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:4px;}
 .v6-bar{height:6px;border-radius:3px;}
@@ -520,7 +521,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
   <div class="v6-badge">v6 백테스트 · 2006~2026 · 16개 시나리오 · 세전 기준</div>
   <div class="v6-hero-title">QLD Hybrid 전략 성과</div>
   <div class="v6-hero-sub">거치 1억 + 월 100만 · QLD 35/SGOV 65 시작 · 하락 5단계 매수 + ATH 3단계 복귀<br>
-    QLD 단독보다 <span style="color:#4caf7d;font-weight:700;">MDD 20%p 개선</span> · Calmar <span style="color:#c9a84c;font-weight:700;">0.47 vs 0.34</span> · QQQ 대비 최종자산 <span style="color:#4a9eff;font-weight:700;">3배</span>
+    QLD 단독보다 <span style="color:#4caf7d;font-weight:700;">MDD 20%p 개선</span> · Calmar <span style="color:#c9a84c;font-weight:700;">0.47 vs 0.34</span> · QQQ 대비 최종자산 <span style="color:#ff9500;font-weight:700;">3배</span>
   </div>
 </div>
 
@@ -549,11 +550,11 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div class="v6-bar-wrap"><div class="v6-bar" style="background:#c9a84c;width:100%;"></div></div>
   </div>
   <div class="v6-metric blue">
-    <div class="v6-metric-badge" style="background:rgba(74,158,255,0.15);color:#4a9eff;">평균자산</div>
+    <div class="v6-metric-badge" style="background:rgba(255,149,0,0.15);color:#ff9500;">평균자산</div>
     <div class="v6-metric-label" style="margin-top:16px;">세전 최종 평가액</div>
-    <div class="v6-metric-val" style="color:#4a9eff;">49.97억</div>
+    <div class="v6-metric-val" style="color:#ff9500;">49.97억</div>
     <div class="v6-metric-sub">QQQ 16.9억 대비 약 3배</div>
-    <div class="v6-bar-wrap"><div class="v6-bar" style="background:#4a9eff;width:78%;"></div></div>
+    <div class="v6-bar-wrap"><div class="v6-bar" style="background:#ff9500;width:78%;"></div></div>
   </div>
 </div>
 
@@ -568,7 +569,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div style="text-align:right;"><div style="font-size:14px;font-weight:800;color:#4caf7d;">21.43%</div><div style="font-size:9px;color:var(--text3);">±1.77%p</div></div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ffc107;">-46.53%</div><div style="font-size:9px;color:var(--text3);">최악 -58.96%</div></div>
     <div style="text-align:right;font-size:14px;font-weight:800;color:#c9a84c;">0.47</div>
-    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#4a9eff;">49.97억</div><div style="font-size:9px;color:var(--text3);">중앙 38.9억</div></div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ff9500;">49.97억</div><div style="font-size:9px;color:var(--text3);">중앙 38.9억</div></div>
     <div style="text-align:right;"><span class="v6-chip" style="background:rgba(76,175,125,0.2);color:#4caf7d;">🏆 1위</span></div>
   </div>
   <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
@@ -582,7 +583,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
   <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
     <div><div style="font-size:12px;font-weight:700;color:var(--text1);">🏛 QQQ</div><div style="font-size:9px;color:var(--text3);">나스닥100</div></div>
     <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:var(--text2);">13.23%</div><div style="font-size:9px;color:var(--text3);">±0.95%p</div></div>
-    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#4a9eff;">-37.39%</div><div style="font-size:9px;color:var(--text3);">최악 -49.17%</div></div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ff9500;">-37.39%</div><div style="font-size:9px;color:var(--text3);">최악 -49.17%</div></div>
     <div style="text-align:right;font-size:14px;font-weight:700;color:var(--text2);">0.37</div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--text2);">16.91억</div><div style="font-size:9px;color:var(--text3);">중앙 15.6억</div></div>
     <div style="text-align:right;"><span class="v6-chip" style="background:rgba(90,96,128,0.2);color:#9aa0b8;">안전형</span></div>
@@ -590,7 +591,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
   <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
     <div><div style="font-size:12px;font-weight:700;color:var(--text1);">🏦 SPY</div><div style="font-size:9px;color:var(--text3);">S&P500</div></div>
     <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:var(--text3);">9.36%</div><div style="font-size:9px;color:var(--text3);">±0.94%p</div></div>
-    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#4a9eff;">-36.55%</div><div style="font-size:9px;color:var(--text3);">최악 -48.18%</div></div>
+    <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ff9500;">-36.55%</div><div style="font-size:9px;color:var(--text3);">최악 -48.18%</div></div>
     <div style="text-align:right;font-size:14px;font-weight:700;color:var(--text3);">0.27</div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--text3);">9.62억</div><div style="font-size:9px;color:var(--text3);">중앙 9.6억</div></div>
     <div style="text-align:right;"><span class="v6-chip" style="background:rgba(90,96,128,0.15);color:#5a6080;">보수적</span></div>
@@ -602,9 +603,9 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 
 <!-- 핵심 메시지 3개 -->
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
-  <div style="background:rgba(74,158,255,0.06);border:1px solid rgba(74,158,255,0.2);border-radius:8px;padding:11px;text-align:center;">
+  <div style="background:rgba(255,149,0,0.06);border:1px solid rgba(255,149,0,0.2);border-radius:8px;padding:11px;text-align:center;">
     <div style="font-size:9px;color:var(--text3);margin-bottom:4px;">CAGR 차이</div>
-    <div style="font-size:20px;font-weight:800;color:#4a9eff;">-1.2%p</div>
+    <div style="font-size:20px;font-weight:800;color:#ff9500;">-1.2%p</div>
     <div style="font-size:10px;color:var(--text2);margin-top:2px;">Hybrid가 소폭 낮음</div>
   </div>
   <div style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.25);border-radius:8px;padding:11px;text-align:center;">
@@ -623,7 +624,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;">
   <div style="display:flex;gap:14px;margin-bottom:10px;align-items:center;flex-wrap:wrap;">
     <div style="font-size:10px;font-weight:700;color:var(--text2);">리스크-수익 분포 (16개 시나리오)</div>
-    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:10px;height:10px;border-radius:50%;background:#4a9eff;opacity:0.9;"></div>Hybrid</div>
+    <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:10px;height:10px;border-radius:50%;background:#ff9500;opacity:0.9;"></div>Hybrid</div>
     <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:10px;height:10px;border-radius:50%;background:rgba(224,92,92,0.8);"></div>QLD 단독</div>
     <div style="margin-left:auto;font-size:9px;color:var(--text3);">좌상단 = 저위험·고수익 (유리)</div>
   </div>
@@ -644,7 +645,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
   <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3);margin-top:8px;padding:0 36px;">
     <span style="color:rgba(224,92,92,0.7);">← QLD 우위</span>
     <span style="color:var(--accent2);font-weight:700;">중앙 = 동률</span>
-    <span style="color:#4a9eff;">Hybrid 우위 →</span>
+    <span style="color:#ff9500;">Hybrid 우위 →</span>
   </div>
 </div>
 
@@ -699,12 +700,12 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     });
     /* Hybrid 점 */
     sc.forEach(function(d){
-      s+='<circle cx="'+xp(d.hm)+'" cy="'+yp(d.h)+'" r="4.5" fill="#4a9eff" stroke="rgba(74,158,255,0.3)" stroke-width="1.5"/>';
+      s+='<circle cx="'+xp(d.hm)+'" cy="'+yp(d.h)+'" r="4.5" fill="#ff9500" stroke="rgba(255,149,0,0.3)" stroke-width="1.5"/>';
     });
     /* 평균 링 */
-    s+='<circle cx="'+xp(46.53)+'" cy="'+yp(21.43)+'" r="7" fill="none" stroke="#4a9eff" stroke-width="2"/>';
+    s+='<circle cx="'+xp(46.53)+'" cy="'+yp(21.43)+'" r="7" fill="none" stroke="#ff9500" stroke-width="2"/>';
     s+='<circle cx="'+xp(67.00)+'" cy="'+yp(22.63)+'" r="7" fill="none" stroke="rgba(224,92,92,0.85)" stroke-width="2"/>';
-    s+='<text x="'+(xp(46.53)+10)+'" y="'+(yp(21.43)-3)+'" font-size="8" fill="#7dc4ff" font-weight="700">Hybrid 평균</text>';
+    s+='<text x="'+(xp(46.53)+10)+'" y="'+(yp(21.43)-3)+'" font-size="8" fill="#ffb84d" font-weight="700">Hybrid 평균</text>';
     s+='<text x="'+(xp(67.00)+10)+'" y="'+(yp(22.63)-3)+'" font-size="8" fill="rgba(230,140,140,0.95)" font-weight="700">QLD 평균</text>';
     /* 유리 영역 라벨 */
     s+='<rect x="'+pl+'" y="'+pt+'" width="60" height="14" fill="rgba(76,175,125,0.07)" rx="3"/>';
@@ -724,7 +725,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     var diff=diffs[i];
     var hWin=diff>=0;
     var pct=(Math.abs(diff)/maxAbs*46).toFixed(1); // 최대 46% (중앙 50% 기준)
-    var color=hWin?'#4a9eff':'rgba(224,92,92,0.8)';
+    var color=hWin?'#ff9500':'rgba(224,92,92,0.8)';
     var pos=hWin?'left:50%;':'right:50%;';
     wrap.innerHTML+=
       '<div style="display:grid;grid-template-columns:32px 1fr 52px;gap:5px;align-items:center;">'+
@@ -763,7 +764,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 .fv-table{background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:14px;}
 .fv-thead{display:grid;padding:9px 14px;background:var(--bg3);font-size:9px;color:var(--text3);font-weight:700;letter-spacing:1px;text-transform:uppercase;}
 .fv-trow{display:grid;align-items:center;padding:11px 14px;border-top:1px solid var(--border);}
-.fv-trow.base{background:rgba(74,158,255,0.04);}
+.fv-trow.base{background:rgba(255,149,0,0.04);}
 .fv-chip{display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;}
 .fv-bar-wrap{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:4px;}
 .fv-bar{height:5px;border-radius:3px;}
@@ -908,7 +909,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
       <div style="text-align:right;font-size:11px;color:var(--text2);">0.61</div>
     </div>
     <div class="fv-trow" style="grid-template-columns:110px 60px 70px 62px 70px;">
-      <div style="font-size:11px;"><span style="color:#4a9eff;font-weight:700;">RISE_CONSERV</span><div style="font-size:9px;color:var(--text3);">상승복귀 보수적</div></div>
+      <div style="font-size:11px;"><span style="color:#ff9500;font-weight:700;">RISE_CONSERV</span><div style="font-size:9px;color:var(--text3);">상승복귀 보수적</div></div>
       <div style="text-align:right;font-size:11px;color:var(--text3);">+20.16%</div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">-44.76%</div>
       <div style="text-align:right;font-size:12px;font-weight:700;color:var(--text1);">0.46</div>
@@ -1026,10 +1027,10 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     <div style="font-size:10px;color:var(--text2);line-height:1.6;">BASE Calmar 0.47은 <b style="color:var(--text1);">상위 10~20%급</b> 퀀트 전략 수준. Walk-forward OOS Calmar 0.61은 더 높음 — <b style="color:var(--text1);">학습 데이터 외에서도 효율 유지</b>.</div>
   </div>
 </div>
-<div class="fv-insight" style="background:rgba(74,158,255,0.06);border:1px solid rgba(74,158,255,0.2);">
-  <div class="fv-insight-icon" style="background:rgba(74,158,255,0.15);">🔮</div>
+<div class="fv-insight" style="background:rgba(255,149,0,0.06);border:1px solid rgba(255,149,0,0.2);">
+  <div class="fv-insight-icon" style="background:rgba(255,149,0,0.15);">🔮</div>
   <div>
-    <div style="font-size:12px;font-weight:700;color:#4a9eff;margin-bottom:3px;">미래 유지력: 양호</div>
+    <div style="font-size:12px;font-weight:700;color:#ff9500;margin-bottom:3px;">미래 유지력: 양호</div>
     <div style="font-size:10px;color:var(--text2);line-height:1.6;">3개 OOS 구간 모두 Calmar ≥ 0.42. 파라미터 민감도 ±0.03 수준 — <b style="color:var(--text1);">시장 구조가 급변하지 않는 한 성과 수준 유지 가능</b>.</div>
   </div>
 </div>
@@ -1049,7 +1050,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
 </div>
 
 <!-- ⑦ 한 줄 결론 -->
-<div style="background:linear-gradient(135deg,rgba(76,175,125,0.08),rgba(74,158,255,0.08));border:1px solid rgba(76,175,125,0.3);border-radius:10px;padding:16px 18px;margin-top:14px;">
+<div style="background:linear-gradient(135deg,rgba(76,175,125,0.08),rgba(255,149,0,0.08));border:1px solid rgba(76,175,125,0.3);border-radius:10px;padding:16px 18px;margin-top:14px;">
   <div style="font-size:10px;font-weight:700;color:rgba(76,175,125,0.7);letter-spacing:1.5px;margin-bottom:6px;">FINAL VERDICT</div>
   <div style="font-size:13px;color:var(--text1);line-height:1.8;font-weight:500;">
     <b style="color:#4caf7d;">이 전략은 우연히 맞은 게 아닙니다.</b> 학습 외 구간과 파라미터 변경에도 성과를 유지하며,<br>
@@ -1238,7 +1239,7 @@ function getActiveTargetRatio(){
         qld:65, sgov:35,
         mode:'2단계 — ATH +20% 도달',
         desc:'$'+t2.toFixed(2)+' 도달',
-        stage:2, active:true, color:'#4a9eff'
+        stage:2, active:true, color:'#ff9500'
       };
     }
     if(curQQQ >= t1){
@@ -1463,7 +1464,7 @@ function renderActionBanner(){
 function renderDiagStatus(){
   const ma200below=mkt.ma200!==null&&mkt.ma200<0;
   let html='';
-  if(mkt.nasdaq===null)html='<div class="status-box info" style="background:rgba(74,158,255,0.08);border:1px solid rgba(74,158,255,0.25);"><div class="status-title" style="color:var(--accent)">데이터 로딩 중</div></div>';
+  if(mkt.nasdaq===null)html='<div class="status-box info" style="background:rgba(255,149,0,0.08);border:1px solid rgba(255,149,0,0.25);"><div class="status-title" style="color:var(--accent)">데이터 로딩 중</div></div>';
   else if(ma200below&&mkt.nasdaq<=-12)html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">🚨 하락장 매수 조건 충족!</div><div class="status-desc">QQQ 200일선 아래 + ATH 대비 -12% 이상 → 사이클 탭에서 단계 확인 후 매수 집행</div></div>';
   else if(ma200below)html='<div class="status-box warn"><div class="status-title" style="color:var(--gold)">⚠ QQQ 200일선 아래 — 낙폭 모니터링 중</div><div class="status-desc">ATH 대비 낙폭이 트리거 구간 도달 시 매수 집행. 지금은 대기.</div></div>';
   else html='<div class="status-box safe"><div class="status-title" style="color:var(--green)">✅ 정상 운항 — 200일선 위</div><div class="status-desc">하락 트리거 비활성. 정기 DCA 루틴 유지. 매월 22일 적립 매수.</div></div>';
@@ -1525,7 +1526,7 @@ function renderSellTriggers(){
       desc:'1단계 집행 시점 기준 +20% · ATH 돌파 기준가 × 1.20',
       trigger: t2Price>0?'$'+t2Price.toFixed(2)+' 도달':'1단계 먼저',
       action:'QLD 65% / SGOV 35%',
-      color:'#4a9eff',
+      color:'#ff9500',
       done:rt[1],
       reached: curQQQ>0&&t2Price>0&&curQQQ>=t2Price
     },
@@ -1877,7 +1878,7 @@ function renderRecoveryCheckList(){
   const triggered=qldState?.cycle?.recovery_triggered||[false,false,false];
   const el=document.getElementById('recovery-check-list');if(!el)return;
   el.innerHTML='<div style="display:flex;flex-direction:column;gap:5px;">'+labels.map((l,i)=>`
-    <div class="check-row" style="background:var(--bg2);border:1px solid ${triggered[i]?'rgba(74,158,255,0.25)':'var(--border)'};" onclick="toggleRecovery(${i})">
+    <div class="check-row" style="background:var(--bg2);border:1px solid ${triggered[i]?'rgba(255,149,0,0.25)':'var(--border)'};" onclick="toggleRecovery(${i})">
       <div style="width:15px;height:15px;border-radius:3px;background:${triggered[i]?'var(--accent)':'var(--bg3)'};display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;">${triggered[i]?'✓':''}</div>
       <span style="font-size:11px;color:var(--text1);flex:1;">${l}</span>
       ${triggered[i]?'<span style="font-size:9px;font-weight:700;padding:2px 6px;background:var(--accent-dim);color:var(--accent2);border-radius:3px;">완료</span>':'<span style="font-size:10px;color:var(--text3);">클릭으로 완료</span>'}
