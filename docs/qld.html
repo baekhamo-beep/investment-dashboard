@@ -154,6 +154,45 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 
 #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:7px 18px;border-radius:6px;font-size:12px;font-weight:700;z-index:9998;opacity:0;transition:opacity 0.3s;pointer-events:none;}
 @media(max-width:600px){.g4{grid-template-columns:1fr 1fr;}.g2,.g3{grid-template-columns:1fr;}}
+
+/* ===== Trading Desk Layout (DASH 탭) ===== */
+.desk-grid { display:grid; grid-template-columns:140px 1fr; gap:0; min-height:500px; }
+@media (min-width:769px) { .desk-grid { grid-template-columns:280px 1fr; } }
+@media (max-width:400px) { .desk-grid { grid-template-columns:120px 1fr; } }
+@media (max-width:360px) { .desk-grid { grid-template-columns:108px 1fr; } }
+
+.desk-side { background:var(--bg1); border-right:1px solid var(--accent-border); padding:12px 10px; }
+@media (min-width:769px) { .desk-side { padding:16px 14px; } }
+
+.desk-main { padding:12px 10px; min-width:0; }
+@media (min-width:769px) { .desk-main { padding:16px; } }
+
+.side-sec { font-family:'JetBrains Mono',monospace; font-size:8px; color:var(--text3); letter-spacing:1.5px; font-weight:700; margin:14px 0 7px; padding-bottom:5px; border-bottom:1px solid rgba(255,255,255,0.05); }
+.side-sec:first-child { margin-top:0; }
+@media (min-width:769px) { .side-sec { font-size:9px; letter-spacing:2px; } }
+
+.cycle-state-box { background:#000; border:1px solid var(--accent); padding:10px 8px; margin-bottom:12px; position:relative; }
+@media (min-width:769px) { .cycle-state-box { padding:14px; margin-bottom:14px; } }
+.cycle-state-box::before { content:'STATE'; position:absolute; top:-7px; left:8px; background:#000; color:var(--accent); padding:0 5px; font-family:'JetBrains Mono',monospace; font-size:8px; letter-spacing:1.5px; font-weight:700; }
+@media (min-width:769px) { .cycle-state-box::before { font-size:9px; left:10px; padding:0 6px; } }
+
+.side-stat { padding:7px 0; border-bottom:1px dashed rgba(255,255,255,0.05); font-family:'JetBrains Mono',monospace; }
+.side-stat:last-child { border-bottom:none; }
+.side-stat-top { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:1px; }
+.side-stat .k { font-size:9px; color:var(--text3); letter-spacing:0.5px; }
+@media (min-width:769px) { .side-stat .k { font-size:10px; letter-spacing:1px; } }
+.side-stat .v { font-size:12px; font-weight:700; color:var(--text1); text-align:right; font-family:'JetBrains Mono',monospace; }
+@media (min-width:769px) { .side-stat .v { font-size:13px; } }
+.side-stat .sub { font-size:8px; color:var(--text3); font-weight:400; text-align:right; display:block; font-family:'JetBrains Mono',monospace; }
+@media (min-width:769px) { .side-stat .sub { font-size:9px; } }
+
+.main-sec { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--text3); letter-spacing:1.5px; font-weight:700; margin:16px 0 8px; padding-bottom:5px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center; }
+@media (min-width:769px) { .main-sec { font-size:10px; letter-spacing:2px; margin:18px 0 10px; } }
+.main-sec .right { color:var(--text3); font-size:8px; letter-spacing:0.5px; font-weight:500; }
+@media (min-width:769px) { .main-sec .right { font-size:9px; letter-spacing:1px; } }
+.main-sec:first-child { margin-top:0; }
+
+.update-bar { display:flex; align-items:center; gap:8px; margin-bottom:12px; padding:6px 10px; background:var(--bg2); border:1px solid var(--border); border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:10px; }
 </style>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
@@ -261,53 +300,84 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 
   <!-- ① 대시보드 -->
   <div class="content panel active" id="tab-dash">
-    <div style="display:flex;align-items:center;margin-bottom:12px;">
-      <div style="font-size:10px;color:var(--text3);" id="data-updated-text">로딩 중...</div>
-      <div class="live-dot" style="margin:0 6px;" id="data-dot"></div>
-      <button onclick="loadData()" style="margin-left:auto;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:4px;padding:3px 8px;font-size:10px;cursor:pointer;">새로고침</button>
+
+    <div class="desk-grid">
+
+      <!-- ===== 좌측 사이드 ===== -->
+      <aside class="desk-side">
+        
+        <!-- 사이클 상태 (render 함수 자동 채움) -->
+        <div class="cycle-state-box" id="cycle-status"></div>
+
+        <!-- 시장 지표 -->
+        <div class="side-sec">// MARKET</div>
+        
+        <div class="side-stat">
+          <div class="side-stat-top"><span class="k">NASDAQ</span><span class="v" id="d-nasdaq">—</span></div>
+          <span class="sub" id="d-nasdaq-sub">로딩중...</span>
+          <span class="sub" id="d-nasdaq-ath" style="margin-top:2px;"></span>
+        </div>
+        
+        <div class="side-stat">
+          <div class="side-stat-top"><span class="k">200MA</span><span class="v" id="d-ma200">—</span></div>
+          <span class="sub" id="d-ma200-sub">로딩중...</span>
+        </div>
+        
+        <div class="side-stat">
+          <div class="side-stat-top"><span class="k">VIX</span><span class="v" id="d-vix">—</span></div>
+          <span class="sub" id="d-vix-sub">로딩중...</span>
+        </div>
+        
+        <div class="side-stat">
+          <div class="side-stat-top"><span class="k">F&amp;G</span><span class="v" id="d-fg">—</span></div>
+          <span class="sub" id="d-fg-sub">로딩중...</span>
+        </div>
+
+      </aside>
+
+      <!-- ===== 우측 메인 ===== -->
+      <main class="desk-main">
+
+        <!-- 데이터 업데이트 바 -->
+        <div class="update-bar">
+          <span style="color:var(--text3);" id="data-updated-text">로딩 중...</span>
+          <div class="live-dot" id="data-dot"></div>
+          <button onclick="loadData()" style="margin-left:auto;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:4px;padding:3px 8px;font-size:10px;cursor:pointer;font-family:inherit;">새로고침</button>
+        </div>
+
+        <!-- 액션 배너 (render 함수 자동 채움) -->
+        <div id="action-banner" class="action-banner standby" style="opacity:0;transition:opacity 0.5s;"></div>
+
+        <!-- 판단 근거 (기존 구조 유지) -->
+        <div id="reasoning-wrap" style="margin-top:-6px;margin-bottom:14px;display:none;">
+          <div onclick="toggleReasoning()" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px 6px 0 0;border-bottom:none;">
+            <span style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;">▸ 판단 근거</span>
+            <span id="reasoning-icon" style="font-size:10px;color:var(--text3);margin-left:auto;">▲ 접기</span>
+          </div>
+          <div id="reasoning-body" style="display:block;background:var(--bg2);border:1px solid var(--border);border-radius:0 0 6px 6px;padding:12px 14px;">
+            <div id="reasoning-text" style="font-size:11px;color:var(--text2);line-height:1.9;"></div>
+          </div>
+        </div>
+
+        <!-- 진단 상태 -->
+        <div id="diag-status"></div>
+
+        <!-- 매도 트리거 (상승장) -->
+        <div class="main-sec"><span>// SELL TRIGGERS · ATH 3단계</span><span class="right">상승장 매도</span></div>
+        <div id="sell-triggers"></div>
+
+        <!-- 매수 트리거 (하락장) -->
+        <div class="main-sec"><span>// BUY TRIGGERS · 5단계</span><span class="right">하락장 매수</span></div>
+        <div id="dip-stages"></div>
+
+        <!-- 오늘 체크리스트 -->
+        <div class="main-sec"><span>// TODAY CHECKLIST</span></div>
+        <div id="today-checklist"></div>
+
+      </main>
+
     </div>
 
-    <!-- 오늘의 액션 -->
-    <div id="action-banner" class="action-banner standby" style="opacity:0;transition:opacity 0.5s;"></div>
-
-    <!-- 근거 문장 -->
-    <div id="reasoning-wrap" style="margin-top:-6px;margin-bottom:14px;display:none;">
-      <div onclick="toggleReasoning()" style="display:flex;align-items:center;gap:6px;cursor:pointer;padding:6px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px 6px 0 0;border-bottom:none;">
-        <span style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:0.5px;">📋 판단 근거</span>
-        <span id="reasoning-icon" style="font-size:10px;color:var(--text3);margin-left:auto;">▲ 접기</span>
-      </div>
-      <div id="reasoning-body" style="display:block;background:var(--bg2);border:1px solid var(--border);border-radius:0 0 6px 6px;padding:12px 14px;">
-        <div id="reasoning-text" style="font-size:11px;color:var(--text2);line-height:1.9;"></div>
-      </div>
-    </div>
-
-    <!-- 핵심 지표 -->
-    <div class="sec">핵심 지표</div>
-    <div class="g4">
-      <div class="card"><div class="card-label">나스닥 (ATH 대비)</div><div class="card-value" id="d-nasdaq" style="font-size:18px;">—</div><div class="card-sub" id="d-nasdaq-sub">로딩중...</div><div class="card-sub" id="d-nasdaq-ath" style="margin-top:3px;font-size:11px;font-weight:600;">ATH 대비 —</div></div>
-      <div class="card"><div class="card-label">200일선</div><div class="card-value" id="d-ma200" style="font-size:18px;">—</div><div class="card-sub" id="d-ma200-sub">로딩중...</div></div>
-      <div class="card"><div class="card-label">VIX</div><div class="card-value" id="d-vix" style="font-size:18px;">—</div><div class="card-sub" id="d-vix-sub">로딩중...</div></div>
-      <div class="card"><div class="card-label">F&amp;G</div><div class="card-value" id="d-fg" style="font-size:18px;">—</div><div class="card-sub" id="d-fg-sub">로딩중...</div></div>
-    </div>
-
-    <!-- 상태 -->
-    <div id="diag-status"></div>
-
-    <!-- 하락장 트리거 -->
-    <div class="sec">하락장 매수 트리거 (5단계)</div>
-    <div id="dip-stages"></div>
-
-    <div class="divider"></div>
-
-    <!-- 상승장 매도 트리거 -->
-    <div class="sec">상승장 매도 트리거 (ATH 기준 3단계)</div>
-    <div id="sell-triggers"></div>
-
-    <div class="divider"></div>
-
-    <!-- 오늘 체크리스트 -->
-    <div class="sec">오늘 체크리스트</div>
-    <div id="today-checklist"></div>
   </div>
 
   <!-- ② 주문/리밸런싱 -->
