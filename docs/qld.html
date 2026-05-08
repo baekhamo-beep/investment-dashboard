@@ -1480,54 +1480,153 @@ function renderActionBanner(){
   const isDay22=now.getDate()===22;
   const cycle=qldState?.cycle;
   const inRecovery=cycle?.in_recovery_mode||false;
-  let state='standby',main='',sub='',chips=[];
+  const athP = cycle?.ath_price || 0;
+  const curQ = mkt.qqq_price || 0;
+  const ddP = athP && curQ ? ((curQ-athP)/athP*100) : null;
+  
+  let state='standby', stageLabel='', mainTitle='', subText='', currentRatio='', nextRatio='', nextTrigger='', nextTarget='', progressPct=0;
 
   if(inRecovery){
     const rt=cycle.recovery_triggered||[false,false,false];
-    if(!rt[0]){state='recovery';main='ATH 돌파 — QLD 85% / SGOV 15% 리밸런싱';sub='상승 복귀 1단계 · 즉시 집행 (익일 시가 시장가)';chips=[{t:'ATH 돌파',hi:true},{t:'목표 QLD 85%',hi:true}];}
-    else if(!rt[1]){state='recovery';main='ATH+20% 도달 확인 — QLD 65% / SGOV 35%';sub='상승 복귀 2단계 · ATH 돌파 시점 종가 기준 +20%';chips=[{t:'회복 2단계',hi:true},{t:'목표 QLD 65%',hi:true}];}
-    else if(!rt[2]){state='recovery';main='ATH+30% 도달 확인 — QLD 50% / SGOV 50%';sub='상승 복귀 3단계 완료 시 회복모드 종료';chips=[{t:'회복 3단계',hi:true},{t:'목표 QLD 50%',hi:true}];}
+    if(!rt[0]){
+      state='recovery';
+      stageLabel='STAGE 1 · ATH BREAKOUT';
+      mainTitle='1단계 — ATH 돌파 발동';
+      subText='상승 복귀 1단계 · 즉시 집행 (익일 시가 시장가)';
+      currentRatio='QLD 85% / SGOV 15%';
+      nextTarget = athP>0 ? '$'+athP.toFixed(2) : '—';
+    } else if(!rt[1]){
+      state='recovery';
+      stageLabel='CURRENT STAGE · ATH BREAKOUT';
+      mainTitle='1단계 — ATH 돌파 진행 중';
+      subText='ATH 돌파 후 +20% 도달 시 65/35로 변경';
+      currentRatio='QLD 85% / SGOV 15%';
+      nextRatio='+20%시 65/35';
+      const t2 = athP * 1.20;
+      nextTarget = '$'+t2.toFixed(2);
+      const remaining = t2 - curQ;
+      const remPct = ((t2-curQ)/curQ*100);
+      if(athP>0 && curQ>0){
+        progressPct = Math.max(0, Math.min(100, ((curQ-athP)/(t2-athP))*100));
+      }
+    } else if(!rt[2]){
+      state='recovery';
+      stageLabel='STAGE 2 · ATH+20%';
+      mainTitle='2단계 — ATH+20% 도달';
+      subText='ATH+30% 도달 시 50/50로 변경';
+      currentRatio='QLD 65% / SGOV 35%';
+      nextRatio='+30%시 50/50';
+      const t3 = athP * 1.30;
+      nextTarget = '$'+t3.toFixed(2);
+      const t2 = athP * 1.20;
+      if(t2>0 && curQ>0){
+        progressPct = Math.max(0, Math.min(100, ((curQ-t2)/(t3-t2))*100));
+      }
+    }
   }
   if(state==='standby'&&ma200below&&nd!==null){
     const dips=cycle?.dip_triggered||[false,false,false,false,false];
     const thr=[-12,-18,-25,-35,-45],pct=[5,8,10,12,15];
-    for(let i=4;i>=0;i--){if(nd<=thr[i]&&!dips[i]){state='dip';main=`${i+1}단계 발동 — 전체계좌 ${pct[i]}% → QLD 매수`;sub=`QQQ 200일선 아래 + ATH 대비 ${thr[i]}% · 즉시 집행`;chips=[{t:'나스닥 '+nd.toFixed(1)+'%',hi:true},{t:'200일선 아래',hi:true}];break;}}
+    for(let i=4;i>=0;i--){if(nd<=thr[i]&&!dips[i]){
+      state='dip';
+      stageLabel='STAGE '+(i+1)+' · DIP BUY';
+      mainTitle=(i+1)+'단계 발동 — 전체계좌 '+pct[i]+'% → QLD 매수';
+      subText='QQQ 200일선 아래 + ATH 대비 '+thr[i]+'% · 즉시 집행';
+      currentRatio='나스닥 '+nd.toFixed(1)+'%';
+      break;
+    }}
   }
-  // ATH 돌파 트리거 실시간 감지 (state가 standby여도 체크)
   if(state==='standby'){
-    const _abTgt = getActiveTargetRatio();
+    const _abTgt=getActiveTargetRatio();
     if(_abTgt.active){
       state='recovery';
-      main='🚨 '+_abTgt.mode;
-      sub=_abTgt.desc+' · 즉시 리밸런싱 집행 필요 (익일 시가 시장가)';
-      chips=[{t:'트리거 발동',hi:true},{t:'목표 QLD '+_abTgt.qld+'%',hi:true},{t:'SGOV '+_abTgt.sgov+'%',hi:true}];
+      stageLabel='ACTION REQUIRED';
+      mainTitle='⚠ '+_abTgt.mode;
+      subText=_abTgt.desc+' · 즉시 리밸런싱';
+      currentRatio='QLD '+_abTgt.qld+'% / SGOV '+_abTgt.sgov+'%';
     }
   }
-
-
   if(state==='standby'&&isDay22){
-    state='dca';main='오늘은 DCA 매수일 (22일)';
-    const _dcaTgt=getActiveTargetRatio();
+    state='dca';
+    stageLabel='DCA EXECUTION DAY';
+    mainTitle='오늘은 DCA 매수일';
     const isLow=(cycle?.target_sgov_ratio||65)<=5;
-    sub=_dcaTgt.active
-      ?'🚨 '+_dcaTgt.mode+' · 목표 QLD '+_dcaTgt.qld+'% / SGOV '+_dcaTgt.sgov+'%'
-      :isLow?'SGOV ≤5% — QLD 70% / SGOV 30%':'QLD 50% / SGOV 50% 비율로 매수';
-    chips=[{t:'22일 매수일',hi:true},{t:_dcaTgt.active?'🚨 트리거 발동':isLow?'탄약 부족':'일반 모드',hi:_dcaTgt.active||isLow}];
+    subText=isLow?'SGOV ≤5% — 탄약 보충 모드':'일반 모드';
+    currentRatio=isLow?'QLD 70% / SGOV 30%':'QLD 50% / SGOV 50%';
   }
   if(state==='standby'){
     const next22=new Date(now);if(now.getDate()>22)next22.setMonth(next22.getMonth()+1);next22.setDate(22);
     const daysLeft=Math.ceil((next22-now)/(864e5));
-    main='대기 — 규칙 준수 중';
-    sub=(mkt.ma200>0?'200일선 위 (하락 트리거 비활성)':'200일선 아래 (낙폭 모니터링 중)')+' · DCA까지 D-'+daysLeft+'일';
-    chips=[{t:'나스닥 '+(nd!=null?(nd>0?'+':'')+nd.toFixed(1):'—')+'%',hi:false},{t:'D-'+daysLeft,hi:false}];
+    stageLabel='STANDBY';
+    mainTitle='대기 — 규칙 준수 중';
+    subText=(mkt.ma200>0?'200일선 위 (하락 트리거 비활성)':'200일선 아래 (낙폭 모니터링 중)')+' · DCA까지 D-'+daysLeft+'일';
+    currentRatio='나스닥 '+(nd!=null?(nd>0?'+':'')+nd.toFixed(1):'—')+'%';
   }
 
-  const tagText={standby:'STANDBY',dca:'DCA 실행',dip:'하락장 매수',recovery:'회복 모드'};
   const el=document.getElementById('action-banner');if(!el)return;
   el.className='action-banner '+state;
-  // 근거 문장 생성
   renderReasoning(state, nd, ma200below, cycle);
-  el.innerHTML=`<div class="ab-top"><div class="ab-dot ${state}"></div><div class="ab-tag ${state}">${tagText[state]}</div><div class="ab-date">${dateLabel}</div></div><div class="ab-main ${state}">${main}</div><div class="ab-sub">${sub}</div><div class="ab-chips">${chips.map(c=>`<div class="ab-chip${c.hi?' hi':''}">${c.t}</div>`).join('')}</div>`;
+
+  // 가격 강조 박스
+  let priceBox = '';
+  if(state==='recovery' && athP>0 && curQ>0){
+    const ddSign = ddP>=0 ? '+' : '';
+    const ddCol = ddP>=0 ? 'var(--green)' : 'var(--red)';
+    priceBox = '<div style="display:flex;gap:8px;margin:10px 0 12px;flex-wrap:wrap;">'+
+      '<div style="background:#000;border:1px solid var(--accent-border);padding:8px 10px;flex:1;min-width:120px;">'+
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;color:var(--text3);letter-spacing:1.5px;font-weight:700;margin-bottom:3px;">현재가 (QQQ)</div>'+
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:18px;font-weight:700;color:'+ddCol+';letter-spacing:-0.3px;line-height:1;">$'+curQ.toFixed(2)+'</div>'+
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:'+ddCol+';margin-top:3px;">▲ ATH 대비 '+ddSign+ddP.toFixed(2)+'%</div>'+
+      '</div>'+
+      '<div style="background:#000;border:1px solid var(--accent-border);padding:8px 10px;flex:1;min-width:120px;">'+
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;color:var(--text3);letter-spacing:1.5px;font-weight:700;margin-bottom:3px;">전 사이클 ATH</div>'+
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:18px;font-weight:700;color:var(--text1);letter-spacing:-0.3px;line-height:1;">$'+athP.toFixed(2)+'</div>'+
+        '<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--text3);margin-top:3px;">'+(cycle.ath_date||'—')+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+
+  // NEXT STAGE 진행률 바
+  let nextStageBox = '';
+  if(nextRatio && nextTarget){
+    const remainPct = nextTarget!=='—' && curQ>0 ? ((parseFloat(nextTarget.replace('$',''))-curQ)/curQ*100) : 0;
+    const remainAmt = nextTarget!=='—' && curQ>0 ? (parseFloat(nextTarget.replace('$',''))-curQ) : 0;
+    nextStageBox = '<div style="background:#000;border:1px dashed var(--accent-border);padding:10px 12px;margin-bottom:12px;">'+
+      '<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;font-family:\'JetBrains Mono\',monospace;">'+
+        '<span style="font-size:10px;color:var(--text3);letter-spacing:1.5px;font-weight:700;">// NEXT STAGE → '+nextRatio+'</span>'+
+        '<span style="font-size:12px;color:var(--accent);font-weight:700;">'+nextTarget+'</span>'+
+      '</div>'+
+      '<div style="height:6px;background:#1a1a1a;position:relative;overflow:hidden;">'+
+        '<div style="position:absolute;left:0;top:0;height:100%;background:linear-gradient(90deg,var(--green),var(--accent));width:'+progressPct.toFixed(1)+'%;"></div>'+
+      '</div>'+
+      '<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--text2);margin-top:6px;letter-spacing:0.3px;display:flex;justify-content:space-between;">'+
+        '<span>진행률 <b style="color:var(--text1);">'+progressPct.toFixed(1)+'%</b></span>'+
+        '<span>잔여 <b style="color:var(--text1);">$'+remainAmt.toFixed(2)+' (+'+remainPct.toFixed(2)+'%)</b></span>'+
+      '</div>'+
+    '</div>';
+  }
+
+  // 비율 pill
+  let pillBox = '';
+  if(currentRatio || nextRatio){
+    pillBox = '<div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:10px;border-top:1px dashed var(--accent-border);">';
+    if(currentRatio){
+      pillBox += '<div style="background:var(--accent);color:#000;padding:5px 10px;font-family:\'JetBrains Mono\',monospace;font-size:11px;font-weight:700;letter-spacing:0.5px;">현재 '+currentRatio+'</div>';
+    }
+    if(nextRatio){
+      pillBox += '<div style="background:#000;border:1px dashed var(--accent-border);padding:5px 10px;font-family:\'JetBrains Mono\',monospace;font-size:11px;color:var(--text2);letter-spacing:0.5px;">→ '+nextRatio+'</div>';
+    }
+    pillBox += '</div>';
+  }
+
+  el.innerHTML = 
+    '<div style="display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#000;padding:3px 10px;font-family:\'JetBrains Mono\',monospace;font-size:10px;font-weight:700;letter-spacing:1.5px;margin-bottom:10px;">'+
+      '<span style="width:6px;height:6px;background:#000;border-radius:50%;animation:ab-pulse 0.8s infinite;display:inline-block;"></span>'+
+      stageLabel+
+    '</div>'+
+    '<div style="font-size:20px;font-weight:800;color:var(--accent);margin-bottom:4px;letter-spacing:-0.3px;line-height:1.25;">'+mainTitle+'</div>'+
+    '<div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5;">'+subText+'</div>'+
+    priceBox + nextStageBox + pillBox;
 }
 
 // 상황 진단
@@ -1563,96 +1662,52 @@ function renderSellTriggers(){
   var rt=(qldState&&qldState.cycle&&qldState.cycle.recovery_triggered)||[false,false,false];
   var athPrice=(qldState&&qldState.cycle&&qldState.cycle.ath_price)||0;
   var curQQQ=mkt.qqq_price||0;
-
-  // ATH 돌파 시점 기준가 (1단계 완료 시점의 QQQ가 기준 — 근사치로 ATH 사용)
-  var breakPrice = athPrice; // ATH 돌파 = 대략 ATH 가격
-  var t2Price = breakPrice > 0 ? (breakPrice * 1.20) : 0;
-  var t3Price = breakPrice > 0 ? (breakPrice * 1.30) : 0;
-
-  function priceStr(p){ return p>0?'$'+p.toFixed(2):'—'; }
-  function reachedStr(cur,target){
-    if(!cur||!target) return '';
-    var diff=((cur-target)/target*100);
-    if(cur>=target) return '<span style="font-size:10px;color:#4caf7d;"> ✅ 도달</span>';
-    return '<span style="font-size:10px;color:var(--text3);"> (현재 $'+cur.toFixed(0)+' · 목표까지 '+Math.abs(diff).toFixed(1)+'%)</span>';
-  }
+  var t2Price = athPrice > 0 ? (athPrice * 1.20) : 0;
+  var t3Price = athPrice > 0 ? (athPrice * 1.30) : 0;
 
   var stages=[
-    {
-      idx:0,
-      tag:'ATH 돌파',
-      label:'1단계 — ATH 신고점 돌파',
-      desc:'QQQ 전고점('+priceStr(athPrice)+') 돌파 즉시 · 익일 시가 집행',
-      trigger: athPrice>0?'$'+athPrice.toFixed(2)+' 돌파':'ATH 미설정',
-      action:'QLD 85% / SGOV 15%',
-      color:'#4caf7d',
-      done:rt[0],
-      reached: curQQQ>0&&athPrice>0&&curQQQ>=athPrice
-    },
-    {
-      idx:1,
-      tag:'ATH +20%',
-      label:'2단계 — ATH 돌파 후 +20%',
-      desc:'1단계 집행 시점 기준 +20% · ATH 돌파 기준가 × 1.20',
-      trigger: t2Price>0?'$'+t2Price.toFixed(2)+' 도달':'1단계 먼저',
-      action:'QLD 65% / SGOV 35%',
-      color:'#ff9500',
-      done:rt[1],
-      reached: curQQQ>0&&t2Price>0&&curQQQ>=t2Price
-    },
-    {
-      idx:2,
-      tag:'ATH +30%',
-      label:'3단계 — ATH 돌파 후 +30%',
-      desc:'1단계 집행 시점 기준 +30% · ATH 돌파 기준가 × 1.30',
-      trigger: t3Price>0?'$'+t3Price.toFixed(2)+' 도달':'1단계 먼저',
-      action:'QLD 50% / SGOV 50% (회복모드 종료)',
-      color:'#c9a84c',
-      done:rt[2],
-      reached: curQQQ>0&&t3Price>0&&curQQQ>=t3Price
-    },
+    {label:'ATH 돌파', ratio:'85/15', target:athPrice, done:rt[0], reached:curQQQ>0&&athPrice>0&&curQQQ>=athPrice},
+    {label:'ATH +20%', ratio:'65/35', target:t2Price, done:rt[1], reached:curQQQ>0&&t2Price>0&&curQQQ>=t2Price},
+    {label:'ATH +30%', ratio:'50/50', target:t3Price, done:rt[2], reached:curQQQ>0&&t3Price>0&&curQQQ>=t3Price}
   ];
 
-  var anyActive = stages.some(function(s){ return s.reached&&!s.done; });
-
-  var html='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">';
-
-  // 상태 헤더
-  if(!rt[0]&&!stages[0].reached){
-    // 회복모드 미진입 또는 ATH 미돌파
-    html+='<div style="padding:8px 14px;background:rgba(90,96,128,0.1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">'+
-      '<div style="width:7px;height:7px;border-radius:50%;background:var(--text3);"></div>'+
-      '<span style="font-size:11px;color:var(--text3);">대기 중 — 하락장 매수 후 ATH 돌파 시 순차 발동</span>'+
-    '</div>';
-  } else if(anyActive){
-    html+='<div style="padding:8px 14px;background:rgba(76,175,125,0.08);border-bottom:1px solid rgba(76,175,125,0.2);display:flex;align-items:center;gap:8px;">'+
-      '<div style="width:7px;height:7px;border-radius:50%;background:#4caf7d;animation:ab-pulse 1s infinite;"></div>'+
-      '<span style="font-size:11px;color:#4caf7d;font-weight:700;">🚨 트리거 발동! 리밸런싱 즉시 집행</span>'+
-    '</div>';
-  }
-
-  stages.forEach(function(s){
+  var html='<div style="display:flex;flex-direction:column;gap:5px;">';
+  
+  stages.forEach(function(s,i){
     var isActive = s.reached && !s.done;
-    var bgStyle = s.done ? 'background:rgba(76,175,125,0.04);' : isActive ? 'background:rgba('+( s.idx===0?'76,175,125':s.idx===1?'74,158,255':'201,168,76')+',0.08);' : '';
-    var dotColor = s.done ? s.color : isActive ? s.color : 'var(--bg3)';
-    var labelColor = s.done||isActive ? s.color : 'var(--text2)';
-
-    html+='<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);'+bgStyle+'">'+
-      '<div style="width:8px;height:8px;border-radius:50%;background:'+dotColor+';'+(isActive?'box-shadow:0 0 6px '+s.color+';':'')+' flex-shrink:0;"></div>'+
-      '<div style="flex:1;">'+
-        '<div style="font-size:11px;font-weight:700;color:'+labelColor+';">'+s.label+'</div>'+
-        '<div style="font-size:10px;color:var(--text3);margin-top:1px;">'+s.desc+'</div>'+
-      '</div>'+
-      '<div style="text-align:right;flex-shrink:0;">'+
-        '<div style="font-size:11px;font-weight:700;color:'+labelColor+';">'+s.trigger+'</div>'+
-        '<div style="font-size:10px;color:var(--text3);">→ '+s.action+'</div>'+
-      '</div>'+
-      (s.done ? '<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.15);color:#4caf7d;border-radius:3px;margin-left:6px;flex-shrink:0;">완료</span>' :
-       isActive ? '<span style="font-size:9px;font-weight:700;padding:2px 6px;background:rgba(76,175,125,0.2);color:#4caf7d;border-radius:3px;margin-left:6px;flex-shrink:0;animation:ab-pulse 0.8s infinite;">발동!</span>' : '')+
+    var statusLabel, statusColor, rowStyle, stageBg, stageColor;
+    if(s.done){
+      statusLabel = '✓ DONE';
+      statusColor = 'var(--green)';
+      rowStyle = 'background:rgba(76,175,125,0.04);border-color:rgba(76,175,125,0.2);';
+      stageBg = '#000';
+      stageColor = 'var(--green)';
+    } else if(isActive){
+      statusLabel = 'NEXT';
+      statusColor = 'var(--accent)';
+      rowStyle = 'background:rgba(255,149,0,0.06);border-color:var(--accent);';
+      stageBg = 'var(--accent)';
+      stageColor = '#000';
+    } else {
+      statusLabel = 'WAIT';
+      statusColor = 'var(--text3)';
+      rowStyle = 'border-color:rgba(255,149,0,0.15);';
+      stageBg = '#000';
+      stageColor = 'var(--accent)';
+    }
+    
+    var targetStr = s.target>0 ? '$'+s.target.toFixed(2) : '—';
+    
+    html += '<div style="background:var(--bg2);border:1px solid var(--border);'+rowStyle+'padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:\'JetBrains Mono\',monospace;font-size:11px;">'+
+      '<div style="background:'+stageBg+';color:'+stageColor+';border:1px solid var(--accent);padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">STG '+(i+1)+'</div>'+
+      '<div style="flex:1;color:var(--text2);"><b style="color:var(--text1);">'+s.label+'</b> · '+s.ratio+'</div>'+
+      '<div style="color:var(--accent);font-weight:700;">'+targetStr+'</div>'+
+      '<div style="font-size:9px;letter-spacing:1px;padding:2px 6px;color:'+statusColor+';'+(isActive?'animation:ab-pulse 1s infinite;':'')+'">'+statusLabel+'</div>'+
     '</div>';
   });
-
-  html+='</div>';
+  
+  html += '</div>';
+  
   var el=document.getElementById('sell-triggers');
   if(el) el.innerHTML=html;
 }
@@ -1871,46 +1926,67 @@ function calcCycleStatus(){
 }
 
 function renderCycleStatus(ath,cur,dd){
-  // 인자 없이 호출 시 qldState에서 자동 추출
   if(ath===undefined && qldState?.cycle){ath=qldState.cycle.ath_price;cur=mkt.qqq_price;dd=ath&&cur?((cur-ath)/ath*100):null;}
-  // 실시간 트리거 기반 모드 표시
   const _tgt = getActiveTargetRatio();
   let modeLabel, modeColor;
-  if(_tgt.active){
-    modeLabel = '🚨 ' + _tgt.mode + ' → ' + _tgt.qld + '/' + _tgt.sgov;
-    modeColor = _tgt.color;
-  } else {
-    const firstDone = qldState?.cycle?.first_cycle_completed || false;
-    modeLabel = firstDone ? '실전 모드 (50/50 기본)' : _tgt.mode;
-    modeColor = firstDone ? 'var(--accent2)' : 'var(--gold)';
-  }
+  if(_tgt.active){modeLabel='⚠ '+_tgt.mode+' → '+_tgt.qld+'/'+_tgt.sgov;modeColor=_tgt.color;}
+  else {const firstDone=qldState?.cycle?.first_cycle_completed||false;modeLabel=firstDone?'실전 모드 (50/50 기본)':_tgt.mode;modeColor=firstDone?'var(--accent2)':'var(--gold)';}
   const el2 = document.getElementById('cycle-mode-label');
   if(el2){ el2.textContent = modeLabel; el2.style.color = modeColor; }
   const el3 = document.getElementById('cycle-banner-sub');
   if(el3){
-    if(_tgt.active){
-      el3.textContent = '⚠ '+_tgt.mode+' · '+_tgt.desc;
-      el3.style.color = _tgt.color;
-    } else {
-      el3.textContent = '첫 사이클 완료(+30% 달성) 시 영구 50/50 전환';
-      el3.style.color = 'var(--text3)';
-    }
+    if(_tgt.active){el3.textContent='⚠ '+_tgt.mode+' · '+_tgt.desc;el3.style.color=_tgt.color;}
+    else {el3.textContent='첫 사이클 완료(+30% 달성) 시 영구 50/50 전환';el3.style.color='var(--text3)';}
   }
-
 
   if(!qldState)return;
   const c=qldState.cycle;
   const athP=ath||c.ath_price||0,curP=cur||mkt.qqq_price||0;
   const ddP=dd!=null?dd:(athP&&curP?(curP/athP-1)*100:null);
   const el=document.getElementById('cycle-status');if(!el)return;
-  const _rt = getActiveTargetRatio();
-  const phaseLabel = _rt.active ? _rt.mode.split(' — ')[0] : (c.in_recovery_mode?'회복 모드':'정상');
-  const phaseColor = _rt.active ? _rt.color : (c.in_recovery_mode?'var(--gold)':'var(--green)');
-  el.innerHTML=`<div class="g3" style="margin-bottom:12px;">
-    <div class="card"><div class="card-label">사이클 페이즈</div><div class="card-value" style="font-size:${_rt.active?'12':'15'}px;color:${phaseColor};">${phaseLabel}</div></div>
-    <div class="card"><div class="card-label">목표 QLD ${_rt.active?'<span style=\"font-size:9px;background:rgba(76,175,125,0.2);color:#4caf7d;padding:1px 5px;border-radius:3px;margin-left:4px;\">트리거</span>':''}</div><div class="card-value" style="font-size:16px;color:${_rt.active?_rt.color:'var(--accent)'};">${_rt.qld}%</div></div>
-    <div class="card"><div class="card-label">ATH 대비</div><div class="card-value" style="font-size:16px;color:${ddP&&ddP>0?'var(--green)':ddP&&ddP<=-12?'var(--red)':'var(--text1)'};">${ddP!=null?(ddP>0?'+':'')+ddP.toFixed(1)+'%':'—'}</div></div>
-  </div>`;
+
+  // 상태 결정
+  let stateLabel, stateColor, stateSub;
+  const inRecovery = c.in_recovery_mode || false;
+  const rt = c.recovery_triggered || [false,false,false];
+  
+  if(inRecovery && rt[0] && ddP!=null && ddP>=0){
+    stateLabel = 'BULL';
+    stateColor = 'var(--accent)';
+    stateSub = 'ATH 돌파 ' + (ddP>=0?'+':'') + ddP.toFixed(1) + '%';
+  } else if(inRecovery){
+    stateLabel = 'RECOVERY';
+    stateColor = 'var(--gold)';
+    stateSub = '회복 진행 중';
+  } else if(ddP!=null && ddP<=-12){
+    stateLabel = 'BEAR';
+    stateColor = 'var(--red)';
+    stateSub = 'ATH 대비 ' + ddP.toFixed(1) + '%';
+  } else {
+    stateLabel = 'NORMAL';
+    stateColor = 'var(--green)';
+    stateSub = ddP!=null ? 'ATH 대비 ' + (ddP>=0?'+':'') + ddP.toFixed(1) + '%' : '대기';
+  }
+
+  // ATH → +20% 진행률 (BULL일 때만 의미있음)
+  let progressPct = 0;
+  let progressLabel = '';
+  if(stateLabel === 'BULL' && athP > 0){
+    const t2Price = athP * 1.20;
+    const range = t2Price - athP;
+    const cur2 = curP - athP;
+    progressPct = Math.max(0, Math.min(100, (cur2/range)*100));
+    progressLabel = '<span>ATH</span><span>'+progressPct.toFixed(0)+'%</span><span>+20%</span>';
+  } else {
+    progressLabel = '<span>—</span><span>—</span>';
+  }
+
+  el.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace;font-size:18px;font-weight:700;color:'+stateColor+';margin-bottom:4px;letter-spacing:1px;">'+stateLabel+'</div>'+
+    '<div style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--text3);letter-spacing:0.5px;">'+stateSub+'</div>'+
+    '<div style="margin-top:10px;height:4px;background:#1a1a1a;position:relative;overflow:hidden;">'+
+      '<div style="position:absolute;top:0;left:0;height:100%;background:linear-gradient(90deg,'+stateColor+',var(--accent2));width:'+progressPct+'%;"></div>'+
+    '</div>'+
+    '<div style="font-family:\'JetBrains Mono\',monospace;font-size:9px;color:var(--text3);margin-top:5px;letter-spacing:0.5px;display:flex;justify-content:space-between;">'+progressLabel+'</div>';
 }
 
 function renderCycleSteps(){
