@@ -87,9 +87,9 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 .status-desc{font-size:11px;color:var(--text2);line-height:1.6;}
 .order-action{border-radius:6px;padding:12px 14px;margin-bottom:8px;display:flex;align-items:flex-start;gap:10px;}
 .order-badge{border-radius:5px;padding:4px 9px;font-size:11px;font-weight:800;white-space:nowrap;flex-shrink:0;}
-.rule-block{border-left:3px solid var(--accent);padding:0 0 0 12px;margin-bottom:12px;}
-.rule-title{font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:3px;}
-.rule-body{font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-line;}
+.rule-block{background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:9px 12px;margin-bottom:5px;font-family:'JetBrains Mono',monospace;}
+.rule-title{font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:3px;letter-spacing:0.3px;}
+.rule-body{font-size:10px;color:var(--text2);line-height:1.7;letter-spacing:0.2px;white-space:pre-line;}
 .perf-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;}
 .perf-val{font-size:26px;font-weight:800;margin:4px 0;}
 .perf-desc{font-size:11px;color:var(--text2);margin-bottom:10px;}
@@ -1448,12 +1448,13 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
           <div style="font-size:11px;font-weight:700;color:var(--text1);margin-bottom:1px;">실행 체크리스트</div>
           <div style="font-size:9px;color:var(--text3);letter-spacing:0.3px;">매일/월간 체크 항목</div>
         </button>
-        <button onclick="showQldAnswer('forbidden')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
-          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">금지사항</div>
-          <div style="font-size:10px;color:var(--text3);">절대 하지 말아야 할 것</div>
+        <button onclick="showQldAnswer('forbidden')" style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:10px 12px;cursor:pointer;text-align:left;font-family:'JetBrains Mono',monospace;transition:background 0.15s;" onmouseover="this.style.background='rgba(224,92,92,0.04)'" onmouseout="this.style.background='var(--bg2)'">
+          <div style="font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;margin-bottom:3px;">// FORBIDDEN RULES</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text1);margin-bottom:1px;">금지사항</div>
+          <div style="font-size:9px;color:var(--text3);letter-spacing:0.3px;">전략 핵심 규칙</div>
         </button>
       </div>
-      <div class="sec">답변</div>
+      <div class="main-sec"><span>// ANSWER</span></div>
       <div id="qld-ai-answer" style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;min-height:140px;">
         <span style="color:var(--text3);font-size:12px;">위 버튼을 누르면 규칙 기반 답변이 표시됩니다.</span>
       </div>
