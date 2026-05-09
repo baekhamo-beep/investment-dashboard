@@ -604,8 +604,8 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
         </div>
       </div>
 
-      <button onclick="generateOrder()" style="width:100%;background:linear-gradient(135deg,var(--accent),#2d7fd4);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:12px;letter-spacing:0.3px;" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">
-        📋 오늘의 주문안 생성
+      <button onclick="generateOrder()" style="width:100%;background:var(--accent);color:#000;border:none;border-radius:6px;padding:11px;font-size:12px;font-weight:800;cursor:pointer;margin-bottom:12px;letter-spacing:1.5px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        // GENERATE ORDER
       </button>
 
       <div id="port-order"></div>
@@ -628,14 +628,22 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
       <div id="dca-result"><div style="color:var(--text3);font-size:12px;">월 적립금을 입력하세요.</div></div>
       <div class="divider"></div>
       <div class="sec">DCA 규칙</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
-          <div style="min-width:56px;text-align:center;"><div style="font-size:13px;font-weight:700;color:var(--green);">일반</div><div style="font-size:9px;color:var(--text3);">SGOV &gt;5%</div></div>
-          <div><div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:3px;">QLD 50% / SGOV 50%</div><div style="font-size:11px;color:var(--text2);">매월 22일 정기매수 (휴일이면 다음 영업일)</div></div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;">
+          <div style="background:#000;color:var(--green);border:1px solid var(--green);padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:56px;text-align:center;font-size:10px;">NORMAL</div>
+          <div style="flex:1;color:var(--text2);">
+            <div style="color:var(--text1);font-weight:600;">QLD 50% / SGOV 50%</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:0.2px;">SGOV &gt; 5% · 매월 22일 정기매수 (휴일이면 다음 영업일)</div>
+          </div>
+          <div style="font-size:9px;letter-spacing:1px;padding:2px 6px;color:var(--green);">DEFAULT</div>
         </div>
-        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">
-          <div style="min-width:56px;text-align:center;"><div style="font-size:13px;font-weight:700;color:var(--red);">부족</div><div style="font-size:9px;color:var(--text3);">SGOV ≤5%</div></div>
-          <div><div style="font-size:12px;font-weight:700;color:var(--text1);margin-bottom:3px;">QLD 70% / SGOV 30%</div><div style="font-size:11px;color:var(--text2);">탄약 보충 우선 — SGOV 비중 회복 필요</div></div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;">
+          <div style="background:#000;color:var(--red);border:1px solid var(--red);padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:56px;text-align:center;font-size:10px;">LOW AMMO</div>
+          <div style="flex:1;color:var(--text2);">
+            <div style="color:var(--text1);font-weight:600;">QLD 70% / SGOV 30%</div>
+            <div style="font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:0.2px;">SGOV ≤ 5% · 탄약 보충 우선 — SGOV 비중 회복 필요</div>
+          </div>
+          <div style="font-size:9px;letter-spacing:1px;padding:2px 6px;color:var(--red);">FALLBACK</div>
         </div>
       </div>
     </div>
@@ -2258,9 +2266,9 @@ function updatePortLive(){
   const atEl = document.getElementById('active-target-display');
   if(atEl){
     if(_activeTgt.active){
-      atEl.innerHTML = '<span style="background:rgba(76,175,125,0.15);color:#4caf7d;padding:3px 8px;border-radius:3px;font-weight:700;">🚨 '+_activeTgt.mode+'</span><span style="color:var(--text3);margin-left:6px;">→ 목표 '+_activeTgt.qld+'/'+_activeTgt.sgov+'</span>';
+      atEl.innerHTML = '<span style="background:#000;color:var(--accent);border:1px solid var(--accent);padding:2px 7px;font-weight:700;letter-spacing:1px;font-size:9px;font-family:\'JetBrains Mono\',monospace;">ACTIVE</span> <span style="color:var(--accent2);font-weight:600;font-size:10px;">'+_activeTgt.mode+'</span> <span style="color:var(--text3);font-size:10px;letter-spacing:0.3px;">→ '+_activeTgt.qld+'/'+_activeTgt.sgov+'</span>';
     } else {
-      atEl.innerHTML = '<span style="color:'+_activeTgt.color+';font-weight:600;">'+_activeTgt.mode+'</span><span style="color:var(--text3);margin-left:6px;">→ 목표 '+_activeTgt.qld+'/'+_activeTgt.sgov+'</span>';
+      atEl.innerHTML = '<span style="color:'+_activeTgt.color+';font-weight:600;font-size:10px;">'+_activeTgt.mode+'</span> <span style="color:var(--text3);margin-left:4px;font-size:10px;letter-spacing:0.3px;">→ '+_activeTgt.qld+'/'+_activeTgt.sgov+'</span>';
     }
   }
 }
@@ -2272,74 +2280,122 @@ function generateOrder(){
   const qv=qq*qp,sv=sq*sp,total=qv+sv;
   const el=document.getElementById('port-order');
 
-  if(!total||!qp||!sp){el.innerHTML='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:12px;color:var(--text3);">수량을 입력하면 주문안이 생성됩니다.</div>';return;}
-
-  // 실시간 트리거 기반 목표 비중 계산
-  const activeTarget = getActiveTargetRatio();
-  const tQLD = activeTarget.qld/100, tSGOV = activeTarget.sgov/100;
-  const qPct=qv/total*100;
-  if(Math.abs(qPct-tQLD*100)<7){
-    const msg = activeTarget.active
-      ? '<div style="font-size:14px;font-weight:800;color:#4caf7d;margin-bottom:5px;">✅ 트리거 발동했지만 허용 범위 내</div><div style="font-size:11px;color:var(--text2);">현재 비중 QLD '+qPct.toFixed(1)+'% — 목표 '+(tQLD*100).toFixed(0)+'% 대비 ±7% 이내</div><div style="margin-top:8px;font-size:10px;color:#4caf7d;">'+activeTarget.mode+'</div>'
-      : '<div style="font-size:14px;font-weight:800;color:#4caf7d;margin-bottom:5px;">✅ 리밸런싱 불필요</div><div style="font-size:11px;color:var(--text2);">현재 비중 QLD '+qPct.toFixed(1)+'% — 목표 '+(tQLD*100).toFixed(0)+'% 대비 ±7% 이내</div><div style="margin-top:8px;font-size:10px;color:var(--text3);">다음 액션: 매월 22일 DCA 적립 매수</div>';
-    el.innerHTML='<div style="background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.25);border-radius:10px;padding:16px 18px;">'+msg+'</div>';
+  if(!total||!qp||!sp){
+    el.innerHTML='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;font-size:11px;color:var(--text3);font-family:\'JetBrains Mono\',monospace;">// 수량을 입력하면 주문안이 생성됩니다</div>';
     return;
   }
 
+  const activeTarget = getActiveTargetRatio();
+  const tQLD = activeTarget.qld/100, tSGOV = activeTarget.sgov/100;
+  const qPct=qv/total*100;
+  
+  // 케이스 1: 리밸런싱 불필요 (허용 범위 내)
+  if(Math.abs(qPct-tQLD*100)<7){
+    const inRange = '<div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);border-radius:6px;overflow:hidden;font-family:\'JetBrains Mono\',monospace;">'+
+      '<div style="background:rgba(76,175,125,0.06);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);">'+
+        '<div style="background:#000;color:var(--green);border:1px solid var(--green);padding:3px 10px;font-weight:700;letter-spacing:1px;font-size:10px;">IN RANGE</div>'+
+        '<div style="flex:1;font-size:12px;font-weight:700;color:var(--green);">리밸런싱 불필요</div>'+
+        '<div style="font-size:9px;letter-spacing:1px;color:var(--green);">✓ DONE</div>'+
+      '</div>'+
+      '<div style="padding:12px 14px;font-size:11px;color:var(--text2);line-height:1.6;">'+
+        '현재 비중 <b style="color:var(--accent);">QLD '+qPct.toFixed(1)+'%</b> · 목표 <b style="color:var(--text1);">'+(tQLD*100).toFixed(0)+'%</b> 대비 ±7% 이내'+
+        '<div style="margin-top:6px;font-size:9px;color:var(--text3);letter-spacing:0.5px;">// '+(activeTarget.active?activeTarget.mode:'다음 액션: 매월 22일 DCA 적립 매수')+'</div>'+
+      '</div>'+
+    '</div>';
+    el.innerHTML = inRange;
+    return;
+  }
+
+  // 케이스 2: 리밸런싱 필요
   const qldNeed=total*tQLD-qv;
   const isBuyQld=qldNeed>0;
-  const sellName=isBuyQld?'SGOV':'QLD',buyName=isBuyQld?'QLD':'SGOV';
-  const sellP=isBuyQld?sp:qp,buyP=isBuyQld?qp:sp;
-  const sellCnt=Math.floor(Math.abs(qldNeed)/sellP),buyCnt=Math.floor(Math.abs(qldNeed)/buyP);
-  const sellAmt=sellCnt*sellP,buyAmt=buyCnt*buyP;
+  const sellName=isBuyQld?'SGOV':'QLD';
+  const buyName=isBuyQld?'QLD':'SGOV';
+  const sellP=isBuyQld?sp:qp;
+  const buyP=isBuyQld?qp:sp;
+  const sellCnt=Math.floor(Math.abs(qldNeed)/sellP);
+  const buyCnt=Math.floor(Math.abs(qldNeed)/buyP);
+  const sellAmt=sellCnt*sellP;
+  const buyAmt=buyCnt*buyP;
   const afterQldPct=isBuyQld?((qv+buyAmt)/total*100):((qv-sellAmt)/total*100);
 
-  const triggerBadge = activeTarget.active
-    ? '<span style="background:rgba(76,175,125,0.2);color:#4caf7d;font-size:9px;font-weight:800;padding:2px 8px;border-radius:3px;margin-left:8px;">🚨 트리거 발동</span>'
-    : '';
-  el.innerHTML=`<div style="background:var(--bg2);border:1px solid ${activeTarget.active?'rgba(76,175,125,0.4)':'var(--accent-border)'};border-radius:10px;overflow:hidden;">
-    <div style="background:${activeTarget.active?'rgba(76,175,125,0.1)':'var(--accent-dim)'};padding:10px 14px;display:flex;align-items:center;justify-content:space-between;">
-      <div>
-        <div style="font-size:9px;font-weight:800;letter-spacing:2px;color:${activeTarget.active?'#4caf7d':'var(--accent2)'};">TODAY'S ORDER${triggerBadge}</div>
-        <div style="font-size:10px;color:${activeTarget.color};margin-top:3px;font-weight:600;">${activeTarget.mode} → 목표 QLD ${activeTarget.qld}% / SGOV ${activeTarget.sgov}%</div>
-      </div>
-      <div style="font-size:10px;color:var(--text3);">${new Date().toLocaleDateString('ko-KR')}</div>
-    </div>
-    <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
-      <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">비중 변화 ${activeTarget.active?'<span style="color:#4caf7d;font-weight:700;margin-left:6px;">(트리거 기반 자동 적용)</span>':''}</div>
-      <div style="font-size:13px;font-weight:700;">QLD <span style="color:var(--text2);">${qPct.toFixed(1)}%</span> → <span style="color:${activeTarget.active?'#4caf7d':'var(--accent2)'};">${afterQldPct.toFixed(1)}%</span> <span style="font-size:10px;color:var(--text3);">(목표 ${(tQLD*100).toFixed(0)}%)</span></div>
-    </div>
-    <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
-      <div style="display:flex;align-items:flex-start;gap:10px;">
-        <div style="background:rgba(224,92,92,0.15);border:1px solid rgba(224,92,92,0.3);border-radius:5px;padding:4px 9px;font-size:10px;font-weight:800;color:#e05c5c;flex-shrink:0;">1. 매도</div>
-        <div><div style="font-size:16px;font-weight:800;color:var(--text1);margin-bottom:3px;">${sellName} ${sellCnt}주</div><div style="font-size:11px;color:var(--text3);">${fmtAmt(sellAmt)} · @${qldUseDollar?'$'+sellP:Math.round(sellP*qldUsdKrw).toLocaleString()+'원'}/주</div></div>
-      </div>
-    </div>
-    <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
-      <div style="display:flex;align-items:flex-start;gap:10px;">
-        <div style="background:rgba(76,175,125,0.15);border:1px solid rgba(76,175,125,0.3);border-radius:5px;padding:4px 9px;font-size:10px;font-weight:800;color:#4caf7d;flex-shrink:0;">2. 매수</div>
-        <div><div style="font-size:16px;font-weight:800;color:var(--text1);margin-bottom:3px;">${buyName} ${buyCnt}주</div><div style="font-size:11px;color:var(--text3);">${fmtAmt(buyAmt)} · @${qldUseDollar?'$'+buyP:Math.round(buyP*qldUsdKrw).toLocaleString()+'원'}/주</div></div>
-      </div>
-    </div>
-    <div style="padding:8px 14px;font-size:10px;color:var(--text3);line-height:1.6;">※ 전일 종가 기준 · 익일 시가 시장가 집행 · 실제 체결가 차이로 주수 달라질 수 있음</div>
-  </div>`;
+  const tagLabel = activeTarget.active ? 'ACTION' : 'REBAL';
+  const tagColor = activeTarget.active ? 'var(--accent)' : 'var(--gold)';
+  const tagBg = activeTarget.active ? 'rgba(255,149,0,0.06)' : 'rgba(201,168,76,0.05)';
+  
+  el.innerHTML = '<div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid '+tagColor+';border-radius:6px;overflow:hidden;font-family:\'JetBrains Mono\',monospace;">'+
+    // 헤더
+    '<div style="background:'+tagBg+';padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);">'+
+      '<div style="background:'+(activeTarget.active?'var(--accent)':'#000')+';color:'+(activeTarget.active?'#000':'var(--gold)')+';border:1px solid '+tagColor+';padding:3px 10px;font-weight:700;letter-spacing:1px;font-size:10px;">'+tagLabel+'</div>'+
+      '<div style="flex:1;font-size:12px;font-weight:700;color:var(--text1);">'+(activeTarget.active?activeTarget.mode:'리밸런싱 권장')+'</div>'+
+      '<div style="font-size:9px;letter-spacing:1px;color:'+tagColor+';">→ '+(tQLD*100).toFixed(0)+'/'+(tSGOV*100).toFixed(0)+'</div>'+
+    '</div>'+
+    // 매도/매수 행
+    '<div style="display:flex;flex-direction:column;">'+
+      // 매도
+      '<div style="padding:12px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);">'+
+        '<div style="background:#000;color:var(--red);border:1px solid var(--red);padding:3px 10px;font-weight:700;letter-spacing:1px;font-size:10px;min-width:48px;text-align:center;">SELL</div>'+
+        '<div style="flex:1;font-size:12px;color:var(--text2);"><b style="color:var(--text1);font-size:13px;">'+sellName+'</b> · '+sellCnt+'주</div>'+
+        '<div style="text-align:right;">'+
+          '<div style="font-size:14px;font-weight:700;color:var(--red);">$'+sellAmt.toFixed(2)+'</div>'+
+          '<div style="font-size:9px;color:var(--text3);">@$'+sellP.toFixed(2)+'/주</div>'+
+        '</div>'+
+      '</div>'+
+      // 매수
+      '<div style="padding:12px 14px;display:flex;align-items:center;gap:12px;">'+
+        '<div style="background:#000;color:var(--green);border:1px solid var(--green);padding:3px 10px;font-weight:700;letter-spacing:1px;font-size:10px;min-width:48px;text-align:center;">BUY</div>'+
+        '<div style="flex:1;font-size:12px;color:var(--text2);"><b style="color:var(--text1);font-size:13px;">'+buyName+'</b> · '+buyCnt+'주</div>'+
+        '<div style="text-align:right;">'+
+          '<div style="font-size:14px;font-weight:700;color:var(--green);">$'+buyAmt.toFixed(2)+'</div>'+
+          '<div style="font-size:9px;color:var(--text3);">@$'+buyP.toFixed(2)+'/주</div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    // 푸터: 실행 후 비중
+    '<div style="padding:10px 14px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">'+
+      '<div style="font-size:9px;color:var(--text3);letter-spacing:0.5px;">// AFTER REBAL</div>'+
+      '<div style="font-size:11px;color:var(--text2);">QLD <b style="color:var(--accent);">'+afterQldPct.toFixed(1)+'%</b> / SGOV <b style="color:var(--text1);">'+(100-afterQldPct).toFixed(1)+'%</b></div>'+
+    '</div>'+
+  '</div>';
 }
 
 // DCA
 function calcDCA(){
   const monthly=parseFloat(document.getElementById('dca-monthly')?.value||0);
   const sgovPct=parseFloat(document.getElementById('dca-sgov-pct')?.value||65);
-  if(!monthly){document.getElementById('dca-result').innerHTML='<div style="color:var(--text3);font-size:12px;">월 적립금을 입력하세요.</div>';return;}
+  const resultEl = document.getElementById('dca-result');
+  
+  if(!monthly){
+    resultEl.innerHTML='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:12px;font-size:11px;color:var(--text3);font-family:\'JetBrains Mono\',monospace;">// 월 적립금을 입력하세요</div>';
+    return;
+  }
+  
   const isLow=sgovPct<=5;
-  const qAmt=Math.round(monthly*(isLow?0.7:0.5)),sAmt=Math.round(monthly*(isLow?0.3:0.5));
-  document.getElementById('dca-result').innerHTML=`<div style="background:var(--bg2);border:1px solid ${isLow?'rgba(224,92,92,0.3)':'var(--accent-border)'};border-radius:8px;padding:14px;">
-    <div style="font-size:12px;font-weight:700;color:${isLow?'var(--red)':'var(--accent2)'};margin-bottom:10px;">${isLow?'⚠ SGOV 5% 이하 — 탄약 보충 모드':'✅ 일반 DCA 모드'}</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div class="card"><div class="card-label">QLD 매수 (${isLow?70:50}%)</div><div class="card-value" style="color:var(--accent);font-size:18px;">${qAmt.toLocaleString()}만</div></div>
-      <div class="card"><div class="card-label">SGOV 매수 (${isLow?30:50}%)</div><div class="card-value" style="color:var(--text2);font-size:18px;">${sAmt.toLocaleString()}만</div></div>
-    </div>
-    <div style="margin-top:10px;font-size:10px;color:var(--text3);">매수일: 매월 22일 (휴일이면 다음 영업일)</div>
-  </div>`;
+  const qAmt=Math.round(monthly*(isLow?0.7:0.5));
+  const sAmt=Math.round(monthly*(isLow?0.3:0.5));
+  const modeLabel = isLow ? 'LOW AMMO' : 'NORMAL';
+  const modeColor = isLow ? 'var(--red)' : 'var(--green)';
+  const modeBg = isLow ? 'rgba(224,92,92,0.06)' : 'rgba(76,175,125,0.04)';
+  const modeDesc = isLow ? '탄약 보충 모드 — SGOV 비중 회복 필요' : '일반 DCA 모드 — 정기 적립';
+  
+  resultEl.innerHTML = '<div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid '+modeColor+';border-radius:6px;overflow:hidden;font-family:\'JetBrains Mono\',monospace;">'+
+    '<div style="background:'+modeBg+';padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);">'+
+      '<div style="background:#000;color:'+modeColor+';border:1px solid '+modeColor+';padding:3px 10px;font-weight:700;letter-spacing:1px;font-size:10px;">'+modeLabel+'</div>'+
+      '<div style="flex:1;font-size:11px;color:var(--text2);">'+modeDesc+'</div>'+
+      '<div style="font-size:9px;color:var(--text3);letter-spacing:0.5px;">SGOV '+sgovPct.toFixed(1)+'%</div>'+
+    '</div>'+
+    '<div style="padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">'+
+      '<div style="background:#000;border:1px solid var(--accent-border);padding:12px;border-radius:4px;">'+
+        '<div style="font-size:9px;color:var(--text3);letter-spacing:1px;margin-bottom:4px;">QLD '+(isLow?70:50)+'%</div>'+
+        '<div style="font-size:20px;font-weight:800;color:var(--accent);letter-spacing:0.5px;">'+qAmt.toLocaleString()+'<span style="font-size:11px;color:var(--text3);margin-left:3px;">만</span></div>'+
+      '</div>'+
+      '<div style="background:#000;border:1px solid var(--border);padding:12px;border-radius:4px;">'+
+        '<div style="font-size:9px;color:var(--text3);letter-spacing:1px;margin-bottom:4px;">SGOV '+(isLow?30:50)+'%</div>'+
+        '<div style="font-size:20px;font-weight:800;color:var(--text1);letter-spacing:0.5px;">'+sAmt.toLocaleString()+'<span style="font-size:11px;color:var(--text3);margin-left:3px;">만</span></div>'+
+      '</div>'+
+    '</div>'+
+    '<div style="padding:8px 14px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border);font-size:9px;color:var(--text3);letter-spacing:0.5px;">// EXECUTE: 매월 22일 (휴일이면 다음 영업일)</div>'+
+  '</div>';
 }
 
 // 사이클
