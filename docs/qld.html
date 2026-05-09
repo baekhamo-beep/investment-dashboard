@@ -158,8 +158,8 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 /* ===== Trading Desk Layout (DASH 탭) ===== */
 .desk-grid { display:grid; grid-template-columns:140px 1fr; gap:0; min-height:500px; }
 @media (min-width:769px) { .desk-grid { grid-template-columns:280px 1fr; } }
-@media (max-width:400px) { .desk-grid { grid-template-columns:120px 1fr; } }
-@media (max-width:360px) { .desk-grid { grid-template-columns:108px 1fr; } }
+
+
 
 .desk-side { background:var(--bg1); border-right:1px solid var(--accent-border); padding:12px 10px; }
 @media (min-width:769px) { .desk-side { padding:16px 14px; } }
@@ -193,6 +193,129 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 .main-sec:first-child { margin-top:0; }
 
 .update-bar { display:flex; align-items:center; gap:8px; margin-bottom:12px; padding:6px 10px; background:var(--bg2); border:1px solid var(--border); border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:10px; }
+
+/* ===== 모바일 전용: 사이드 → 상단 스트립 변환 ===== */
+@media (max-width:768px) {
+  /* 그리드: 단일 컬럼 (사이드를 상단으로) */
+  .desk-grid { grid-template-columns:1fr; min-height:auto; }
+  
+  /* 사이드: 상단 스트립으로 변환 */
+  .desk-side {
+    border-right:none;
+    border-bottom:1px solid var(--accent-border);
+    padding:10px 12px;
+  }
+  
+  /* 사이드 섹션 헤더 (//MARKET 등) - 모바일에서 더 컴팩트 */
+  .side-sec {
+    margin:10px 0 6px;
+    padding-bottom:4px;
+    font-size:8px;
+  }
+  .side-sec:first-child { margin-top:0; }
+  
+  /* STATE 박스: 가로 펼침 */
+  .cycle-state-box {
+    padding:8px 12px;
+    margin-bottom:10px;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    gap:12px;
+  }
+  .cycle-state-box::before {
+    top:-6px;
+    left:10px;
+    font-size:8px;
+    padding:0 5px;
+  }
+  /* STATE 박스 내부 자식 요소 모바일 정렬 */
+  .cycle-state-box > div:nth-child(1) {
+    /* BULL 텍스트 (cycle-state) */
+    font-size:16px !important;
+    margin-bottom:0 !important;
+  }
+  .cycle-state-box > div:nth-child(2) {
+    /* ATH 돌파 +11.9% */
+    font-size:10px !important;
+    text-align:left;
+  }
+  .cycle-state-box > div:nth-child(3) {
+    /* 진행률 바 */
+    margin-top:0 !important;
+    width:100%;
+  }
+  .cycle-state-box > div:nth-child(4) {
+    /* ATH +11.9% +20% 라벨 */
+    font-size:8px !important;
+    margin-top:3px !important;
+    grid-column:1 / -1;
+  }
+  
+  /* 시장 지표: 2x2 그리드 */
+  .desk-side {
+    display:flex;
+    flex-direction:column;
+  }
+  /* side-sec '// MARKET' 다음의 side-stat들을 2x2 그리드로 */
+  .side-side-stats-wrap, .desk-side > .side-stat {
+    /* fallback - 부모를 grid로 */
+  }
+  
+  /* mini-stat 컴팩트 - 한 줄로 (라벨 | 값) */
+  .side-stat {
+    padding:6px 8px;
+    border-bottom:none;
+    border:1px solid rgba(255,255,255,0.06);
+    border-radius:4px;
+    background:rgba(0,0,0,0.2);
+  }
+  .side-stat .k { font-size:9px; }
+  .side-stat .v { font-size:12px; }
+  .side-stat .sub { font-size:8px; line-height:1.3; margin-top:1px; }
+  
+  /* 사이드 메인 영역 (//MARKET 이후) → 그리드로 자식들 배치 */
+  .desk-side > .side-stat {
+    /* 직접 자식인 stat들을 grid로 */
+  }
+  
+  /* 사이드 padding 조정 */
+  .desk-main { padding:12px 10px; }
+  
+  /* 액션 배너 컴팩트 */
+  .action-banner { padding:14px 14px; }
+  
+  /* 가격 박스 - 2개 가로 배치 강제 */
+  .desk-main .action-banner > div[style*="display:flex"][style*="gap:8px"] {
+    /* 인라인 스타일이라 직접 수정 어려움 - HTML에서 수정 필요 */
+  }
+  
+  /* 판단 근거 박스 - 폰트 살짝 줄임 */
+  #reasoning-text > div { font-size:11px !important; }
+}
+
+/* ===== 모바일에서 사이드 시장지표 2x2 그리드 ===== */
+@media (max-width:768px) {
+  /* MARKET 섹션 헤더 다음의 stat들을 2개씩 묶기 위해 wrapper 필요 */
+  /* JS로 추가하거나 sibling 선택자 사용 */
+  
+  /* 사이드 전체를 컨테이너로 - 사이클박스 + 마켓헤더 + 4개 stat */
+  .desk-side {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+    align-content:start;
+  }
+  
+  /* 사이클박스와 마켓헤더는 풀폭 */
+  .cycle-state-box { grid-column:1 / -1; }
+  .side-sec { grid-column:1 / -1; }
+  
+  /* 4개 stat은 2x2 자동 배치 */
+  .side-stat {
+    grid-column:auto;
+  }
+}
 </style>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
