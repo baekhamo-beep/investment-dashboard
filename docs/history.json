@@ -2,12 +2,17 @@
   "description": "월별 실제 자산 기록 | 투자 헌법 사령부",
   "settings": {
     "start_age": 0,
-    "start_asset": 31514,
+    "start_asset": 30919,
     "monthly_deposit": 0,
     "cagr": 16.4,
     "volatility": 17.5
   },
   "records": [
+    {
+      "ym": "2025-12",
+      "asset": 30919,
+      "recorded_at": "2026-05-09T06:18:06.458Z"
+    },
     {
       "ym": "2026-01",
       "asset": 31514,
