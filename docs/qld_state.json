@@ -17,7 +17,7 @@
       false,
       false
     ],
-    "in_recovery_mode": true,
+    "in_recovery_mode": false,
     "target_qld_ratio": 85,
     "target_sgov_ratio": 15,
     "first_cycle_completed": false
