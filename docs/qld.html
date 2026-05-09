@@ -1382,7 +1382,7 @@ async function loadData(){
       const cq=document.getElementById('cur-qqq');if(cq&&!cq.value)cq.value=mkt.qqq_price;
     }
     if(d.vix){mkt.vix=d.vix;setCard('d-vix',d.vix.toFixed(1),d.vix>=40?'극단 공포':d.vix>=25?'주의':'안정',d.vix>=40?'var(--red)':d.vix>=25?'var(--gold)':'var(--green)');}
-    if(d.fear_greed?.value!=null){mkt.fg=d.fear_greed.value;setCard('d-fg',mkt.fg,mkt.fg>=80?'극단 탐욕':mkt.fg<=25?'극단 공포':'중립',mkt.fg>=80?'var(--red)':mkt.fg<=25?'var(--green)':'var(--gold)');}
+    if(d.fear_greed?.value!=null){mkt.fg=d.fear_greed.value;setCard('d-fg',mkt.fg,mkt.fg>=75?'극단 탐욕':mkt.fg>=55?'탐욕':mkt.fg>=45?'중립':mkt.fg>=25?'공포':'극단 공포',mkt.fg>=75?'var(--red)':mkt.fg>=55?'var(--gold)':mkt.fg>=45?'var(--text2)':mkt.fg>=25?'var(--accent2)':'var(--green)');}
     if(d.usd_krw){qldUsdKrw=d.usd_krw;const e=document.getElementById('qld-rate-display');if(e)e.textContent='1$ = '+d.usd_krw.toLocaleString()+'원';}
     if(d.etf_prices){if(d.etf_prices.QLD)qldEtfPrices.QLD=d.etf_prices.QLD;if(d.etf_prices.SGOV)qldEtfPrices.SGOV=d.etf_prices.SGOV;updateQldPriceDisplay();}
     const upd=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
@@ -1883,20 +1883,101 @@ function renderRecoveryStages(){
 
 function renderTodayChecklist(){
   const ma200below=mkt.ma200!==null&&mkt.ma200<0;
-  const items=[
-    {l:'QQQ 현재가 vs ATH 확인',s:'ATH 대비 낙폭 계산',done:mkt.nasdaq!==null},
-    {l:'QQQ vs 200일선 확인',s:ma200below?'200일선 아래 — 낙폭 모니터링':'200일선 위 — 정상',done:mkt.ma200!==null,warn:ma200below},
-    {l:'해당 하락 단계 실행 여부',s:'사이클 기록 탭에서 확인',done:false},
-    {l:'매월 22일 적립 매수',s:'SGOV 5% 이하 여부 확인 후 비율 결정',done:false},
+  const cycle = qldState?.cycle;
+  const isLow = (cycle?.target_sgov_ratio || 65) <= 5;
+  const inRecovery = cycle?.in_recovery_mode || false;
+  
+  // DCA D-Day (KST)
+  const now = new Date(Date.now() + (9*60 + new Date().getTimezoneOffset()) * 60000);
+  const todayDate = now.getDate();
+  let dcaTarget = new Date(now.getFullYear(), now.getMonth(), 22, 0, 0, 0);
+  if(todayDate > 22) dcaTarget = new Date(now.getFullYear(), now.getMonth() + 1, 22, 0, 0, 0);
+  const td = dcaTarget.getDay();
+  if(td === 0) dcaTarget.setDate(dcaTarget.getDate() + 1);
+  else if(td === 6) dcaTarget.setDate(dcaTarget.getDate() + 2);
+  const nowDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dcaDays = Math.round((dcaTarget - nowDate) / 86400000);
+  
+  const items = [
+    {
+      tag:'CK 1',
+      label:'QQQ 현재가 vs ATH 확인',
+      sub:'ATH 대비 낙폭 계산',
+      done: mkt.nasdaq !== null,
+      detail: mkt.nasdaq !== null ? (mkt.nasdaq>0?'+':'')+mkt.nasdaq.toFixed(1)+'%' : '—'
+    },
+    {
+      tag:'CK 2',
+      label:'QQQ vs 200일선 확인',
+      sub: ma200below ? '200일선 아래 — 낙폭 모니터링' : '200일선 위 — 정상',
+      done: mkt.ma200 !== null,
+      warn: ma200below,
+      detail: mkt.ma200 !== null ? (mkt.ma200>0?'+':'')+mkt.ma200.toFixed(1)+'%' : '—'
+    },
+    {
+      tag:'CK 3',
+      label: inRecovery ? '회복 단계 실행 여부' : '하락 단계 실행 여부',
+      sub:'사이클 기록 탭에서 확인',
+      done: false,
+      detail: inRecovery ? 'RECOVERY' : 'NORMAL'
+    },
+    {
+      tag:'CK 4',
+      label: dcaDays === 0 ? '오늘 DCA 매수 실행' : '매월 22일 적립 매수',
+      sub: isLow ? 'SGOV ≤5% — 탄약부족 (70/30)' : '일반 모드 (50/50)',
+      done: false,
+      active: dcaDays === 0,
+      detail: dcaDays === 0 ? 'TODAY' : 'D-' + dcaDays
+    }
   ];
-  let html='<div style="display:flex;flex-direction:column;gap:5px;">';
-  items.forEach(item=>{
-    html+=`<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg2);border:1px solid ${item.warn?'rgba(255,193,7,0.25)':'var(--border)'};border-radius:6px;">
-      <div style="width:15px;height:15px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;background:${item.done?'var(--green)':'var(--bg3)'};color:${item.done?'#0a0e1a':'var(--text3)'};">${item.done?'✓':''}</div>
-      <div><div style="font-size:11px;color:var(--text1);">${item.l}</div><div style="font-size:10px;color:${item.warn?'var(--gold)':'var(--text3)'};">${item.s}</div></div>
-    </div>`;
+  
+  let html = '<div style="display:flex;flex-direction:column;gap:5px;">';
+  
+  items.forEach(function(item, i){
+    let statusLabel, statusColor, rowStyle, tagBg, tagColor, tagBorder;
+    if(item.done){
+      statusLabel = '✓ DONE';
+      statusColor = 'var(--green)';
+      rowStyle = 'background:rgba(76,175,125,0.04);border-color:rgba(76,175,125,0.2);';
+      tagBg = '#000';
+      tagColor = 'var(--green)';
+      tagBorder = 'var(--green)';
+    } else if(item.active){
+      statusLabel = 'NOW';
+      statusColor = 'var(--accent)';
+      rowStyle = 'background:rgba(255,149,0,0.06);border-color:var(--accent);';
+      tagBg = 'var(--accent)';
+      tagColor = '#000';
+      tagBorder = 'var(--accent)';
+    } else if(item.warn){
+      statusLabel = 'WARN';
+      statusColor = 'var(--gold)';
+      rowStyle = 'background:rgba(201,168,76,0.04);border-color:rgba(201,168,76,0.2);';
+      tagBg = '#000';
+      tagColor = 'var(--gold)';
+      tagBorder = 'var(--gold)';
+    } else {
+      statusLabel = 'WAIT';
+      statusColor = 'var(--text3)';
+      rowStyle = 'border-color:rgba(255,255,255,0.07);';
+      tagBg = '#000';
+      tagColor = 'var(--text2)';
+      tagBorder = 'var(--text3)';
+    }
+    
+    html += '<div style="background:var(--bg2);border:1px solid var(--border);'+rowStyle+'padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:\'JetBrains Mono\',monospace;font-size:11px;">'+
+      '<div style="background:'+tagBg+';color:'+tagColor+';border:1px solid '+tagBorder+';padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">'+item.tag+'</div>'+
+      '<div style="flex:1;color:var(--text2);">'+
+        '<div style="color:var(--text1);font-weight:600;">'+item.label+'</div>'+
+        '<div style="font-size:9px;color:'+(item.warn?'var(--gold)':'var(--text3)')+';margin-top:2px;letter-spacing:0.2px;">'+item.sub+'</div>'+
+      '</div>'+
+      '<div style="color:var(--accent);font-weight:700;font-family:\'JetBrains Mono\',monospace;">'+(item.detail||'')+'</div>'+
+      '<div style="font-size:9px;letter-spacing:1px;padding:2px 6px;color:'+statusColor+';'+(item.active?'animation:ab-pulse 1s infinite;':'')+'">'+statusLabel+'</div>'+
+    '</div>';
   });
-  document.getElementById('today-checklist').innerHTML=html+'</div>';
+  
+  html += '</div>';
+  document.getElementById('today-checklist').innerHTML = html;
 }
 
 // 포트폴리오
@@ -2098,7 +2179,8 @@ function renderCycleStatus(ath,cur,dd){
     const range = t2Price - athP;
     const cur2 = curP - athP;
     progressPct = Math.max(0, Math.min(100, (cur2/range)*100));
-    progressLabel = '<span>ATH</span><span>'+progressPct.toFixed(0)+'%</span><span>+20%</span>';
+    const ddFromAth = athP > 0 ? ((curP - athP) / athP * 100) : 0;
+    progressLabel = '<span>ATH</span><span>+'+ddFromAth.toFixed(1)+'%</span><span>+20%</span>';
   } else {
     progressLabel = '<span>—</span><span>—</span>';
   }
