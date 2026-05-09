@@ -2225,6 +2225,11 @@ function toggleQldCurrency(){
   document.getElementById('qld-toggle-dot').style.left=qldUseDollar?'16px':'2px';
   document.getElementById('qld-currency-label').textContent=qldUseDollar?'달러':'원화';
   updateQldPriceDisplay();
+  // 주문안이 이미 생성되어 있으면 환율 단위 갱신
+  var orderEl = document.getElementById('port-order');
+  if(orderEl && orderEl.innerHTML.trim() && orderEl.innerHTML.indexOf('수량을 입력') === -1){
+    generateOrder();
+  }
 }
 
 function saveQldPort(){localStorage.setItem('qld_portfolio',JSON.stringify({qld:document.getElementById('p-qld-qty').value||'0',sgov:document.getElementById('p-sgov-qty').value||'0'}));showToast('저장 완료!');}
@@ -2236,7 +2241,7 @@ function loadQldPort(){
   updatePortLive();showToast('불러오기 완료!');
 }
 
-function fmtAmt(usd){if(!usd||usd<=0)return '—';return qldUseDollar?'$'+usd.toFixed(0):Math.round(usd*qldUsdKrw/10000).toLocaleString()+'만원';}
+function fmtAmt(usd){if(!usd||usd<=0)return '—';return qldUseDollar?'$'+Math.round(usd).toLocaleString():Math.round(usd*qldUsdKrw/10000).toLocaleString()+'만원';}
 
 function updatePortLive(){
   const qp=qldEtfPrices.QLD||0,sp=qldEtfPrices.SGOV||0;
