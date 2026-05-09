@@ -660,47 +660,49 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
     <!-- 사이클 관리 -->
     <div class="sub-panel active" id="sub-cycle-state">
       <!-- 사이클 모드 배너 -->
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;">
-        <div style="font-size:10px;color:var(--text3);font-weight:600;letter-spacing:1px;">현재 모드</div>
-        <div style="font-size:13px;font-weight:700;" id="cycle-mode-label">—</div>
-        <div id="cycle-banner-sub" style="margin-left:auto;font-size:10px;color:var(--text3);">첫 사이클 완료(+30% 달성) 시 영구 50/50 전환</div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;">
+        <div style="background:#000;color:var(--accent);border:1px solid var(--accent);padding:2px 8px;font-weight:700;letter-spacing:1px;font-size:10px;">MODE</div>
+        <div style="font-size:12px;font-weight:700;color:var(--text1);" id="cycle-mode-label">—</div>
+        <div id="cycle-banner-sub" style="margin-left:auto;font-size:9px;color:var(--text3);letter-spacing:0.3px;">// 첫 사이클 완료(+30%) 시 영구 50/50 전환</div>
       </div>
-      <div class="sec">현재 사이클 상태</div>
+      <div class="main-sec"><span>// CYCLE STATUS</span></div>
       <div id="cycle-status"></div>
 
-      <div class="sec">사이클 흐름</div>
+      <div class="main-sec"><span>// CYCLE FLOW</span></div>
       <div style="display:flex;align-items:center;overflow-x:auto;margin-bottom:14px;" id="cycle-steps"></div>
 
-      <div class="sec">ATH 설정</div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-          <span style="font-size:11px;color:var(--text2);width:100px;">QQQ ATH 가격</span>
-          <input class="inp" id="ath-price" type="number" placeholder="534.00" step="0.01">
-          <span style="font-size:11px;color:var(--text3);width:24px;">$</span>
+      <div class="main-sec"><span>// ATH SETTINGS</span></div>
+      <div style="background:var(--bg2);border:1px solid var(--border);padding:14px 16px;margin-bottom:12px;font-family:'JetBrains Mono',monospace;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <span style="font-size:10px;color:var(--text3);letter-spacing:1px;width:110px;">QQQ ATH PRICE</span>
+          <input class="inp" id="ath-price" type="number" placeholder="534.00" step="0.01" style="font-family:'JetBrains Mono',monospace;font-size:12px;">
+          <span style="font-size:11px;color:var(--accent);width:20px;text-align:center;font-weight:700;">$</span>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-          <span style="font-size:11px;color:var(--text2);width:100px;">ATH 날짜</span>
-          <input class="inp" id="ath-date" type="date">
-          <span style="width:24px;"></span>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <span style="font-size:10px;color:var(--text3);letter-spacing:1px;width:110px;">ATH DATE</span>
+          <input class="inp" id="ath-date" type="date" style="font-family:'JetBrains Mono',monospace;font-size:12px;">
+          <span style="width:20px;"></span>
         </div>
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-          <span style="font-size:11px;color:var(--text2);width:100px;">현재 QQQ</span>
-          <input class="inp" id="cur-qqq" type="number" placeholder="490.00" step="0.01" oninput="calcCycleStatus()">
-          <span style="font-size:11px;color:var(--text3);width:24px;">$</span>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <span style="font-size:10px;color:var(--text3);letter-spacing:1px;width:110px;">CURRENT QQQ</span>
+          <input class="inp" id="cur-qqq" type="number" placeholder="490.00" step="0.01" oninput="calcCycleStatus()" style="font-family:'JetBrains Mono',monospace;font-size:12px;">
+          <span style="font-size:11px;color:var(--accent);width:20px;text-align:center;font-weight:700;">$</span>
         </div>
-        <div style="font-size:10px;color:var(--text3);margin-bottom:4px;">GitHub Token (저장 시 필요)</div>
-        <input class="inp" id="cycle-token" type="password" placeholder="ghp_..." style="font-size:11px;margin-bottom:10px;">
+        <div style="border-top:1px dashed var(--border);padding-top:10px;margin-bottom:10px;">
+          <div style="font-size:9px;color:var(--text3);letter-spacing:1px;margin-bottom:4px;">// GITHUB TOKEN (저장 시 필요)</div>
+          <input class="inp" id="cycle-token" type="password" placeholder="ghp_..." style="font-family:'JetBrains Mono',monospace;font-size:11px;">
+        </div>
         <div style="display:flex;gap:8px;">
-          <button class="btn btn-blue" onclick="saveCycleSettings()" style="font-size:11px;padding:7px 14px;">설정 저장</button>
-          <button onclick="resetCycle()" style="background:rgba(224,92,92,0.15);border:1px solid rgba(224,92,92,0.3);color:var(--red);border-radius:6px;padding:7px 14px;font-size:11px;font-weight:600;cursor:pointer;">사이클 초기화</button>
+          <button onclick="saveCycleSettings()" style="flex:1;background:var(--accent);color:#000;border:none;border-radius:4px;padding:9px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">// SAVE CONFIG</button>
+          <button onclick="resetCycle()" style="background:#000;border:1px solid var(--red);color:var(--red);border-radius:4px;padding:9px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;">// RESET</button>
         </div>
-        <div id="cycle-save-status" style="font-size:11px;color:var(--text3);margin-top:8px;min-height:14px;"></div>
+        <div id="cycle-save-status" style="font-size:10px;color:var(--text3);margin-top:8px;min-height:14px;font-family:'JetBrains Mono',monospace;letter-spacing:0.3px;"></div>
       </div>
 
-      <div class="sec">하락 단계 발동 기록</div>
+      <div class="main-sec"><span>// DIP TRIGGERS · 5 STAGES</span><span class="right">하락장 매수</span></div>
       <div id="dip-check-list"></div>
       <div class="divider"></div>
-      <div class="sec">상승 복귀 단계 발동 기록</div>
+      <div class="main-sec"><span>// RECOVERY TRIGGERS · 3 STAGES</span><span class="right">상승장 매도</span></div>
       <div id="recovery-check-list"></div>
     </div>
 
@@ -1350,18 +1352,17 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 
     <!-- 운용 규칙 -->
     <div class="sub-panel active" id="sub-guide-rules">
-      <div class="sec">전략 구조</div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div style="display:grid;grid-template-columns:60px 1fr 80px;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);font-size:10px;color:var(--text3);margin-bottom:6px;"><span>종목</span><span>역할</span><span style="text-align:right;">비중</span></div>
-        <div style="display:grid;grid-template-columns:60px 1fr 80px;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);align-items:center;">
-          <span style="font-size:13px;font-weight:800;color:var(--accent);">QLD</span>
-          <span style="font-size:11px;color:var(--text2);">나스닥 2배 레버리지 · 수익 엔진</span>
-          <span style="font-size:13px;font-weight:700;color:var(--accent);text-align:right;">35%</span>
+      <div class="main-sec"><span>// STRATEGY STRUCTURE</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;">
+          <div style="background:var(--accent);color:#000;border:1px solid var(--accent);padding:2px 8px;font-weight:800;letter-spacing:1px;min-width:56px;text-align:center;font-size:11px;">QLD</div>
+          <div style="flex:1;color:var(--text2);"><b style="color:var(--text1);">2X LEVERAGED</b> · 수익 엔진 · 나스닥 2배</div>
+          <div style="font-size:14px;font-weight:800;color:var(--accent);min-width:48px;text-align:right;">35%</div>
         </div>
-        <div style="display:grid;grid-template-columns:60px 1fr 80px;gap:8px;padding:8px 0;align-items:center;">
-          <span style="font-size:13px;font-weight:800;color:var(--text2);">SGOV</span>
-          <span style="font-size:11px;color:var(--text2);">단기국채 · 탄약 저장소 + 무위험 수익</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text2);text-align:right;">65%</span>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--text3);padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;">
+          <div style="background:#000;color:var(--text2);border:1px solid var(--text3);padding:2px 8px;font-weight:800;letter-spacing:1px;min-width:56px;text-align:center;font-size:11px;">SGOV</div>
+          <div style="flex:1;color:var(--text2);"><b style="color:var(--text1);">CASH AMMO</b> · 단기국채 · 무위험 수익</div>
+          <div style="font-size:14px;font-weight:800;color:var(--text2);min-width:48px;text-align:right;">65%</div>
         </div>
       </div>
 
@@ -1370,7 +1371,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
       <div class="rule-block"><div class="rule-title">일반 모드 (SGOV &gt; 5%)</div><div class="rule-body">QLD 50% / SGOV 50% 비율로 매수</div></div>
       <div class="rule-block"><div class="rule-title">탄약 부족 모드 (SGOV ≤ 5%)</div><div class="rule-body">QLD 70% / SGOV 30%로 변경 → SGOV 비중 회복 우선</div></div>
 
-      <div class="sec">하락장 매수 규칙</div>
+      <div class="main-sec"><span>// DIP BUY RULES · 5 STAGES</span><span class="right">하락장</span></div>
       <div class="rule-block"><div class="rule-title">발동 조건 (AND 둘 다 충족)</div><div class="rule-body">① QQQ가 200일선 아래\n② QQQ가 직전 ATH 대비 낙폭 도달</div></div>
       <div class="rule-block"><div class="rule-title">1단계 -12%</div><div class="rule-body">전체계좌의 5%만큼 SGOV 매도 → QLD 매수</div></div>
       <div class="rule-block"><div class="rule-title">2단계 -18%</div><div class="rule-body">전체계좌의 8%만큼 SGOV 매도 → QLD 매수</div></div>
@@ -1380,29 +1381,39 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
       <div class="rule-block"><div class="rule-title">동시 신호 처리</div><div class="rule-body">여러 단계 동시 충족 시 비율 합산하여 한번에 실행</div></div>
       <div class="rule-block"><div class="rule-title">SGOV 부족 시</div><div class="rule-body">잔액 부족하면 해당 단계는 실행된 것으로 간주. 이후 동일 단계 재실행 없음</div></div>
 
-      <div class="sec">상승장 복귀 (회복모드)</div>
+      <div class="main-sec"><span>// RECOVERY RULES · 3 STAGES</span><span class="right">상승장</span></div>
       <div class="rule-block"><div class="rule-title">발동 조건</div><div class="rule-body">하락장 매수 1회 이상 발생한 이후 → 회복모드 진입</div></div>
       <div class="rule-block"><div class="rule-title">1단계: ATH 돌파</div><div class="rule-body">QQQ 전고점 돌파 → QLD 85% / SGOV 15% 리밸런싱</div></div>
       <div class="rule-block"><div class="rule-title">2단계: ATH+20%</div><div class="rule-body">ATH 돌파 시점 기준 +20% → QLD 65% / SGOV 35% 리밸런싱</div></div>
       <div class="rule-block"><div class="rule-title">3단계: ATH+30%</div><div class="rule-body">ATH 돌파 시점 기준 +30% → QLD 50% / SGOV 50% → 회복모드 종료</div></div>
       <div class="rule-block"><div class="rule-title">기준점 주의</div><div class="rule-body">+20%, +30%는 ATH 돌파 시점의 QQQ 종가를 기준으로 계산</div></div>
 
-      <div class="sec">사이클 정의</div>
+      <div class="main-sec"><span>// CYCLE DEFINITION</span></div>
       <div class="rule-block"><div class="rule-title">흐름</div><div class="rule-body">① ATH 형성 → ② 하락(200일선 하회) → ③ 단계별 매수 → ④ 반등 → ⑤ ATH 돌파 → ⑥ 85/15→65/35→50/50 복귀 → ⑦ 초기화</div></div>
       <div class="rule-block"><div class="rule-title">초기 설정 (1회성)</div><div class="rule-body">35/65는 시작점 리스크를 줄이기 위한 1회성. 이후에는 50/50이 기본</div></div>
       <div class="rule-block"><div class="rule-title">초기화 조건</div><div class="rule-body">복귀 3단계(50/50) 완료 후 새로운 ATH 형성 시 초기화 → 새 사이클 진입</div></div>
 
-      <div class="sec">금지사항</div>
-      <div style="background:rgba(224,92,92,0.06);border:1px solid rgba(224,92,92,0.2);border-radius:8px;padding:14px;margin-bottom:10px;">
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <div style="display:flex;gap:8px;font-size:12px;"><span style="color:var(--red);font-weight:700;">①</span><span style="color:var(--text1);">하락장에서 매수 생략</span></div>
-          <div style="display:flex;gap:8px;font-size:12px;"><span style="color:var(--red);font-weight:700;">②</span><span style="color:var(--text1);">상승장에서 리밸런싱 지연</span></div>
-          <div style="display:flex;gap:8px;font-size:12px;"><span style="color:var(--red);font-weight:700;">③</span><span style="color:var(--text1);">임의 판단 개입</span></div>
+      <div class="main-sec"><span>// FORBIDDEN</span><span class="right">규칙 준수</span></div>
+      <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px;">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;">
+          <div style="background:#000;color:var(--red);border:1px solid var(--red);padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">DENY 1</div>
+          <div style="flex:1;color:var(--text1);font-weight:600;">하락장에서 매수 생략</div>
+          <div style="font-size:9px;letter-spacing:1px;color:var(--red);">FORBIDDEN</div>
         </div>
-        <div style="margin-top:10px;font-size:11px;color:var(--text3);">이 전략은 "규칙 기반"이 핵심. 감정이나 예측으로 변경 금지.</div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;">
+          <div style="background:#000;color:var(--red);border:1px solid var(--red);padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">DENY 2</div>
+          <div style="flex:1;color:var(--text1);font-weight:600;">상승장에서 리밸런싱 지연</div>
+          <div style="font-size:9px;letter-spacing:1px;color:var(--red);">FORBIDDEN</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:11px;">
+          <div style="background:#000;color:var(--red);border:1px solid var(--red);padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">DENY 3</div>
+          <div style="flex:1;color:var(--text1);font-weight:600;">임의 판단 개입</div>
+          <div style="font-size:9px;letter-spacing:1px;color:var(--red);">FORBIDDEN</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:0.5px;padding:8px 4px 0;">// CORE: 규칙 기반이 핵심. 감정/예측으로 변경 금지</div>
       </div>
 
-      <div class="sec">실행 체크리스트</div>
+      <div class="main-sec"><span>// EXECUTION CHECKLIST</span></div>
       <div class="rule-block"><div class="rule-title">매일</div><div class="rule-body">① QQQ 현재가 vs ATH (낙폭 계산)\n② QQQ vs 200일선 확인</div></div>
       <div class="rule-block"><div class="rule-title">월 1회 (22일)</div><div class="rule-body">① 적립금 투입\n② SGOV 비중 5% 이하인가? → YES: 70/30 | NO: 50/50</div></div>
       <div class="rule-block"><div class="rule-title">하락장 발생 시</div><div class="rule-body">① QQQ &lt; 200일선인가?\n② ATH 대비 낙폭 몇 %인가?\n③ 해당 단계 이미 실행했는가?\n→ 미실행이면 SGOV 매도 → QLD 매수</div></div>
@@ -1412,25 +1423,30 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
     <!-- 빠른 답변 -->
     <div class="sub-panel" id="sub-guide-faq">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
-        <button class="quick-btn" onclick="showQldAnswer('dca')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
-          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">DCA 매수 규칙</div>
-          <div style="font-size:10px;color:var(--text3);">월 적립 비율 및 날짜</div>
+        <button onclick="showQldAnswer('dca')" style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:10px 12px;cursor:pointer;text-align:left;font-family:'JetBrains Mono',monospace;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,149,0,0.04)'" onmouseout="this.style.background='var(--bg2)'">
+          <div style="font-size:9px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">// DCA RULES</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text1);margin-bottom:1px;">DCA 매수 규칙</div>
+          <div style="font-size:9px;color:var(--text3);letter-spacing:0.3px;">월 적립 비율 및 날짜</div>
         </button>
-        <button onclick="showQldAnswer('dip')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
-          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">하락장 매수 절차</div>
-          <div style="font-size:10px;color:var(--text3);">5단계 트리거</div>
+        <button onclick="showQldAnswer('dip')" style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--red);padding:10px 12px;cursor:pointer;text-align:left;font-family:'JetBrains Mono',monospace;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,149,0,0.04)'" onmouseout="this.style.background='var(--bg2)'">
+          <div style="font-size:9px;font-weight:700;color:var(--red);letter-spacing:1px;margin-bottom:3px;">// DIP BUY · 5 STAGES</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text1);margin-bottom:1px;">하락장 매수 절차</div>
+          <div style="font-size:9px;color:var(--text3);letter-spacing:0.3px;">5단계 트리거</div>
         </button>
-        <button onclick="showQldAnswer('recovery')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
-          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">상승장 복귀 절차</div>
-          <div style="font-size:10px;color:var(--text3);">ATH 기준 3단계</div>
+        <button onclick="showQldAnswer('recovery')" style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:10px 12px;cursor:pointer;text-align:left;font-family:'JetBrains Mono',monospace;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,149,0,0.04)'" onmouseout="this.style.background='var(--bg2)'">
+          <div style="font-size:9px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">// RECOVERY · 3 STAGES</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text1);margin-bottom:1px;">상승장 복귀 절차</div>
+          <div style="font-size:9px;color:var(--text3);letter-spacing:0.3px;">ATH 기준 3단계</div>
         </button>
-        <button onclick="showQldAnswer('cycle')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
-          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">사이클 정의</div>
-          <div style="font-size:10px;color:var(--text3);">초기화 조건 및 흐름</div>
+        <button onclick="showQldAnswer('cycle')" style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:10px 12px;cursor:pointer;text-align:left;font-family:'JetBrains Mono',monospace;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,149,0,0.04)'" onmouseout="this.style.background='var(--bg2)'">
+          <div style="font-size:9px;font-weight:700;color:var(--accent);letter-spacing:1px;margin-bottom:3px;">// CYCLE DEFINITION</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text1);margin-bottom:1px;">사이클 정의</div>
+          <div style="font-size:9px;color:var(--text3);letter-spacing:0.3px;">초기화 조건 및 흐름</div>
         </button>
-        <button onclick="showQldAnswer('checklist')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
-          <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">실행 체크리스트</div>
-          <div style="font-size:10px;color:var(--text3);">매일/월 1회 확인</div>
+        <button onclick="showQldAnswer('checklist')" style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);padding:10px 12px;cursor:pointer;text-align:left;font-family:'JetBrains Mono',monospace;transition:background 0.15s;" onmouseover="this.style.background='rgba(255,149,0,0.04)'" onmouseout="this.style.background='var(--bg2)'">
+          <div style="font-size:9px;font-weight:700;color:var(--green);letter-spacing:1px;margin-bottom:3px;">// EXEC CHECKLIST</div>
+          <div style="font-size:11px;font-weight:700;color:var(--text1);margin-bottom:1px;">실행 체크리스트</div>
+          <div style="font-size:9px;color:var(--text3);letter-spacing:0.3px;">매일/월간 체크 항목</div>
         </button>
         <button onclick="showQldAnswer('forbidden')" style="background:var(--bg2);border:1px solid var(--border2);color:var(--text2);border-radius:7px;padding:10px 12px;font-size:11px;cursor:pointer;text-align:left;">
           <div style="font-weight:700;color:var(--text1);margin-bottom:2px;">금지사항</div>
@@ -2600,7 +2616,17 @@ const QLD_ANS={
 function showQldAnswer(key){
   const ans=QLD_ANS[key];if(!ans)return;
   const el=document.getElementById('qld-ai-answer');if(!el)return;
-  el.innerHTML=ans.map(a=>`<div style="border-left:3px solid var(--accent);padding-left:12px;margin-bottom:12px;"><div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:3px;">${a.t}</div><div style="font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-line;">${a.b}</div></div>`).join('');
+  el.innerHTML = '<div style="font-family:\'JetBrains Mono\',monospace;display:flex;flex-direction:column;gap:5px;">' + 
+    ans.map((a, i) => 
+      '<div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:10px 14px;">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">' +
+          '<div style="background:#000;color:var(--accent);border:1px solid var(--accent);padding:2px 7px;font-weight:700;letter-spacing:0.5px;font-size:9px;min-width:36px;text-align:center;">#'+(i+1).toString().padStart(2,'0')+'</div>' +
+          '<div style="font-size:11px;font-weight:700;color:var(--accent2);letter-spacing:0.3px;">'+a.t+'</div>' +
+        '</div>' +
+        '<div style="font-size:11px;color:var(--text2);line-height:1.7;white-space:pre-line;padding-left:46px;letter-spacing:0.2px;">'+a.b+'</div>' +
+      '</div>'
+    ).join('') + 
+  '</div>';
 }
 
 // 초기화
