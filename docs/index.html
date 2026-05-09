@@ -627,11 +627,11 @@ body{background:var(--bg0);color:var(--text1);font-family:'Segoe UI',sans-serif;
     </div>
 
     <!-- ③ 차트 -->
-    <div class="section-title">실제 자산 vs 시나리오</div>
+    
     <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;">
       <!-- 차트 헤더: 제목 + 토글 -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-        <div style="font-size:13px;font-weight:700;color:var(--text1);">2026년 주요지수 수익률 비교 (시작 = 100)</div>
+        <div id="tracker-chart-title" style="font-size:13px;font-weight:700;color:var(--text1);">주요지수 수익률 비교</div>
         <div style="display:flex;align-items:center;gap:6px;">
           <span style="font-size:10px;color:var(--text3);">로그 스케일</span>
           <div id="log-toggle" onclick="toggleLogScale()" style="width:30px;height:16px;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;position:relative;cursor:pointer;">
@@ -918,12 +918,20 @@ function renderTrackerChart(){
           }
         },
         tooltip: {
+          enabled: true,
+          position: 'nearest',
           backgroundColor: 'rgba(15,21,37,0.95)',
           titleColor: '#e8eaf0',
           bodyColor: '#e8eaf0',
           borderColor: 'rgba(255,255,255,0.1)',
           borderWidth: 1,
           padding: 10,
+          caretSize: 6,
+          cornerRadius: 6,
+          displayColors: true,
+          boxWidth: 8,
+          boxHeight: 8,
+          boxPadding: 4,
           callbacks: {
             label: function(ctx){
               if(ctx.parsed.y == null) return ctx.dataset.label + ': —';
@@ -958,6 +966,13 @@ function renderTrackerChart(){
       }
     }
   });
+  
+  // 제목 동적 업데이트
+  const titleEl = document.getElementById('tracker-chart-title');
+  if(titleEl){
+    const lastYM = months[months.length-1];
+    titleEl.textContent = baseYM + ' ~ ' + lastYM + ' 수익률 비교';
+  }
   
   const msgEl=document.getElementById('tracker-chart-msg');
   if(msgEl){
@@ -2155,12 +2170,20 @@ function renderTrackerChart(){
           }
         },
         tooltip: {
+          enabled: true,
+          position: 'nearest',
           backgroundColor: 'rgba(15,21,37,0.95)',
           titleColor: '#e8eaf0',
           bodyColor: '#e8eaf0',
           borderColor: 'rgba(255,255,255,0.1)',
           borderWidth: 1,
           padding: 10,
+          caretSize: 6,
+          cornerRadius: 6,
+          displayColors: true,
+          boxWidth: 8,
+          boxHeight: 8,
+          boxPadding: 4,
           callbacks: {
             label: function(ctx){
               if(ctx.parsed.y == null) return ctx.dataset.label + ': —';
@@ -2195,6 +2218,13 @@ function renderTrackerChart(){
       }
     }
   });
+  
+  // 제목 동적 업데이트
+  const titleEl = document.getElementById('tracker-chart-title');
+  if(titleEl){
+    const lastYM = months[months.length-1];
+    titleEl.textContent = baseYM + ' ~ ' + lastYM + ' 수익률 비교';
+  }
   
   const msgEl=document.getElementById('tracker-chart-msg');
   if(msgEl){
