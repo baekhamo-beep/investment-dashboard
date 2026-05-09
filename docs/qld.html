@@ -1952,31 +1952,33 @@ function renderDipStages(){
     const done = qldState?.cycle?.dip_triggered?.[i] || false;
     const isActive = triggered && !done;
     
-    let statusLabel, statusColor, rowStyle, stageBg, stageColor;
+    let statusLabel, statusColor, rowStyle, stageBg, stageColor, stageBorder, valueColor;
     if(done){
       statusLabel = '✓ DONE';
       statusColor = 'var(--green)';
       rowStyle = 'background:rgba(76,175,125,0.04);border-color:rgba(76,175,125,0.2);';
-      stageBg = '#000';
-      stageColor = 'var(--green)';
+      stageBg = '#000'; stageColor = 'var(--green)'; stageBorder = 'var(--green)';
+      valueColor = 'var(--green)';
     } else if(isActive){
+      // 트리거 발동 중
       statusLabel = 'NOW';
       statusColor = 'var(--red)';
-      rowStyle = 'background:rgba(224,92,92,0.06);border-color:var(--red);';
-      stageBg = 'var(--red)';
-      stageColor = '#fff';
+      rowStyle = 'background:rgba(224,92,92,0.08);border-color:var(--red);';
+      stageBg = 'var(--red)'; stageColor = '#fff'; stageBorder = 'var(--red)';
+      valueColor = 'var(--red)';
     } else {
+      // WAIT - 회색
       statusLabel = 'WAIT';
       statusColor = 'var(--text3)';
-      rowStyle = 'border-color:rgba(224,92,92,0.15);';
-      stageBg = '#000';
-      stageColor = 'var(--red)';
+      rowStyle = 'border-color:rgba(255,255,255,0.06);';
+      stageBg = '#000'; stageColor = 'var(--text3)'; stageBorder = 'var(--text3)';
+      valueColor = 'var(--text3)';
     }
     
     html += '<div style="background:var(--bg2);border:1px solid var(--border);'+rowStyle+'padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:\'JetBrains Mono\',monospace;font-size:11px;">'+
-      '<div style="background:'+stageBg+';color:'+stageColor+';border:1px solid var(--red);padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">STG '+(i+1)+'</div>'+
+      '<div style="background:'+stageBg+';color:'+stageColor+';border:1px solid '+stageBorder+';padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">STG '+(i+1)+'</div>'+
       '<div style="flex:1;color:var(--text2);"><b style="color:var(--text1);">'+s.p+'%</b> · '+s.l+'</div>'+
-      '<div style="color:var(--red);font-weight:700;">'+s.a+'% → QLD</div>'+
+      '<div style="color:'+valueColor+';font-weight:700;">'+s.a+'% → QLD</div>'+
       '<div style="font-size:9px;letter-spacing:1px;padding:2px 6px;color:'+statusColor+';'+(isActive?'animation:ab-pulse 1s infinite;':'')+'">'+statusLabel+'</div>'+
     '</div>';
   });
@@ -1998,38 +2000,57 @@ function renderSellTriggers(){
     {label:'ATH +30%', ratio:'50/50', target:t3Price, done:rt[2], reached:curQQQ>0&&t3Price>0&&curQQQ>=t3Price}
   ];
 
+  // "다음 진행" 단계 = 가장 첫번째 "미완료" 단계 (in_recovery_mode일 때만)
+  var nextIdx = -1;
+  if(qldState && qldState.cycle && qldState.cycle.in_recovery_mode){
+    for(var k=0; k<stages.length; k++){
+      if(!stages[k].done){ nextIdx = k; break; }
+    }
+  }
+
   var html='<div style="display:flex;flex-direction:column;gap:5px;">';
   
   stages.forEach(function(s,i){
-    var isActive = s.reached && !s.done;
-    var statusLabel, statusColor, rowStyle, stageBg, stageColor;
+    var isReachedActive = s.reached && !s.done;
+    var isNext = (i === nextIdx) && !s.done && !isReachedActive;
+    
+    var statusLabel, statusColor, rowStyle, stageBg, stageColor, stageBorder, valueColor;
     if(s.done){
       statusLabel = '✓ DONE';
       statusColor = 'var(--green)';
       rowStyle = 'background:rgba(76,175,125,0.04);border-color:rgba(76,175,125,0.2);';
-      stageBg = '#000';
-      stageColor = 'var(--green)';
-    } else if(isActive){
+      stageBg = '#000'; stageColor = 'var(--green)'; stageBorder = 'var(--green)';
+      valueColor = 'var(--green)';
+    } else if(isReachedActive){
+      // 가격 도달했는데 아직 미실행
+      statusLabel = 'NOW';
+      statusColor = 'var(--accent)';
+      rowStyle = 'background:rgba(255,149,0,0.08);border-color:var(--accent);';
+      stageBg = 'var(--accent)'; stageColor = '#000'; stageBorder = 'var(--accent)';
+      valueColor = 'var(--accent)';
+    } else if(isNext){
+      // 다음 진행 중인 단계
       statusLabel = 'NEXT';
       statusColor = 'var(--accent)';
       rowStyle = 'background:rgba(255,149,0,0.06);border-color:var(--accent);';
-      stageBg = 'var(--accent)';
-      stageColor = '#000';
+      stageBg = '#000'; stageColor = 'var(--accent)'; stageBorder = 'var(--accent)';
+      valueColor = 'var(--accent)';
     } else {
+      // WAIT - 회색
       statusLabel = 'WAIT';
       statusColor = 'var(--text3)';
-      rowStyle = 'border-color:rgba(255,149,0,0.15);';
-      stageBg = '#000';
-      stageColor = 'var(--accent)';
+      rowStyle = 'border-color:rgba(255,255,255,0.06);';
+      stageBg = '#000'; stageColor = 'var(--text3)'; stageBorder = 'var(--text3)';
+      valueColor = 'var(--text3)';
     }
     
     var targetStr = s.target>0 ? '$'+s.target.toFixed(2) : '—';
     
     html += '<div style="background:var(--bg2);border:1px solid var(--border);'+rowStyle+'padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:\'JetBrains Mono\',monospace;font-size:11px;">'+
-      '<div style="background:'+stageBg+';color:'+stageColor+';border:1px solid var(--accent);padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">STG '+(i+1)+'</div>'+
+      '<div style="background:'+stageBg+';color:'+stageColor+';border:1px solid '+stageBorder+';padding:2px 8px;font-weight:700;letter-spacing:1px;min-width:48px;text-align:center;font-size:10px;">STG '+(i+1)+'</div>'+
       '<div style="flex:1;color:var(--text2);"><b style="color:var(--text1);">'+s.label+'</b> · '+s.ratio+'</div>'+
-      '<div style="color:var(--accent);font-weight:700;">'+targetStr+'</div>'+
-      '<div style="font-size:9px;letter-spacing:1px;padding:2px 6px;color:'+statusColor+';'+(isActive?'animation:ab-pulse 1s infinite;':'')+'">'+statusLabel+'</div>'+
+      '<div style="color:'+valueColor+';font-weight:700;">'+targetStr+'</div>'+
+      '<div style="font-size:9px;letter-spacing:1px;padding:2px 6px;color:'+statusColor+';'+(isReachedActive?'animation:ab-pulse 1s infinite;':'')+'">'+statusLabel+'</div>'+
     '</div>';
   });
   
@@ -2092,7 +2113,6 @@ function renderTodayChecklist(){
   const isLow = (cycle?.target_sgov_ratio || 65) <= 5;
   const inRecovery = cycle?.in_recovery_mode || false;
   
-  // DCA D-Day (KST)
   const now = new Date(Date.now() + (9*60 + new Date().getTimezoneOffset()) * 60000);
   const todayDate = now.getDate();
   let dcaTarget = new Date(now.getFullYear(), now.getMonth(), 22, 0, 0, 0);
@@ -2139,35 +2159,32 @@ function renderTodayChecklist(){
   let html = '<div style="display:flex;flex-direction:column;gap:5px;">';
   
   items.forEach(function(item, i){
-    let statusLabel, statusColor, rowStyle, tagBg, tagColor, tagBorder;
+    let statusLabel, statusColor, rowStyle, tagBg, tagColor, tagBorder, detailColor;
     if(item.done){
       statusLabel = '✓ DONE';
       statusColor = 'var(--green)';
       rowStyle = 'background:rgba(76,175,125,0.04);border-color:rgba(76,175,125,0.2);';
-      tagBg = '#000';
-      tagColor = 'var(--green)';
-      tagBorder = 'var(--green)';
+      tagBg = '#000'; tagColor = 'var(--green)'; tagBorder = 'var(--green)';
+      detailColor = 'var(--green)';
     } else if(item.active){
       statusLabel = 'NOW';
       statusColor = 'var(--accent)';
       rowStyle = 'background:rgba(255,149,0,0.06);border-color:var(--accent);';
-      tagBg = 'var(--accent)';
-      tagColor = '#000';
-      tagBorder = 'var(--accent)';
+      tagBg = 'var(--accent)'; tagColor = '#000'; tagBorder = 'var(--accent)';
+      detailColor = 'var(--accent)';
     } else if(item.warn){
       statusLabel = 'WARN';
       statusColor = 'var(--gold)';
       rowStyle = 'background:rgba(201,168,76,0.04);border-color:rgba(201,168,76,0.2);';
-      tagBg = '#000';
-      tagColor = 'var(--gold)';
-      tagBorder = 'var(--gold)';
+      tagBg = '#000'; tagColor = 'var(--gold)'; tagBorder = 'var(--gold)';
+      detailColor = 'var(--gold)';
     } else {
+      // WAIT - 모두 회색
       statusLabel = 'WAIT';
       statusColor = 'var(--text3)';
-      rowStyle = 'border-color:rgba(255,255,255,0.07);';
-      tagBg = '#000';
-      tagColor = 'var(--text2)';
-      tagBorder = 'var(--text3)';
+      rowStyle = 'border-color:rgba(255,255,255,0.06);';
+      tagBg = '#000'; tagColor = 'var(--text3)'; tagBorder = 'var(--text3)';
+      detailColor = 'var(--text3)';
     }
     
     html += '<div style="background:var(--bg2);border:1px solid var(--border);'+rowStyle+'padding:10px 12px;display:flex;align-items:center;gap:10px;font-family:\'JetBrains Mono\',monospace;font-size:11px;">'+
@@ -2176,7 +2193,7 @@ function renderTodayChecklist(){
         '<div style="color:var(--text1);font-weight:600;">'+item.label+'</div>'+
         '<div style="font-size:9px;color:'+(item.warn?'var(--gold)':'var(--text3)')+';margin-top:2px;letter-spacing:0.2px;">'+item.sub+'</div>'+
       '</div>'+
-      '<div style="color:var(--accent);font-weight:700;font-family:\'JetBrains Mono\',monospace;">'+(item.detail||'')+'</div>'+
+      '<div style="color:'+detailColor+';font-weight:700;font-family:\'JetBrains Mono\',monospace;">'+(item.detail||'')+'</div>'+
       '<div style="font-size:9px;letter-spacing:1px;padding:2px 6px;color:'+statusColor+';'+(item.active?'animation:ab-pulse 1s infinite;':'')+'">'+statusLabel+'</div>'+
     '</div>';
   });
