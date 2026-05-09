@@ -740,41 +740,45 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 @media(max-width:600px){.v6-metric-grid{grid-template-columns:1fr 1fr;}}
 </style>
 
-<!-- 히어로 배너 -->
-<div class="v6-hero">
-  <div class="v6-badge">v6 백테스트 · 2006~2026 · 16개 시나리오 · 세전 기준</div>
-  <div class="v6-hero-title">QLD Hybrid 전략 성과</div>
-  <div class="v6-hero-sub">거치 1억 + 월 100만 · QLD 35/SGOV 65 시작 · 하락 5단계 매수 + ATH 3단계 복귀<br>
-    QLD 단독보다 <span style="color:#4caf7d;font-weight:700;">MDD 20%p 개선</span> · Calmar <span style="color:#c9a84c;font-weight:700;">0.47 vs 0.34</span> · QQQ 대비 최종자산 <span style="color:#ff9500;font-weight:700;">3배</span>
+<!-- 헤더 -->
+<div class="main-sec"><span>// STRATEGY PERFORMANCE</span><span class="right">v6 백테스트 · 2006-2026</span></div>
+<div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--accent);padding:12px 14px;margin-bottom:14px;font-family:'JetBrains Mono',monospace;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+    <div style="background:var(--accent);color:#000;padding:3px 10px;font-weight:700;letter-spacing:1px;font-size:10px;">QLD HYBRID</div>
+    <div style="font-size:13px;color:var(--text1);font-weight:700;">16개 시나리오 백테스트 결과</div>
+  </div>
+  <div style="font-size:11px;color:var(--text2);line-height:1.7;letter-spacing:0.2px;">
+    거치 1억 + 월 100만 · QLD 35 / SGOV 65 시작 · 하락 5단계 매수 + ATH 3단계 복귀<br>
+    QLD 단독 대비 <b style="color:var(--green);">MDD 20%p ↓</b> · Calmar <b style="color:var(--gold);">0.47 vs 0.34</b> · QQQ 대비 최종자산 <b style="color:var(--accent);">3배</b>
   </div>
 </div>
 
 <!-- 핵심 지표 4개 -->
-<div class="sec">핵심 성과 (16개 시나리오 평균)</div>
+<div class="main-sec"><span>// CORE METRICS</span><span class="right">16개 시나리오 평균</span></div>
 <div class="v6-metric-grid">
   <div class="v6-metric green">
-    <div class="v6-metric-badge" style="background:rgba(76,175,125,0.15);color:#4caf7d;">평균 CAGR</div>
+    <div class="v6-metric-badge" style="background:rgba(76,175,125,0.15);color:#4caf7d;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;">CAGR</div>
     <div class="v6-metric-label" style="margin-top:16px;">연평균 수익률</div>
     <div class="v6-metric-val" style="color:#4caf7d;">21.43%</div>
     <div class="v6-metric-sub">범위 18.35 ~ 23.64%</div>
     <div class="v6-bar-wrap"><div class="v6-bar" style="background:#4caf7d;width:78%;"></div></div>
   </div>
   <div class="v6-metric red">
-    <div class="v6-metric-badge" style="background:rgba(224,92,92,0.15);color:#e05c5c;">평균 MDD</div>
+    <div class="v6-metric-badge" style="background:rgba(224,92,92,0.15);color:#e05c5c;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;">MDD</div>
     <div class="v6-metric-label" style="margin-top:16px;">최대 낙폭</div>
     <div class="v6-metric-val" style="color:#e05c5c;">-46.53%</div>
     <div class="v6-metric-sub">QLD 단독 -67% 대비 20%p↓</div>
     <div class="v6-bar-wrap"><div class="v6-bar" style="background:#e05c5c;width:56%;"></div></div>
   </div>
   <div class="v6-metric gold">
-    <div class="v6-metric-badge" style="background:rgba(201,168,76,0.15);color:#c9a84c;">🏆 Calmar</div>
+    <div class="v6-metric-badge" style="background:rgba(201,168,76,0.15);color:#c9a84c;">CALMAR</div>
     <div class="v6-metric-label" style="margin-top:16px;">손실 대비 성장</div>
     <div class="v6-metric-val" style="color:#c9a84c;">0.47</div>
     <div class="v6-metric-sub">QLD 0.34 · QQQ 0.37 · SPY 0.27</div>
     <div class="v6-bar-wrap"><div class="v6-bar" style="background:#c9a84c;width:100%;"></div></div>
   </div>
   <div class="v6-metric blue">
-    <div class="v6-metric-badge" style="background:rgba(255,149,0,0.15);color:#ff9500;">평균자산</div>
+    <div class="v6-metric-badge" style="background:rgba(255,149,0,0.15);color:#ff9500;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;">FINAL</div>
     <div class="v6-metric-label" style="margin-top:16px;">세전 최종 평가액</div>
     <div class="v6-metric-val" style="color:#ff9500;">49.97억</div>
     <div class="v6-metric-sub">QQQ 16.9억 대비 약 3배</div>
@@ -783,47 +787,47 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 </div>
 
 <!-- 4전략 비교 테이블 -->
-<div class="sec">4전략 직접 비교</div>
+<div class="main-sec"><span>// STRATEGY COMPARISON · 4 STRATEGIES</span></div>
 <div class="v6-table">
   <div class="v6-thead" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
     <div>전략</div><div style="text-align:right;">CAGR</div><div style="text-align:right;">MDD</div><div style="text-align:right;">Calmar</div><div style="text-align:right;">평균자산</div><div style="text-align:right;">평가</div>
   </div>
   <div class="v6-trow hl" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
-    <div><div style="font-size:12px;font-weight:800;color:var(--accent2);">⚡ QLD Hybrid</div><div style="font-size:9px;color:var(--text3);">하락매수+리밸</div></div>
+    <div><div style="font-size:12px;font-weight:800;color:var(--accent2);">QLD HYBRID</div><div style="font-size:9px;color:var(--text3);">하락매수+리밸</div></div>
     <div style="text-align:right;"><div style="font-size:14px;font-weight:800;color:#4caf7d;">21.43%</div><div style="font-size:9px;color:var(--text3);">±1.77%p</div></div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ffc107;">-46.53%</div><div style="font-size:9px;color:var(--text3);">최악 -58.96%</div></div>
     <div style="text-align:right;font-size:14px;font-weight:800;color:#c9a84c;">0.47</div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ff9500;">49.97억</div><div style="font-size:9px;color:var(--text3);">중앙 38.9억</div></div>
-    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(76,175,125,0.2);color:#4caf7d;">🏆 1위</span></div>
+    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(76,175,125,0.2);color:#4caf7d;">RANK 1</span></div>
   </div>
   <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
-    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">📈 QLD 단독</div><div style="font-size:9px;color:var(--text3);">레버리지 100%</div></div>
+    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">QLD SOLO</div><div style="font-size:9px;color:var(--text3);">레버리지 100%</div></div>
     <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:#4caf7d;">22.63%</div><div style="font-size:9px;color:var(--text3);">±2.06%p</div></div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#e05c5c;">-67.00%</div><div style="font-size:9px;color:var(--text3);">최악 -80.48%</div></div>
     <div style="text-align:right;font-size:14px;font-weight:700;color:var(--text2);">0.34</div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--text2);">64.17억</div><div style="font-size:9px;color:var(--text3);">중앙 56.0억</div></div>
-    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(224,92,92,0.15);color:#e05c5c;">고위험</span></div>
+    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(224,92,92,0.15);color:#e05c5c;">HIGH RISK</span></div>
   </div>
   <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
-    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">🏛 QQQ</div><div style="font-size:9px;color:var(--text3);">나스닥100</div></div>
+    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">QQQ</div><div style="font-size:9px;color:var(--text3);">나스닥100</div></div>
     <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:var(--text2);">13.23%</div><div style="font-size:9px;color:var(--text3);">±0.95%p</div></div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ff9500;">-37.39%</div><div style="font-size:9px;color:var(--text3);">최악 -49.17%</div></div>
     <div style="text-align:right;font-size:14px;font-weight:700;color:var(--text2);">0.37</div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--text2);">16.91억</div><div style="font-size:9px;color:var(--text3);">중앙 15.6억</div></div>
-    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(90,96,128,0.2);color:#9aa0b8;">안전형</span></div>
+    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(90,96,128,0.2);color:#9aa0b8;">DEFENSIVE</span></div>
   </div>
   <div class="v6-trow" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
-    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">🏦 SPY</div><div style="font-size:9px;color:var(--text3);">S&P500</div></div>
+    <div><div style="font-size:12px;font-weight:700;color:var(--text1);">SPY</div><div style="font-size:9px;color:var(--text3);">S&P500</div></div>
     <div style="text-align:right;"><div style="font-size:14px;font-weight:700;color:var(--text3);">9.36%</div><div style="font-size:9px;color:var(--text3);">±0.94%p</div></div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:#ff9500;">-36.55%</div><div style="font-size:9px;color:var(--text3);">최악 -48.18%</div></div>
     <div style="text-align:right;font-size:14px;font-weight:700;color:var(--text3);">0.27</div>
     <div style="text-align:right;"><div style="font-size:13px;font-weight:700;color:var(--text3);">9.62억</div><div style="font-size:9px;color:var(--text3);">중앙 9.6억</div></div>
-    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(90,96,128,0.15);color:#5a6080;">보수적</span></div>
+    <div style="text-align:right;"><span class="v6-chip" style="background:rgba(90,96,128,0.15);color:#5a6080;">CONSERVATIVE</span></div>
   </div>
 </div>
 
 <!-- 수익/위험 2축 비교 차트 -->
-<div class="sec">Hybrid vs QLD — 수익은 비슷, 위험은 다르다</div>
+<div class="main-sec"><span>// HYBRID vs QLD · 수익 비슷, 위험 차이</span></div>
 
 <!-- 핵심 메시지 3개 -->
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px;">
@@ -1059,18 +1063,21 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 }
 </style>
 
-<!-- ① 히어로 배너 -->
-<div class="fv-hero">
-  <div class="fv-badge">구조 검증 · Walk-Forward + 민감도 + 스트레스 테스트</div>
-  <div class="fv-title">이 전략, 미래에도 통할까?</div>
-  <div class="fv-sub">
+<!-- 헤더 -->
+<div class="main-sec"><span>// FUTURE VALIDATION</span><span class="right">Walk-Forward · 민감도 · 스트레스</span></div>
+<div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);padding:12px 14px;margin-bottom:14px;font-family:'JetBrains Mono',monospace;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+    <div style="background:var(--green);color:#000;padding:3px 10px;font-weight:700;letter-spacing:1px;font-size:10px;">VERDICT · PASS</div>
+    <div style="font-size:13px;color:var(--text1);font-weight:700;">이 전략, 미래에도 통할까?</div>
+  </div>
+  <div style="font-size:11px;color:var(--text2);line-height:1.7;letter-spacing:0.2px;">
     과거 백테스트가 "우연히 맞은 건 아닌지" 3가지 방법으로 교차 검증.<br>
-    <span style="color:#4caf7d;font-weight:700;">결론: 구조적 전략 · 미래 유지력 양호 · 과최적화 의심 낮음</span>
+    <b style="color:var(--green);">결론: 구조적 전략 · 미래 유지력 양호 · 과최적화 의심 낮음</b>
   </div>
 </div>
 
 <!-- ② 핵심 검증 지표 3개 -->
-<div class="sec">핵심 검증 지표</div>
+<div class="main-sec"><span>// VALIDATION METRICS · 3 KEY</span></div>
 <div class="fv-grid3">
   <div class="fv-metric green">
     <div class="fv-metric-lbl">OOS Calmar</div>
@@ -1084,13 +1091,13 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
   </div>
   <div class="fv-metric red">
     <div class="fv-metric-lbl">레짐 변화 시 한계</div>
-    <div class="fv-metric-val" style="color:#e05c5c;">⚠</div>
+    <div class="fv-metric-val" style="color:#e05c5c;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">CAUTION</div>
     <div class="fv-metric-desc">시장 레짐이 근본적으로 변하면<br>P(수익 ≥ 15%) = <b>0%</b> — 주의 필요</div>
   </div>
 </div>
 
 <!-- ③ Walk-Forward 결과 -->
-<div class="sec">Walk-Forward 검증 (3개 구간 롤링)</div>
+<div class="main-sec"><span>// WALK-FORWARD · 3 ROLLING WINDOWS</span></div>
 <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:14px;">
   <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-bottom:12px;">
     과거 데이터를 <b style="color:var(--text1);">학습구간(Train)</b>과 <b style="color:var(--text1);">검증구간(Test, OOS)</b>으로 나누어, 학습에 쓰지 않은 미래 구간에서도 작동하는지 테스트.
@@ -1138,7 +1145,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 </div>
 
 <div class="fv-insight" style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.2);">
-  <div class="fv-insight-icon" style="background:rgba(76,175,125,0.15);">✅</div>
+  <div class="fv-insight-icon" style="background:#000;color:var(--green);border:1px solid var(--green);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;">PASS</div>
   <div>
     <div style="font-size:12px;font-weight:700;color:#4caf7d;margin-bottom:3px;">검증구간이 학습구간보다 더 좋음</div>
     <div style="font-size:10px;color:var(--text2);line-height:1.6;">OOS Calmar 0.61 > 훈련 Calmar 0.48 — 전략이 과거 특정 구간에 맞춰진 게 아니라, 처음 보는 데이터에서도 효율이 유지됨. <b style="color:var(--text1);">학습이 아닌 구조적 작동의 증거.</b></div>
@@ -1146,7 +1153,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 </div>
 
 <!-- ④ 파라미터 민감도 -->
-<div class="sec">파라미터 민감도 테스트</div>
+<div class="main-sec"><span>// PARAMETER SENSITIVITY · 7 CONFIGS</span></div>
 <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:10px;">
   <div style="font-size:11px;color:var(--text2);line-height:1.7;margin-bottom:12px;">
     전략 파라미터를 7가지로 변경해 성과 차이를 비교. BASE가 <b style="color:var(--text1);">최고점이 아닌 무난한 중간</b>에 있을수록 "데이터 맞춤"이 아님을 의미.
@@ -1175,7 +1182,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
       <div style="text-align:right;font-size:11px;color:var(--text2);">0.61</div>
     </div>
     <div class="fv-trow base" style="grid-template-columns:110px 60px 70px 62px 70px;">
-      <div style="font-size:12px;"><span style="color:var(--accent2);font-weight:800;">⚡ BASE</span><div style="font-size:9px;color:var(--text3);">현재 설정 (35/65)</div></div>
+      <div style="font-size:12px;"><span style="background:var(--accent);color:#000;padding:2px 7px;font-family:'JetBrains Mono',monospace;font-weight:800;letter-spacing:1px;font-size:10px;">BASE</span><div style="font-size:9px;color:var(--text3);">현재 설정 (35/65)</div></div>
       <div style="text-align:right;font-size:12px;color:var(--text1);font-weight:700;">+21.43%</div>
       <div style="text-align:right;font-size:11px;color:var(--text1);">-46.53%</div>
       <div style="text-align:right;font-size:13px;font-weight:800;color:#c9a84c;">0.47</div>
@@ -1213,7 +1220,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 </div>
 
 <div class="fv-insight" style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);">
-  <div class="fv-insight-icon" style="background:rgba(201,168,76,0.15);">🎯</div>
+  <div class="fv-insight-icon" style="background:#000;color:var(--gold);border:1px solid var(--gold);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;">BASE</div>
   <div>
     <div style="font-size:12px;font-weight:700;color:#c9a84c;margin-bottom:3px;">BASE는 "압도적"이 아니라 "무난한" 설정</div>
     <div style="font-size:10px;color:var(--text2);line-height:1.6;">BASE Calmar 0.47 — 7개 중 3위. 더 좋은 설정(DROP_0.8x 0.49)도 있음. 파라미터 흔들어도 0.39~0.49 범위 내 → <b style="color:var(--text1);">데이터 맞춤형 아님, 구조적 견고성 확인</b>.</div>
@@ -1221,14 +1228,14 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 </div>
 
 <!-- ⑤ 스트레스 테스트 -->
-<div class="sec">스트레스 테스트 (극한 상황 시뮬레이션)</div>
+<div class="main-sec"><span>// STRESS TEST · 4 SCENARIOS</span></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
 
   <!-- 부트스트랩 -->
   <div class="fv-stress-card ok">
     <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
       <div>
-        <div style="font-size:11px;font-weight:800;color:#4caf7d;">📊 Block Bootstrap</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:#4caf7d;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;"><span style="background:var(--green);color:#000;padding:1px 6px;font-size:9px;">BOOT</span>BLOCK BOOTSTRAP</div>
         <div style="font-size:9px;color:var(--text3);margin-top:2px;">과거 수익률 블록 재조합 500회</div>
       </div>
       <div style="font-size:9px;color:var(--text3);">n=500</div>
@@ -1246,7 +1253,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
   <div class="fv-stress-card bad">
     <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
       <div>
-        <div style="font-size:11px;font-weight:800;color:#e05c5c;">⚠ Regime Switching</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:#e05c5c;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;"><span style="background:var(--red);color:#fff;padding:1px 6px;font-size:9px;">REGIME</span>REGIME SWITCHING</div>
         <div style="font-size:9px;color:var(--text3);margin-top:2px;">근본적 레짐 변화 200회</div>
       </div>
       <div style="font-size:9px;color:var(--text3);">n=200</div>
@@ -1264,7 +1271,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
   <div class="fv-stress-card mid">
     <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
       <div>
-        <div style="font-size:11px;font-weight:800;color:#c9a84c;">💥 Shock -20%</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:#c9a84c;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;"><span style="background:var(--gold);color:#000;padding:1px 6px;font-size:9px;">SHOCK</span>SHOCK -20%</div>
         <div style="font-size:9px;color:var(--text3);margin-top:2px;">무작위 시점에 -20% 충격</div>
       </div>
       <div style="font-size:9px;color:var(--text3);">n=100</div>
@@ -1282,7 +1289,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
   <div class="fv-stress-card mid">
     <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
       <div>
-        <div style="font-size:11px;font-weight:800;color:#c9a84c;">💥 Shock -30%</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:#c9a84c;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;"><span style="background:var(--gold);color:#000;padding:1px 6px;font-size:9px;">SHOCK</span>SHOCK -30%</div>
         <div style="font-size:9px;color:var(--text3);margin-top:2px;">무작위 시점에 -30% 충격</div>
       </div>
       <div style="font-size:9px;color:var(--text3);">n=100</div>
@@ -1298,31 +1305,31 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 </div>
 
 <!-- ⑥ 최종 종합 판정 -->
-<div class="sec">최종 종합 판정</div>
+<div class="main-sec"><span>// FINAL VERDICT · 4 INSIGHTS</span></div>
 
 <div class="fv-insight" style="background:rgba(76,175,125,0.06);border:1px solid rgba(76,175,125,0.2);">
-  <div class="fv-insight-icon" style="background:rgba(76,175,125,0.15);">🏆</div>
+  <div class="fv-insight-icon" style="background:var(--green);color:#000;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;">TIER 1</div>
   <div>
     <div style="font-size:12px;font-weight:700;color:#4caf7d;margin-bottom:3px;">전략 정체성: 고수익-상위권 위험조정 전략</div>
     <div style="font-size:10px;color:var(--text2);line-height:1.6;">BASE Calmar 0.47은 <b style="color:var(--text1);">상위 10~20%급</b> 퀀트 전략 수준. Walk-forward OOS Calmar 0.61은 더 높음 — <b style="color:var(--text1);">학습 데이터 외에서도 효율 유지</b>.</div>
   </div>
 </div>
 <div class="fv-insight" style="background:rgba(255,149,0,0.06);border:1px solid rgba(255,149,0,0.2);">
-  <div class="fv-insight-icon" style="background:rgba(255,149,0,0.15);">🔮</div>
+  <div class="fv-insight-icon" style="background:#000;color:var(--accent);border:1px solid var(--accent);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;">OOS</div>
   <div>
     <div style="font-size:12px;font-weight:700;color:#ff9500;margin-bottom:3px;">미래 유지력: 양호</div>
     <div style="font-size:10px;color:var(--text2);line-height:1.6;">3개 OOS 구간 모두 Calmar ≥ 0.42. 파라미터 민감도 ±0.03 수준 — <b style="color:var(--text1);">시장 구조가 급변하지 않는 한 성과 수준 유지 가능</b>.</div>
   </div>
 </div>
 <div class="fv-insight" style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);">
-  <div class="fv-insight-icon" style="background:rgba(201,168,76,0.15);">🔍</div>
+  <div class="fv-insight-icon" style="background:#000;color:var(--gold);border:1px solid var(--gold);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;">FIT</div>
   <div>
     <div style="font-size:12px;font-weight:700;color:#c9a84c;margin-bottom:3px;">과최적화 의심: 낮음</div>
     <div style="font-size:10px;color:var(--text2);line-height:1.6;">BASE가 민감도 테스트에서 3/7위 — 압도적 최고점이 아님. 주변 설정도 비슷한 성과 → <b style="color:var(--text1);">데이터에 맞춰 튜닝된 게 아니라 구조적 규칙</b>.</div>
   </div>
 </div>
 <div class="fv-insight" style="background:rgba(224,92,92,0.05);border:1px solid rgba(224,92,92,0.15);">
-  <div class="fv-insight-icon" style="background:rgba(224,92,92,0.1);">⚠️</div>
+  <div class="fv-insight-icon" style="background:#000;color:var(--red);border:1px solid var(--red);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1px;">RISK</div>
   <div>
     <div style="font-size:12px;font-weight:700;color:#e05c5c;margin-bottom:3px;">주의: 레짐 근본 변화 시 한계</div>
     <div style="font-size:10px;color:var(--text2);line-height:1.6;">레짐 스위칭 시뮬에서 평균 CAGR -2.7%. QQQ의 구조적 성장(나스닥100의 장기 우상향)이 전제 — <b style="color:var(--text1);">이 전제가 깨지면 전략도 깨짐</b>. 나스닥 대체 기술 부상 등 극단 시나리오 대비 필요.</div>
@@ -1330,11 +1337,14 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 </div>
 
 <!-- ⑦ 한 줄 결론 -->
-<div style="background:linear-gradient(135deg,rgba(76,175,125,0.08),rgba(255,149,0,0.08));border:1px solid rgba(76,175,125,0.3);border-radius:10px;padding:16px 18px;margin-top:14px;">
-  <div style="font-size:10px;font-weight:700;color:rgba(76,175,125,0.7);letter-spacing:1.5px;margin-bottom:6px;">FINAL VERDICT</div>
-  <div style="font-size:13px;color:var(--text1);line-height:1.8;font-weight:500;">
-    <b style="color:#4caf7d;">이 전략은 우연히 맞은 게 아닙니다.</b> 학습 외 구간과 파라미터 변경에도 성과를 유지하며,<br>
-    <b style="color:#4caf7d;">구조적으로 작동</b>합니다. 단, <b style="color:#e05c5c;">시장 레짐이 근본적으로 바뀌면</b> 전략의 전제가 흔들릴 수 있으니,<br>
+<div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);padding:14px 16px;margin-top:14px;font-family:'JetBrains Mono',monospace;">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+    <div style="background:var(--green);color:#000;padding:3px 10px;font-weight:700;letter-spacing:1.5px;font-size:10px;">FINAL VERDICT</div>
+    <div style="font-size:11px;color:var(--text3);letter-spacing:0.3px;">// 종합 결론</div>
+  </div>
+  <div style="font-size:12px;color:var(--text1);line-height:1.8;letter-spacing:0.2px;">
+    <b style="color:var(--green);">이 전략은 우연히 맞은 게 아닙니다.</b> 학습 외 구간과 파라미터 변경에도 성과를 유지하며,<br>
+    <b style="color:var(--green);">구조적으로 작동</b>합니다. 단, <b style="color:var(--red);">시장 레짐이 근본적으로 바뀌면</b> 전략의 전제가 흔들릴 수 있으니,<br>
     연 1회 정기 점검으로 QQQ의 장기 성장 전제를 확인하는 것이 중요합니다.
   </div>
 </div>
