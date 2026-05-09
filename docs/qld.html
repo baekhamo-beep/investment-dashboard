@@ -1388,6 +1388,7 @@ async function loadData(){
     const upd=new Date(new Date(d.updated_utc).getTime()+9*3600000).toLocaleString('ko-KR');
     document.getElementById('data-updated-text').textContent='업데이트: '+upd;
     renderActionBanner(); updatePortfolioDca(); const ab=document.getElementById('action-banner');if(ab)ab.style.opacity='1';
+    updateNasdaqATH(); renderCycleStatus(); renderTodayChecklist();
     renderDiagStatus(); renderDipStages(); renderSellTriggers(); renderTodayChecklist();
   }catch(e){document.getElementById('data-updated-text').textContent='데이터 로드 실패';}
 }
