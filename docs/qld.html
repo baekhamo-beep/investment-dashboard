@@ -991,6 +991,62 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 .fv-prob-bar-wrap{height:20px;background:var(--bg3);border-radius:4px;overflow:hidden;position:relative;margin-top:6px;}
 .fv-prob-bar{height:20px;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:10px;font-weight:700;color:rgba(255,255,255,0.9);}
 @media(max-width:600px){.fv-grid3{grid-template-columns:1fr;}}
+
+
+/* ===== 모바일 미세 조정 (추가) ===== */
+@media (max-width:768px) {
+  /* 수정 2: STATE 박스 컴팩트화 */
+  .cycle-state-box {
+    padding:6px 10px !important;
+    margin-bottom:8px !important;
+  }
+  .cycle-state-box > div:nth-child(3) {
+    /* 진행률 바 */
+    margin-top:4px !important;
+    height:3px !important;
+  }
+  .cycle-state-box > div:nth-child(4) {
+    /* 진행률 라벨 (ATH +11.9% +20%) */
+    margin-top:2px !important;
+    font-size:7.5px !important;
+    letter-spacing:0.3px !important;
+  }
+  
+  /* 수정 3: 가격 박스 letter-spacing 줄이기 */
+  .action-banner div[style*="border:1px solid var(--accent-border)"] > div:first-child {
+    letter-spacing:0.5px !important;
+    font-size:8.5px !important;
+  }
+  
+  /* 수정 4: NEXT STAGE 진행률 % 강조 */
+  .action-banner div[style*="border:1px dashed"] div[style*="display:flex;justify-content:space-between"] b {
+    font-size:13px !important;
+    color:var(--accent) !important;
+  }
+  
+  /* 수정 6: 판단 근거 두 줄 처리 - hanging indent */
+  #reasoning-text > div > div[style*="display:flex"] {
+    align-items:flex-start !important;
+  }
+  #reasoning-text span[style*="font-family"][style*="JetBrains"][style*="font-size:11px"] {
+    /* [+]/[−]/[→] 마크 - 모바일에서 작게 */
+    font-size:10px !important;
+    min-width:20px !important;
+  }
+  /* 두 번째 줄 들여쓰기는 flex라 자동으로 정렬됨 */
+  
+  /* DCA 카드 한 줄 강제 */
+  #port-dca-detail {
+    font-size:8.5px !important;
+    line-height:1.4 !important;
+  }
+  #port-dca-detail b {
+    display:inline-block !important;
+    white-space:nowrap !important;
+    letter-spacing:0 !important;
+    font-size:9px !important;
+  }
+}
 </style>
 
 <!-- ① 히어로 배너 -->
@@ -1831,7 +1887,7 @@ function updatePortfolioDca(){
     var dayStr = dayNames[target.getDay()];
     var modeStr = isLow ? '탄약부족' : '일반';
     var ratioStr = isLow ? 'QLD 70 / SGOV 30' : 'QLD 50 / SGOV 50';
-    detailEl.innerHTML = dateStr + ' (' + dayStr + ') · ' + modeStr + '<br><b style="color:#4a9eff;">' + ratioStr + '</b>';
+    detailEl.innerHTML = dateStr + ' (' + dayStr + ') · ' + modeStr + '<br><b style="color:#4a9eff;letter-spacing:0;font-size:9px;white-space:nowrap;">' + ratioStr + '</b>';
   }
   
   var statEl = document.getElementById('port-dca-status');
@@ -1845,11 +1901,36 @@ function updatePortfolioDca(){
 // 상황 진단
 function renderDiagStatus(){
   const ma200below=mkt.ma200!==null&&mkt.ma200<0;
-  let html='';
-  if(mkt.nasdaq===null)html='<div class="status-box info" style="background:rgba(255,149,0,0.08);border:1px solid rgba(255,149,0,0.25);"><div class="status-title" style="color:var(--accent)">데이터 로딩 중</div></div>';
-  else if(ma200below&&mkt.nasdaq<=-12)html='<div class="status-box danger"><div class="status-title" style="color:var(--red)">🚨 하락장 매수 조건 충족!</div><div class="status-desc">QQQ 200일선 아래 + ATH 대비 -12% 이상 → 사이클 탭에서 단계 확인 후 매수 집행</div></div>';
-  else if(ma200below)html='<div class="status-box warn"><div class="status-title" style="color:var(--gold)">⚠ QQQ 200일선 아래 — 낙폭 모니터링 중</div><div class="status-desc">ATH 대비 낙폭이 트리거 구간 도달 시 매수 집행. 지금은 대기.</div></div>';
-  else html='<div class="status-box safe"><div class="status-title" style="color:var(--green)">✅ 정상 운항 — 200일선 위</div><div class="status-desc">하락 트리거 비활성. 정기 DCA 루틴 유지. 매월 22일 적립 매수.</div></div>';
+  let tag, tagColor, tagBg, title, desc, leftBorder, bgTint;
+  
+  if(mkt.nasdaq===null){
+    tag='LOADING'; tagColor='#000'; tagBg='var(--accent)';
+    title='데이터 로딩 중'; desc='잠시 기다려주세요';
+    leftBorder='var(--accent)'; bgTint='rgba(255,149,0,0.04)';
+  } else if(ma200below && mkt.nasdaq<=-12){
+    tag='ALERT'; tagColor='#fff'; tagBg='var(--red)';
+    title='하락장 매수 조건 충족'; 
+    desc='QQQ 200일선 아래 + ATH 대비 -12% 이상 · 사이클 탭에서 단계 확인 후 매수 집행';
+    leftBorder='var(--red)'; bgTint='rgba(224,92,92,0.06)';
+  } else if(ma200below){
+    tag='WARN'; tagColor='#000'; tagBg='var(--gold)';
+    title='QQQ 200일선 아래 — 낙폭 모니터링 중';
+    desc='ATH 대비 낙폭이 트리거 구간 도달 시 매수 집행 · 현재 대기';
+    leftBorder='var(--gold)'; bgTint='rgba(201,168,76,0.05)';
+  } else {
+    tag='NORMAL'; tagColor='#000'; tagBg='var(--green)';
+    title='정상 운항 — 200일선 위';
+    desc='하락 트리거 비활성 · 정기 DCA 루틴 유지 · 매월 22일 적립 매수';
+    leftBorder='var(--green)'; bgTint='rgba(76,175,125,0.04)';
+  }
+  
+  const html = '<div style="background:'+bgTint+';border:1px solid var(--border);border-left:3px solid '+leftBorder+';padding:10px 14px;display:flex;align-items:flex-start;gap:10px;">'+
+    '<div style="background:'+tagBg+';color:'+tagColor+';padding:3px 8px;font-family:\'JetBrains Mono\',monospace;font-size:10px;font-weight:700;letter-spacing:1px;flex-shrink:0;margin-top:1px;">'+tag+'</div>'+
+    '<div style="flex:1;min-width:0;">'+
+      '<div style="font-size:12px;font-weight:700;color:'+leftBorder+';margin-bottom:3px;line-height:1.3;">'+title+'</div>'+
+      '<div style="font-size:10px;color:var(--text2);line-height:1.5;font-family:\'JetBrains Mono\',monospace;letter-spacing:0.2px;">'+desc+'</div>'+
+    '</div>'+
+  '</div>';
   document.getElementById('diag-status').innerHTML=html;
 }
 
