@@ -1,7 +1,8 @@
 """
-yfinance + Stooq 폴백으로 QQQ/SPY/KOSPI 최신 종가 가져옴
+yfinance + Stooq 폴백으로 QQQ/SPY/KOSPI 종가 가져옴 (NaN 방어)
 """
 import json
+import math
 import sys
 from datetime import datetime, timezone, timedelta
 from io import StringIO
@@ -16,44 +17,48 @@ ym = now_kst.strftime("%Y-%m")
 print(f"갱신 대상 월: {ym}")
 print(f"yfinance 버전: {yf.__version__}")
 
-# ===== 1차 시도: yfinance =====
+def is_valid(v):
+    """None, NaN, 0 이하 모두 invalid"""
+    if v is None: return False
+    try:
+        f = float(v)
+        if math.isnan(f) or math.isinf(f) or f <= 0:
+            return False
+        return True
+    except:
+        return False
+
 def fetch_yfinance(symbol):
     try:
-        # download 함수가 더 안정적
         df = yf.download(symbol, period="10d", progress=False, auto_adjust=True)
-        if df.empty:
-            return None, None
-        # 멀티 컬럼 처리 (최신 yfinance는 (Close, QQQ) 형태)
+        if df.empty: return None
         if isinstance(df.columns, pd.MultiIndex):
             close = df["Close"][symbol] if symbol in df["Close"].columns else df["Close"].iloc[:, 0]
         else:
             close = df["Close"]
-        last_close = float(close.iloc[-1])
-        last_date = close.index[-1].strftime("%Y-%m-%d")
-        return round(last_close, 2), last_date
+        last = close.dropna()
+        if last.empty: return None
+        val = float(last.iloc[-1])
+        return val if is_valid(val) else None
     except Exception as e:
-        print(f"  yfinance 오류 ({symbol}): {e}")
-        return None, None
+        print(f"  yfinance err ({symbol}): {e}")
+        return None
 
-# ===== 2차 시도: Stooq (CSV 다운로드) =====
 def fetch_stooq(stooq_symbol):
     try:
         url = f"https://stooq.com/q/d/l/?s={stooq_symbol}&i=d"
         r = requests.get(url, timeout=15)
-        if r.status_code != 200 or len(r.text) < 50:
-            return None, None
+        if r.status_code != 200 or len(r.text) < 50: return None
         df = pd.read_csv(StringIO(r.text))
-        if df.empty or "Close" not in df.columns:
-            return None, None
+        if df.empty or "Close" not in df.columns: return None
         df = df.dropna(subset=["Close"]).sort_values("Date")
-        last_close = float(df["Close"].iloc[-1])
-        last_date = str(df["Date"].iloc[-1])
-        return round(last_close, 2), last_date
+        if df.empty: return None
+        val = float(df["Close"].iloc[-1])
+        return val if is_valid(val) else None
     except Exception as e:
-        print(f"  stooq 오류 ({stooq_symbol}): {e}")
-        return None, None
+        print(f"  stooq err ({stooq_symbol}): {e}")
+        return None
 
-# 티커 매핑: (yfinance, stooq)
 TICKERS = {
     "qqq":   {"yf": "QQQ",   "stooq": "qqq.us"},
     "spy":   {"yf": "SPY",   "stooq": "spy.us"},
@@ -62,28 +67,26 @@ TICKERS = {
 
 prices = {}
 for key, sym in TICKERS.items():
-    print(f"\n[{key}] 시도 중...")
-    # 1차: yfinance
-    val, dt = fetch_yfinance(sym["yf"])
+    print(f"\n[{key}]")
+    val = fetch_yfinance(sym["yf"])
     if val:
-        prices[key] = val
-        print(f"  ✓ yfinance: {val} ({dt})")
+        prices[key] = round(val, 2)
+        print(f"  ✓ yfinance: {prices[key]}")
         continue
-    # 2차: stooq
-    val, dt = fetch_stooq(sym["stooq"])
+    val = fetch_stooq(sym["stooq"])
     if val:
-        prices[key] = val
-        print(f"  ✓ stooq:    {val} ({dt})")
+        prices[key] = round(val, 2)
+        print(f"  ✓ stooq:    {prices[key]}")
         continue
-    print(f"  ✗ 모두 실패")
+    print(f"  ✗ 실패")
 
 print(f"\n받은 가격: {prices}")
 
 if len(prices) < 3:
-    print("⚠ 가격 일부만 받음 - 갱신 중단 (데이터 일관성 보호)")
-    sys.exit(1)  # 실패로 처리 (재실행 알림 받기 쉬움)
+    print("⚠ 가격 일부만 받음 - 갱신 중단")
+    sys.exit(1)
 
-# ===== JSON 갱신 =====
+# JSON 갱신
 json_path = "docs/index_history.json"
 with open(json_path, "r", encoding="utf-8") as f:
     data = json.load(f)
@@ -92,12 +95,25 @@ if "data" not in data:
     data["data"] = {}
 
 old = data["data"].get(ym)
+
+# 같은 달이면 새 값으로 덮어쓰기 (월말까지 갱신 누적)
 data["data"][ym] = prices
 
 if old == prices:
-    print(f"\n변경 없음 ({ym})")
+    print(f"변경 없음 ({ym})")
 else:
-    print(f"\n변경 감지 {ym}: {old} -> {prices}")
+    print(f"변경 {ym}: {old} -> {prices}")
+
+# NaN 최종 방어
+def has_nan(obj):
+    if isinstance(obj, float): return math.isnan(obj) or math.isinf(obj)
+    if isinstance(obj, dict): return any(has_nan(v) for v in obj.values())
+    if isinstance(obj, list): return any(has_nan(v) for v in obj)
+    return False
+
+if has_nan(data):
+    print("⚠ NaN 발견 - 저장 중단!")
+    sys.exit(1)
 
 data["data"] = dict(sorted(data["data"].items()))
 data["last_updated_utc"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
