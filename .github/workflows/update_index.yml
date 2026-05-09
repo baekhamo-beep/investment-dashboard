@@ -22,7 +22,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install yfinance==0.2.40 requests
+        run: pip install --upgrade yfinance requests pandas
 
       - name: Update index data
         run: python scripts/update_index_history.py
