@@ -790,7 +790,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 <div class="main-sec"><span>// STRATEGY COMPARISON · 4 STRATEGIES</span></div>
 <div class="v6-table">
   <div class="v6-thead" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
-    <div>전략</div><div style="text-align:right;">CAGR</div><div style="text-align:right;">MDD</div><div style="text-align:right;">Calmar</div><div style="text-align:right;">평균자산</div><div style="text-align:right;">평가</div>
+    <div>STRATEGY</div><div style="text-align:right;">CAGR</div><div style="text-align:right;">MDD</div><div style="text-align:right;">CALMAR</div><div style="text-align:right;">FINAL</div><div style="text-align:right;">RANK</div>
   </div>
   <div class="v6-trow hl" style="grid-template-columns:110px 75px 80px 58px 76px 68px;">
     <div><div style="font-size:12px;font-weight:800;color:var(--accent2);">QLD HYBRID</div><div style="font-size:9px;color:var(--text3);">하락매수+리밸</div></div>
@@ -851,7 +851,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 <!-- 산점도: X=MDD, Y=CAGR -->
 <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;">
   <div style="display:flex;gap:14px;margin-bottom:10px;align-items:center;flex-wrap:wrap;">
-    <div style="font-size:10px;font-weight:700;color:var(--text2);">리스크-수익 분포 (16개 시나리오)</div>
+    <div style="font-size:10px;font-weight:700;color:var(--text2);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;">// RISK-RETURN MAP · 16 SCENARIOS</div>
     <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:10px;height:10px;border-radius:50%;background:#ff9500;opacity:0.9;"></div>Hybrid</div>
     <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2);"><div style="width:10px;height:10px;border-radius:50%;background:rgba(224,92,92,0.8);"></div>QLD 단독</div>
     <div style="margin-left:auto;font-size:9px;color:var(--text3);">좌상단 = 저위험·고수익 (유리)</div>
@@ -866,7 +866,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 <!-- 차이 막대: 중앙선 기준 -->
 <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-    <div style="font-size:10px;font-weight:700;color:var(--text2);">시작 연도별 CAGR 격차</div>
+    <div style="font-size:10px;font-weight:700;color:var(--text2);font-family:'JetBrains Mono',monospace;letter-spacing:0.5px;">// CAGR GAP BY START YEAR</div>
     <div style="font-size:9px;color:var(--text3);">파랑 = Hybrid 우위 &nbsp;·&nbsp; 빨강 = QLD 우위</div>
   </div>
   <div style="display:flex;flex-direction:column;gap:4px;" id="v6diff"></div>
@@ -997,7 +997,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 .fv-bar-wrap{height:5px;background:var(--bg3);border-radius:3px;overflow:hidden;margin-top:4px;}
 .fv-bar{height:5px;border-radius:3px;}
 .fv-insight{border-radius:8px;padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start;}
-.fv-insight-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.fv-insight-icon{min-width:48px;height:24px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;white-space:nowrap;padding:0 6px;}
 .fv-stress-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;position:relative;}
 .fv-stress-card.bad{border-left:3px solid #e05c5c;}
 .fv-stress-card.mid{border-left:3px solid #c9a84c;}
@@ -1066,13 +1066,12 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 <!-- 헤더 -->
 <div class="main-sec"><span>// FUTURE VALIDATION</span><span class="right">Walk-Forward · 민감도 · 스트레스</span></div>
 <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--green);padding:12px 14px;margin-bottom:14px;font-family:'JetBrains Mono',monospace;">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
-    <div style="background:var(--green);color:#000;padding:3px 10px;font-weight:700;letter-spacing:1px;font-size:10px;">VERDICT · PASS</div>
-    <div style="font-size:13px;color:var(--text1);font-weight:700;">이 전략, 미래에도 통할까?</div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
+    <div style="background:var(--green);color:#000;padding:3px 10px;font-weight:700;letter-spacing:1.5px;font-size:10px;">VERDICT · PASS</div>
+    <div style="font-size:12px;color:var(--text2);letter-spacing:0.3px;">// 이 전략, 미래에도 통할까?</div>
   </div>
   <div style="font-size:11px;color:var(--text2);line-height:1.7;letter-spacing:0.2px;">
-    과거 백테스트가 "우연히 맞은 건 아닌지" 3가지 방법으로 교차 검증.<br>
-    <b style="color:var(--green);">결론: 구조적 전략 · 미래 유지력 양호 · 과최적화 의심 낮음</b>
+    과거 백테스트가 "우연히 맞은 건 아닌지" 3가지 방법으로 교차 검증 · <b style="color:var(--green);">결론: 구조적 전략 · 미래 유지력 양호 · 과최적화 의심 낮음</b>
   </div>
 </div>
 
@@ -1091,7 +1090,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
   </div>
   <div class="fv-metric red">
     <div class="fv-metric-lbl">레짐 변화 시 한계</div>
-    <div class="fv-metric-val" style="color:#e05c5c;font-family:'JetBrains Mono',monospace;letter-spacing:1px;">CAUTION</div>
+    <div class="fv-metric-val" style="color:#e05c5c;font-family:'JetBrains Mono',monospace;letter-spacing:1.5px;font-size:18px;font-weight:700;">⚠ CAUTION</div>
     <div class="fv-metric-desc">시장 레짐이 근본적으로 변하면<br>P(수익 ≥ 15%) = <b>0%</b> — 주의 필요</div>
   </div>
 </div>
@@ -1105,7 +1104,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
 
   <div class="fv-table" style="margin-bottom:0;">
     <div class="fv-thead" style="grid-template-columns:1.8fr 1.8fr 60px 62px 60px 62px;">
-      <div>학습 구간</div><div>검증 구간 (OOS)</div>
+      <div>TRAIN PERIOD</div><div>TEST PERIOD (OOS)</div>
       <div style="text-align:right;">T.CAGR</div><div style="text-align:right;">OOS CAGR</div>
       <div style="text-align:right;">T.Calmar</div><div style="text-align:right;">OOS Calmar</div>
     </div>
@@ -1134,7 +1133,7 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
       <div style="text-align:right;font-size:12px;color:#c9a84c;font-weight:700;">0.42</div>
     </div>
     <div style="padding:12px 14px;background:rgba(76,175,125,0.06);border-top:1px solid rgba(76,175,125,0.2);display:grid;grid-template-columns:1.8fr 1.8fr 60px 62px 60px 62px;align-items:center;">
-      <div style="font-size:11px;color:#4caf7d;font-weight:700;">OOS 평균</div>
+      <div style="font-size:11px;color:#4caf7d;font-weight:700;letter-spacing:0.5px;font-family:'JetBrains Mono',monospace;">OOS AVG</div>
       <div></div>
       <div></div>
       <div style="text-align:right;font-size:13px;color:#4caf7d;font-weight:800;">+21.50%</div>
@@ -1160,56 +1159,56 @@ body{background:var(--bg0);color:var(--text1);font-family:'Pretendard','Segoe UI
   </div>
 
   <div class="fv-table" style="margin-bottom:0;">
-    <div class="fv-thead" style="grid-template-columns:110px 60px 70px 62px 70px;">
+    <div class="fv-thead" style="grid-template-columns:1.4fr 70px 80px 70px 80px;gap:8px;">
       <div>설정</div>
       <div style="text-align:right;">CAGR</div>
       <div style="text-align:right;">MDD</div>
-      <div style="text-align:right;">Calmar</div>
-      <div style="text-align:right;">OOS Calmar</div>
+      <div style="text-align:right;">CALMAR</div>
+      <div style="text-align:right;">OOS</div>
     </div>
-    <div class="fv-trow" style="grid-template-columns:110px 60px 70px 62px 70px;">
+    <div class="fv-trow" style="grid-template-columns:1.4fr 70px 80px 70px 80px;gap:8px;">
       <div style="font-size:11px;"><span style="color:#4caf7d;font-weight:700;">DROP_0.8x</span><div style="font-size:9px;color:var(--text3);">하락매수 완화</div></div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">+20.85%</div>
       <div style="text-align:right;font-size:11px;color:#4caf7d;">-43.14%</div>
       <div style="text-align:right;font-size:12px;font-weight:700;color:#4caf7d;">0.49</div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">0.61</div>
     </div>
-    <div class="fv-trow" style="grid-template-columns:110px 60px 70px 62px 70px;">
+    <div class="fv-trow" style="grid-template-columns:1.4fr 70px 80px 70px 80px;gap:8px;">
       <div style="font-size:11px;"><span style="color:var(--text1);font-weight:700;">INIT_30</span><div style="font-size:9px;color:var(--text3);">초기 QLD 30%</div></div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">+21.34%</div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">-45.75%</div>
       <div style="text-align:right;font-size:12px;font-weight:700;color:var(--text1);">0.47</div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">0.61</div>
     </div>
-    <div class="fv-trow base" style="grid-template-columns:110px 60px 70px 62px 70px;">
+    <div class="fv-trow base" style="grid-template-columns:1.4fr 70px 80px 70px 80px;gap:8px;">
       <div style="font-size:12px;"><span style="background:var(--accent);color:#000;padding:2px 7px;font-family:'JetBrains Mono',monospace;font-weight:800;letter-spacing:1px;font-size:10px;">BASE</span><div style="font-size:9px;color:var(--text3);">현재 설정 (35/65)</div></div>
       <div style="text-align:right;font-size:12px;color:var(--text1);font-weight:700;">+21.43%</div>
       <div style="text-align:right;font-size:11px;color:var(--text1);">-46.53%</div>
       <div style="text-align:right;font-size:13px;font-weight:800;color:#c9a84c;">0.47</div>
       <div style="text-align:right;font-size:12px;color:#4caf7d;font-weight:700;">0.61</div>
     </div>
-    <div class="fv-trow" style="grid-template-columns:110px 60px 70px 62px 70px;">
+    <div class="fv-trow" style="grid-template-columns:1.4fr 70px 80px 70px 80px;gap:8px;">
       <div style="font-size:11px;"><span style="color:var(--text1);font-weight:700;">INIT_40</span><div style="font-size:9px;color:var(--text3);">초기 QLD 40%</div></div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">+21.52%</div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">-47.35%</div>
       <div style="text-align:right;font-size:12px;font-weight:700;color:var(--text1);">0.47</div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">0.61</div>
     </div>
-    <div class="fv-trow" style="grid-template-columns:110px 60px 70px 62px 70px;">
+    <div class="fv-trow" style="grid-template-columns:1.4fr 70px 80px 70px 80px;gap:8px;">
       <div style="font-size:11px;"><span style="color:#ff9500;font-weight:700;">RISE_CONSERV</span><div style="font-size:9px;color:var(--text3);">상승복귀 보수적</div></div>
       <div style="text-align:right;font-size:11px;color:var(--text3);">+20.16%</div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">-44.76%</div>
       <div style="text-align:right;font-size:12px;font-weight:700;color:var(--text1);">0.46</div>
       <div style="text-align:right;font-size:11px;color:#4caf7d;font-weight:700;">0.68</div>
     </div>
-    <div class="fv-trow" style="grid-template-columns:110px 60px 70px 62px 70px;">
+    <div class="fv-trow" style="grid-template-columns:1.4fr 70px 80px 70px 80px;gap:8px;">
       <div style="font-size:11px;"><span style="color:var(--text1);font-weight:700;">DROP_1.2x</span><div style="font-size:9px;color:var(--text3);">하락매수 강화</div></div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">+21.88%</div>
       <div style="text-align:right;font-size:11px;color:#c9a84c;">-49.90%</div>
       <div style="text-align:right;font-size:12px;font-weight:700;color:var(--text1);">0.45</div>
       <div style="text-align:right;font-size:11px;color:var(--text2);">0.61</div>
     </div>
-    <div class="fv-trow" style="grid-template-columns:110px 60px 70px 62px 70px;">
+    <div class="fv-trow" style="grid-template-columns:1.4fr 70px 80px 70px 80px;gap:8px;">
       <div style="font-size:11px;"><span style="color:#e05c5c;font-weight:700;">RISE_AGGR</span><div style="font-size:9px;color:var(--text3);">상승복귀 공격적</div></div>
       <div style="text-align:right;font-size:11px;color:#4caf7d;">+22.30%</div>
       <div style="text-align:right;font-size:11px;color:#e05c5c;">-56.77%</div>
