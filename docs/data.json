@@ -1,17 +1,17 @@
 {
-  "updated_utc": "2026-05-13T14:04:54Z",
+  "updated_utc": "2026-05-13T16:13:32Z",
   "nasdaq": {
-    "drawdown_pct": -0.92,
-    "rsi": 82.1,
-    "ma200_dev_pct": 16.17,
-    "current_price": 706.7,
+    "drawdown_pct": -0.15,
+    "rsi": 83.6,
+    "ma200_dev_pct": 17.08,
+    "current_price": 712.21,
     "peak_price": 713.29,
-    "momentum_6m": 13.99,
+    "momentum_6m": 14.87,
     "above_ma200": true
   },
-  "vix": 18.27,
+  "vix": 18.11,
   "fear_greed": {
-    "value": 65.1,
+    "value": 66.6,
     "classification": "greed",
     "prev_close": 66.6,
     "prev_1w": 68.7,
@@ -19,13 +19,13 @@
     "source": "CNN Business"
   },
   "etf_prices": {
-    "QLD": 90.58,
-    "SPMO": 144.46,
-    "SCHD": 31.7,
-    "AVUV": 117.99,
+    "QLD": 91.89,
+    "SPMO": 145.93,
+    "SCHD": 31.61,
+    "AVUV": 117.28,
     "SGOV": 100.5
   },
-  "usd_krw": 1491.2,
+  "usd_krw": 1488.9,
   "kiwoom_price": 12210,
   "mps": {
     "trend": 1,
