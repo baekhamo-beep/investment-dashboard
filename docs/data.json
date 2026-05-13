@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-05-13T20:16:10Z",
+  "updated_utc": "2026-05-13T21:50:09Z",
   "nasdaq": {
     "drawdown_pct": 0.0,
     "rsi": 84.0,
@@ -9,9 +9,9 @@
     "momentum_6m": 15.28,
     "above_ma200": true
   },
-  "vix": 17.89,
+  "vix": 17.87,
   "fear_greed": {
-    "value": 66.1,
+    "value": 65.9,
     "classification": "greed",
     "prev_close": 66.6,
     "prev_1w": 68.7,
@@ -25,7 +25,7 @@
     "AVUV": 117.81,
     "SGOV": 100.51
   },
-  "usd_krw": 1489.5,
+  "usd_krw": 1489.4,
   "kiwoom_price": 12210,
   "mps": {
     "trend": 1,
