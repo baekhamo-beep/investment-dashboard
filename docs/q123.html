@@ -1402,87 +1402,65 @@
   };
 
   // ===== 데이터 로딩 =====
-  // 우선순위:
-  //   1) q123_data.json (정확 — update_q123_data.py로 별도 갱신)
-  //   2) data.json (폴백 — SMA50/RET63은 추정값으로 표시되며 ⚠ 마크)
+  // data.json에서 모든 값 직접 사용 (fetch_data.py가 정확값 제공)
   async function loadMarketData(){
-    // 먼저 정확한 q123_data.json 시도
-    try{
-      const q = await fetch('./q123_data.json?t='+Date.now()).then(r=>{
-        if(!r.ok) throw new Error('q123_data.json 없음');
-        return r.json();
-      });
-      // q123_data.json 사용 - 모든 값이 정확
-      Q123.qqq = q.qqq.close;
-      Q123.ath = q.qqq.ath;
-      Q123.drawdown = q.qqq.drawdown_pct;
-      Q123.sma50 = q.sma.sma50;
-      Q123.sma200 = q.sma.sma200;
-      Q123.aboveSMA50 = q.sma.above_sma50;
-      Q123.aboveSMA200 = q.sma.above_sma200;
-      Q123.alignment = q.sma.alignment;
-      Q123.ret63 = q.returns.ret63;
-      Q123.ret126 = q.returns.ret126;
-      Q123.bearCondition = q.mode.bear_condition;
-      Q123.boostCondition = q.mode.boost_condition;
-      Q123.currentMode = q.mode.current;
-      Q123.currentAsset = q.mode.asset;
-      Q123.updated = q.updated_utc;
-      Q123.asOf = q.as_of;
-      Q123.dataSource = 'accurate';   // 정확 데이터
-
-      // VIX, QLD 가격은 data.json에서 보조로 가져옴 (실시간 가격)
-      try{
-        const d = await fetch('./data.json?t='+Date.now()).then(r=>r.json());
-        Q123.vix = d.vix;
-        Q123.qldPrice = d.etf_prices && d.etf_prices.QLD;
-      }catch(_){}
-
-      renderAll();
-      return;
-    }catch(_){
-      // q123_data.json 없으면 폴백
-    }
-
-    // 폴백: data.json만 사용 (SMA50, RET63은 추정값)
     try{
       const d = await fetch('./data.json?t='+Date.now()).then(r=>r.json());
 
+      // 기본 시장 값
       Q123.qqq = d.nasdaq.current_price;
       Q123.ath = d.nasdaq.peak_price;
-      Q123.vix = d.vix;
       Q123.drawdown = d.nasdaq.drawdown_pct;
-      Q123.aboveSMA200 = d.nasdaq.above_ma200;
+      Q123.vix = d.vix;
       Q123.qldPrice = d.etf_prices && d.etf_prices.QLD;
 
-      // SMA200 역산 (정확)
-      Q123.sma200 = Q123.qqq / (1 + d.nasdaq.ma200_dev_pct/100);
-
-      // SMA50 — data.json에 없음, 추정값
-      const drawdownAbs = Math.abs(Q123.drawdown);
-      let w;
-      if(drawdownAbs < 5) w = 0.25;
-      else if(drawdownAbs < 15) w = 0.45;
-      else w = Math.min(0.5 + (drawdownAbs-15)/30, 0.8);
-      Q123.sma50 = Q123.qqq * (1-w) + Q123.sma200 * w;
-      if(Q123.aboveSMA200 && Q123.sma50 < Q123.sma200){
-        Q123.sma50 = (Q123.qqq + Q123.sma200) / 2;
+      // SMA: data.json에 sma50_price/sma200_price가 있으면 그 절대값 사용,
+      //      없으면 ma50_dev_pct/ma200_dev_pct에서 역산
+      if(d.nasdaq.sma50_price != null){
+        Q123.sma50 = d.nasdaq.sma50_price;
+        Q123.sma200 = d.nasdaq.sma200_price;
+        Q123.dataSource = 'accurate';
+      } else if(d.nasdaq.ma50_dev_pct != null){
+        Q123.sma50 = Q123.qqq / (1 + d.nasdaq.ma50_dev_pct/100);
+        Q123.sma200 = Q123.qqq / (1 + d.nasdaq.ma200_dev_pct/100);
+        Q123.dataSource = 'accurate';
+      } else {
+        // 폴백: ma50_dev_pct 없는 옛 data.json
+        Q123.sma200 = Q123.qqq / (1 + d.nasdaq.ma200_dev_pct/100);
+        const drawdownAbs = Math.abs(Q123.drawdown);
+        let w;
+        if(drawdownAbs < 5) w = 0.25;
+        else if(drawdownAbs < 15) w = 0.45;
+        else w = Math.min(0.5 + (drawdownAbs-15)/30, 0.8);
+        Q123.sma50 = Q123.qqq * (1-w) + Q123.sma200 * w;
+        if(Q123.sma50 < Q123.sma200) Q123.sma50 = (Q123.qqq + Q123.sma200) / 2;
+        Q123.dataSource = 'estimate';
       }
 
-      Q123.ret126 = d.nasdaq.momentum_6m;
-      Q123.ret63 = Q123.ret126 * 0.55;   // 추정값
+      // RET: 정확값이 있으면 사용, 없으면 추정
+      if(d.nasdaq.return_63d_pct != null){
+        Q123.ret63 = d.nasdaq.return_63d_pct;
+        Q123.ret126 = d.nasdaq.return_126d_pct != null ? d.nasdaq.return_126d_pct : d.nasdaq.momentum_6m;
+      } else {
+        Q123.ret126 = d.nasdaq.momentum_6m;
+        Q123.ret63 = Q123.ret126 * 0.55;  // 폴백 추정
+        Q123.dataSource = 'estimate';
+      }
 
-      Q123.aboveSMA50 = Q123.qqq > Q123.sma50;
-      Q123.alignment = Q123.aboveSMA50 && Q123.aboveSMA200 && Q123.sma50 > Q123.sma200;
-      Q123.bearCondition = !Q123.aboveSMA200;
+      // 정배열 판정
+      Q123.aboveSMA50  = d.nasdaq.above_ma50 != null ? d.nasdaq.above_ma50 : (Q123.qqq > Q123.sma50);
+      Q123.aboveSMA200 = d.nasdaq.above_ma200;
+      Q123.alignment   = Q123.aboveSMA50 && Q123.aboveSMA200 && Q123.sma50 > Q123.sma200;
+      Q123.bearCondition  = !Q123.aboveSMA200;
       Q123.boostCondition = Q123.alignment && Q123.ret63 >= 10 && Q123.ret126 >= 0;
 
+      // 모드 자동 판단
       if(Q123.bearCondition){ Q123.currentMode = 'BEAR'; Q123.currentAsset = 'QQQ'; }
       else if(Q123.boostCondition){ Q123.currentMode = 'BOOST'; Q123.currentAsset = 'TQQQ'; }
       else { Q123.currentMode = 'NORMAL'; Q123.currentAsset = 'QLD'; }
 
       Q123.updated = d.updated_utc;
-      Q123.dataSource = 'estimate';  // 추정 폴백
+      Q123.asOf = new Date(new Date(d.updated_utc).getTime()+9*3600000).toISOString().slice(0,10);
       renderAll();
     }catch(e){
       console.warn('Q123 데이터 로딩 실패:', e);
