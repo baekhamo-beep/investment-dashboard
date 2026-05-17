@@ -1,0 +1,35 @@
+{
+  "as_of": "2026-05-15",
+  "updated_utc": "2026-05-17T11:30:00Z",
+  "qqq": {
+    "close": 708.93,
+    "ath": 719.79,
+    "drawdown_pct": -1.51
+  },
+  "sma": {
+    "sma50": 631.29,
+    "sma200": 609.83,
+    "above_sma50": true,
+    "above_sma200": true,
+    "alignment": true
+  },
+  "returns": {
+    "ret20": 9.26,
+    "ret63": 17.93,
+    "ret126": 14.44
+  },
+  "mode": {
+    "current": "BOOST",
+    "asset": "TQQQ",
+    "bear_condition": false,
+    "boost_condition": true
+  },
+  "thresholds": {
+    "boost_ret63_min": 10,
+    "boost_ret126_min": 0,
+    "boost_peak_stop_pct": -8,
+    "boost_max_hold_days": 63,
+    "cooldown_days": 21
+  },
+  "source": "Manual seed (M63 backtest verified, 2026-05-15)"
+}
