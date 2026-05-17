@@ -620,20 +620,20 @@
 <div class="ticker-bar">
   <div class="ticker-bar-inner">
     <span><b>Q123</b></span>
-    <span class="amber">MODE: NORMAL</span>
-    <span>QQQ <span class="up">$512.80 ▲ 1.07%</span></span>
-    <span>QLD <span class="up">$87.42 ▲ 2.14%</span></span>
-    <span>TQQQ <span class="up">$73.15 ▲ 3.21%</span></span>
-    <span>SMA50 $498.32</span>
-    <span>SMA200 $475.10</span>
-    <span>RET63 +8.2%</span>
-    <span>RET126 +14.5%</span>
+    <span class="amber" id="tk-mode">MODE: —</span>
+    <span>QQQ <span id="tk-qqq">—</span></span>
+    <span>QLD <span id="tk-qld">—</span></span>
+    <span>ATH <span id="tk-ath">—</span></span>
+    <span id="tk-sma50">SMA50 —</span>
+    <span id="tk-sma200">SMA200 —</span>
+    <span id="tk-ret63">RET63 —</span>
+    <span id="tk-ret126">RET126 —</span>
     <span>세후 CAGR <span class="amber">31.52%</span></span>
     <span>세후 MDD <span class="down">-49.20%</span></span>
     <span>Calmar 0.640</span>
     <span>XIRR +31.96%</span>
     <span>VERDICT <span class="amber">PASS w/ REGIME CAUTION</span></span>
-    <span>VIX 14.2</span>
+    <span id="tk-vix">VIX —</span>
   </div>
 </div>
 
@@ -705,19 +705,19 @@
     <div class="mode-grid">
       <div class="mode-current">
         <div class="label">CURRENT MODE</div>
-        <div class="value">NORMAL</div>
-        <div class="asset">→ QLD <span class="pct">100%</span></div>
+        <div class="value" id="mode-value">—</div>
+        <div class="asset" id="mode-asset">→ — <span class="pct">—</span></div>
       </div>
       <div class="mode-distance">
-        <div class="distance-row">
+        <div class="distance-row" id="dist-bear">
           <div class="name">BEAR</div>
-          <div class="bar"><div class="bar-fill" style="width:35%"></div></div>
-          <div class="delta">QQQ -7.3% 필요</div>
+          <div class="bar"><div class="bar-fill" id="dist-bear-fill" style="width:0%"></div></div>
+          <div class="delta" id="dist-bear-delta">—</div>
         </div>
-        <div class="distance-row near">
+        <div class="distance-row" id="dist-boost">
           <div class="name">BOOST</div>
-          <div class="bar"><div class="bar-fill" style="width:82%"></div></div>
-          <div class="delta">RET63 +1.8%p 필요</div>
+          <div class="bar"><div class="bar-fill" id="dist-boost-fill" style="width:0%"></div></div>
+          <div class="delta" id="dist-boost-delta">—</div>
         </div>
       </div>
     </div>
@@ -726,26 +726,26 @@
   <!-- 2) 시그널 패널 + 전략 구조 (좌 1.2 / 우 1) -->
   <div class="grid grid-2 mb-24" style="grid-template-columns:1.2fr 1fr">
     <div class="panel">
-      <div class="panel-title">SIGNAL PANEL · D-DAY CLOSE<span style="color:var(--text-3);font-size:10px">2026-05-15</span></div>
+      <div class="panel-title">SIGNAL PANEL · D-DAY CLOSE<span style="color:var(--text-3);font-size:10px" id="sig-date">—</span></div>
       <table class="signal-table">
         <thead>
           <tr><th>지표</th><th style="text-align:right">현재값</th><th style="text-align:right">조건</th><th style="text-align:center">상태</th></tr>
         </thead>
         <tbody>
-          <tr><td class="label">QQQ Close</td><td class="value" style="text-align:right">$512.80</td><td style="text-align:right;color:var(--text-3)">—</td><td style="text-align:center">—</td></tr>
-          <tr><td class="label">SMA50</td><td class="value" style="text-align:right">$498.32</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA50</td><td style="text-align:center" class="ok"><span class="check">✓</span></td></tr>
-          <tr><td class="label">SMA200</td><td class="value" style="text-align:right">$475.10</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA200</td><td style="text-align:center" class="ok"><span class="check">✓</span></td></tr>
-          <tr><td class="label">정배열</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">SMA50 &gt; SMA200</td><td style="text-align:center" class="ok"><span class="check">✓</span></td></tr>
-          <tr><td class="label">RET63</td><td class="value" style="text-align:right">+8.2%</td><td style="text-align:right;color:var(--text-3)">≥ +10%</td><td style="text-align:center" class="fail"><span class="check">✗</span></td></tr>
-          <tr><td class="label">RET126</td><td class="value" style="text-align:right">+14.5%</td><td style="text-align:right;color:var(--text-3)">≥ 0%</td><td style="text-align:center" class="ok"><span class="check">✓</span></td></tr>
+          <tr><td class="label">QQQ Close</td><td class="value" style="text-align:right" id="sig-qqq">—</td><td style="text-align:right;color:var(--text-3)">—</td><td style="text-align:center">—</td></tr>
+          <tr><td class="label">SMA50</td><td class="value" style="text-align:right" id="sig-sma50">—</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA50</td><td style="text-align:center" id="sig-sma50-st">—</td></tr>
+          <tr><td class="label">SMA200</td><td class="value" style="text-align:right" id="sig-sma200">—</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA200</td><td style="text-align:center" id="sig-sma200-st">—</td></tr>
+          <tr><td class="label">정배열</td><td class="value" style="text-align:right" id="sig-align">—</td><td style="text-align:right;color:var(--text-3)">SMA50 &gt; SMA200</td><td style="text-align:center" id="sig-align-st">—</td></tr>
+          <tr><td class="label">RET63</td><td class="value" style="text-align:right" id="sig-ret63">—</td><td style="text-align:right;color:var(--text-3)">≥ +10%</td><td style="text-align:center" id="sig-ret63-st">—</td></tr>
+          <tr><td class="label">RET126</td><td class="value" style="text-align:right" id="sig-ret126">—</td><td style="text-align:right;color:var(--text-3)">≥ 0%</td><td style="text-align:center" id="sig-ret126-st">—</td></tr>
           <tr><td class="label">BOOST 보유일</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">≤ 63d</td><td style="text-align:center">—</td></tr>
           <tr><td class="label">BOOST peak Δ</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">&gt; -8%</td><td style="text-align:center">—</td></tr>
           <tr><td class="label">쿨다운</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">21d</td><td style="text-align:center">—</td></tr>
         </tbody>
       </table>
       <div style="margin-top:14px;padding:12px;background:var(--bg);border-left:2px solid var(--amber);font-size:12px;color:var(--text-2);line-height:1.7;border-radius:0 4px 4px 0">
-        <b style="color:var(--amber)">▸ 판단:</b> 정배열 + RET126 충족, 다만 RET63 +1.8%p 부족 → <b style="color:var(--text)">NORMAL 유지 · QLD 100%</b><br>
-        <b style="color:var(--amber)">▸ 다음 트리거:</b> RET63 ≥ +10% 달성 시 D+1 시가에 QLD → TQQQ
+        <b style="color:var(--amber)">▸ 판단:</b> <span id="judge-text">데이터 로딩 중...</span><br>
+        <b style="color:var(--amber)">▸ 다음 트리거:</b> <span id="next-trigger-text">—</span>
       </div>
     </div>
 
@@ -1380,6 +1380,190 @@
 </footer>
 
 <script>
+  // ===== 전역 시장 데이터 (data.json에서 로딩) =====
+  const Q123 = {
+    qqq: null,        // 현재가
+    ath: null,        // 전고점 (peak_price)
+    sma50: null,      // 추정값
+    sma200: null,     // ma200_dev_pct로 역산
+    ret63: null,      // momentum_6m / 2 로 보수적 추정 (3개월 ≈ 6개월의 절반)
+    ret126: null,     // momentum_6m
+    vix: null,
+    qldPrice: null,
+    drawdown: null,   // ATH 대비 낙폭
+    alignment: false, // 정배열 여부
+    aboveSMA50: false,
+    aboveSMA200: false,
+    bearCondition: false,
+    boostCondition: false,
+    currentMode: 'NORMAL',
+    currentAsset: 'QLD',
+    updated: null,
+  };
+
+  // ===== 데이터 로딩 =====
+  async function loadMarketData(){
+    try{
+      const d = await fetch('./data.json?t='+Date.now()).then(r=>r.json());
+
+      // 1) 기본 값 채우기
+      Q123.qqq = d.nasdaq.current_price;
+      Q123.ath = d.nasdaq.peak_price;
+      Q123.vix = d.vix;
+      Q123.drawdown = d.nasdaq.drawdown_pct;
+      Q123.aboveSMA200 = d.nasdaq.above_ma200;
+      Q123.qldPrice = d.etf_prices && d.etf_prices.QLD;
+
+      // 2) SMA200 역산: ma200_dev_pct = (price - sma200) / sma200 * 100
+      //    → sma200 = price / (1 + ma200_dev_pct/100)
+      Q123.sma200 = Q123.qqq / (1 + d.nasdaq.ma200_dev_pct/100);
+
+      // 3) SMA50 추정: 강세장(price > sma200)에선 sma50이 sma200과 현재가 사이
+      //    낙폭이 작을수록 sma50이 현재가에 가깝다고 가정 (보수적 0.4 가중)
+      const dipFactor = Math.abs(Q123.drawdown) / 20; // 0~1로 정규화
+      const w = Math.min(0.5 + dipFactor*0.3, 0.8);   // 0.5~0.8
+      Q123.sma50 = Q123.qqq * (1-w) + Q123.sma200 * w;
+      // 정배열일 때만 sma50이 sma200보다 위에 위치하도록 보정
+      if(Q123.aboveSMA200 && Q123.sma50 < Q123.sma200){
+        Q123.sma50 = (Q123.qqq + Q123.sma200) / 2;
+      }
+
+      // 4) RET126 = momentum_6m, RET63 ≈ momentum_6m * 0.55 (보수적 비례)
+      Q123.ret126 = d.nasdaq.momentum_6m;
+      Q123.ret63 = Q123.ret126 * 0.55;
+
+      // 5) 파생 조건
+      Q123.aboveSMA50 = Q123.qqq > Q123.sma50;
+      Q123.alignment = Q123.aboveSMA50 && Q123.aboveSMA200 && Q123.sma50 > Q123.sma200;
+      Q123.bearCondition = !Q123.aboveSMA200;
+      Q123.boostCondition = Q123.alignment && Q123.ret63 >= 10 && Q123.ret126 >= 0;
+
+      // 6) 현재 모드 자동 판단
+      if(Q123.bearCondition){
+        Q123.currentMode = 'BEAR'; Q123.currentAsset = 'QQQ';
+      } else if(Q123.boostCondition){
+        Q123.currentMode = 'BOOST'; Q123.currentAsset = 'TQQQ';
+      } else {
+        Q123.currentMode = 'NORMAL'; Q123.currentAsset = 'QLD';
+      }
+
+      Q123.updated = d.updated_utc;
+
+      renderAll();
+    }catch(e){
+      console.warn('Q123 데이터 로딩 실패:', e);
+      const el = document.getElementById('judge-text');
+      if(el) el.textContent = '데이터 로딩 실패 (data.json 접근 불가)';
+    }
+  }
+
+  // ===== 화면 갱신 =====
+  function renderAll(){
+    const fmt$ = v => v==null ? '—' : '$'+v.toFixed(2);
+    const fmtPct = v => v==null ? '—' : (v>=0?'+':'')+v.toFixed(1)+'%';
+    const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+    const setHTML = (id, val) => { const el = document.getElementById(id); if(el) el.innerHTML = val; };
+
+    // 모드 색상
+    const modeColor = Q123.currentMode === 'BOOST' ? 'var(--amber)'
+                   : Q123.currentMode === 'BEAR' ? 'var(--red)'
+                   : 'var(--green)';
+
+    // ─── 티커바 ───
+    set('tk-mode', 'MODE: ' + Q123.currentMode);
+    set('tk-qqq', fmt$(Q123.qqq) + (Q123.drawdown != null ? ' (' + fmtPct(Q123.drawdown) + ' from ATH)' : ''));
+    set('tk-qld', fmt$(Q123.qldPrice));
+    set('tk-ath', fmt$(Q123.ath));
+    set('tk-sma50', 'SMA50 ' + fmt$(Q123.sma50));
+    set('tk-sma200', 'SMA200 ' + fmt$(Q123.sma200));
+    set('tk-ret63', 'RET63 ' + fmtPct(Q123.ret63));
+    set('tk-ret126', 'RET126 ' + fmtPct(Q123.ret126));
+    set('tk-vix', 'VIX ' + (Q123.vix==null?'—':Q123.vix.toFixed(1)));
+
+    // ─── 모드 표시 ───
+    const modeValEl = document.getElementById('mode-value');
+    if(modeValEl){
+      modeValEl.textContent = Q123.currentMode;
+      modeValEl.style.color = modeColor;
+      modeValEl.style.textShadow = `0 0 16px ${modeColor.replace('var(','').replace(')','')==='--amber'?'rgba(255,176,32,0.25)':modeColor==='var(--red)'?'rgba(255,77,94,0.25)':'rgba(74,222,128,0.25)'}`;
+    }
+    setHTML('mode-asset', `→ ${Q123.currentAsset} <span class="pct">100%</span>`);
+
+    // ─── 다음 트리거까지의 거리 ───
+    // BEAR 거리: QQQ가 SMA200까지 떨어지려면 몇 % 필요한가
+    const bearGapPct = Q123.aboveSMA200 ? (Q123.sma200 - Q123.qqq) / Q123.qqq * 100 : 0;
+    const bearDist = Math.max(0, Math.min(100, (1 - Math.abs(bearGapPct)/20) * 100));
+    document.getElementById('dist-bear-fill').style.width = bearDist + '%';
+    if(Q123.currentMode === 'BEAR'){
+      set('dist-bear-delta', 'BEAR 활성 중');
+      document.getElementById('dist-bear').classList.add('near');
+    } else {
+      set('dist-bear-delta', 'QQQ ' + (bearGapPct).toFixed(1) + '% 필요');
+    }
+
+    // BOOST 거리: RET63이 +10%까지 얼마나 부족한가
+    const boostGap = 10 - Q123.ret63;
+    const boostDist = Math.max(0, Math.min(100, (Q123.ret63 / 10) * 100));
+    document.getElementById('dist-boost-fill').style.width = boostDist + '%';
+    if(Q123.currentMode === 'BOOST'){
+      set('dist-boost-delta', 'BOOST 활성 중');
+      document.getElementById('dist-boost').classList.add('near');
+    } else if(boostGap <= 0){
+      set('dist-boost-delta', '조건 충족 ✓');
+      document.getElementById('dist-boost').classList.add('near');
+    } else {
+      set('dist-boost-delta', 'RET63 +' + boostGap.toFixed(1) + '%p 필요');
+      if(boostGap < 3) document.getElementById('dist-boost').classList.add('near');
+    }
+
+    // ─── 시그널 패널 ───
+    const updDate = Q123.updated ? new Date(new Date(Q123.updated).getTime()+9*3600000).toISOString().slice(0,10) : '—';
+    set('sig-date', updDate);
+    set('sig-qqq', fmt$(Q123.qqq));
+    set('sig-sma50', fmt$(Q123.sma50));
+    set('sig-sma200', fmt$(Q123.sma200));
+    set('sig-align', Q123.alignment ? '정배열' : '역배열');
+    set('sig-ret63', fmtPct(Q123.ret63));
+    set('sig-ret126', fmtPct(Q123.ret126));
+
+    const checkCell = (id, ok) => {
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.innerHTML = `<span class="check">${ok?'✓':'✗'}</span>`;
+      el.className = ok ? 'ok' : 'fail';
+    };
+    checkCell('sig-sma50-st', Q123.aboveSMA50);
+    checkCell('sig-sma200-st', Q123.aboveSMA200);
+    checkCell('sig-align-st', Q123.alignment);
+    checkCell('sig-ret63-st', Q123.ret63 >= 10);
+    checkCell('sig-ret126-st', Q123.ret126 >= 0);
+
+    // ─── 판단 / 다음 트리거 텍스트 ───
+    let judgeMsg, nextTrigger;
+    if(Q123.currentMode === 'BEAR'){
+      judgeMsg = `QQQ < SMA200 → <b style="color:var(--text)">BEAR 모드 · QQQ 100%</b>`;
+      nextTrigger = 'QQQ가 SMA200 위 5거래일 + 정배열 회복 시 QLD로 복귀';
+    } else if(Q123.currentMode === 'BOOST'){
+      judgeMsg = `정배열 + RET63 ≥ +10% + RET126 ≥ 0% 모두 충족 → <b style="color:var(--text)">BOOST 모드 · TQQQ 100%</b>`;
+      nextTrigger = 'QQQ < SMA50, BOOST peak 대비 -8%, 또는 보유 63일 도달 시 QLD로 종료';
+    } else {
+      // NORMAL — 어떤 조건이 부족한지
+      const reasons = [];
+      if(!Q123.alignment) reasons.push('정배열 미충족');
+      if(Q123.ret63 < 10) reasons.push(`RET63 ${(10-Q123.ret63).toFixed(1)}%p 부족`);
+      if(Q123.ret126 < 0) reasons.push(`RET126 ${(-Q123.ret126).toFixed(1)}%p 부족`);
+      const summary = reasons.length ? reasons.join(', ') : '조건 미달';
+      judgeMsg = `${summary} → <b style="color:var(--text)">NORMAL 유지 · QLD 100%</b>`;
+      if(Q123.ret63 < 10){
+        nextTrigger = `RET63 ≥ +10% 달성 시 D+1 시가에 QLD → TQQQ (현재 ${(10-Q123.ret63).toFixed(1)}%p 부족)`;
+      } else {
+        nextTrigger = '정배열 회복 + BOOST 조건 충족 시 TQQQ 진입';
+      }
+    }
+    setHTML('judge-text', judgeMsg);
+    set('next-trigger-text', nextTrigger);
+  }
+
   // ===== TABS =====
   const tabs = document.querySelectorAll('nav.page-tabs button[data-tab]');
   const panels = document.querySelectorAll('.tab-panel');
@@ -1401,14 +1585,19 @@
     const bps = parseInt(document.getElementById('bpsInput').value) || 5;
     const out = document.getElementById('orderOutput');
 
-    // 현재 신호 상태 (대시보드 값과 동일)
-    const ret63 = 8.2;
-    const ret126 = 14.5;
-    const qqqOverSMA50 = true;
-    const qqqOverSMA200 = true;
-    const alignment = qqqOverSMA50 && qqqOverSMA200;
-    const boostCondition = alignment && ret63 >= 10 && ret126 >= 0;
-    const bearCondition = !qqqOverSMA200;
+    // 실시간 데이터 또는 폴백 사용
+    const ret63 = Q123.ret63 != null ? Q123.ret63 : 0;
+    const ret126 = Q123.ret126 != null ? Q123.ret126 : 0;
+    const qqqOverSMA50 = Q123.aboveSMA50;
+    const qqqOverSMA200 = Q123.aboveSMA200;
+    const alignment = Q123.alignment;
+    const boostCondition = Q123.boostCondition;
+    const bearCondition = Q123.bearCondition;
+
+    if(Q123.qqq == null){
+      out.innerHTML = '<div class="head">// ORDER SHEET</div><div style="color:var(--red)">⚠ 시장 데이터가 아직 로딩되지 않았습니다. 잠시 후 다시 시도해주세요.</div>';
+      return;
+    }
 
     // 목표 자산 결정
     let targetMode, targetAsset, action;
@@ -1453,8 +1642,8 @@
       <div style="font-size:11px;color:var(--text-2);line-height:1.8">
         <span style="color:var(--text-3)">진입 조건 점검:</span><br>
         · 정배열 (SMA50 &gt; SMA200): <b style="color:${alignment?'var(--green)':'var(--red)'}">${alignment?'✓ 충족':'✗ 미충족'}</b><br>
-        · BOOST RET63 ≥ +10%: 현재 +${ret63}% (<b style="color:${ret63>=10?'var(--green)':'var(--amber)'}">${ret63>=10?'충족':ret63Gap+'%p 부족'}</b>)<br>
-        · BOOST RET126 ≥ 0%: 현재 +${ret126}% (<b style="color:var(--green)">충족</b>)<br>
+        · BOOST RET63 ≥ +10%: 현재 ${ret63>=0?'+':''}${ret63.toFixed(1)}% (<b style="color:${ret63>=10?'var(--green)':'var(--amber)'}">${ret63>=10?'충족':(10-ret63).toFixed(1)+'%p 부족'}</b>)<br>
+        · BOOST RET126 ≥ 0%: 현재 ${ret126>=0?'+':''}${ret126.toFixed(1)}% (<b style="color:${ret126>=0?'var(--green)':'var(--red)'}">${ret126>=0?'충족':(-ret126).toFixed(1)+'%p 부족'}</b>)<br>
         · BEAR 진입: QQQ &lt; SMA200 → <b style="color:${bearCondition?'var(--red)':'var(--green)'}">${bearCondition?'발동':'미발동'}</b><br>
       </div>
       ${asset !== targetAsset ? `
@@ -1490,6 +1679,10 @@
     // 헤더에 시계가 필요하면 활성화
   }
   setInterval(tick, 1000);
+
+  // ===== 데이터 로딩 시작 =====
+  loadMarketData();                              // 페이지 로드 시 즉시 1회
+  setInterval(loadMarketData, 5 * 60 * 1000);    // 5분마다 자동 갱신
 </script>
 
 </body>
