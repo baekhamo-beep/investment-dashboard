@@ -606,7 +606,7 @@
 
 <!-- ===== TOP NAVIGATION (공통) ===== -->
 <div class="top-nav">
-  <a href="./index.html" class="elite">⚖ Elite 5 Hybrid</a>
+  <a href="elite5.html" class="elite">⚖ Elite 5 Hybrid</a>
   <a href="qld.html" class="qld">⚡ QLD Hybrid</a>
   <a href="q123.html" class="q123 active">⚡ Q123</a>
   <div class="spacer"></div>
@@ -1402,11 +1402,52 @@
   };
 
   // ===== 데이터 로딩 =====
+  // 우선순위:
+  //   1) q123_data.json (정확 — update_q123_data.py로 별도 갱신)
+  //   2) data.json (폴백 — SMA50/RET63은 추정값으로 표시되며 ⚠ 마크)
   async function loadMarketData(){
+    // 먼저 정확한 q123_data.json 시도
+    try{
+      const q = await fetch('./q123_data.json?t='+Date.now()).then(r=>{
+        if(!r.ok) throw new Error('q123_data.json 없음');
+        return r.json();
+      });
+      // q123_data.json 사용 - 모든 값이 정확
+      Q123.qqq = q.qqq.close;
+      Q123.ath = q.qqq.ath;
+      Q123.drawdown = q.qqq.drawdown_pct;
+      Q123.sma50 = q.sma.sma50;
+      Q123.sma200 = q.sma.sma200;
+      Q123.aboveSMA50 = q.sma.above_sma50;
+      Q123.aboveSMA200 = q.sma.above_sma200;
+      Q123.alignment = q.sma.alignment;
+      Q123.ret63 = q.returns.ret63;
+      Q123.ret126 = q.returns.ret126;
+      Q123.bearCondition = q.mode.bear_condition;
+      Q123.boostCondition = q.mode.boost_condition;
+      Q123.currentMode = q.mode.current;
+      Q123.currentAsset = q.mode.asset;
+      Q123.updated = q.updated_utc;
+      Q123.asOf = q.as_of;
+      Q123.dataSource = 'accurate';   // 정확 데이터
+
+      // VIX, QLD 가격은 data.json에서 보조로 가져옴 (실시간 가격)
+      try{
+        const d = await fetch('./data.json?t='+Date.now()).then(r=>r.json());
+        Q123.vix = d.vix;
+        Q123.qldPrice = d.etf_prices && d.etf_prices.QLD;
+      }catch(_){}
+
+      renderAll();
+      return;
+    }catch(_){
+      // q123_data.json 없으면 폴백
+    }
+
+    // 폴백: data.json만 사용 (SMA50, RET63은 추정값)
     try{
       const d = await fetch('./data.json?t='+Date.now()).then(r=>r.json());
 
-      // 1) 기본 값 채우기
       Q123.qqq = d.nasdaq.current_price;
       Q123.ath = d.nasdaq.peak_price;
       Q123.vix = d.vix;
@@ -1414,46 +1455,39 @@
       Q123.aboveSMA200 = d.nasdaq.above_ma200;
       Q123.qldPrice = d.etf_prices && d.etf_prices.QLD;
 
-      // 2) SMA200 역산: ma200_dev_pct = (price - sma200) / sma200 * 100
-      //    → sma200 = price / (1 + ma200_dev_pct/100)
+      // SMA200 역산 (정확)
       Q123.sma200 = Q123.qqq / (1 + d.nasdaq.ma200_dev_pct/100);
 
-      // 3) SMA50 추정: 강세장(price > sma200)에선 sma50이 sma200과 현재가 사이
-      //    낙폭이 작을수록 sma50이 현재가에 가깝다고 가정 (보수적 0.4 가중)
-      const dipFactor = Math.abs(Q123.drawdown) / 20; // 0~1로 정규화
-      const w = Math.min(0.5 + dipFactor*0.3, 0.8);   // 0.5~0.8
+      // SMA50 — data.json에 없음, 추정값
+      const drawdownAbs = Math.abs(Q123.drawdown);
+      let w;
+      if(drawdownAbs < 5) w = 0.25;
+      else if(drawdownAbs < 15) w = 0.45;
+      else w = Math.min(0.5 + (drawdownAbs-15)/30, 0.8);
       Q123.sma50 = Q123.qqq * (1-w) + Q123.sma200 * w;
-      // 정배열일 때만 sma50이 sma200보다 위에 위치하도록 보정
       if(Q123.aboveSMA200 && Q123.sma50 < Q123.sma200){
         Q123.sma50 = (Q123.qqq + Q123.sma200) / 2;
       }
 
-      // 4) RET126 = momentum_6m, RET63 ≈ momentum_6m * 0.55 (보수적 비례)
       Q123.ret126 = d.nasdaq.momentum_6m;
-      Q123.ret63 = Q123.ret126 * 0.55;
+      Q123.ret63 = Q123.ret126 * 0.55;   // 추정값
 
-      // 5) 파생 조건
       Q123.aboveSMA50 = Q123.qqq > Q123.sma50;
       Q123.alignment = Q123.aboveSMA50 && Q123.aboveSMA200 && Q123.sma50 > Q123.sma200;
       Q123.bearCondition = !Q123.aboveSMA200;
       Q123.boostCondition = Q123.alignment && Q123.ret63 >= 10 && Q123.ret126 >= 0;
 
-      // 6) 현재 모드 자동 판단
-      if(Q123.bearCondition){
-        Q123.currentMode = 'BEAR'; Q123.currentAsset = 'QQQ';
-      } else if(Q123.boostCondition){
-        Q123.currentMode = 'BOOST'; Q123.currentAsset = 'TQQQ';
-      } else {
-        Q123.currentMode = 'NORMAL'; Q123.currentAsset = 'QLD';
-      }
+      if(Q123.bearCondition){ Q123.currentMode = 'BEAR'; Q123.currentAsset = 'QQQ'; }
+      else if(Q123.boostCondition){ Q123.currentMode = 'BOOST'; Q123.currentAsset = 'TQQQ'; }
+      else { Q123.currentMode = 'NORMAL'; Q123.currentAsset = 'QLD'; }
 
       Q123.updated = d.updated_utc;
-
+      Q123.dataSource = 'estimate';  // 추정 폴백
       renderAll();
     }catch(e){
       console.warn('Q123 데이터 로딩 실패:', e);
       const el = document.getElementById('judge-text');
-      if(el) el.textContent = '데이터 로딩 실패 (data.json 접근 불가)';
+      if(el) el.textContent = '데이터 로딩 실패';
     }
   }
 
@@ -1517,8 +1551,12 @@
     }
 
     // ─── 시그널 패널 ───
-    const updDate = Q123.updated ? new Date(new Date(Q123.updated).getTime()+9*3600000).toISOString().slice(0,10) : '—';
-    set('sig-date', updDate);
+    const updDate = Q123.asOf || (Q123.updated ? new Date(new Date(Q123.updated).getTime()+9*3600000).toISOString().slice(0,10) : '—');
+    const sourceMark = Q123.dataSource === 'accurate'
+      ? '<span style="color:var(--green);font-size:10px;margin-left:8px">● 정확 데이터</span>'
+      : '<span style="color:var(--amber);font-size:10px;margin-left:8px">⚠ 일부 추정값</span>';
+    const sigDateEl = document.getElementById('sig-date');
+    if(sigDateEl) sigDateEl.innerHTML = updDate + sourceMark;
     set('sig-qqq', fmt$(Q123.qqq));
     set('sig-sma50', fmt$(Q123.sma50));
     set('sig-sma200', fmt$(Q123.sma200));
