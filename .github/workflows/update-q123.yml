@@ -33,8 +33,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # 변경된 게 있는지 확인
-          if git diff --quiet docs/q123_data.json 2>/dev/null; then
+          git add docs/q123_data.json 2>/dev/null || true
+
+          # staged 영역에 변화가 있는지 확인 (untracked 파일 포함)
+          if git diff --cached --quiet; then
             echo "✓ 변경사항 없음 — 푸시 스킵"
             exit 0
           fi
@@ -43,7 +45,6 @@ jobs:
           AS_OF=$(python -c "import json; d=json.load(open('docs/q123_data.json')); print(d.get('as_of','—'))")
           MODE=$(python -c "import json; d=json.load(open('docs/q123_data.json')); print(d['mode']['current']+' '+d['mode']['asset'])")
 
-          git add docs/q123_data.json
           git commit -m "data: Q123 시그널 자동 갱신 (${AS_OF}) — ${MODE}"
           git push
           echo "✅ 푸시 완료"
