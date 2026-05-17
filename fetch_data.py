@@ -15,7 +15,7 @@ def get_nasdaq():
     cur   = float(close.iloc[-1])
     peak  = float(close.max())
     ma200 = float(close.rolling(200).mean().iloc[-1])
-    ma50  = float(close.rolling(50).mean().iloc[-1])  # SWITCH 전략용
+    ma50  = float(close.rolling(50).mean().iloc[-1])
     # 6개월 전 가격 (약 126 거래일)
     idx_6m = max(0, len(close) - 126)
     price_6m_ago = float(close.iloc[idx_6m])
@@ -27,18 +27,29 @@ def get_nasdaq():
     price_60d_ago = float(close.iloc[idx_60d])
     return_20d = round((cur / price_20d_ago - 1) * 100, 2)
     return_60d = round((cur / price_60d_ago - 1) * 100, 2)
+    # M63 (Q123) 전략용 63일/126일 수익률
+    idx_63d  = max(0, len(close) - 63 - 1)   # 63거래일 전
+    idx_126d = max(0, len(close) - 126 - 1)  # 126거래일 전
+    price_63d_ago  = float(close.iloc[idx_63d])
+    price_126d_ago = float(close.iloc[idx_126d])
+    return_63d  = round((cur / price_63d_ago - 1) * 100, 2)
+    return_126d = round((cur / price_126d_ago - 1) * 100, 2)
     return {
-        "drawdown_pct":   round((cur / peak - 1) * 100, 2),
-        "rsi":            calc_rsi(close),
-        "ma200_dev_pct":  round((cur / ma200 - 1) * 100, 2),
-        "ma50_dev_pct":   round((cur / ma50 - 1) * 100, 2),    # SWITCH: 50일선 대비
-        "return_20d_pct": return_20d,                           # SWITCH: 20일 수익률
-        "return_60d_pct": return_60d,                           # SWITCH: 60일 수익률
-        "current_price":  round(cur, 2),
-        "peak_price":     round(peak, 2),
-        "momentum_6m":    momentum_6m,
-        "above_ma200":    cur > ma200,
-        "above_ma50":     cur > ma50,
+        "drawdown_pct":    round((cur / peak - 1) * 100, 2),
+        "rsi":             calc_rsi(close),
+        "ma200_dev_pct":   round((cur / ma200 - 1) * 100, 2),
+        "ma50_dev_pct":    round((cur / ma50 - 1) * 100, 2),
+        "return_20d_pct":  return_20d,
+        "return_60d_pct":  return_60d,
+        "return_63d_pct":  return_63d,    # M63 (Q123) 전략용 RET63
+        "return_126d_pct": return_126d,   # M63 (Q123) 전략용 RET126
+        "current_price":   round(cur, 2),
+        "peak_price":      round(peak, 2),
+        "sma50_price":     round(ma50, 2),   # 절대값 SMA50
+        "sma200_price":    round(ma200, 2),  # 절대값 SMA200
+        "momentum_6m":     momentum_6m,
+        "above_ma200":     cur > ma200,
+        "above_ma50":      cur > ma50,
     }
 
 def get_vix():
@@ -136,13 +147,21 @@ mps_total     = mps_trend + mps_momentum + mps_vix
 data = {
     "updated_utc":   datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
     "nasdaq": {
-        "drawdown_pct":  qqq["drawdown_pct"],
-        "rsi":           qqq["rsi"],
-        "ma200_dev_pct": qqq["ma200_dev_pct"],
-        "current_price": qqq["current_price"],
-        "peak_price":    qqq["peak_price"],
-        "momentum_6m":   qqq["momentum_6m"],
-        "above_ma200":   qqq["above_ma200"],
+        "drawdown_pct":    qqq["drawdown_pct"],
+        "rsi":             qqq["rsi"],
+        "ma200_dev_pct":   qqq["ma200_dev_pct"],
+        "ma50_dev_pct":    qqq["ma50_dev_pct"],      # Q123용 추가
+        "current_price":   qqq["current_price"],
+        "peak_price":      qqq["peak_price"],
+        "sma50_price":     qqq["sma50_price"],       # Q123용 추가 (절대값)
+        "sma200_price":    qqq["sma200_price"],      # Q123용 추가 (절대값)
+        "momentum_6m":     qqq["momentum_6m"],
+        "return_20d_pct":  qqq["return_20d_pct"],    # SWITCH용
+        "return_60d_pct":  qqq["return_60d_pct"],    # SWITCH용
+        "return_63d_pct":  qqq["return_63d_pct"],    # Q123 RET63
+        "return_126d_pct": qqq["return_126d_pct"],   # Q123 RET126
+        "above_ma200":     qqq["above_ma200"],
+        "above_ma50":      qqq["above_ma50"],        # Q123 정배열 판정용
     },
     "vix":           vix,
     "fear_greed":    fg,
