@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q123 위성 사령부</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0806;
+    --bg-2:#120e09;
+    --panel:#1a1410;
+    --panel-2:#221912;
+    --border:#3a2a1c;
+    --border-2:#4a3624;
+    --amber:#ffb020;
+    --amber-2:#ffc94a;
+    --amber-dim:#a8741a;
+    --red:#ff4040;
+    --red-2:#ff6060;
+    --green:#4ade80;
+    --text:#f4e8d8;
+    --text-2:#c9b89a;
+    --text-3:#8a7860;
+    --mono:'JetBrains Mono','IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  body{
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,176,32,0.05), transparent 60%),
+      radial-gradient(ellipse 60% 40% at 20% 100%, rgba(255,64,64,0.03), transparent 60%),
+      var(--bg);
+    min-height:100vh;
+    background-attachment:fixed;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:1;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,176,32,0.015) 0px, rgba(255,176,32,0.015) 1px, transparent 1px, transparent 3px);
+  }
+  a{color:var(--amber);text-decoration:none}
+
+  /* ===== TICKER BAR ===== */
+  .ticker-bar{
+    position:sticky;top:0;z-index:50;
+    background:var(--bg-2);
+    border-bottom:1px solid var(--border);
+    overflow:hidden;
+    white-space:nowrap;
+    font-size:11px;
+    padding:8px 0;
+    color:var(--text-2);
+  }
+  .ticker-bar-inner{
+    display:inline-block;
+    padding-left:100%;
+    animation:scroll-left 60s linear infinite;
+  }
+  .ticker-bar span{margin:0 24px}
+  .ticker-bar .up{color:var(--green)}
+  .ticker-bar .down{color:var(--red)}
+  .ticker-bar .amber{color:var(--amber)}
+  @keyframes scroll-left{
+    0%{transform:translateX(0)}
+    100%{transform:translateX(-100%)}
+  }
+
+  /* ===== HEADER ===== */
+  header{
+    border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg,var(--bg-2),var(--bg));
+    position:relative;
+    z-index:10;
+  }
+  .header-top{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 32px;font-size:11px;color:var(--text-3);
+    border-bottom:1px solid var(--border);
+  }
+  .header-top .left{display:flex;gap:24px;align-items:center}
+  .header-top .right{display:flex;gap:16px;align-items:center}
+  .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .header-main{padding:36px 32px 28px 32px;position:relative}
+  .header-grid{display:grid;grid-template-columns:auto 1fr auto;gap:32px;align-items:start}
+
+  .ascii-logo{
+    color:var(--amber);
+    font-size:10px;
+    line-height:1.2;
+    white-space:pre;
+    font-weight:600;
+  }
+
+  .system-info{
+    font-size:11px;
+    color:var(--text-3);
+    line-height:1.8;
+  }
+  .system-info b{color:var(--text);font-weight:500}
+  .system-info .verdict{color:var(--amber);font-weight:600}
+
+  .title-block{padding-left:8px;border-left:2px solid var(--amber)}
+  .title-block .eyebrow{font-size:11px;color:var(--amber);letter-spacing:2px;margin-bottom:8px;font-weight:600}
+  .title-block h1{
+    font-size:34px;
+    font-weight:800;
+    letter-spacing:-1px;
+    margin-bottom:6px;
+    color:var(--text);
+  }
+  .title-block .subtitle{font-size:12px;color:var(--text-2);line-height:1.7;max-width:680px}
+  .title-block .badge{
+    display:inline-block;padding:3px 10px;
+    background:rgba(255,176,32,0.1);
+    border:1px solid var(--amber);
+    color:var(--amber);
+    font-size:10px;font-weight:700;letter-spacing:1.5px;
+    margin-top:10px;
+  }
+
+  /* ===== NAV ===== */
+  nav{
+    background:var(--bg-2);
+    border-bottom:1px solid var(--border);
+    padding:0 32px;
+    display:flex;gap:0;
+    position:relative;z-index:10;
+  }
+  nav button{
+    background:none;border:none;
+    color:var(--text-3);
+    font-family:var(--mono);
+    font-size:12px;font-weight:500;
+    padding:14px 20px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    transition:all .15s;
+    letter-spacing:0.5px;
+  }
+  nav button:hover{color:var(--text)}
+  nav button.active{color:var(--amber);border-bottom-color:var(--amber);background:rgba(255,176,32,0.04)}
+
+  /* ===== LAYOUT ===== */
+  main{padding:32px;max-width:1480px;margin:0 auto;position:relative;z-index:2}
+  .tab-panel{display:none}
+  .tab-panel.active{display:block;animation:fadeIn .3s}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  .section-label{
+    font-size:11px;color:var(--text-3);
+    letter-spacing:1.5px;margin-bottom:12px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .section-label::before{content:'//';color:var(--amber);font-weight:700}
+  .section-label .meta{margin-left:auto;color:var(--text-3);font-weight:400}
+
+  /* ===== PANELS ===== */
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    padding:20px;
+    position:relative;
+  }
+  .panel.accent{border-color:var(--amber-dim)}
+  .panel.danger{border-color:var(--red);background:linear-gradient(180deg,var(--panel),rgba(255,64,64,0.03))}
+  .panel-title{
+    font-size:11px;color:var(--text-3);
+    letter-spacing:1.5px;margin-bottom:14px;
+    padding-bottom:10px;border-bottom:1px dashed var(--border);
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .panel-title::before{content:'// ';color:var(--amber)}
+
+  .grid{display:grid;gap:16px}
+  .grid-2{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(3,1fr)}
+  .grid-4{grid-template-columns:repeat(4,1fr)}
+  .grid-5{grid-template-columns:repeat(5,1fr)}
+
+  /* ===== MODE DISPLAY ===== */
+  .mode-display{
+    background:linear-gradient(135deg,var(--panel-2),var(--panel));
+    border:1px solid var(--amber-dim);
+    padding:32px;
+    margin-bottom:20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .mode-display::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,var(--amber),transparent);
+    animation:scan 3s linear infinite;
+  }
+  @keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+  .mode-grid{display:grid;grid-template-columns:1fr 2fr;gap:32px;align-items:center}
+  .mode-current{}
+  .mode-current .label{font-size:11px;color:var(--text-3);letter-spacing:2px;margin-bottom:8px}
+  .mode-current .value{
+    font-size:64px;font-weight:800;letter-spacing:-2px;
+    color:var(--amber);line-height:1;
+    text-shadow:0 0 20px rgba(255,176,32,0.3);
+  }
+  .mode-current .asset{
+    font-size:18px;color:var(--text);font-weight:600;
+    margin-top:8px;letter-spacing:1px;
+  }
+  .mode-current .asset .pct{color:var(--amber)}
+  .mode-distance{display:flex;flex-direction:column;gap:14px}
+  .distance-row{
+    display:grid;grid-template-columns:80px 1fr auto;
+    gap:14px;align-items:center;
+    padding:10px 14px;
+    background:var(--bg);
+    border-left:2px solid var(--border-2);
+  }
+  .distance-row.near{border-left-color:var(--amber)}
+  .distance-row .name{font-size:11px;color:var(--text-3);font-weight:600;letter-spacing:1px}
+  .distance-row .bar{height:6px;background:var(--border);position:relative;overflow:hidden}
+  .distance-row .bar-fill{position:absolute;left:0;top:0;bottom:0;background:var(--amber-dim);transition:width .3s}
+  .distance-row.near .bar-fill{background:var(--amber);box-shadow:0 0 8px var(--amber)}
+  .distance-row .delta{font-size:12px;color:var(--text);font-weight:600;font-variant-numeric:tabular-nums}
+
+  /* ===== SIGNAL TABLE ===== */
+  .signal-table{width:100%;border-collapse:collapse;font-size:12px}
+  .signal-table th{
+    text-align:left;padding:8px 10px;
+    font-size:10px;color:var(--text-3);letter-spacing:1px;
+    border-bottom:1px solid var(--border);font-weight:500;
+  }
+  .signal-table td{padding:10px;border-bottom:1px solid var(--border)}
+  .signal-table td.label{color:var(--text-2);font-weight:500}
+  .signal-table td.value{font-variant-numeric:tabular-nums;color:var(--text);font-weight:600}
+  .signal-table .ok{color:var(--green)}
+  .signal-table .fail{color:var(--red)}
+  .signal-table .pending{color:var(--amber)}
+  .check{display:inline-block;width:16px;text-align:center;font-weight:700}
+
+  /* ===== KPI CARDS ===== */
+  .kpi{
+    background:var(--panel);
+    border:1px solid var(--border);
+    padding:18px;
+    position:relative;
+  }
+  .kpi .label{
+    font-size:10px;color:var(--text-3);
+    letter-spacing:1.5px;margin-bottom:8px;
+    text-transform:uppercase;
+  }
+  .kpi .sublabel{font-size:10px;color:var(--text-3);margin-bottom:10px}
+  .kpi .v{
+    font-size:28px;font-weight:700;
+    color:var(--text);font-variant-numeric:tabular-nums;
+    letter-spacing:-0.5px;line-height:1;
+  }
+  .kpi .v.amber{color:var(--amber)}
+  .kpi .v.red{color:var(--red)}
+  .kpi .v.green{color:var(--green)}
+  .kpi .note{font-size:10px;color:var(--text-3);margin-top:8px;line-height:1.4}
+  .kpi .compare{
+    display:flex;justify-content:space-between;
+    margin-top:12px;padding-top:10px;
+    border-top:1px dashed var(--border);
+    font-size:11px;
+  }
+  .kpi .compare .l{color:var(--text-3)}
+  .kpi .compare .r{color:var(--text);font-weight:600}
+
+  /* ===== DUAL KPI (세전/세후) ===== */
+  .dual-kpi{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+  .dual-kpi > div{background:var(--panel);padding:16px}
+  .dual-kpi .head{font-size:10px;letter-spacing:1.5px;color:var(--text-3);margin-bottom:8px}
+  .dual-kpi .head.pre{color:var(--text-2)}
+  .dual-kpi .head.post{color:var(--amber)}
+  .dual-kpi .v{font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+
+  /* ===== TABLES ===== */
+  .data-table{width:100%;border-collapse:collapse;font-size:11px}
+  .data-table th{
+    text-align:right;padding:10px 8px;
+    font-size:10px;letter-spacing:1px;color:var(--text-3);
+    border-bottom:1px solid var(--border-2);font-weight:500;
+    background:var(--bg-2);
+  }
+  .data-table th:first-child{text-align:left}
+  .data-table td{
+    padding:9px 8px;border-bottom:1px solid var(--border);
+    text-align:right;font-variant-numeric:tabular-nums;
+  }
+  .data-table td:first-child{text-align:left;color:var(--text-2);font-weight:500}
+  .data-table tr:hover td{background:rgba(255,176,32,0.03)}
+  .pass{color:var(--green);font-weight:600}
+  .fail{color:var(--red);font-weight:600}
+  .caution{color:var(--amber);font-weight:600}
+  .pill{
+    display:inline-block;padding:2px 8px;
+    font-size:9px;letter-spacing:1px;font-weight:700;
+    border:1px solid currentColor;
+  }
+  .pill.pass{color:var(--green)}
+  .pill.fail{color:var(--red)}
+  .pill.caution{color:var(--amber)}
+
+  /* ===== VERDICT BIG ===== */
+  .verdict-big{
+    border:1px solid var(--amber);
+    padding:24px;
+    background:linear-gradient(135deg,rgba(255,176,32,0.05),transparent);
+    margin-bottom:20px;
+  }
+  .verdict-big .head{
+    font-size:11px;color:var(--amber);letter-spacing:2px;font-weight:700;
+    margin-bottom:8px;
+  }
+  .verdict-big h2{
+    font-size:24px;font-weight:800;color:var(--text);
+    letter-spacing:-0.5px;margin-bottom:10px;
+  }
+  .verdict-big h2 .accent{color:var(--amber)}
+  .verdict-big p{font-size:12px;color:var(--text-2);line-height:1.7;max-width:880px}
+
+  /* ===== TRANSITION LOG ===== */
+  .log-row{
+    display:grid;grid-template-columns:110px 1fr 1fr;
+    gap:16px;align-items:center;
+    padding:10px 14px;
+    border-left:2px solid var(--border-2);
+    background:var(--panel);
+    margin-bottom:2px;
+    font-size:12px;
+  }
+  .log-row .date{color:var(--text-3);font-size:11px}
+  .log-row .trans{font-weight:600;color:var(--text)}
+  .log-row .reason{color:var(--text-2);font-size:11px}
+  .log-row.bear{border-left-color:var(--red)}
+  .log-row.boost{border-left-color:var(--amber)}
+  .log-row.normal{border-left-color:var(--green)}
+
+  /* ===== ARROW ===== */
+  .arr{color:var(--amber);margin:0 4px}
+
+  /* ===== STRESS CARDS ===== */
+  .stress-card{
+    background:var(--panel);border:1px solid var(--border);
+    padding:18px;position:relative;
+  }
+  .stress-card.fail{border-color:var(--red);background:linear-gradient(180deg,var(--panel),rgba(255,64,64,0.04))}
+  .stress-card .tag{
+    position:absolute;top:14px;right:14px;
+    font-size:9px;letter-spacing:1px;font-weight:700;
+    padding:2px 6px;border:1px solid currentColor;
+  }
+  .stress-card .name{font-size:11px;color:var(--text-3);letter-spacing:1.5px;margin-bottom:4px}
+  .stress-card h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px}
+  .stress-card .stat{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border);font-size:11px}
+  .stress-card .stat:last-child{border-bottom:none}
+  .stress-card .stat .l{color:var(--text-3)}
+  .stress-card .stat .r{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums}
+  .stress-card .stat .r.bad{color:var(--red)}
+  .stress-card .stat .r.good{color:var(--green)}
+
+  /* ===== RISK BOX ===== */
+  .risk-list{display:flex;flex-direction:column;gap:8px}
+  .risk-item{
+    display:grid;grid-template-columns:30px 160px 1fr;
+    gap:14px;align-items:center;
+    padding:14px 16px;
+    background:var(--panel);
+    border-left:3px solid var(--red);
+    font-size:12px;
+  }
+  .risk-item .icon{color:var(--red);font-size:14px;font-weight:700}
+  .risk-item .name{font-weight:700;color:var(--text);letter-spacing:0.5px}
+  .risk-item .desc{color:var(--text-2);font-size:11px;line-height:1.6}
+
+  /* ===== CHECKLIST ===== */
+  .checklist-item{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:10px 0;border-bottom:1px dashed var(--border);
+    font-size:12px;
+  }
+  .checklist-item .cb{
+    width:14px;height:14px;border:1px solid var(--amber);
+    flex-shrink:0;margin-top:3px;
+  }
+  .checklist-item .text{color:var(--text-2);line-height:1.6}
+  .checklist-item .text b{color:var(--text);font-weight:600}
+
+  /* ===== ORDER GENERATOR ===== */
+  .form-row{display:grid;grid-template-columns:1fr 2fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--border)}
+  .form-row label{font-size:11px;color:var(--text-3);letter-spacing:1px}
+  .form-row input,.form-row select{
+    background:var(--bg);border:1px solid var(--border-2);
+    color:var(--text);font-family:var(--mono);font-size:12px;
+    padding:8px 10px;width:100%;
+  }
+  .form-row input:focus,.form-row select:focus{outline:none;border-color:var(--amber)}
+  .order-output{
+    background:var(--bg);border:1px solid var(--amber-dim);
+    padding:16px;margin-top:14px;
+    font-size:12px;line-height:1.7;
+    color:var(--text);
+  }
+  .order-output .head{color:var(--amber);font-weight:700;letter-spacing:1px;margin-bottom:8px}
+  .btn{
+    background:var(--amber);color:var(--bg);
+    border:none;padding:10px 18px;
+    font-family:var(--mono);font-size:11px;font-weight:700;
+    letter-spacing:1.5px;cursor:pointer;
+    transition:all .15s;
+  }
+  .btn:hover{background:var(--amber-2);box-shadow:0 0 12px rgba(255,176,32,0.4)}
+  .btn.secondary{background:transparent;color:var(--amber);border:1px solid var(--amber)}
+
+  /* ===== ASCII ART ===== */
+  .ascii-divider{
+    color:var(--border-2);
+    font-size:10px;text-align:center;
+    margin:24px 0;letter-spacing:2px;
+  }
+
+  /* ===== STRUCTURE BOX ===== */
+  .struct-box{
+    border:1px solid var(--border);
+    background:var(--panel);
+    padding:20px;
+  }
+  .struct-row{
+    display:grid;grid-template-columns:120px 1fr 100px;
+    gap:14px;align-items:center;
+    padding:14px 0;border-bottom:1px dashed var(--border);
+  }
+  .struct-row:last-child{border-bottom:none}
+  .struct-row .mode{font-weight:800;letter-spacing:1.5px;font-size:13px}
+  .struct-row .mode.bear{color:var(--red)}
+  .struct-row .mode.normal{color:var(--green)}
+  .struct-row .mode.boost{color:var(--amber)}
+  .struct-row .asset{font-size:14px;font-weight:700;color:var(--text)}
+  .struct-row .role{font-size:11px;color:var(--text-3);margin-top:2px}
+  .struct-row .cond{font-size:11px;color:var(--text-2);line-height:1.6}
+  .struct-row .pct{text-align:right;font-size:14px;font-weight:700;color:var(--amber)}
+
+  /* ===== COMPARISON BAR ===== */
+  .compare-bar{margin:8px 0}
+  .compare-bar .head{display:flex;justify-content:space-between;font-size:11px;color:var(--text-3);margin-bottom:4px}
+  .compare-bar .track{height:8px;background:var(--bg);position:relative;border:1px solid var(--border)}
+  .compare-bar .fill{position:absolute;top:0;bottom:0;left:0;background:var(--amber)}
+  .compare-bar .marker{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--text)}
+
+  /* ===== SCENARIO BAR CHART ===== */
+  .scenario-chart{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+  .scenario-row{display:grid;grid-template-columns:90px 1fr 60px;gap:10px;align-items:center;font-size:11px}
+  .scenario-row .year{color:var(--text-3);font-weight:500}
+  .scenario-row .bar-wrap{height:18px;background:var(--bg);border:1px solid var(--border);position:relative}
+  .scenario-row .bar-wrap .fill{position:absolute;top:0;left:0;bottom:0;background:linear-gradient(90deg,var(--amber-dim),var(--amber))}
+  .scenario-row .bar-wrap .fill.under{background:linear-gradient(90deg,#8a3a3a,#c04040)}
+  .scenario-row .bar-wrap .threshold{position:absolute;top:-2px;bottom:-2px;width:1px;background:var(--text);left:50.4%}
+  .scenario-row .calmar{font-variant-numeric:tabular-nums;color:var(--text);font-weight:600;text-align:right}
+
+  /* ===== INSIGHT GRID ===== */
+  .insight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .insight-card{
+    background:var(--panel);border:1px solid var(--border);
+    padding:16px;position:relative;
+  }
+  .insight-card.pass{border-color:var(--green)}
+  .insight-card.caution{border-color:var(--amber)}
+  .insight-card .tag{
+    position:absolute;top:12px;right:12px;
+    font-size:9px;letter-spacing:1.5px;font-weight:700;
+    color:var(--text-3);
+  }
+  .insight-card.pass .tag{color:var(--green)}
+  .insight-card.caution .tag{color:var(--amber)}
+  .insight-card h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.4;padding-right:50px}
+  .insight-card p{font-size:11px;color:var(--text-2);line-height:1.7}
+  .insight-card p b{color:var(--text)}
+
+  /* ===== FOOTER ===== */
+  footer{
+    border-top:1px solid var(--border);
+    background:var(--bg-2);
+    padding:24px 32px;
+    margin-top:48px;
+    font-size:10px;color:var(--text-3);
+    text-align:center;line-height:1.8;
+  }
+  footer a{color:var(--amber-dim)}
+
+  /* ===== UTILS ===== */
+  .mt-16{margin-top:16px}
+  .mt-24{margin-top:24px}
+  .mt-32{margin-top:32px}
+  .mb-12{margin-bottom:12px}
+  .mb-16{margin-bottom:16px}
+  .mb-24{margin-bottom:24px}
+
+  @media (max-width:1100px){
+    .grid-4,.grid-5,.insight-grid{grid-template-columns:repeat(2,1fr)}
+    .header-grid{grid-template-columns:1fr}
+    .ascii-logo{display:none}
+    .mode-grid{grid-template-columns:1fr;gap:20px}
+    .mode-current .value{font-size:48px}
+  }
+  @media (max-width:680px){
+    main{padding:16px}
+    .grid-3,.grid-2,.grid-4,.grid-5,.insight-grid,
+    .grid.grid-2[style*="grid-template-columns"]{grid-template-columns:1fr !important}
+    nav{overflow-x:auto;padding:0 16px}
+    nav button{padding:14px 14px;font-size:11px;white-space:nowrap}
+    .header-main{padding:24px 16px 20px 16px}
+    .header-top{padding:10px 16px;flex-wrap:wrap;gap:8px}
+    .header-top .left{gap:12px;flex-wrap:wrap}
+    .title-block h1{font-size:24px}
+    .mode-current .value{font-size:42px}
+    .struct-row{grid-template-columns:80px 1fr 60px;gap:8px}
+    .log-row{grid-template-columns:90px 1fr;gap:8px}
+    .log-row .reason{grid-column:1/-1;color:var(--text-3);font-size:10px;padding-top:4px}
+    .insight-card[style*="grid-column:span 4"]{grid-column:auto !important}
+    .data-table{font-size:10px}
+    .data-table th,.data-table td{padding:6px 4px}
+    .form-row{grid-template-columns:1fr;gap:6px}
+    .scenario-row{grid-template-columns:70px 1fr 50px;gap:6px;font-size:10px}
+    .risk-item{grid-template-columns:24px 1fr;gap:10px}
+    .risk-item .desc{grid-column:1/-1}
+    .dual-kpi{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== TICKER ===== -->
+<div class="ticker-bar">
+  <div class="ticker-bar-inner">
+    <span><b>Q123</b></span>
+    <span class="amber">MODE: NORMAL</span>
+    <span>QQQ <span class="up">$512.80 ▲ 1.07%</span></span>
+    <span>QLD <span class="up">$87.42 ▲ 2.14%</span></span>
+    <span>TQQQ <span class="up">$73.15 ▲ 3.21%</span></span>
+    <span>SMA50 $498.32</span>
+    <span>SMA200 $475.10</span>
+    <span>RET63 +8.2%</span>
+    <span>RET126 +14.5%</span>
+    <span>세후 CAGR <span class="amber">31.52%</span></span>
+    <span>세후 MDD <span class="down">-49.20%</span></span>
+    <span>Calmar 0.640</span>
+    <span>XIRR +31.96%</span>
+    <span>VERDICT <span class="amber">PASS w/ REGIME CAUTION</span></span>
+    <span>VIX 14.2</span>
+  </div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="header-top">
+    <div class="left">
+      <span><span class="live-dot"></span> LIVE</span>
+      <span>SSL/TLS 1.3 · SESSION 0x4A2F</span>
+      <span>—</span>
+      <span>Q123.SATELLITE.TERMINAL</span>
+    </div>
+    <div class="right">
+      <span>v1.0.0</span>
+      <span>·</span>
+      <span>BUILD 2026.05.17</span>
+    </div>
+  </div>
+
+  <div class="header-main">
+    <div class="header-grid">
+      <pre class="ascii-logo">
+╔════════════════════════╗
+║   Q · 1 · 2 · 3        ║
+║  ┌───┐ ┌───┐ ┌──────┐  ║
+║  │ ▼ │ │ ● │ │  ▲▲  │  ║
+║  └───┘ └───┘ └──────┘  ║
+║  BEAR  NORMAL  BOOST   ║
+╚════════════════════════╝</pre>
+
+      <div class="title-block">
+        <div class="eyebrow">QQQ123 · PRACTICAL M63_10 · 직투계좌 공격 위성</div>
+        <h1>Q123 위성 사령부</h1>
+        <div class="subtitle">
+          BEAR=QQQ · NORMAL=QLD · BOOST=TQQQ 3단계 스위칭 전략 · 2010+ 실제 ETF 검증<br>
+          세후 CAGR <b style="color:var(--amber)">+31.52%</b> · MDD <b style="color:var(--red)">-49.20%</b> · Calmar <b>0.640</b> · XIRR <b>+31.96%</b> · 12개 시작 시나리오
+        </div>
+        <span class="badge">● PASS w/ REGIME CAUTION</span>
+      </div>
+
+      <div class="system-info">
+        SYSTEM......: <b>SATELLITE STRATEGY</b><br>
+        STRATEGY....: <b>SW_M63_10_H63_X8</b><br>
+        VERSION.....: <b>2026.05.17</b><br>
+        VALIDATION..: <span class="verdict">PASS w/ CAUTION</span><br>
+        OOS CALMAR..: <b>0.928</b><br>
+        SAMPLE......: <b>2010-02-11 ~ 2026-05-15</b><br>
+        STATUS......: <span class="verdict">● OPERATIONAL · SATELLITE-ONLY</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <button class="active" data-tab="dashboard">① 대시보드</button>
+  <button data-tab="orders">② 주문/신호</button>
+  <button data-tab="log">③ 전환 로그</button>
+  <button data-tab="performance">④ 전략 성과</button>
+  <button data-tab="validation">🔬 미래 검증</button>
+  <button data-tab="rules">⚙ 운용 규칙</button>
+  <button data-tab="risk">⚠ 리스크</button>
+</nav>
+
+<main>
+
+<!-- ====================================================== -->
+<!-- ① DASHBOARD -->
+<!-- ====================================================== -->
+<section class="tab-panel active" id="dashboard">
+
+  <div class="mode-display">
+    <div class="mode-grid">
+      <div class="mode-current">
+        <div class="label">CURRENT MODE</div>
+        <div class="value">NORMAL</div>
+        <div class="asset">→ QLD <span class="pct">100%</span></div>
+      </div>
+      <div class="mode-distance">
+        <div class="distance-row">
+          <div class="name">BEAR</div>
+          <div class="bar"><div class="bar-fill" style="width:35%"></div></div>
+          <div class="delta">QQQ -7.3% 필요</div>
+        </div>
+        <div class="distance-row near">
+          <div class="name">BOOST</div>
+          <div class="bar"><div class="bar-fill" style="width:82%"></div></div>
+          <div class="delta">RET63 +1.8%p 필요</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI TOP -->
+  <div class="section-label">CORE METRICS · 세후 STRICT 22% · 편도 5bps <span class="meta">12개 시작 시나리오 평균</span></div>
+  <div class="grid grid-4 mb-24">
+    <div class="kpi">
+      <div class="label">CAGR (세후)</div>
+      <div class="sublabel">연평균 수익률</div>
+      <div class="v amber">31.52%</div>
+      <div class="compare"><span class="l">세전</span><span class="r">+40.86%</span></div>
+    </div>
+    <div class="kpi">
+      <div class="label">MDD (세후)</div>
+      <div class="sublabel">최대 낙폭</div>
+      <div class="v red">-49.20%</div>
+      <div class="compare"><span class="l">허용한계</span><span class="r">-65% 이내 ✓</span></div>
+    </div>
+    <div class="kpi">
+      <div class="label">CALMAR</div>
+      <div class="sublabel">손실 대비 성장</div>
+      <div class="v">0.640</div>
+      <div class="compare"><span class="l">기준선</span><span class="r">0.636 · PASS</span></div>
+    </div>
+    <div class="kpi">
+      <div class="label">XIRR</div>
+      <div class="sublabel">세후 자금가중수익률</div>
+      <div class="v amber">+31.96%</div>
+      <div class="compare"><span class="l">최종청산</span><span class="r">36.5억</span></div>
+    </div>
+  </div>
+
+  <!-- SIGNAL & STRUCTURE -->
+  <div class="grid grid-2 mb-24" style="grid-template-columns:1.2fr 1fr">
+    <div class="panel">
+      <div class="panel-title">SIGNAL PANEL · D-DAY CLOSE<span style="color:var(--text-3);font-size:10px">2026-05-15</span></div>
+      <table class="signal-table">
+        <thead>
+          <tr><th>지표</th><th style="text-align:right">현재값</th><th style="text-align:right">조건</th><th style="text-align:center">상태</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="label">QQQ Close</td><td class="value" style="text-align:right">$512.80</td><td style="text-align:right;color:var(--text-3)">—</td><td style="text-align:center">—</td></tr>
+          <tr><td class="label">SMA50</td><td class="value" style="text-align:right">$498.32</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA50</td><td style="text-align:center" class="ok"><span class="check">✓</span></td></tr>
+          <tr><td class="label">SMA200</td><td class="value" style="text-align:right">$475.10</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA200</td><td style="text-align:center" class="ok"><span class="check">✓</span></td></tr>
+          <tr><td class="label">정배열</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">SMA50 &gt; SMA200</td><td style="text-align:center" class="ok"><span class="check">✓</span></td></tr>
+          <tr><td class="label">RET63</td><td class="value" style="text-align:right">+8.2%</td><td style="text-align:right;color:var(--text-3)">≥ +10%</td><td style="text-align:center" class="fail"><span class="check">✗</span></td></tr>
+          <tr><td class="label">RET126</td><td class="value" style="text-align:right">+14.5%</td><td style="text-align:right;color:var(--text-3)">≥ 0%</td><td style="text-align:center" class="ok"><span class="check">✓</span></td></tr>
+          <tr><td class="label">BOOST 보유일</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">≤ 63d</td><td style="text-align:center">—</td></tr>
+          <tr><td class="label">BOOST peak Δ</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">&gt; -8%</td><td style="text-align:center">—</td></tr>
+          <tr><td class="label">쿨다운</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">21d</td><td style="text-align:center">—</td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:14px;padding:10px;background:var(--bg);border-left:2px solid var(--amber);font-size:11px;color:var(--text-2);line-height:1.7">
+        <b style="color:var(--amber)">▸ 판단:</b> 정배열 + RET126 충족, 다만 RET63 +1.8%p 부족 → <b>NORMAL 유지 · QLD 100%</b><br>
+        <b style="color:var(--amber)">▸ 다음 트리거:</b> RET63 ≥ +10% 달성 시 D+1 시가에 QLD → TQQQ
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">STRATEGY STRUCTURE · 3 MODES</div>
+      <div class="struct-box" style="border:none;padding:0">
+        <div class="struct-row">
+          <div>
+            <div class="mode bear">BEAR</div>
+            <div class="role">레버리지 축소·방어</div>
+          </div>
+          <div>
+            <div class="asset">QQQ</div>
+            <div class="cond">QQQ &lt; SMA200</div>
+          </div>
+          <div class="pct">100%</div>
+        </div>
+        <div class="struct-row">
+          <div>
+            <div class="mode normal">NORMAL</div>
+            <div class="role">기본 수익 엔진</div>
+          </div>
+          <div>
+            <div class="asset">QLD</div>
+            <div class="cond">BEAR도 BOOST도 아닌 상승장</div>
+          </div>
+          <div class="pct">100%</div>
+        </div>
+        <div class="struct-row">
+          <div>
+            <div class="mode boost">BOOST</div>
+            <div class="role">강세장 부스터</div>
+          </div>
+          <div>
+            <div class="asset">TQQQ</div>
+            <div class="cond">정배열 + RET63 ≥ +10% + RET126 ≥ 0%</div>
+          </div>
+          <div class="pct">100%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TODAY CHECKLIST -->
+  <div class="grid grid-2">
+    <div class="panel">
+      <div class="panel-title">TODAY CHECKLIST</div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>D일 종가 확인</b> · QQQ, SMA50, SMA200, RET63, RET126</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>모드 전환 신호 검토</b> · 위 SIGNAL PANEL 8개 항목</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>BOOST 보유일·peak 추적</b> · 보유 중일 때만</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>쿨다운 카운터</b> · BOOST 종료 후 21거래일</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>D+1 시가 체결 준비</b> · 신호 발생 시</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>장중 임의 매매 금지</b> · 종가 신호만 사용</div></div>
+    </div>
+
+    <div class="panel accent">
+      <div class="panel-title">TAX DRAG MONITOR · 직투계좌</div>
+      <div style="font-size:11px;color:var(--text-3);margin-bottom:14px;line-height:1.7">
+        스위칭 전략은 실현손익을 자주 발생시킴. 다음 해 5월 말 계좌 내 자산 매도 납부.
+      </div>
+      <div class="grid grid-2" style="gap:8px">
+        <div style="padding:12px;background:var(--bg);border-left:2px solid var(--amber)">
+          <div style="font-size:10px;color:var(--text-3);letter-spacing:1px">YTD 실현손익</div>
+          <div style="font-size:18px;font-weight:700;color:var(--text);margin-top:4px">—</div>
+        </div>
+        <div style="padding:12px;background:var(--bg);border-left:2px solid var(--amber)">
+          <div style="font-size:10px;color:var(--text-3);letter-spacing:1px">예상 납부세금</div>
+          <div style="font-size:18px;font-weight:700;color:var(--amber);margin-top:4px">—</div>
+        </div>
+        <div style="padding:12px;background:var(--bg);border-left:2px solid var(--border-2)">
+          <div style="font-size:10px;color:var(--text-3);letter-spacing:1px">납부 예정일</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-top:4px">2027-05-31</div>
+        </div>
+        <div style="padding:12px;background:var(--bg);border-left:2px solid var(--border-2)">
+          <div style="font-size:10px;color:var(--text-3);letter-spacing:1px">백테스트 평균</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text);margin-top:4px">7.2억 / 시나리오</div>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:10px;background:rgba(255,64,64,0.05);border-left:2px solid var(--red);font-size:11px;color:var(--text-2);line-height:1.6">
+        <b style="color:var(--red)">⚠ 세금 드래그가 본 전략 최대 리스크</b> · 외부 현금 예비비 권장
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ====================================================== -->
+<!-- ② ORDERS -->
+<!-- ====================================================== -->
+<section class="tab-panel" id="orders">
+
+  <div class="section-label">ORDER GENERATOR · D+1 시가 체결 원칙</div>
+
+  <div class="grid grid-2">
+    <div class="panel">
+      <div class="panel-title">PORTFOLIO INPUT</div>
+      <div class="form-row">
+        <label>현재 보유 자산</label>
+        <select id="curAsset">
+          <option value="QLD">QLD (NORMAL)</option>
+          <option value="QQQ">QQQ (BEAR)</option>
+          <option value="TQQQ">TQQQ (BOOST)</option>
+          <option value="CASH">현금</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>평가금액 (원)</label>
+        <input type="number" id="navInput" value="100000000" step="1000000">
+      </div>
+      <div class="form-row">
+        <label>USD/KRW</label>
+        <input type="number" id="fxInput" value="1380" step="1">
+      </div>
+      <div class="form-row">
+        <label>편도 거래비용 (bps)</label>
+        <select id="bpsInput">
+          <option value="5">5 (왕복 0.10%)</option>
+          <option value="10">10 (왕복 0.20%)</option>
+          <option value="15">15 (왕복 0.30%)</option>
+        </select>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px">
+        <button class="btn" onclick="generateOrder()">// GENERATE ORDER</button>
+        <button class="btn secondary" onclick="resetForm()">RESET</button>
+      </div>
+
+      <div class="order-output" id="orderOutput">
+        <div class="head">// ORDER SHEET · 신호 기반 매매 지시서</div>
+        <div style="color:var(--text-3)">상단에서 입력 후 [GENERATE ORDER]를 누르세요.</div>
+      </div>
+    </div>
+
+    <div class="panel accent">
+      <div class="panel-title">SIGNAL-BASED RULES</div>
+      <div style="font-size:11px;line-height:1.8;color:var(--text-2)">
+        <b style="color:var(--amber)">[BEAR 진입]</b><br>
+        QQQ &lt; SMA200 → D+1 시가에 전량 QQQ 100%<br><br>
+        <b style="color:var(--amber)">[BEAR 해제]</b><br>
+        QQQ &gt; SMA200 5거래일 유지 + 정배열 → QLD<br>
+        (BOOST 조건 충족 시 QQQ → TQQQ 직행 허용)<br><br>
+        <b style="color:var(--amber)">[BOOST 진입]</b><br>
+        정배열 + RET63 ≥ +10% + RET126 ≥ 0%<br>
+        → D+1 시가에 TQQQ 100%<br><br>
+        <b style="color:var(--amber)">[BOOST 종료]</b><br>
+        ① QQQ &lt; SMA50, 또는<br>
+        ② BOOST peak 대비 -8%, 또는<br>
+        ③ 보유 63거래일 도달<br>
+        → QLD 100% + 21거래일 쿨다운<br><br>
+        <b style="color:var(--red)">[금지]</b><br>
+        장중 임의 매매 · 신호 무시 · 쿨다운 중 TQQQ 재진입
+      </div>
+    </div>
+  </div>
+
+  <div class="ascii-divider">─────────── ─── ── ─ TRANSITION FREQUENCY ─ ── ─── ───────────</div>
+
+  <div class="section-label">AVG TRANSITIONS · 12개 시나리오 평균</div>
+  <div class="grid grid-5">
+    <div class="kpi"><div class="label">TQQQ → QLD</div><div class="v amber">20.2</div><div class="note">BOOST 종료가 가장 빈번</div></div>
+    <div class="kpi"><div class="label">QLD → TQQQ</div><div class="v amber">19.1</div><div class="note">BOOST 진입</div></div>
+    <div class="kpi"><div class="label">QLD → QQQ</div><div class="v">8.0</div><div class="note">BEAR 진입</div></div>
+    <div class="kpi"><div class="label">QQQ → QLD</div><div class="v">6.3</div><div class="note">BEAR 해제</div></div>
+    <div class="kpi"><div class="label">QQQ → TQQQ</div><div class="v">1.8</div><div class="note">BEAR→BOOST 직행</div></div>
+  </div>
+
+</section>
+
+<!-- ====================================================== -->
+<!-- ③ TRANSITION LOG -->
+<!-- ====================================================== -->
+<section class="tab-panel" id="log">
+
+  <div class="section-label">MODE TRANSITION LOG · 2021 시작 시나리오 · 2022 하락장 사례</div>
+
+  <div style="font-size:11px;color:var(--text-2);margin-bottom:16px;line-height:1.7;max-width:880px">
+    2022년 하락장 초입에 <b style="color:var(--amber)">TQQQ → QLD → QQQ</b> 순서로 레버리지를 단계적으로 축소했고,
+    2023년 회복 신호 확인 후 <b style="color:var(--amber)">QQQ → QLD → TQQQ</b>로 재진입한 실제 백테스트 로그.
+  </div>
+
+  <div class="log-row boost"><div class="date">2021-01-04</div><div class="trans">— <span class="arr">→</span> TQQQ</div><div class="reason">BOOST 진입: RET63 ≥ 10%, RET126 ≥ 0%</div></div>
+  <div class="log-row normal"><div class="date">2021-02-26</div><div class="trans">TQQQ <span class="arr">→</span> QLD</div><div class="reason">QQQ &lt; SMA50, BOOST 종료</div></div>
+  <div class="log-row boost"><div class="date">2021-06-08</div><div class="trans">QLD <span class="arr">→</span> TQQQ</div><div class="reason">RET63 ≥ 10%, RET126 ≥ 0%</div></div>
+  <div class="log-row normal"><div class="date">2021-09-07</div><div class="trans">TQQQ <span class="arr">→</span> QLD</div><div class="reason">BOOST 보유 63거래일 종료</div></div>
+  <div class="log-row boost"><div class="date">2021-12-29</div><div class="trans">QLD <span class="arr">→</span> TQQQ</div><div class="reason">RET63 ≥ 10%, RET126 ≥ 0%</div></div>
+  <div class="log-row normal"><div class="date">2022-01-06</div><div class="trans">TQQQ <span class="arr">→</span> QLD</div><div class="reason">QQQ &lt; SMA50</div></div>
+  <div class="log-row bear"><div class="date">2022-01-21</div><div class="trans">QLD <span class="arr">→</span> QQQ</div><div class="reason">QQQ &lt; SMA200, BEAR 진입</div></div>
+  <div class="log-row normal"><div class="date">2023-03-20</div><div class="trans">QQQ <span class="arr">→</span> QLD</div><div class="reason">SMA200 위 5거래일 + 추세 회복</div></div>
+  <div class="log-row boost"><div class="date">2023-03-21</div><div class="trans">QLD <span class="arr">→</span> TQQQ</div><div class="reason">RET63 ≥ 10%, RET126 ≥ 0%</div></div>
+
+  <div class="ascii-divider">─────────── ─── ── ─ TRANSITION ANALYSIS ─ ── ─── ───────────</div>
+
+  <div class="grid grid-3">
+    <div class="panel">
+      <div class="panel-title">2022 BEAR 진입 타이밍</div>
+      <div style="font-size:11px;color:var(--text-2);line-height:1.7">
+        <b style="color:var(--amber)">2022-01-06:</b> TQQQ → QLD (1차 방어)<br>
+        <b style="color:var(--amber)">2022-01-21:</b> QLD → QQQ (2차 방어)<br><br>
+        SMA50 이탈 → SMA200 이탈까지 <b style="color:var(--text)">11거래일</b>.<br>
+        2단계 디레버리징으로 최악 손실 회피.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">2023 RE-ENTRY 타이밍</div>
+      <div style="font-size:11px;color:var(--text-2);line-height:1.7">
+        <b style="color:var(--amber)">2023-03-20:</b> QQQ → QLD (BEAR 해제)<br>
+        <b style="color:var(--amber)">2023-03-21:</b> QLD → TQQQ (BOOST 진입)<br><br>
+        규칙상 1일 후 직행 가능 → <b style="color:var(--text)">실제 단 1거래일</b>.<br>
+        강세장 초입 부스터 효과 극대화.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">2021 BOOST 회전율</div>
+      <div style="font-size:11px;color:var(--text-2);line-height:1.7">
+        한 해 동안 <b style="color:var(--text)">3회 BOOST 진입/종료</b>.<br>
+        평균 보유 ~63d (HOLD 만기).<br><br>
+        세금 드래그가 핵심 비용 — <b style="color:var(--red)">스위칭 빈도</b>가
+        세후 성과를 결정.
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ====================================================== -->
+<!-- ④ PERFORMANCE -->
+<!-- ====================================================== -->
+<section class="tab-panel" id="performance">
+
+  <div class="verdict-big">
+    <div class="head">// FINAL VERDICT · 4 KEY POINTS</div>
+    <h2>세전 <span class="accent">강하게 통과</span> · 세후 <span class="accent">조건부 통과</span></h2>
+    <p>
+      세전 기준으로는 편도 15bps까지 견고. 그러나 직투계좌 세금(STRICT 22%) 반영 후에는
+      <b style="color:var(--amber)">편도 5bps에서만 QLD HY same-period 기준선 0.636을 근소하게 초과</b>한다.
+      편도 10bps 이상부터는 우위가 사라진다. 따라서 본 전략의 세후 우위는
+      <b style="color:var(--text)">"넉넉한 압도"가 아니라 낮은 비용과 엄격한 실행을 전제로 한 통과"</b>로 해석한다.
+    </p>
+  </div>
+
+  <div class="section-label">CORE COMPARISON · 세전 vs 세후 (편도 5bps)</div>
+
+  <div class="grid grid-4 mb-24">
+    <div class="kpi">
+      <div class="label">CAGR</div>
+      <div class="dual-kpi mt-16" style="margin-top:8px">
+        <div><div class="head pre">PRE-TAX</div><div class="v">+40.86%</div></div>
+        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">+31.52%</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">세금 드래그 -9.34%p</div>
+    </div>
+    <div class="kpi">
+      <div class="label">MDD</div>
+      <div class="dual-kpi mt-16" style="margin-top:8px">
+        <div><div class="head pre">PRE-TAX</div><div class="v">-45.96%</div></div>
+        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--red)">-49.20%</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">세금 매도로 -3.24%p 악화</div>
+    </div>
+    <div class="kpi">
+      <div class="label">CALMAR</div>
+      <div class="dual-kpi mt-16" style="margin-top:8px">
+        <div><div class="head pre">PRE-TAX</div><div class="v">0.889</div></div>
+        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">0.640</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">기준선 0.636 · PASS</div>
+    </div>
+    <div class="kpi">
+      <div class="label">FINAL VALUE</div>
+      <div class="dual-kpi mt-16" style="margin-top:8px">
+        <div><div class="head pre">PRE-TAX</div><div class="v">79.0억</div></div>
+        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">36.5억</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">평균 납부세금 7.2억</div>
+    </div>
+  </div>
+
+  <!-- COST SENSITIVITY -->
+  <div class="section-label">COST × TAX SENSITIVITY MATRIX <span class="meta">기준선 Calmar 0.636 = QLD HY same-period</span></div>
+
+  <div class="panel mb-24">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>세금 정책</th>
+          <th>편도</th>
+          <th>왕복</th>
+          <th>세후 CAGR</th>
+          <th>세후 MDD</th>
+          <th>세후 Calmar</th>
+          <th>세후 XIRR</th>
+          <th>최종청산</th>
+          <th>납부세금</th>
+          <th>판정</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>NO TAX BASELINE</td><td>5bps</td><td>0.10%</td><td>+40.50%</td><td>-45.96%</td><td class="pass">0.881</td><td>+40.99%</td><td>76.9억</td><td>0.0억</td><td><span class="pill pass">PASS</span></td></tr>
+        <tr><td>STRICT 22% (NO DEDUCTION)</td><td><b>5bps</b></td><td>0.10%</td><td>+31.52%</td><td>-49.20%</td><td class="pass">0.640</td><td>+31.96%</td><td>36.5억</td><td>7.2억</td><td><span class="pill pass">PASS</span></td></tr>
+        <tr><td>STRICT 22% (NO DEDUCTION)</td><td>10bps</td><td>0.20%</td><td>+30.89%</td><td>-49.36%</td><td class="fail">0.626</td><td>+31.33%</td><td>34.4억</td><td>6.9억</td><td><span class="pill fail">FAIL</span></td></tr>
+        <tr><td>STRICT 22% (NO DEDUCTION)</td><td>15bps</td><td>0.30%</td><td>+30.27%</td><td>-49.53%</td><td class="fail">0.611</td><td>+30.70%</td><td>32.5억</td><td>6.6억</td><td><span class="pill fail">FAIL</span></td></tr>
+        <tr><td>KR 22% + 250만공제</td><td><b>5bps</b></td><td>0.10%</td><td>+31.63%</td><td>-49.18%</td><td class="pass">0.643</td><td>+32.10%</td><td>36.8억</td><td>7.3억</td><td><span class="pill pass">PASS</span></td></tr>
+        <tr><td>KR 22% + 250만공제</td><td>10bps</td><td>0.20%</td><td>+31.01%</td><td>-49.34%</td><td class="fail">0.628</td><td>+31.47%</td><td>34.8억</td><td>6.9억</td><td><span class="pill fail">FAIL</span></td></tr>
+        <tr><td>KR 22% + 250만공제</td><td>15bps</td><td>0.30%</td><td>+30.39%</td><td>-49.50%</td><td class="fail">0.614</td><td>+30.84%</td><td>32.8억</td><td>6.6억</td><td><span class="pill fail">FAIL</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;padding:12px;background:rgba(255,176,32,0.05);border-left:2px solid var(--amber);font-size:11px;color:var(--text-2);line-height:1.7">
+      <b style="color:var(--amber)">▸ 해석:</b> 편도 5bps 두 모델 모두 PASS · 편도 10bps부터 FAIL. <b>세후 우위는 비용 관리 능력에 결정적으로 의존</b>.
+    </div>
+  </div>
+
+  <!-- START YEAR ROBUSTNESS -->
+  <div class="section-label">START YEAR ROBUSTNESS · STRICT 22% · 편도 5bps</div>
+
+  <div class="panel mb-24">
+    <div style="font-size:11px;color:var(--text-2);margin-bottom:14px;line-height:1.7">
+      12개 시작 시나리오 모두 MDD ≈ -49%로 안정적. Calmar는 <b>0.550~0.776</b> 범위 — <b style="color:var(--red)">2010·2011·2021 시작 시나리오는 0.636 미달</b>.
+    </div>
+    <div class="scenario-chart">
+      <div class="scenario-row"><div class="year">2010-02-11</div><div class="bar-wrap"><div class="fill under" style="width:43.8%"></div><div class="threshold"></div></div><div class="calmar fail">0.558</div></div>
+      <div class="scenario-row"><div class="year">2011-01-03</div><div class="bar-wrap"><div class="fill under" style="width:43.7%"></div><div class="threshold"></div></div><div class="calmar fail">0.557</div></div>
+      <div class="scenario-row"><div class="year">2012-01-03</div><div class="bar-wrap"><div class="fill" style="width:48.2%"></div><div class="threshold"></div></div><div class="calmar pass">0.614</div></div>
+      <div class="scenario-row"><div class="year">2013-01-02</div><div class="bar-wrap"><div class="fill" style="width:49.0%"></div><div class="threshold"></div></div><div class="calmar pass">0.624</div></div>
+      <div class="scenario-row"><div class="year">2014-01-02</div><div class="bar-wrap"><div class="fill" style="width:46.8%"></div><div class="threshold"></div></div><div class="calmar caution">0.597</div></div>
+      <div class="scenario-row"><div class="year">2015-01-02</div><div class="bar-wrap"><div class="fill" style="width:46.5%"></div><div class="threshold"></div></div><div class="calmar caution">0.593</div></div>
+      <div class="scenario-row"><div class="year">2016-01-04</div><div class="bar-wrap"><div class="fill" style="width:53.8%"></div><div class="threshold"></div></div><div class="calmar pass">0.685</div></div>
+      <div class="scenario-row"><div class="year">2017-01-03</div><div class="bar-wrap"><div class="fill" style="width:58.3%"></div><div class="threshold"></div></div><div class="calmar pass">0.743</div></div>
+      <div class="scenario-row"><div class="year">2018-01-02</div><div class="bar-wrap"><div class="fill" style="width:52.1%"></div><div class="threshold"></div></div><div class="calmar pass">0.664</div></div>
+      <div class="scenario-row"><div class="year">2019-01-02</div><div class="bar-wrap"><div class="fill" style="width:60.9%"></div><div class="threshold"></div></div><div class="calmar pass">0.776</div></div>
+      <div class="scenario-row"><div class="year">2020-01-02</div><div class="bar-wrap"><div class="fill" style="width:56.9%"></div><div class="threshold"></div></div><div class="calmar pass">0.725</div></div>
+      <div class="scenario-row"><div class="year">2021-01-04</div><div class="bar-wrap"><div class="fill under" style="width:43.2%"></div><div class="threshold"></div></div><div class="calmar fail">0.550</div></div>
+    </div>
+    <div style="margin-top:14px;font-size:10px;color:var(--text-3)">
+      X: Calmar (좌→우 0 → 1.275) · 수직선: 기준선 <b style="color:var(--text)">0.636</b>
+    </div>
+  </div>
+
+  <!-- PRE-TAX COST SENSITIVITY -->
+  <div class="section-label">PRE-TAX COST SENSITIVITY · 0~15bps</div>
+
+  <div class="panel mb-24">
+    <table class="data-table">
+      <thead>
+        <tr><th>편도 비용</th><th>왕복 근사</th><th>CAGR</th><th>MDD</th><th>Worst MDD</th><th>Calmar</th><th>최종자산</th><th>평균 거래</th><th>모드변경</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0bps</td><td>0.00%</td><td>+41.58%</td><td>-45.80%</td><td>-46.11%</td><td class="pass">0.908</td><td>84.3억</td><td>241.3</td><td>55.5</td></tr>
+        <tr><td>2.5bps</td><td>0.05%</td><td>+41.22%</td><td>-45.88%</td><td>-46.16%</td><td class="pass">0.898</td><td>81.6억</td><td>241.3</td><td>55.5</td></tr>
+        <tr><td><b>5bps</b></td><td>0.10%</td><td>+40.86%</td><td>-45.96%</td><td>-46.22%</td><td class="pass">0.889</td><td>79.0억</td><td>241.3</td><td>55.5</td></tr>
+        <tr><td>10bps</td><td>0.20%</td><td>+40.14%</td><td>-46.12%</td><td>-46.32%</td><td class="pass">0.870</td><td>74.1억</td><td>241.3</td><td>55.5</td></tr>
+        <tr><td>15bps</td><td>0.30%</td><td>+39.43%</td><td>-46.28%</td><td>-46.43%</td><td class="pass">0.852</td><td>69.5억</td><td>241.3</td><td>55.5</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:12px;font-size:11px;color:var(--text-2);line-height:1.7">
+      <b style="color:var(--green)">세전 기준 모든 비용 구간 PASS</b> · 편도 15bps에서도 Calmar 0.852 유지.
+    </div>
+  </div>
+
+</section>
+
+<!-- ====================================================== -->
+<!-- 🔬 VALIDATION -->
+<!-- ====================================================== -->
+<section class="tab-panel" id="validation">
+
+  <div class="verdict-big">
+    <div class="head">// FUTURE VALIDATION · VERDICT</div>
+    <h2>PASS with <span class="accent">REGIME CAUTION</span></h2>
+    <p>
+      Walk-forward·민감도·Bootstrap 검증을 모두 통과해 <b style="color:var(--text)">구조적 견고성</b>이 확인되었다.
+      OOS 평균 Calmar 0.928이 Train 평균 0.863보다 높아 단일 학습 구간 과최적화 가능성이 낮다.
+      다만 <b style="color:var(--amber)">Regime Switching</b>과 <b style="color:var(--amber)">-30% Shock</b>에서는
+      MDD가 사용자 한계(-65%)를 자주 초과해, <b style="color:var(--text)">메인 생존 전략이 아닌 제한 비중 위성 전략</b>으로만 운용해야 한다.
+    </p>
+  </div>
+
+  <div class="section-label">VALIDATION METRICS · 3 KEY</div>
+
+  <div class="grid grid-3 mb-24">
+    <div class="kpi">
+      <div class="label">OOS CALMAR</div>
+      <div class="v amber">0.928</div>
+      <div class="note">Train 평균 0.863 대비 <b style="color:var(--green)">+0.065</b><br>학습 구간 외 효율 유지</div>
+    </div>
+    <div class="kpi">
+      <div class="label">PARAMETER ROBUSTNESS</div>
+      <div class="v">std 0.047</div>
+      <div class="note">range 0.131 · 7개 설정 <b style="color:var(--green)">모두 0.636 초과</b><br>단일 파라미터 의존도 낮음</div>
+    </div>
+    <div class="kpi" style="border-color:var(--amber)">
+      <div class="label">REGIME LIMIT</div>
+      <div class="v" style="color:var(--amber)">⚠ CAUTION</div>
+      <div class="note">P(CAGR ≥ 15%) = <b style="color:var(--red)">3.5%</b><br>QQQ 장기 성장 전제 깨지면 붕괴</div>
+    </div>
+  </div>
+
+  <!-- WALK-FORWARD -->
+  <div class="section-label">WALK-FORWARD · 3 ROLLING WINDOWS</div>
+
+  <div class="panel mb-24">
+    <div style="font-size:11px;color:var(--text-2);margin-bottom:14px;line-height:1.7">
+      과거 구간을 <b>Train</b>으로 두고, 학습에 쓰지 않은 <b style="color:var(--amber)">OOS</b> 구간에서 효율이 유지되는지 확인.
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Window</th><th>Train 기간</th><th>OOS 기간</th><th>T.CAGR</th><th>OOS CAGR</th><th>T.Calmar</th><th>OOS Calmar</th><th>OOS MDD</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>W1</td><td style="text-align:right">2010-02 ~ 2013-12</td><td style="text-align:right">2014-01 ~ 2017-12</td><td>+28.15%</td><td>+25.70%</td><td>0.812</td><td class="pass">0.698</td><td>-36.79%</td></tr>
+        <tr><td>W2</td><td style="text-align:right">2010-02 ~ 2017-12</td><td style="text-align:right">2018-01 ~ 2021-12</td><td>+26.58%</td><td class="pass">+59.78%</td><td>0.722</td><td class="pass">1.469</td><td>-40.70%</td></tr>
+        <tr><td>W3</td><td style="text-align:right">2014-01 ~ 2021-12</td><td style="text-align:right">2022-01 ~ 2026-05</td><td>+42.87%</td><td>+27.75%</td><td>1.053</td><td class="caution">0.617</td><td>-44.97%</td></tr>
+        <tr style="background:var(--bg-2);font-weight:700">
+          <td>OOS AVG</td><td></td><td></td><td></td><td>+37.74%</td><td></td><td class="pass">0.928</td><td></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;padding:12px;background:rgba(74,222,128,0.05);border-left:2px solid var(--green);font-size:11px;color:var(--text-2);line-height:1.7">
+      <b style="color:var(--green)">▸ PASS:</b> OOS Calmar 0.928 &gt; Train 0.863 — 학습 외 구간에서도 효율 유지.
+      <b style="color:var(--amber)">단, W3 (2022+) OOS Calmar 0.617은 기준선 0.636 소폭 하회</b> — 최근 구간은 경계.
+    </div>
+  </div>
+
+  <!-- PARAMETER SENSITIVITY -->
+  <div class="section-label">PARAMETER SENSITIVITY · 7 CONFIGS</div>
+
+  <div class="panel mb-24">
+    <div style="font-size:11px;color:var(--text-2);margin-bottom:14px;line-height:1.7">
+      RET63 진입 문턱, BOOST 보유기간, BOOST 종료 낙폭을 변경. BASE가 최적점이 아닌 <b>"중간 안정 구간"</b>에 있어야 과최적화가 아님.
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>설정</th><th>전략명</th><th>CAGR</th><th>MDD</th><th>Calmar</th><th>Min</th><th>OOS</th><th>Rank</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>EXIT_6pct</td><td>MOM10_H63_X6</td><td>+40.89%</td><td>-45.94%</td><td class="pass">0.890</td><td>0.761</td><td>0.928</td><td>1</td></tr>
+        <tr style="background:rgba(255,176,32,0.04)"><td><b>BASE_M63_10</b></td><td>SW_M63_10_H63_X8</td><td>+40.82%</td><td>-45.96%</td><td class="pass">0.888</td><td>0.761</td><td>0.928</td><td><b>2</b></td></tr>
+        <tr><td>EXIT_10pct</td><td>MOM10_H63_X10</td><td>+40.82%</td><td>-45.96%</td><td class="pass">0.888</td><td>0.761</td><td>0.928</td><td>2</td></tr>
+        <tr><td>HOLD_84d</td><td>MOM10_H84_X8</td><td>+39.82%</td><td>-46.19%</td><td class="pass">0.862</td><td>0.739</td><td>0.839</td><td>4</td></tr>
+        <tr><td>MOM63_8pct</td><td>MOM8_H63_X8</td><td>+39.73%</td><td>-46.92%</td><td class="pass">0.847</td><td>0.721</td><td>0.863</td><td>5</td></tr>
+        <tr><td>MOM63_12pct</td><td>MOM12_H63_X8</td><td>+37.04%</td><td>-46.19%</td><td class="pass">0.802</td><td>0.703</td><td>0.776</td><td>6</td></tr>
+        <tr><td>HOLD_42d</td><td>MOM10_H42_X8</td><td>+35.06%</td><td>-46.19%</td><td class="pass">0.759</td><td>0.689</td><td>0.722</td><td>7</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;padding:12px;background:rgba(74,222,128,0.05);border-left:2px solid var(--green);font-size:11px;color:var(--text-2);line-height:1.7">
+      <b style="color:var(--green)">▸ PASS:</b> BASE는 2위 — 압도적 최고점 아님. 인접 설정(EXIT_6pct 0.890, EXIT_10pct 0.888) 거의 동일.
+      <b>7개 설정 모두 Calmar 0.759 이상 · 기준선 0.636 초과</b>.
+    </div>
+  </div>
+
+  <!-- STRESS TEST -->
+  <div class="section-label">STRESS TEST · 4 SCENARIOS</div>
+
+  <div class="grid grid-4 mb-24">
+    <div class="stress-card">
+      <span class="tag pass" style="color:var(--green)">PASS</span>
+      <div class="name">BLOCK BOOTSTRAP</div>
+      <h3>수익률 재조합 500회</h3>
+      <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+32.15%</span></div>
+      <div class="stat"><span class="l">Avg MDD</span><span class="r">-55.02%</span></div>
+      <div class="stat"><span class="l">Calmar</span><span class="r">0.621</span></div>
+      <div class="stat"><span class="l">P(CAGR≥15%)</span><span class="r good">87.4%</span></div>
+      <div class="stat"><span class="l">P(MDD&lt;-65%)</span><span class="r">14.8%</span></div>
+    </div>
+
+    <div class="stress-card fail">
+      <span class="tag fail" style="color:var(--red)">FAIL</span>
+      <div class="name">REGIME SWITCHING</div>
+      <h3>근본 레짐 변화 200회</h3>
+      <div class="stat"><span class="l">Avg CAGR</span><span class="r bad">-7.02%</span></div>
+      <div class="stat"><span class="l">Avg MDD</span><span class="r bad">-88.89%</span></div>
+      <div class="stat"><span class="l">Calmar</span><span class="r bad">-0.072</span></div>
+      <div class="stat"><span class="l">P(CAGR≥15%)</span><span class="r bad">3.5%</span></div>
+      <div class="stat"><span class="l">P(MDD&lt;-65%)</span><span class="r bad">100.0%</span></div>
+    </div>
+
+    <div class="stress-card">
+      <span class="tag pass" style="color:var(--green)">PASS</span>
+      <div class="name">SHOCK -20</div>
+      <h3>무작위 -20% 충격 100회</h3>
+      <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+30.69%</span></div>
+      <div class="stat"><span class="l">Avg MDD</span><span class="r">-54.01%</span></div>
+      <div class="stat"><span class="l">Calmar</span><span class="r">0.586</span></div>
+      <div class="stat"><span class="l">P(CAGR≥15%)</span><span class="r good">100.0%</span></div>
+      <div class="stat"><span class="l">P(MDD&lt;-65%)</span><span class="r">13.0%</span></div>
+    </div>
+
+    <div class="stress-card fail">
+      <span class="tag" style="color:var(--amber)">CAUTION</span>
+      <div class="name">SHOCK -30</div>
+      <h3>무작위 -30% 충격 100회</h3>
+      <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+25.26%</span></div>
+      <div class="stat"><span class="l">Avg MDD</span><span class="r bad">-70.58%</span></div>
+      <div class="stat"><span class="l">Calmar</span><span class="r">0.393</span></div>
+      <div class="stat"><span class="l">P(CAGR≥15%)</span><span class="r">87.0%</span></div>
+      <div class="stat"><span class="l">P(MDD&lt;-65%)</span><span class="r bad">60.0%</span></div>
+    </div>
+  </div>
+
+  <!-- INSIGHTS -->
+  <div class="section-label">FINAL INSIGHTS · 5 POINTS</div>
+
+  <div class="insight-grid">
+    <div class="insight-card pass">
+      <span class="tag">PASS</span>
+      <h4>Walk-Forward 통과</h4>
+      <p>OOS 평균 Calmar <b>0.928</b>이 Train 평균 0.863보다 높음 — 단일 학습 구간 과최적화 가능성 낮음.</p>
+    </div>
+    <div class="insight-card pass">
+      <span class="tag">PASS</span>
+      <h4>파라미터 견고성</h4>
+      <p>std <b>0.047</b>, range 0.131 — BASE 주변 흔들어도 성과 붕괴 없음. 구조적 작동.</p>
+    </div>
+    <div class="insight-card pass">
+      <span class="tag">PASS</span>
+      <h4>Bootstrap 수익성</h4>
+      <p>평균 CAGR <b>+32.15%</b>, P(CAGR≥15%) <b>87.4%</b> — 수익률 재조합에서도 수익성 유지.</p>
+    </div>
+    <div class="insight-card caution">
+      <span class="tag">CAUTION</span>
+      <h4>레짐 한계</h4>
+      <p>Regime Switching 평균 CAGR <b style="color:var(--red)">-7.02%</b> · P(MDD&lt;-65%) <b style="color:var(--red)">100%</b> — QQQ 장기 성장 전제 깨지면 붕괴.</p>
+    </div>
+    <div class="insight-card caution" style="grid-column:span 4">
+      <span class="tag">CAUTION</span>
+      <h4>-30% Shock MDD 한계 초과</h4>
+      <p>P(MDD&lt;-65%) <b style="color:var(--red)">60.0%</b>, 평균 MDD <b style="color:var(--red)">-70.58%</b> — 사용자 허용 한계 자주 초과.
+        <b style="color:var(--text)">전체 자산의 제한 비중(예: 위성 한도 내)으로만 운용해야 함.</b></p>
+    </div>
+  </div>
+
+</section>
+
+<!-- ====================================================== -->
+<!-- ⚙ RULES -->
+<!-- ====================================================== -->
+<section class="tab-panel" id="rules">
+
+  <div class="section-label">EXECUTION RULES · D일 종가 신호 · D+1 시가 체결</div>
+
+  <div class="grid grid-2 mb-24">
+    <div class="panel">
+      <div class="panel-title">BEAR 진입/해제</div>
+      <div style="font-size:12px;line-height:1.8;color:var(--text-2)">
+        <b style="color:var(--red)">▼ BEAR 진입</b><br>
+        QQQ &lt; SMA200 → D+1 시가에 전량 <b style="color:var(--text)">QQQ 100%</b><br><br>
+        <b style="color:var(--green)">▲ BEAR 해제</b><br>
+        ① QQQ가 SMA200 위 <b>5거래일 유지</b><br>
+        ② QQQ &gt; SMA50 &gt; SMA200 <b>정배열</b><br>
+        → D+1 시가에 QLD 100%<br>
+        (BOOST 조건 동시 충족 시 QQQ → TQQQ 직행 허용)
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">BOOST 진입/종료</div>
+      <div style="font-size:12px;line-height:1.8;color:var(--text-2)">
+        <b style="color:var(--amber)">▲▲ BOOST 진입</b><br>
+        ① QQQ &gt; SMA50 &gt; SMA200 (정배열)<br>
+        ② RET63 ≥ <b>+10%</b><br>
+        ③ RET126 ≥ <b>0%</b><br>
+        → D+1 시가에 <b style="color:var(--text)">TQQQ 100%</b><br><br>
+        <b style="color:var(--green)">▼▼ BOOST 종료</b> (셋 중 하나)<br>
+        ① QQQ &lt; SMA50<br>
+        ② BOOST peak 대비 <b>-8%</b><br>
+        ③ 보유 <b>63거래일</b> 도달<br>
+        → QLD 100% + <b style="color:var(--amber)">21거래일 쿨다운</b>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">FORBIDDEN · 규칙 준수</div>
+
+  <div class="grid grid-3 mb-24">
+    <div class="panel danger" style="text-align:center;padding:24px">
+      <div style="font-size:10px;color:var(--red);letter-spacing:2px;font-weight:700">DENY 1</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin:8px 0">장중 임의 매매</div>
+      <div style="font-size:11px;color:var(--text-2)">종가 신호 무시 · D+1 시가 체결 원칙 위반</div>
+    </div>
+    <div class="panel danger" style="text-align:center;padding:24px">
+      <div style="font-size:10px;color:var(--red);letter-spacing:2px;font-weight:700">DENY 2</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin:8px 0">쿨다운 중 TQQQ 재진입</div>
+      <div style="font-size:11px;color:var(--text-2)">BOOST 종료 후 21거래일 강제 휴식</div>
+    </div>
+    <div class="panel danger" style="text-align:center;padding:24px">
+      <div style="font-size:10px;color:var(--red);letter-spacing:2px;font-weight:700">DENY 3</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin:8px 0">메인 자산으로 운용</div>
+      <div style="font-size:11px;color:var(--text-2)">위성 비중 한도 내에서만</div>
+    </div>
+  </div>
+
+  <div class="section-label">DAILY/MONTHLY CHECKLIST</div>
+
+  <div class="grid grid-2">
+    <div class="panel">
+      <div class="panel-title">매일</div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>QQQ 종가</b> vs SMA50 / SMA200 확인</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>RET63, RET126</b> 계산</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>BOOST 보유 중이면</b>: 보유일수 · peak 대비 낙폭</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>쿨다운 카운터</b> 갱신 (해당 시)</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>신호 발생 시</b>: D+1 시가 체결 준비</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">월간/연간</div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>실현손익 누적 추적</b> (월말 기준)</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>다음 해 5월 납부 재원</b> 예비비 점검</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>연 1회 전략 점검</b>: QQQ 장기 성장 전제</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>TQQQ 유동성·괴리·상품 리스크</b> 확인</div></div>
+      <div class="checklist-item"><div class="cb"></div><div class="text"><b>세법·거래비용 변화</b> 반영</div></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ====================================================== -->
+<!-- ⚠ RISK -->
+<!-- ====================================================== -->
+<section class="tab-panel" id="risk">
+
+  <div class="verdict-big" style="border-color:var(--red);background:linear-gradient(135deg,rgba(255,64,64,0.05),transparent)">
+    <div class="head" style="color:var(--red)">// SATELLITE STRATEGY · CRITICAL CAUTIONS</div>
+    <h2><span class="accent" style="color:var(--red)">메인 생존 전략 아님</span> · 공격 위성으로만 운용</h2>
+    <p>
+      본 전략의 최악 방어 자산도 <b style="color:var(--text)">QQQ 100%</b>이므로 장기 구조적 붕괴장에서는
+      현금·단기채 방어 전략보다 취약하다. 닷컴버블형 시나리오 방어용 전략이 아니라
+      <b style="color:var(--amber)">수익률 증폭용 공격 위성</b>으로만 설계되었다.
+    </p>
+  </div>
+
+  <div class="section-label">5 KEY RISKS</div>
+
+  <div class="risk-list mb-24">
+    <div class="risk-item">
+      <div class="icon">⚠</div>
+      <div class="name">전략 성격</div>
+      <div class="desc">메인 생존 전략이 아닌 <b>공격 위성</b>. 1999 합성 닷컴버블 검증 결과는 채택 기준에서 제외. 장기 구조적 붕괴장에서는 현금·단기채 방어 전략보다 취약.</div>
+    </div>
+    <div class="risk-item">
+      <div class="icon">⚠</div>
+      <div class="name">검증 범위</div>
+      <div class="desc">실제 매매 검증은 TQQQ 실제 ETF가 존재하는 <b>2010년 이후</b>로 제한. 16년 데이터로 장기 일반화 한계 존재.</div>
+    </div>
+    <div class="risk-item">
+      <div class="icon">⚠</div>
+      <div class="name">세금 드래그</div>
+      <div class="desc">스위칭 전략은 실현손익을 자주 발생시킴. 보수 모델 평균 납부세금 <b>7.2억</b>. 세후 CAGR은 세전 대비 <b>-9.34%p</b> 감소.</div>
+    </div>
+    <div class="risk-item">
+      <div class="icon">⚠</div>
+      <div class="name">비용 민감도</div>
+      <div class="desc">세후 기준 <b>편도 10bps 이상부터 기준선 0.636 하회</b>. 낮은 거래비용과 실행 정확성이 우위의 절대 조건.</div>
+    </div>
+    <div class="risk-item">
+      <div class="icon">⚠</div>
+      <div class="name">실행 리스크</div>
+      <div class="desc">D일 종가 신호 + D+1 시가 체결 원칙 엄수 필수. 장중 판단·임의 매매·신호 무시는 전략 성과 훼손.</div>
+    </div>
+  </div>
+
+  <div class="section-label">SCOPE LIMITS · 단순화 가정</div>
+
+  <div class="panel">
+    <table class="data-table">
+      <thead>
+        <tr><th>항목</th><th style="text-align:left">단순화 가정 · 실제 운용 시 별도 확인 필요</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>환율</td><td style="text-align:left">USD/KRW 변동 미반영 — 원화 환산 시 추가 변동성 발생</td></tr>
+        <tr><td>배당/원천징수</td><td style="text-align:left">미국 배당 15% 원천세 단순화 — 실제 신고 시 정산 필요</td></tr>
+        <tr><td>증권사별 취득가</td><td style="text-align:left">평균법/이동평균 등 증권사 정책별 차이 미반영</td></tr>
+        <tr><td>세무 신고</td><td style="text-align:left">신고 대행 수수료, 가산세, 가산세 등 부수 비용 단순화</td></tr>
+        <tr><td>유동성 리스크</td><td style="text-align:left">TQQQ 괴리율, 운용보수, 상품 리스크 별도 모니터링 필요</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  Q123 위성 사령부 · QQQ123 PRACTICAL_M63_10 · SW_M63_10_H63_X8__MA200__NODD__C5<br>
+  기준 자료: 세후 백테스트 v1 · Future Validation v1 · 비교 기준 <a href="https://investment-dashboard-drab-kappa.vercel.app/qld.html">QLD HY 대시보드</a><br>
+  본 페이지는 백테스트 검증 보고서 시각화이며 투자·세무 자문을 대체하지 않습니다.
+</footer>
+
+<script>
+  // ===== TABS =====
+  const tabs = document.querySelectorAll('nav button[data-tab]');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+  });
+
+  // ===== ORDER GENERATOR =====
+  function generateOrder(){
+    const asset = document.getElementById('curAsset').value;
+    const nav = parseFloat(document.getElementById('navInput').value) || 0;
+    const fx = parseFloat(document.getElementById('fxInput').value) || 1380;
+    const bps = parseInt(document.getElementById('bpsInput').value) || 5;
+    const out = document.getElementById('orderOutput');
+
+    // 현재 신호 상태 (대시보드 값과 동일)
+    const ret63 = 8.2;
+    const ret126 = 14.5;
+    const qqqOverSMA50 = true;
+    const qqqOverSMA200 = true;
+    const alignment = qqqOverSMA50 && qqqOverSMA200;
+    const boostCondition = alignment && ret63 >= 10 && ret126 >= 0;
+    const bearCondition = !qqqOverSMA200;
+
+    // 목표 자산 결정
+    let targetMode, targetAsset, action;
+    if(bearCondition){
+      targetMode = 'BEAR'; targetAsset = 'QQQ';
+    } else if(boostCondition){
+      targetMode = 'BOOST'; targetAsset = 'TQQQ';
+    } else {
+      targetMode = 'NORMAL'; targetAsset = 'QLD';
+    }
+
+    if(asset === targetAsset){
+      action = 'HOLD · 모드 일치 · 매매 없음';
+    } else if(asset === 'CASH'){
+      action = `${targetAsset} 매수 · 평가금액 전액`;
+    } else {
+      action = `${asset} 전량 매도 → ${targetAsset} 매수`;
+    }
+
+    // 비용 계산
+    const turnoverCost = asset !== targetAsset && asset !== 'CASH'
+      ? nav * (bps * 2) / 10000  // 왕복
+      : (asset === 'CASH' ? nav * bps / 10000 : 0);
+    const navUsd = nav / fx;
+
+    // 거리 계산
+    const ret63Gap = (10 - ret63).toFixed(1);
+    const ret126Gap = ret126 >= 0 ? '충족' : `${(0-ret126).toFixed(1)}%p 부족`;
+
+    out.innerHTML = `
+      <div class="head">// ORDER SHEET · ${new Date().toISOString().slice(0,10)}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div><span style="color:var(--text-3)">현재 보유:</span> <b>${asset}</b></div>
+        <div><span style="color:var(--text-3)">목표 모드:</span> <b style="color:var(--amber)">${targetMode}</b></div>
+        <div><span style="color:var(--text-3)">평가금액:</span> <b>₩${nav.toLocaleString()}</b></div>
+        <div><span style="color:var(--text-3)">USD 환산:</span> <b>$${navUsd.toLocaleString(undefined,{maximumFractionDigits:0})}</b></div>
+      </div>
+      <div style="padding:12px;background:rgba(255,176,32,0.08);border-left:2px solid var(--amber);margin:10px 0">
+        <div style="color:var(--amber);font-weight:700;font-size:11px;letter-spacing:1px;margin-bottom:6px">▸ 실행 지시 (D+1 시가)</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text)">${action}</div>
+      </div>
+      <div style="font-size:11px;color:var(--text-2);line-height:1.8">
+        <span style="color:var(--text-3)">진입 조건 점검:</span><br>
+        · 정배열 (SMA50 &gt; SMA200): <b style="color:${alignment?'var(--green)':'var(--red)'}">${alignment?'✓ 충족':'✗ 미충족'}</b><br>
+        · BOOST RET63 ≥ +10%: 현재 +${ret63}% (<b style="color:${ret63>=10?'var(--green)':'var(--amber)'}">${ret63>=10?'충족':ret63Gap+'%p 부족'}</b>)<br>
+        · BOOST RET126 ≥ 0%: 현재 +${ret126}% (<b style="color:var(--green)">충족</b>)<br>
+        · BEAR 진입: QQQ &lt; SMA200 → <b style="color:${bearCondition?'var(--red)':'var(--green)'}">${bearCondition?'발동':'미발동'}</b><br>
+      </div>
+      ${asset !== targetAsset ? `
+      <div style="margin-top:10px;padding:10px;background:var(--bg-2);font-size:11px;color:var(--text-2);line-height:1.7">
+        <span style="color:var(--text-3)">예상 거래비용:</span> <b>₩${Math.round(turnoverCost).toLocaleString()}</b> (편도 ${bps}bps · 왕복 ${bps*2/100}%)<br>
+        <span style="color:var(--text-3)">실현손익 발생:</span> 세금 신고 대상 — 다음 해 5월 납부 예정<br>
+      </div>` : ''}
+      <div style="margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:10px;color:var(--text-3)">
+        ※ D일 종가 신호 기반 · D+1 시가 체결 원칙 · 장중 임의 매매 금지
+      </div>
+    `;
+  }
+  function resetForm(){
+    document.getElementById('curAsset').value = 'QLD';
+    document.getElementById('navInput').value = 100000000;
+    document.getElementById('fxInput').value = 1380;
+    document.getElementById('bpsInput').value = 5;
+    document.getElementById('orderOutput').innerHTML = '<div class="head">// ORDER SHEET · 신호 기반 매매 지시서</div><div style="color:var(--text-3)">상단에서 입력 후 [GENERATE ORDER]를 누르세요.</div>';
+  }
+
+  // ===== CHECKBOX TOGGLE =====
+  document.querySelectorAll('.checklist-item .cb').forEach(cb => {
+    cb.addEventListener('click', () => {
+      cb.style.background = cb.style.background ? '' : 'var(--amber)';
+    });
+  });
+
+  // ===== LIVE CLOCK in title-block (옵션) =====
+  function tick(){
+    const d = new Date();
+    const pad = n => n.toString().padStart(2,'0');
+    const ts = `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+    // 헤더에 시계가 필요하면 활성화
+  }
+  setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
