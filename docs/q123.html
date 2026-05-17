@@ -688,12 +688,9 @@
 <!-- ===== PAGE TABS ===== -->
 <nav class="page-tabs">
   <button class="active" data-tab="dashboard">① 대시보드</button>
-  <button data-tab="orders">② 주문/신호</button>
-  <button data-tab="log">③ 전환 로그</button>
-  <button data-tab="performance">④ 전략 성과</button>
-  <button data-tab="validation">🔬 미래 검증</button>
-  <button data-tab="rules">⚙ 운용 규칙</button>
-  <button data-tab="risk">⚠ 리스크</button>
+  <button data-tab="performance">② 전략 성과</button>
+  <button data-tab="rules">③ 운용 규칙</button>
+  <button data-tab="risk">④ 리스크</button>
 </nav>
 
 <main>
@@ -703,6 +700,7 @@
 <!-- ====================================================== -->
 <section class="tab-panel active" id="dashboard">
 
+  <!-- 1) 현재 모드 + 다음 트리거까지의 거리 -->
   <div class="mode-display">
     <div class="mode-grid">
       <div class="mode-current">
@@ -725,36 +723,7 @@
     </div>
   </div>
 
-  <!-- KPI TOP -->
-  <div class="section-label">CORE METRICS · 세후 STRICT 22% · 편도 5bps <span class="meta">12개 시작 시나리오 평균</span></div>
-  <div class="grid grid-4 mb-24">
-    <div class="kpi">
-      <div class="label">CAGR (세후)</div>
-      <div class="sublabel">연평균 수익률</div>
-      <div class="v amber">31.52%</div>
-      <div class="compare"><span class="l">세전</span><span class="r">+40.86%</span></div>
-    </div>
-    <div class="kpi">
-      <div class="label">MDD (세후)</div>
-      <div class="sublabel">최대 낙폭</div>
-      <div class="v red">-49.20%</div>
-      <div class="compare"><span class="l">허용한계</span><span class="r">-65% 이내 ✓</span></div>
-    </div>
-    <div class="kpi">
-      <div class="label">CALMAR</div>
-      <div class="sublabel">손실 대비 성장</div>
-      <div class="v">0.640</div>
-      <div class="compare"><span class="l">기준선</span><span class="r">0.636 · PASS</span></div>
-    </div>
-    <div class="kpi">
-      <div class="label">XIRR</div>
-      <div class="sublabel">세후 자금가중수익률</div>
-      <div class="v amber">+31.96%</div>
-      <div class="compare"><span class="l">최종청산</span><span class="r">36.5억</span></div>
-    </div>
-  </div>
-
-  <!-- SIGNAL & STRUCTURE -->
+  <!-- 2) 시그널 패널 + 전략 구조 (좌 1.2 / 우 1) -->
   <div class="grid grid-2 mb-24" style="grid-template-columns:1.2fr 1fr">
     <div class="panel">
       <div class="panel-title">SIGNAL PANEL · D-DAY CLOSE<span style="color:var(--text-3);font-size:10px">2026-05-15</span></div>
@@ -774,8 +743,8 @@
           <tr><td class="label">쿨다운</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">21d</td><td style="text-align:center">—</td></tr>
         </tbody>
       </table>
-      <div style="margin-top:14px;padding:10px;background:var(--bg);border-left:2px solid var(--amber);font-size:11px;color:var(--text-2);line-height:1.7">
-        <b style="color:var(--amber)">▸ 판단:</b> 정배열 + RET126 충족, 다만 RET63 +1.8%p 부족 → <b>NORMAL 유지 · QLD 100%</b><br>
+      <div style="margin-top:14px;padding:12px;background:var(--bg);border-left:2px solid var(--amber);font-size:12px;color:var(--text-2);line-height:1.7;border-radius:0 4px 4px 0">
+        <b style="color:var(--amber)">▸ 판단:</b> 정배열 + RET126 충족, 다만 RET63 +1.8%p 부족 → <b style="color:var(--text)">NORMAL 유지 · QLD 100%</b><br>
         <b style="color:var(--amber)">▸ 다음 트리거:</b> RET63 ≥ +10% 달성 시 D+1 시가에 QLD → TQQQ
       </div>
     </div>
@@ -820,180 +789,19 @@
     </div>
   </div>
 
-  <!-- TODAY CHECKLIST -->
-  <div class="grid grid-2">
-    <div class="panel">
-      <div class="panel-title">TODAY CHECKLIST</div>
-      <div class="checklist-item"><div class="cb"></div><div class="text"><b>D일 종가 확인</b> · QQQ, SMA50, SMA200, RET63, RET126</div></div>
-      <div class="checklist-item"><div class="cb"></div><div class="text"><b>모드 전환 신호 검토</b> · 위 SIGNAL PANEL 8개 항목</div></div>
-      <div class="checklist-item"><div class="cb"></div><div class="text"><b>BOOST 보유일·peak 추적</b> · 보유 중일 때만</div></div>
-      <div class="checklist-item"><div class="cb"></div><div class="text"><b>쿨다운 카운터</b> · BOOST 종료 후 21거래일</div></div>
-      <div class="checklist-item"><div class="cb"></div><div class="text"><b>D+1 시가 체결 준비</b> · 신호 발생 시</div></div>
-      <div class="checklist-item"><div class="cb"></div><div class="text"><b>장중 임의 매매 금지</b> · 종가 신호만 사용</div></div>
-    </div>
-
-    <div class="panel accent">
-      <div class="panel-title">TAX DRAG MONITOR · 직투계좌</div>
-      <div style="font-size:11px;color:var(--text-3);margin-bottom:14px;line-height:1.7">
-        스위칭 전략은 실현손익을 자주 발생시킴. 다음 해 5월 말 계좌 내 자산 매도 납부.
+  <!-- 3) 오늘 체크리스트 - 직관적으로 무엇을 할지 -->
+  <div class="panel">
+    <div class="panel-title">TODAY CHECKLIST · 종가 마감 후 매일</div>
+    <div class="grid grid-2" style="gap:0 24px">
+      <div>
+        <div class="checklist-item"><div class="cb"></div><div class="text"><b>QQQ 종가 확인</b> · SMA50 / SMA200 위치</div></div>
+        <div class="checklist-item"><div class="cb"></div><div class="text"><b>RET63, RET126 계산</b> · BOOST 트리거 점검</div></div>
+        <div class="checklist-item"><div class="cb"></div><div class="text"><b>모드 전환 신호 검토</b> · 위 SIGNAL PANEL</div></div>
       </div>
-      <div class="grid grid-2" style="gap:8px">
-        <div style="padding:12px;background:var(--bg);border-left:2px solid var(--amber)">
-          <div style="font-size:10px;color:var(--text-3);letter-spacing:1px">YTD 실현손익</div>
-          <div style="font-size:18px;font-weight:700;color:var(--text);margin-top:4px">—</div>
-        </div>
-        <div style="padding:12px;background:var(--bg);border-left:2px solid var(--amber)">
-          <div style="font-size:10px;color:var(--text-3);letter-spacing:1px">예상 납부세금</div>
-          <div style="font-size:18px;font-weight:700;color:var(--amber);margin-top:4px">—</div>
-        </div>
-        <div style="padding:12px;background:var(--bg);border-left:2px solid var(--border-2)">
-          <div style="font-size:10px;color:var(--text-3);letter-spacing:1px">납부 예정일</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text);margin-top:4px">2027-05-31</div>
-        </div>
-        <div style="padding:12px;background:var(--bg);border-left:2px solid var(--border-2)">
-          <div style="font-size:10px;color:var(--text-3);letter-spacing:1px">백테스트 평균</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text);margin-top:4px">7.2억 / 시나리오</div>
-        </div>
-      </div>
-      <div style="margin-top:12px;padding:10px;background:rgba(255,64,64,0.05);border-left:2px solid var(--red);font-size:11px;color:var(--text-2);line-height:1.6">
-        <b style="color:var(--red)">⚠ 세금 드래그가 본 전략 최대 리스크</b> · 외부 현금 예비비 권장
-      </div>
-    </div>
-  </div>
-
-</section>
-
-<!-- ====================================================== -->
-<!-- ② ORDERS -->
-<!-- ====================================================== -->
-<section class="tab-panel" id="orders">
-
-  <div class="section-label">ORDER GENERATOR · D+1 시가 체결 원칙</div>
-
-  <div class="grid grid-2">
-    <div class="panel">
-      <div class="panel-title">PORTFOLIO INPUT</div>
-      <div class="form-row">
-        <label>현재 보유 자산</label>
-        <select id="curAsset">
-          <option value="QLD">QLD (NORMAL)</option>
-          <option value="QQQ">QQQ (BEAR)</option>
-          <option value="TQQQ">TQQQ (BOOST)</option>
-          <option value="CASH">현금</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label>평가금액 (원)</label>
-        <input type="number" id="navInput" value="100000000" step="1000000">
-      </div>
-      <div class="form-row">
-        <label>USD/KRW</label>
-        <input type="number" id="fxInput" value="1380" step="1">
-      </div>
-      <div class="form-row">
-        <label>편도 거래비용 (bps)</label>
-        <select id="bpsInput">
-          <option value="5">5 (왕복 0.10%)</option>
-          <option value="10">10 (왕복 0.20%)</option>
-          <option value="15">15 (왕복 0.30%)</option>
-        </select>
-      </div>
-      <div style="margin-top:14px;display:flex;gap:8px">
-        <button class="btn" onclick="generateOrder()">// GENERATE ORDER</button>
-        <button class="btn secondary" onclick="resetForm()">RESET</button>
-      </div>
-
-      <div class="order-output" id="orderOutput">
-        <div class="head">// ORDER SHEET · 신호 기반 매매 지시서</div>
-        <div style="color:var(--text-3)">상단에서 입력 후 [GENERATE ORDER]를 누르세요.</div>
-      </div>
-    </div>
-
-    <div class="panel accent">
-      <div class="panel-title">SIGNAL-BASED RULES</div>
-      <div style="font-size:11px;line-height:1.8;color:var(--text-2)">
-        <b style="color:var(--amber)">[BEAR 진입]</b><br>
-        QQQ &lt; SMA200 → D+1 시가에 전량 QQQ 100%<br><br>
-        <b style="color:var(--amber)">[BEAR 해제]</b><br>
-        QQQ &gt; SMA200 5거래일 유지 + 정배열 → QLD<br>
-        (BOOST 조건 충족 시 QQQ → TQQQ 직행 허용)<br><br>
-        <b style="color:var(--amber)">[BOOST 진입]</b><br>
-        정배열 + RET63 ≥ +10% + RET126 ≥ 0%<br>
-        → D+1 시가에 TQQQ 100%<br><br>
-        <b style="color:var(--amber)">[BOOST 종료]</b><br>
-        ① QQQ &lt; SMA50, 또는<br>
-        ② BOOST peak 대비 -8%, 또는<br>
-        ③ 보유 63거래일 도달<br>
-        → QLD 100% + 21거래일 쿨다운<br><br>
-        <b style="color:var(--red)">[금지]</b><br>
-        장중 임의 매매 · 신호 무시 · 쿨다운 중 TQQQ 재진입
-      </div>
-    </div>
-  </div>
-
-  <div class="ascii-divider">─────────── ─── ── ─ TRANSITION FREQUENCY ─ ── ─── ───────────</div>
-
-  <div class="section-label">AVG TRANSITIONS · 12개 시나리오 평균</div>
-  <div class="grid grid-5">
-    <div class="kpi"><div class="label">TQQQ → QLD</div><div class="v amber">20.2</div><div class="note">BOOST 종료가 가장 빈번</div></div>
-    <div class="kpi"><div class="label">QLD → TQQQ</div><div class="v amber">19.1</div><div class="note">BOOST 진입</div></div>
-    <div class="kpi"><div class="label">QLD → QQQ</div><div class="v">8.0</div><div class="note">BEAR 진입</div></div>
-    <div class="kpi"><div class="label">QQQ → QLD</div><div class="v">6.3</div><div class="note">BEAR 해제</div></div>
-    <div class="kpi"><div class="label">QQQ → TQQQ</div><div class="v">1.8</div><div class="note">BEAR→BOOST 직행</div></div>
-  </div>
-
-</section>
-
-<!-- ====================================================== -->
-<!-- ③ TRANSITION LOG -->
-<!-- ====================================================== -->
-<section class="tab-panel" id="log">
-
-  <div class="section-label">MODE TRANSITION LOG · 2021 시작 시나리오 · 2022 하락장 사례</div>
-
-  <div style="font-size:11px;color:var(--text-2);margin-bottom:16px;line-height:1.7;max-width:880px">
-    2022년 하락장 초입에 <b style="color:var(--amber)">TQQQ → QLD → QQQ</b> 순서로 레버리지를 단계적으로 축소했고,
-    2023년 회복 신호 확인 후 <b style="color:var(--amber)">QQQ → QLD → TQQQ</b>로 재진입한 실제 백테스트 로그.
-  </div>
-
-  <div class="log-row boost"><div class="date">2021-01-04</div><div class="trans">— <span class="arr">→</span> TQQQ</div><div class="reason">BOOST 진입: RET63 ≥ 10%, RET126 ≥ 0%</div></div>
-  <div class="log-row normal"><div class="date">2021-02-26</div><div class="trans">TQQQ <span class="arr">→</span> QLD</div><div class="reason">QQQ &lt; SMA50, BOOST 종료</div></div>
-  <div class="log-row boost"><div class="date">2021-06-08</div><div class="trans">QLD <span class="arr">→</span> TQQQ</div><div class="reason">RET63 ≥ 10%, RET126 ≥ 0%</div></div>
-  <div class="log-row normal"><div class="date">2021-09-07</div><div class="trans">TQQQ <span class="arr">→</span> QLD</div><div class="reason">BOOST 보유 63거래일 종료</div></div>
-  <div class="log-row boost"><div class="date">2021-12-29</div><div class="trans">QLD <span class="arr">→</span> TQQQ</div><div class="reason">RET63 ≥ 10%, RET126 ≥ 0%</div></div>
-  <div class="log-row normal"><div class="date">2022-01-06</div><div class="trans">TQQQ <span class="arr">→</span> QLD</div><div class="reason">QQQ &lt; SMA50</div></div>
-  <div class="log-row bear"><div class="date">2022-01-21</div><div class="trans">QLD <span class="arr">→</span> QQQ</div><div class="reason">QQQ &lt; SMA200, BEAR 진입</div></div>
-  <div class="log-row normal"><div class="date">2023-03-20</div><div class="trans">QQQ <span class="arr">→</span> QLD</div><div class="reason">SMA200 위 5거래일 + 추세 회복</div></div>
-  <div class="log-row boost"><div class="date">2023-03-21</div><div class="trans">QLD <span class="arr">→</span> TQQQ</div><div class="reason">RET63 ≥ 10%, RET126 ≥ 0%</div></div>
-
-  <div class="ascii-divider">─────────── ─── ── ─ TRANSITION ANALYSIS ─ ── ─── ───────────</div>
-
-  <div class="grid grid-3">
-    <div class="panel">
-      <div class="panel-title">2022 BEAR 진입 타이밍</div>
-      <div style="font-size:11px;color:var(--text-2);line-height:1.7">
-        <b style="color:var(--amber)">2022-01-06:</b> TQQQ → QLD (1차 방어)<br>
-        <b style="color:var(--amber)">2022-01-21:</b> QLD → QQQ (2차 방어)<br><br>
-        SMA50 이탈 → SMA200 이탈까지 <b style="color:var(--text)">11거래일</b>.<br>
-        2단계 디레버리징으로 최악 손실 회피.
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">2023 RE-ENTRY 타이밍</div>
-      <div style="font-size:11px;color:var(--text-2);line-height:1.7">
-        <b style="color:var(--amber)">2023-03-20:</b> QQQ → QLD (BEAR 해제)<br>
-        <b style="color:var(--amber)">2023-03-21:</b> QLD → TQQQ (BOOST 진입)<br><br>
-        규칙상 1일 후 직행 가능 → <b style="color:var(--text)">실제 단 1거래일</b>.<br>
-        강세장 초입 부스터 효과 극대화.
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">2021 BOOST 회전율</div>
-      <div style="font-size:11px;color:var(--text-2);line-height:1.7">
-        한 해 동안 <b style="color:var(--text)">3회 BOOST 진입/종료</b>.<br>
-        평균 보유 ~63d (HOLD 만기).<br><br>
-        세금 드래그가 핵심 비용 — <b style="color:var(--red)">스위칭 빈도</b>가
-        세후 성과를 결정.
+      <div>
+        <div class="checklist-item"><div class="cb"></div><div class="text"><b>BOOST 보유일·peak Δ 추적</b> · BOOST 모드일 때만</div></div>
+        <div class="checklist-item"><div class="cb"></div><div class="text"><b>쿨다운 카운터 갱신</b> · BOOST 종료 후 21일</div></div>
+        <div class="checklist-item"><div class="cb"></div><div class="text"><b>신호 발생 시 D+1 시가 체결</b> · 장중 임의 매매 금지</div></div>
       </div>
     </div>
   </div>
@@ -1134,21 +942,17 @@
     </div>
   </div>
 
-</section>
-
-<!-- ====================================================== -->
-<!-- 🔬 VALIDATION -->
-<!-- ====================================================== -->
-<section class="tab-panel" id="validation">
+  <!-- ─── FUTURE VALIDATION (구 🔬 탭, performance에 통합) ─── -->
+  <div class="ascii-divider">─────────── ─── ── ─ FUTURE VALIDATION ─ ── ─── ───────────</div>
 
   <div class="verdict-big">
     <div class="head">// FUTURE VALIDATION · VERDICT</div>
     <h2>PASS with <span class="accent">REGIME CAUTION</span></h2>
     <p>
-      Walk-forward·민감도·Bootstrap 검증을 모두 통과해 <b style="color:var(--text)">구조적 견고성</b>이 확인되었다.
+      Walk-forward·민감도·Bootstrap 검증을 모두 통과해 <b>구조적 견고성</b>이 확인되었다.
       OOS 평균 Calmar 0.928이 Train 평균 0.863보다 높아 단일 학습 구간 과최적화 가능성이 낮다.
       다만 <b style="color:var(--amber)">Regime Switching</b>과 <b style="color:var(--amber)">-30% Shock</b>에서는
-      MDD가 사용자 한계(-65%)를 자주 초과해, <b style="color:var(--text)">메인 생존 전략이 아닌 제한 비중 위성 전략</b>으로만 운용해야 한다.
+      MDD가 사용자 한계(-65%)를 자주 초과해, <b>메인 생존 전략이 아닌 제한 비중 위성 전략</b>으로만 운용해야 한다.
     </p>
   </div>
 
@@ -1384,6 +1188,120 @@
       <div class="checklist-item"><div class="cb"></div><div class="text"><b>연 1회 전략 점검</b>: QQQ 장기 성장 전제</div></div>
       <div class="checklist-item"><div class="cb"></div><div class="text"><b>TQQQ 유동성·괴리·상품 리스크</b> 확인</div></div>
       <div class="checklist-item"><div class="cb"></div><div class="text"><b>세법·거래비용 변화</b> 반영</div></div>
+    </div>
+  </div>
+
+  <!-- ─── 주문 생성기 (구 ② 탭) ─── -->
+  <div class="ascii-divider">─────────── ─── ── ─ ORDER GENERATOR ─ ── ─── ───────────</div>
+
+  <div class="section-label">ORDER GENERATOR · D+1 시가 체결 원칙</div>
+
+  <div class="grid grid-2 mb-24">
+    <div class="panel">
+      <div class="panel-title">PORTFOLIO INPUT</div>
+      <div class="form-row">
+        <label>현재 보유 자산</label>
+        <select id="curAsset">
+          <option value="QLD">QLD (NORMAL)</option>
+          <option value="QQQ">QQQ (BEAR)</option>
+          <option value="TQQQ">TQQQ (BOOST)</option>
+          <option value="CASH">현금</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>평가금액 (원)</label>
+        <input type="number" id="navInput" value="100000000" step="1000000">
+      </div>
+      <div class="form-row">
+        <label>USD/KRW</label>
+        <input type="number" id="fxInput" value="1380" step="1">
+      </div>
+      <div class="form-row">
+        <label>편도 거래비용 (bps)</label>
+        <select id="bpsInput">
+          <option value="5">5 (왕복 0.10%)</option>
+          <option value="10">10 (왕복 0.20%)</option>
+          <option value="15">15 (왕복 0.30%)</option>
+        </select>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px">
+        <button class="btn" onclick="generateOrder()">// GENERATE ORDER</button>
+        <button class="btn secondary" onclick="resetForm()">RESET</button>
+      </div>
+
+      <div class="order-output" id="orderOutput">
+        <div class="head">// ORDER SHEET · 신호 기반 매매 지시서</div>
+        <div style="color:var(--text-3)">상단에서 입력 후 [GENERATE ORDER]를 누르세요.</div>
+      </div>
+    </div>
+
+    <div class="panel accent">
+      <div class="panel-title">AVG TRANSITIONS · 12개 시나리오 평균</div>
+      <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.7">
+        모드별 평균 전환 빈도. 스위칭 빈도가 세금 드래그의 핵심 변수.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:grid;grid-template-columns:1fr auto;padding:8px 12px;background:var(--bg);border-left:2px solid var(--amber);border-radius:0 4px 4px 0">
+          <div><span style="color:var(--amber);font-family:var(--mono);font-size:11px;font-weight:600">TQQQ → QLD</span><br><span style="font-size:11px;color:var(--text-3)">BOOST 종료가 가장 빈번</span></div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--amber);align-self:center">20.2</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:8px 12px;background:var(--bg);border-left:2px solid var(--amber);border-radius:0 4px 4px 0">
+          <div><span style="color:var(--amber);font-family:var(--mono);font-size:11px;font-weight:600">QLD → TQQQ</span><br><span style="font-size:11px;color:var(--text-3)">BOOST 진입</span></div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--amber);align-self:center">19.1</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:8px 12px;background:var(--bg);border-left:2px solid var(--red);border-radius:0 4px 4px 0">
+          <div><span style="color:var(--red);font-family:var(--mono);font-size:11px;font-weight:600">QLD → QQQ</span><br><span style="font-size:11px;color:var(--text-3)">BEAR 진입</span></div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);align-self:center">8.0</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:8px 12px;background:var(--bg);border-left:2px solid var(--green);border-radius:0 4px 4px 0">
+          <div><span style="color:var(--green);font-family:var(--mono);font-size:11px;font-weight:600">QQQ → QLD</span><br><span style="font-size:11px;color:var(--text-3)">BEAR 해제</span></div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text);align-self:center">6.3</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto;padding:8px 12px;background:var(--bg);border-left:2px solid var(--border-2);border-radius:0 4px 4px 0">
+          <div><span style="color:var(--text-2);font-family:var(--mono);font-size:11px;font-weight:600">QQQ → TQQQ</span><br><span style="font-size:11px;color:var(--text-3)">BEAR → BOOST 직행</span></div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--text-2);align-self:center">1.8</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 전환 로그 사례 (구 ③ 탭, 축약) ─── -->
+  <div class="ascii-divider">─────────── ─── ── ─ TRANSITION CASE STUDY ─ ── ─── ───────────</div>
+
+  <div class="section-label">CASE STUDY · 2022 하락장 디레버리징 + 2023 회복 재진입</div>
+
+  <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.7;max-width:880px">
+    2022년 하락장 초입에 <b style="color:var(--amber)">TQQQ → QLD → QQQ</b> 순서로 2단계 디레버리징,
+    2023년 회복 신호 확인 후 <b style="color:var(--amber)">QQQ → QLD → TQQQ</b>로 1거래일 만에 재진입한 실제 백테스트 로그.
+  </div>
+
+  <div class="log-row boost"><div class="date">2021-12-29</div><div class="trans">QLD <span class="arr">→</span> TQQQ</div><div class="reason">BOOST 진입: RET63 ≥ 10%, RET126 ≥ 0%</div></div>
+  <div class="log-row normal"><div class="date">2022-01-06</div><div class="trans">TQQQ <span class="arr">→</span> QLD</div><div class="reason">QQQ &lt; SMA50 (1차 방어)</div></div>
+  <div class="log-row bear"><div class="date">2022-01-21</div><div class="trans">QLD <span class="arr">→</span> QQQ</div><div class="reason">QQQ &lt; SMA200, BEAR 진입 (2차 방어)</div></div>
+  <div class="log-row normal"><div class="date">2023-03-20</div><div class="trans">QQQ <span class="arr">→</span> QLD</div><div class="reason">SMA200 위 5거래일 + 추세 회복</div></div>
+  <div class="log-row boost"><div class="date">2023-03-21</div><div class="trans">QLD <span class="arr">→</span> TQQQ</div><div class="reason">RET63 ≥ 10%, RET126 ≥ 0% (재진입)</div></div>
+
+  <div class="grid grid-3 mt-24">
+    <div class="panel">
+      <div class="panel-title">2022 BEAR 진입</div>
+      <div style="font-size:12px;color:var(--text-2);line-height:1.7">
+        SMA50 이탈 → SMA200 이탈까지 <b style="color:var(--text)">11거래일</b>.<br>
+        2단계 디레버리징으로 최악 손실 회피.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">2023 RE-ENTRY</div>
+      <div style="font-size:12px;color:var(--text-2);line-height:1.7">
+        BEAR 해제 → BOOST 진입까지 <b style="color:var(--text)">단 1거래일</b>.<br>
+        강세장 초입 부스터 효과 극대화.
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">스위칭 빈도와 세금</div>
+      <div style="font-size:12px;color:var(--text-2);line-height:1.7">
+        평균 연 <b style="color:var(--text)">3~5회</b> BOOST 진입/종료.<br>
+        스위칭 빈도가 <b style="color:var(--red)">세후 성과를 결정</b>.
+      </div>
     </div>
   </div>
 
