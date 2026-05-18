@@ -546,6 +546,13 @@
   .insight-card p{font-size:12px;color:var(--text-2);line-height:1.65}
   .insight-card p b{color:var(--text)}
 
+  /* ===== SIGNAL ROW HIGHLIGHT (모드별 강조) ===== */
+  .sig-row.dimmed{opacity:0.42}
+  .sig-row.dimmed td.label{color:var(--text-3)}
+  .sig-row.dimmed td.value{color:var(--text-3) !important;font-weight:500 !important}
+  .sig-row.highlighted td.label{color:var(--text);font-weight:600}
+  .sig-row.highlighted td.value{color:var(--text) !important}
+
   /* ===== BENCHMARK COMPARISON BARS ===== */
   .bench-chart{display:flex;flex-direction:column;gap:8px}
   .bench-row{
@@ -739,17 +746,24 @@
         <div class="label">CURRENT MODE</div>
         <div class="value" id="mode-value">—</div>
         <div class="asset" id="mode-asset">→ — <span class="pct">—</span></div>
+        <div class="asset-detail" id="mode-asset-detail" style="font-size:11px;color:var(--text-3);margin-top:6px;line-height:1.6">—</div>
       </div>
-      <div class="mode-distance">
-        <div class="distance-row" id="dist-bear">
-          <div class="name">BEAR</div>
-          <div class="bar"><div class="bar-fill" id="dist-bear-fill" style="width:0%"></div></div>
-          <div class="delta" id="dist-bear-delta">—</div>
+      <div class="mode-distance" id="mode-distance">
+        <!-- JS에서 현재 모드에 따라 동적으로 채워짐 -->
+        <div class="distance-row" id="dist-row-1">
+          <div class="name" id="dist-name-1">—</div>
+          <div class="bar"><div class="bar-fill" id="dist-fill-1" style="width:0%"></div></div>
+          <div class="delta" id="dist-delta-1">—</div>
         </div>
-        <div class="distance-row" id="dist-boost">
-          <div class="name">BOOST</div>
-          <div class="bar"><div class="bar-fill" id="dist-boost-fill" style="width:0%"></div></div>
-          <div class="delta" id="dist-boost-delta">—</div>
+        <div class="distance-row" id="dist-row-2">
+          <div class="name" id="dist-name-2">—</div>
+          <div class="bar"><div class="bar-fill" id="dist-fill-2" style="width:0%"></div></div>
+          <div class="delta" id="dist-delta-2">—</div>
+        </div>
+        <div class="distance-row" id="dist-row-3" style="display:none">
+          <div class="name" id="dist-name-3">—</div>
+          <div class="bar"><div class="bar-fill" id="dist-fill-3" style="width:0%"></div></div>
+          <div class="delta" id="dist-delta-3">—</div>
         </div>
       </div>
     </div>
@@ -764,15 +778,15 @@
           <tr><th>지표</th><th style="text-align:right">현재값</th><th style="text-align:right">조건</th><th style="text-align:center">상태</th></tr>
         </thead>
         <tbody>
-          <tr><td class="label">QQQ Close</td><td class="value" style="text-align:right" id="sig-qqq">—</td><td style="text-align:right;color:var(--text-3)">—</td><td style="text-align:center">—</td></tr>
-          <tr><td class="label">SMA50</td><td class="value" style="text-align:right" id="sig-sma50">—</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA50</td><td style="text-align:center" id="sig-sma50-st">—</td></tr>
-          <tr><td class="label">SMA200</td><td class="value" style="text-align:right" id="sig-sma200">—</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA200</td><td style="text-align:center" id="sig-sma200-st">—</td></tr>
-          <tr><td class="label">정배열</td><td class="value" style="text-align:right" id="sig-align">—</td><td style="text-align:right;color:var(--text-3)">SMA50 &gt; SMA200</td><td style="text-align:center" id="sig-align-st">—</td></tr>
-          <tr><td class="label">RET63</td><td class="value" style="text-align:right" id="sig-ret63">—</td><td style="text-align:right;color:var(--text-3)">≥ +10%</td><td style="text-align:center" id="sig-ret63-st">—</td></tr>
-          <tr><td class="label">RET126</td><td class="value" style="text-align:right" id="sig-ret126">—</td><td style="text-align:right;color:var(--text-3)">≥ 0%</td><td style="text-align:center" id="sig-ret126-st">—</td></tr>
-          <tr><td class="label">BOOST 보유일</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">≤ 63d</td><td style="text-align:center">—</td></tr>
-          <tr><td class="label">BOOST peak Δ</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">&gt; -8%</td><td style="text-align:center">—</td></tr>
-          <tr><td class="label">쿨다운</td><td class="value" style="text-align:right">—</td><td style="text-align:right;color:var(--text-3)">21d</td><td style="text-align:center">—</td></tr>
+          <tr class="sig-row sig-row-shared"><td class="label">QQQ Close</td><td class="value" style="text-align:right" id="sig-qqq">—</td><td style="text-align:right;color:var(--text-3)">—</td><td style="text-align:center">—</td></tr>
+          <tr class="sig-row sig-row-trend"><td class="label">SMA50</td><td class="value" style="text-align:right" id="sig-sma50">—</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA50</td><td style="text-align:center" id="sig-sma50-st">—</td></tr>
+          <tr class="sig-row sig-row-trend"><td class="label">SMA200</td><td class="value" style="text-align:right" id="sig-sma200">—</td><td style="text-align:right;color:var(--text-3)">QQQ &gt; SMA200</td><td style="text-align:center" id="sig-sma200-st">—</td></tr>
+          <tr class="sig-row sig-row-trend"><td class="label">정배열</td><td class="value" style="text-align:right" id="sig-align">—</td><td style="text-align:right;color:var(--text-3)">SMA50 &gt; SMA200</td><td style="text-align:center" id="sig-align-st">—</td></tr>
+          <tr class="sig-row sig-row-momentum"><td class="label">RET63</td><td class="value" style="text-align:right" id="sig-ret63">—</td><td style="text-align:right;color:var(--text-3)">≥ +10%</td><td style="text-align:center" id="sig-ret63-st">—</td></tr>
+          <tr class="sig-row sig-row-momentum"><td class="label">RET126</td><td class="value" style="text-align:right" id="sig-ret126">—</td><td style="text-align:right;color:var(--text-3)">≥ 0%</td><td style="text-align:center" id="sig-ret126-st">—</td></tr>
+          <tr class="sig-row sig-row-boost"><td class="label">BOOST 보유일</td><td class="value" style="text-align:right" id="sig-boost-days">—</td><td style="text-align:right;color:var(--text-3)">≤ 63d</td><td style="text-align:center" id="sig-boost-days-st">—</td></tr>
+          <tr class="sig-row sig-row-boost"><td class="label">BOOST peak Δ</td><td class="value" style="text-align:right" id="sig-boost-peak">—</td><td style="text-align:right;color:var(--text-3)">&gt; -8%</td><td style="text-align:center" id="sig-boost-peak-st">—</td></tr>
+          <tr class="sig-row sig-row-cooldown"><td class="label">쿨다운</td><td class="value" style="text-align:right" id="sig-cooldown">—</td><td style="text-align:right;color:var(--text-3)">21d</td><td style="text-align:center" id="sig-cooldown-st">—</td></tr>
         </tbody>
       </table>
       <div style="margin-top:14px;padding:12px;background:var(--bg);border-left:2px solid var(--amber);font-size:12px;color:var(--text-2);line-height:1.7;border-radius:0 4px 4px 0">
@@ -1671,32 +1685,20 @@
     }
     setHTML('mode-asset', `→ ${Q123.currentAsset} <span class="pct">100%</span>`);
 
-    // ─── 다음 트리거까지의 거리 ───
-    // BEAR 거리: QQQ가 SMA200까지 떨어지려면 몇 % 필요한가
-    const bearGapPct = Q123.aboveSMA200 ? (Q123.sma200 - Q123.qqq) / Q123.qqq * 100 : 0;
-    const bearDist = Math.max(0, Math.min(100, (1 - Math.abs(bearGapPct)/20) * 100));
-    document.getElementById('dist-bear-fill').style.width = bearDist + '%';
-    if(Q123.currentMode === 'BEAR'){
-      set('dist-bear-delta', 'BEAR 활성 중');
-      document.getElementById('dist-bear').classList.add('near');
-    } else {
-      set('dist-bear-delta', 'QQQ ' + (bearGapPct).toFixed(1) + '% 필요');
+    // ─── 자산 디테일 (현재 보유 자산의 가격/상태) ───
+    // QLD 가격은 data.json에 있지만 TQQQ는 없음 → 가능하면 보조 정보 표시
+    let assetDetail = '';
+    if(Q123.currentAsset === 'QLD' && Q123.qldPrice != null){
+      assetDetail = `QLD $${Q123.qldPrice.toFixed(2)} · QQQ 2배 레버리지 · 변동성 중간`;
+    } else if(Q123.currentAsset === 'TQQQ'){
+      assetDetail = `QQQ 3배 레버리지 · BOOST peak 추적 중 · 종료 조건 모니터링`;
+    } else if(Q123.currentAsset === 'QQQ'){
+      assetDetail = `나스닥 100 직접 보유 · 레버리지 축소 · BEAR 방어 중`;
     }
+    set('mode-asset-detail', assetDetail);
 
-    // BOOST 거리: RET63이 +10%까지 얼마나 부족한가
-    const boostGap = 10 - Q123.ret63;
-    const boostDist = Math.max(0, Math.min(100, (Q123.ret63 / 10) * 100));
-    document.getElementById('dist-boost-fill').style.width = boostDist + '%';
-    if(Q123.currentMode === 'BOOST'){
-      set('dist-boost-delta', 'BOOST 활성 중');
-      document.getElementById('dist-boost').classList.add('near');
-    } else if(boostGap <= 0){
-      set('dist-boost-delta', '조건 충족 ✓');
-      document.getElementById('dist-boost').classList.add('near');
-    } else {
-      set('dist-boost-delta', 'RET63 +' + boostGap.toFixed(1) + '%p 필요');
-      if(boostGap < 3) document.getElementById('dist-boost').classList.add('near');
-    }
+    // ─── 모드별 동적 거리 막대 ───
+    renderDistanceBars();
 
     // ─── 시그널 패널 ───
     const updDate = Q123.asOf || (Q123.updated ? new Date(new Date(Q123.updated).getTime()+9*3600000).toISOString().slice(0,10) : '—');
@@ -1724,6 +1726,54 @@
     checkCell('sig-ret63-st', Q123.ret63 >= 10);
     checkCell('sig-ret126-st', Q123.ret126 >= 0);
 
+    // ─── BOOST 관련 행 (보유일/peak/쿨다운) - 추적 미지원 안내 ───
+    // 현재는 진입 시점을 추적하지 않으므로 안내 텍스트로 처리
+    if(Q123.currentMode === 'BOOST'){
+      set('sig-boost-days', '추적 미연동');
+      set('sig-boost-peak', '추적 미연동');
+    } else {
+      set('sig-boost-days', '—');
+      set('sig-boost-peak', '—');
+    }
+    set('sig-cooldown', '—');
+
+    // ─── 모드별 행 강조 (관련 행 highlighted, 비관련 행 dimmed) ───
+    // 공유 행(QQQ Close)은 항상 표시
+    // 추세 행(SMA): 모든 모드에서 중요
+    // 모멘텀 행(RET): BOOST 진입/유지 핵심
+    // BOOST 행: BOOST 모드일 때만 의미
+    // 쿨다운 행: BOOST 종료 직후만 의미
+    const rows = {
+      trend:    document.querySelectorAll('.sig-row-trend'),
+      momentum: document.querySelectorAll('.sig-row-momentum'),
+      boost:    document.querySelectorAll('.sig-row-boost'),
+      cooldown: document.querySelectorAll('.sig-row-cooldown'),
+    };
+    // 일단 모두 초기화
+    Object.values(rows).flat ? null : null;
+    document.querySelectorAll('.sig-row').forEach(r => {
+      r.classList.remove('dimmed', 'highlighted');
+    });
+
+    if(Q123.currentMode === 'BEAR'){
+      // BEAR: 추세 행이 핵심, 나머지는 흐리게
+      rows.trend.forEach(r => r.classList.add('highlighted'));
+      rows.momentum.forEach(r => r.classList.add('dimmed'));
+      rows.boost.forEach(r => r.classList.add('dimmed'));
+      rows.cooldown.forEach(r => r.classList.add('dimmed'));
+    } else if(Q123.currentMode === 'BOOST'){
+      // BOOST: 추세 + BOOST 행이 핵심 (종료 조건 모니터링)
+      rows.trend.forEach(r => r.classList.add('highlighted'));
+      rows.boost.forEach(r => r.classList.add('highlighted'));
+      rows.cooldown.forEach(r => r.classList.add('dimmed'));
+    } else {
+      // NORMAL: 추세 + 모멘텀 행이 핵심 (BOOST 진입 모니터링)
+      rows.trend.forEach(r => r.classList.add('highlighted'));
+      rows.momentum.forEach(r => r.classList.add('highlighted'));
+      rows.boost.forEach(r => r.classList.add('dimmed'));
+      rows.cooldown.forEach(r => r.classList.add('dimmed'));
+    }
+
     // ─── 판단 / 다음 트리거 텍스트 ───
     let judgeMsg, nextTrigger;
     if(Q123.currentMode === 'BEAR'){
@@ -1748,6 +1798,89 @@
     }
     setHTML('judge-text', judgeMsg);
     set('next-trigger-text', nextTrigger);
+  }
+
+  // ===== 모드별 동적 거리 막대 =====
+  // 각 모드에서 가장 의미 있는 트리거들을 보여줌
+  function renderDistanceBars(){
+    const setBar = (idx, name, fillPct, deltaText, isClose) => {
+      const row = document.getElementById('dist-row-' + idx);
+      const fill = document.getElementById('dist-fill-' + idx);
+      if(!row || !fill) return;
+      row.style.display = '';
+      document.getElementById('dist-name-' + idx).textContent = name;
+      fill.style.width = Math.max(0, Math.min(100, fillPct)) + '%';
+      document.getElementById('dist-delta-' + idx).textContent = deltaText;
+      row.classList.toggle('near', !!isClose);
+    };
+    const hide = (idx) => {
+      const row = document.getElementById('dist-row-' + idx);
+      if(row) row.style.display = 'none';
+    };
+
+    if(Q123.currentMode === 'BOOST'){
+      // BOOST 종료 트리거 3개 보여주기
+      // 1) SMA50 이탈까지: QQQ가 SMA50까지 얼마나 떨어져야 하는가
+      const sma50Gap = (Q123.qqq - Q123.sma50) / Q123.qqq * 100;  // 양수면 위
+      const sma50Fill = Math.max(0, Math.min(100, (1 - sma50Gap/15) * 100));
+      setBar(1, 'SMA50 이탈',
+        sma50Fill,
+        sma50Gap > 0 ? `QQQ -${sma50Gap.toFixed(1)}% 필요` : '발동 임박',
+        sma50Gap < 3);
+
+      // 2) peak -8%까지: ATH 또는 진입 후 peak 대비 현재 위치
+      // 진입 시점 peak는 추적 미연동이므로 ATH를 보수적 대체
+      const peakGap = Q123.ath != null ? ((Q123.qqq - Q123.ath) / Q123.ath * 100) : 0;
+      // peakGap이 -8%까지의 거리
+      const peakDistance = -8 - peakGap;  // 양수면 아직 여유, 음수면 발동
+      const peakFill = Math.max(0, Math.min(100, (1 - Math.abs(peakDistance)/8) * 100));
+      setBar(2, 'Peak -8%',
+        peakFill,
+        peakGap > -8 ? `현재 ${peakGap.toFixed(1)}% (${(-8 - peakGap).toFixed(1)}%p 여유)` : '발동 임박',
+        Math.abs(peakDistance) < 2);
+
+      // 3) 보유 63일 도달: 미추적이라 안내
+      setBar(3, '보유 63d', 0, '진입일 미추적', false);
+
+    } else if(Q123.currentMode === 'BEAR'){
+      // BEAR 해제 트리거 2개
+      // 1) SMA200 회복: QQQ가 SMA200까지 얼마나 올라가야 하는가
+      const sma200Gap = Q123.aboveSMA200 ? 0 : (Q123.sma200 - Q123.qqq) / Q123.qqq * 100;
+      const sma200Fill = Math.max(0, Math.min(100, (1 - sma200Gap/15) * 100));
+      setBar(1, 'SMA200 회복',
+        sma200Fill,
+        Q123.aboveSMA200 ? '회복 ✓' : `QQQ +${sma200Gap.toFixed(1)}% 필요`,
+        Q123.aboveSMA200);
+
+      // 2) 정배열 회복
+      const alignFill = Q123.alignment ? 100 : (Q123.aboveSMA200 ? 50 : 0);
+      setBar(2, '정배열',
+        alignFill,
+        Q123.alignment ? '정배열 ✓' : '추세 형성 대기',
+        Q123.alignment);
+
+      hide(3);
+
+    } else {
+      // NORMAL — BEAR 진입 거리 + BOOST 진입 거리
+      // 1) BEAR 진입: QQQ가 SMA200까지 떨어지려면
+      const bearGap = Q123.aboveSMA200 ? (Q123.sma200 - Q123.qqq) / Q123.qqq * 100 : 0;
+      const bearFill = Math.max(0, Math.min(100, (1 - Math.abs(bearGap)/20) * 100));
+      setBar(1, 'BEAR 진입',
+        bearFill,
+        `QQQ ${bearGap.toFixed(1)}% 필요`,
+        Math.abs(bearGap) < 3);
+
+      // 2) BOOST 진입: RET63 ≥ +10%
+      const boostGap = 10 - Q123.ret63;
+      const boostFill = Math.max(0, Math.min(100, (Q123.ret63 / 10) * 100));
+      setBar(2, 'BOOST 진입',
+        boostFill,
+        boostGap <= 0 ? '조건 충족 ✓' : `RET63 +${boostGap.toFixed(1)}%p 필요`,
+        boostGap < 3);
+
+      hide(3);
+    }
   }
 
   // ===== TABS =====
