@@ -767,6 +767,9 @@
         </div>
       </div>
     </div>
+    <div id="mode-footnote" style="font-size:10px;color:var(--text-3);margin-top:14px;padding-top:10px;border-top:1px dashed var(--border);line-height:1.6;display:none">
+      —
+    </div>
   </div>
 
   <!-- 2) 시그널 패널 + 전략 구조 (좌 1.2 / 우 1) -->
@@ -1727,10 +1730,11 @@
     checkCell('sig-ret126-st', Q123.ret126 >= 0);
 
     // ─── BOOST 관련 행 (보유일/peak/쿨다운) - 추적 미지원 안내 ───
-    // 현재는 진입 시점을 추적하지 않으므로 안내 텍스트로 처리
+    // 현재는 진입 시점을 추적하지 않으므로 회색 작은 글씨로 안내 처리
+    const unsupportedHTML = '<span style="color:var(--text-3);font-size:10px;font-style:italic;font-weight:400">추적 미지원</span>';
     if(Q123.currentMode === 'BOOST'){
-      set('sig-boost-days', '추적 미연동');
-      set('sig-boost-peak', '추적 미연동');
+      setHTML('sig-boost-days', unsupportedHTML);
+      setHTML('sig-boost-peak', unsupportedHTML);
     } else {
       set('sig-boost-days', '—');
       set('sig-boost-peak', '—');
@@ -1819,28 +1823,33 @@
     };
 
     if(Q123.currentMode === 'BOOST'){
-      // BOOST 종료 트리거 3개 보여주기
+      // BOOST 종료 트리거 — 진입 시점 추적 미지원이므로 ATH 기준 보수적 표시
       // 1) SMA50 이탈까지: QQQ가 SMA50까지 얼마나 떨어져야 하는가
-      const sma50Gap = (Q123.qqq - Q123.sma50) / Q123.qqq * 100;  // 양수면 위
+      const sma50Gap = (Q123.qqq - Q123.sma50) / Q123.qqq * 100;
       const sma50Fill = Math.max(0, Math.min(100, (1 - sma50Gap/15) * 100));
       setBar(1, 'SMA50 이탈',
         sma50Fill,
         sma50Gap > 0 ? `QQQ -${sma50Gap.toFixed(1)}% 필요` : '발동 임박',
         sma50Gap < 3);
 
-      // 2) peak -8%까지: ATH 또는 진입 후 peak 대비 현재 위치
-      // 진입 시점 peak는 추적 미연동이므로 ATH를 보수적 대체
+      // 2) peak -8%까지 (ATH 기준 보수치 — 진입 시점 peak는 미추적)
       const peakGap = Q123.ath != null ? ((Q123.qqq - Q123.ath) / Q123.ath * 100) : 0;
-      // peakGap이 -8%까지의 거리
-      const peakDistance = -8 - peakGap;  // 양수면 아직 여유, 음수면 발동
+      const peakDistance = -8 - peakGap;
       const peakFill = Math.max(0, Math.min(100, (1 - Math.abs(peakDistance)/8) * 100));
-      setBar(2, 'Peak -8%',
+      setBar(2, 'Peak −8% *',
         peakFill,
-        peakGap > -8 ? `현재 ${peakGap.toFixed(1)}% (${(-8 - peakGap).toFixed(1)}%p 여유)` : '발동 임박',
+        peakGap > -8 ? `ATH 대비 ${peakGap.toFixed(1)}% (${(-8 - peakGap).toFixed(1)}%p 여유)` : '발동 임박',
         Math.abs(peakDistance) < 2);
 
-      // 3) 보유 63일 도달: 미추적이라 안내
-      setBar(3, '보유 63d', 0, '진입일 미추적', false);
+      // 3) 보유 63일 — 진입일 미추적이므로 막대 자체를 숨기고 안내만
+      hide(3);
+
+      // footnote 표시
+      const fn = document.getElementById('mode-footnote');
+      if(fn){
+        fn.style.display = '';
+        fn.innerHTML = '* <b style="color:var(--text-2)">Peak −8%는 ATH 기준 보수치</b> — BOOST 진입 시점 peak가 추적되면 더 정확해짐. <b style="color:var(--text-2)">보유 63일</b> 트리거는 진입일 미추적으로 표시 생략.';
+      }
 
     } else if(Q123.currentMode === 'BEAR'){
       // BEAR 해제 트리거 2개
@@ -1860,6 +1869,8 @@
         Q123.alignment);
 
       hide(3);
+      const fn = document.getElementById('mode-footnote');
+      if(fn) fn.style.display = 'none';
 
     } else {
       // NORMAL — BEAR 진입 거리 + BOOST 진입 거리
@@ -1880,6 +1891,8 @@
         boostGap < 3);
 
       hide(3);
+      const fn = document.getElementById('mode-footnote');
+      if(fn) fn.style.display = 'none';
     }
   }
 
