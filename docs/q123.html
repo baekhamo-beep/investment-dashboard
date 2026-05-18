@@ -546,6 +546,38 @@
   .insight-card p{font-size:12px;color:var(--text-2);line-height:1.65}
   .insight-card p b{color:var(--text)}
 
+  /* ===== BENCHMARK COMPARISON BARS ===== */
+  .bench-chart{display:flex;flex-direction:column;gap:8px}
+  .bench-row{
+    display:grid;grid-template-columns:70px 1fr 70px;
+    gap:10px;align-items:center;
+  }
+  .bench-label{
+    font-family:var(--mono);font-size:11px;color:var(--text-2);
+    font-weight:600;letter-spacing:0.3px;
+  }
+  .bench-bar{
+    height:20px;background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:3px;position:relative;overflow:hidden;
+  }
+  .bench-fill{
+    position:absolute;top:0;left:0;bottom:0;
+    background:linear-gradient(90deg, #4a9eff44, #4a9eff);
+    transition:width .4s;
+  }
+  .bench-fill.amber{
+    background:linear-gradient(90deg, var(--amber-dim), var(--amber));
+    box-shadow:0 0 8px rgba(255,176,32,0.3);
+  }
+  .bench-fill.red{
+    background:linear-gradient(90deg, #8a3a3a, #ff4d5e);
+  }
+  .bench-val{
+    font-family:var(--mono);font-size:11px;color:var(--text);
+    text-align:right;font-variant-numeric:tabular-nums;font-weight:600;
+  }
+
   /* ===== FOOTER ===== */
   footer{
     border-top:1px solid var(--border);
@@ -822,6 +854,144 @@
       편도 10bps 이상부터는 우위가 사라진다. 따라서 본 전략의 세후 우위는
       <b style="color:var(--text)">"넉넉한 압도"가 아니라 낮은 비용과 엄격한 실행을 전제로 한 통과"</b>로 해석한다.
     </p>
+  </div>
+
+  <!-- ─── 벤치마크 비교 (Buy & Hold) ─── -->
+  <div class="section-label">BENCHMARK COMPARISON · vs Buy & Hold <span class="meta">2010-02-11 ~ 2026-05-15 · 12개 시작 시나리오 평균 · STRICT 22%</span></div>
+
+  <div class="panel mb-24">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>전략/자산</th>
+          <th>CAGR 세전</th>
+          <th>CAGR 세후</th>
+          <th>MDD</th>
+          <th>Calmar 세전</th>
+          <th>Calmar 세후</th>
+          <th>특징</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:rgba(255,176,32,0.05)">
+          <td><b style="color:var(--amber)">Q123 (M63)</b></td>
+          <td><b>+40.86%</b></td>
+          <td><b style="color:var(--amber)">+31.52%</b></td>
+          <td><b>-49.20%</b></td>
+          <td><b class="pass">0.889</b></td>
+          <td><b class="pass">0.640</b></td>
+          <td style="text-align:left;color:var(--text-2)">3단계 스위칭 · 위성</td>
+        </tr>
+        <tr>
+          <td>QLD B&amp;H</td>
+          <td>+33.12%</td>
+          <td>+30.12%</td>
+          <td class="fail">-63.68%</td>
+          <td>0.520</td>
+          <td>0.473</td>
+          <td style="text-align:left;color:var(--text-2)">2배 레버리지 단순 보유</td>
+        </tr>
+        <tr>
+          <td>QQQ B&amp;H</td>
+          <td>+20.46%</td>
+          <td>+18.06%</td>
+          <td>-35.12%</td>
+          <td>0.583</td>
+          <td>0.514</td>
+          <td style="text-align:left;color:var(--text-2)">기준 자산 단순 보유</td>
+        </tr>
+        <tr>
+          <td>SPY B&amp;H</td>
+          <td>+15.13%</td>
+          <td>+13.08%</td>
+          <td>-32.95%</td>
+          <td>0.459</td>
+          <td>0.397</td>
+          <td style="text-align:left;color:var(--text-2)">S&amp;P 500 단순 보유</td>
+        </tr>
+        <tr>
+          <td>TQQQ B&amp;H</td>
+          <td>+40.85%</td>
+          <td>+37.60%</td>
+          <td class="fail">-81.66%</td>
+          <td>0.500</td>
+          <td>0.460</td>
+          <td style="text-align:left;color:var(--text-2)">3배 레버리지 단순 보유</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 시각화: Calmar / CAGR 막대 비교 -->
+    <div class="grid grid-2 mt-24" style="gap:24px">
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:1px;margin-bottom:10px;font-weight:600">CALMAR (세후) · 위험 대비 수익</div>
+        <div class="bench-chart">
+          <div class="bench-row">
+            <div class="bench-label">Q123</div>
+            <div class="bench-bar"><div class="bench-fill amber" style="width:71.9%"></div></div>
+            <div class="bench-val">0.640</div>
+          </div>
+          <div class="bench-row">
+            <div class="bench-label">QQQ B&amp;H</div>
+            <div class="bench-bar"><div class="bench-fill" style="width:57.8%"></div></div>
+            <div class="bench-val">0.514</div>
+          </div>
+          <div class="bench-row">
+            <div class="bench-label">QLD B&amp;H</div>
+            <div class="bench-bar"><div class="bench-fill" style="width:53.1%"></div></div>
+            <div class="bench-val">0.473</div>
+          </div>
+          <div class="bench-row">
+            <div class="bench-label">TQQQ B&amp;H</div>
+            <div class="bench-bar"><div class="bench-fill" style="width:51.7%"></div></div>
+            <div class="bench-val">0.460</div>
+          </div>
+          <div class="bench-row">
+            <div class="bench-label">SPY B&amp;H</div>
+            <div class="bench-bar"><div class="bench-fill" style="width:44.6%"></div></div>
+            <div class="bench-val">0.397</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:1px;margin-bottom:10px;font-weight:600">MDD (낙폭) · 작을수록 좋음</div>
+        <div class="bench-chart">
+          <div class="bench-row">
+            <div class="bench-label">SPY B&amp;H</div>
+            <div class="bench-bar"><div class="bench-fill red" style="width:40.3%"></div></div>
+            <div class="bench-val">-32.95%</div>
+          </div>
+          <div class="bench-row">
+            <div class="bench-label">QQQ B&amp;H</div>
+            <div class="bench-bar"><div class="bench-fill red" style="width:43.0%"></div></div>
+            <div class="bench-val">-35.12%</div>
+          </div>
+          <div class="bench-row">
+            <div class="bench-label">Q123</div>
+            <div class="bench-bar"><div class="bench-fill amber" style="width:60.2%"></div></div>
+            <div class="bench-val">-49.20%</div>
+          </div>
+          <div class="bench-row">
+            <div class="bench-label">QLD B&amp;H</div>
+            <div class="bench-bar"><div class="bench-fill red" style="width:78.0%"></div></div>
+            <div class="bench-val">-63.68%</div>
+          </div>
+          <div class="bench-row">
+            <div class="bench-label">TQQQ B&amp;H</div>
+            <div class="bench-bar"><div class="bench-fill red" style="width:100%"></div></div>
+            <div class="bench-val">-81.66%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;padding:14px;background:rgba(255,176,32,0.06);border-left:2px solid var(--amber);font-size:12px;color:var(--text-2);line-height:1.7;border-radius:0 4px 4px 0">
+      <b style="color:var(--amber)">▸ 핵심 해석:</b><br>
+      · <b style="color:var(--text)">Q123 vs TQQQ B&amp;H</b>: CAGR -6%p 손해(31.52 vs 37.60), MDD -32%p 개선(49.20 vs 81.66) → <b>위험 대비 수익 1.4배 우수</b><br>
+      · <b style="color:var(--text)">Q123 vs QLD B&amp;H</b>: CAGR +1.4%p 우수, MDD -14.5%p 개선 → <b>같은 수익에 손실 폭 훨씬 작음</b><br>
+      · <b style="color:var(--text)">Q123 vs QQQ B&amp;H</b>: CAGR +13.5%p 우수, MDD -14%p 더 큼 → <b>위험 감수하면서 수익 크게 향상</b><br>
+      · <b style="color:var(--text)">5개 중 세후 Calmar 1위</b> — 단순 보유보다 위험·수익 균형 우수
+    </div>
   </div>
 
   <div class="section-label">CORE COMPARISON · 세전 vs 세후 (편도 5bps)</div>
