@@ -546,6 +546,31 @@
   .insight-card p{font-size:12px;color:var(--text-2);line-height:1.65}
   .insight-card p b{color:var(--text)}
 
+  /* ===== GROUP HEADER (전략 성과 탭 그룹 구분) ===== */
+  .group-header{
+    margin:32px 0 18px 0;
+    padding:14px 18px;
+    background:linear-gradient(90deg, rgba(255,176,32,0.08), transparent 60%);
+    border-left:3px solid var(--amber);
+    border-radius:0 6px 6px 0;
+  }
+  .group-header:first-child{margin-top:0}
+  .group-header .label{
+    font-family:var(--mono);
+    font-size:11px;color:var(--amber);
+    letter-spacing:2px;font-weight:700;
+    margin-bottom:4px;
+  }
+  .group-header .title{
+    font-size:18px;font-weight:700;
+    color:var(--text);letter-spacing:-0.3px;
+    margin-bottom:4px;
+  }
+  .group-header .desc{
+    font-size:12px;color:var(--text-2);
+    line-height:1.5;
+  }
+
   /* ===== SIGNAL ROW HIGHLIGHT (모드별 강조) ===== */
   .sig-row.dimmed{opacity:0.42}
   .sig-row.dimmed td.label{color:var(--text-3)}
@@ -862,14 +887,23 @@
 <!-- ====================================================== -->
 <section class="tab-panel" id="performance">
 
+  <!-- ════════════════════════════════════════════════ -->
+  <!-- GROUP A: 핵심 성과 -->
+  <!-- ════════════════════════════════════════════════ -->
+  <div class="group-header">
+    <div class="label">A · CORE PERFORMANCE</div>
+    <div class="title">핵심 성과</div>
+    <div class="desc">이 전략이 다른 자산 대비 얼마나 효율적인지, 시작 시점이나 비용 조건에 얼마나 견고한지</div>
+  </div>
+
   <div class="verdict-big">
     <div class="head">// FINAL VERDICT · 4 KEY POINTS</div>
     <h2>세전 <span class="accent">강하게 통과</span> · 세후 <span class="accent">조건부 통과</span></h2>
     <p>
-      세전 기준으로는 편도 15bps까지 견고. 그러나 직투계좌 세금(STRICT 22%) 반영 후에는
-      <b style="color:var(--amber)">편도 5bps에서만 QLD HY same-period 기준선 0.636을 근소하게 초과</b>한다.
-      편도 10bps 이상부터는 우위가 사라진다. 따라서 본 전략의 세후 우위는
-      <b style="color:var(--text)">"넉넉한 압도"가 아니라 낮은 비용과 엄격한 실행을 전제로 한 통과"</b>로 해석한다.
+      세전 기준 편도 15bps까지 견고. 직투계좌 세금(STRICT 22%) 반영 후엔 편도 5bps에서만 QLD HY 기준선 0.636을
+      <b style="color:var(--amber)">근소하게 초과</b>한다. 따라서 본 전략의 우위는
+      <b style="color:var(--text)">"낮은 비용·엄격한 실행을 전제로 한 통과"</b>로 해석한다.
+      <span style="color:var(--text-3);font-size:11px">(세금 영향 상세는 아래 그룹 C 참조)</span>
     </p>
   </div>
 
@@ -1009,76 +1043,42 @@
       · <b style="color:var(--text)">Q123 vs QQQ B&amp;H</b>: CAGR +13.5%p 우수, MDD -14%p 더 큼 → <b>위험 감수하면서 수익 크게 향상</b><br>
       · <b style="color:var(--text)">5개 중 세후 Calmar 1위</b> — 단순 보유보다 위험·수익 균형 우수
     </div>
-  </div>
-
-  <div class="section-label">CORE COMPARISON · 세전 vs 세후 (편도 5bps)</div>
-
-  <div class="grid grid-4 mb-24">
-    <div class="kpi">
-      <div class="label">CAGR</div>
-      <div class="dual-kpi mt-16" style="margin-top:8px">
-        <div><div class="head pre">PRE-TAX</div><div class="v">+40.86%</div></div>
-        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">+31.52%</div></div>
+  
+    <!-- 1억 시작 시 최종자산 비교 -->
+    <div style="margin-top:20px;padding-top:18px;border-top:1px dashed var(--border)">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:1px;margin-bottom:12px;font-weight:600">
+        1억 시작 시 최종자산 추정 (세후, 평균 11년 기준)
       </div>
-      <div class="note" style="margin-top:10px">세금 드래그 -9.34%p</div>
-    </div>
-    <div class="kpi">
-      <div class="label">MDD</div>
-      <div class="dual-kpi mt-16" style="margin-top:8px">
-        <div><div class="head pre">PRE-TAX</div><div class="v">-45.96%</div></div>
-        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--red)">-49.20%</div></div>
+      <div class="bench-chart">
+        <div class="bench-row">
+          <div class="bench-label">Q123</div>
+          <div class="bench-bar"><div class="bench-fill amber" style="width:100%"></div></div>
+          <div class="bench-val">36.5억</div>
+        </div>
+        <div class="bench-row">
+          <div class="bench-label">TQQQ B&amp;H</div>
+          <div class="bench-bar"><div class="bench-fill red" style="width:91.8%"></div></div>
+          <div class="bench-val">33.5억</div>
+        </div>
+        <div class="bench-row">
+          <div class="bench-label">QLD B&amp;H</div>
+          <div class="bench-bar"><div class="bench-fill" style="width:49.6%"></div></div>
+          <div class="bench-val">18.1억</div>
+        </div>
+        <div class="bench-row">
+          <div class="bench-label">QQQ B&amp;H</div>
+          <div class="bench-bar"><div class="bench-fill" style="width:17.0%"></div></div>
+          <div class="bench-val">6.2억</div>
+        </div>
+        <div class="bench-row">
+          <div class="bench-label">SPY B&amp;H</div>
+          <div class="bench-bar"><div class="bench-fill" style="width:10.7%"></div></div>
+          <div class="bench-val">3.9억</div>
+        </div>
       </div>
-      <div class="note" style="margin-top:10px">세금 매도로 -3.24%p 악화</div>
-    </div>
-    <div class="kpi">
-      <div class="label">CALMAR</div>
-      <div class="dual-kpi mt-16" style="margin-top:8px">
-        <div><div class="head pre">PRE-TAX</div><div class="v">0.889</div></div>
-        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">0.640</div></div>
+      <div style="font-size:11px;color:var(--text-3);margin-top:10px;line-height:1.5">
+        Q123은 TQQQ와 비슷한 절대 수익을 내면서 <b style="color:var(--text-2)">MDD는 절반(-49% vs -82%)</b>으로 작음.
       </div>
-      <div class="note" style="margin-top:10px">기준선 0.636 · PASS</div>
-    </div>
-    <div class="kpi">
-      <div class="label">FINAL VALUE</div>
-      <div class="dual-kpi mt-16" style="margin-top:8px">
-        <div><div class="head pre">PRE-TAX</div><div class="v">79.0억</div></div>
-        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">36.5억</div></div>
-      </div>
-      <div class="note" style="margin-top:10px">평균 납부세금 7.2억</div>
-    </div>
-  </div>
-
-  <!-- COST SENSITIVITY -->
-  <div class="section-label">COST × TAX SENSITIVITY MATRIX <span class="meta">기준선 Calmar 0.636 = QLD HY same-period</span></div>
-
-  <div class="panel mb-24">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>세금 정책</th>
-          <th>편도</th>
-          <th>왕복</th>
-          <th>세후 CAGR</th>
-          <th>세후 MDD</th>
-          <th>세후 Calmar</th>
-          <th>세후 XIRR</th>
-          <th>최종청산</th>
-          <th>납부세금</th>
-          <th>판정</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>NO TAX BASELINE</td><td>5bps</td><td>0.10%</td><td>+40.50%</td><td>-45.96%</td><td class="pass">0.881</td><td>+40.99%</td><td>76.9억</td><td>0.0억</td><td><span class="pill pass">PASS</span></td></tr>
-        <tr><td>STRICT 22% (NO DEDUCTION)</td><td><b>5bps</b></td><td>0.10%</td><td>+31.52%</td><td>-49.20%</td><td class="pass">0.640</td><td>+31.96%</td><td>36.5억</td><td>7.2억</td><td><span class="pill pass">PASS</span></td></tr>
-        <tr><td>STRICT 22% (NO DEDUCTION)</td><td>10bps</td><td>0.20%</td><td>+30.89%</td><td>-49.36%</td><td class="fail">0.626</td><td>+31.33%</td><td>34.4억</td><td>6.9억</td><td><span class="pill fail">FAIL</span></td></tr>
-        <tr><td>STRICT 22% (NO DEDUCTION)</td><td>15bps</td><td>0.30%</td><td>+30.27%</td><td>-49.53%</td><td class="fail">0.611</td><td>+30.70%</td><td>32.5억</td><td>6.6억</td><td><span class="pill fail">FAIL</span></td></tr>
-        <tr><td>KR 22% + 250만공제</td><td><b>5bps</b></td><td>0.10%</td><td>+31.63%</td><td>-49.18%</td><td class="pass">0.643</td><td>+32.10%</td><td>36.8억</td><td>7.3억</td><td><span class="pill pass">PASS</span></td></tr>
-        <tr><td>KR 22% + 250만공제</td><td>10bps</td><td>0.20%</td><td>+31.01%</td><td>-49.34%</td><td class="fail">0.628</td><td>+31.47%</td><td>34.8억</td><td>6.9억</td><td><span class="pill fail">FAIL</span></td></tr>
-        <tr><td>KR 22% + 250만공제</td><td>15bps</td><td>0.30%</td><td>+30.39%</td><td>-49.50%</td><td class="fail">0.614</td><td>+30.84%</td><td>32.8억</td><td>6.6억</td><td><span class="pill fail">FAIL</span></td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:14px;padding:12px;background:rgba(255,176,32,0.05);border-left:2px solid var(--amber);font-size:11px;color:var(--text-2);line-height:1.7">
-      <b style="color:var(--amber)">▸ 해석:</b> 편도 5bps 두 모델 모두 PASS · 편도 10bps부터 FAIL. <b>세후 우위는 비용 관리 능력에 결정적으로 의존</b>.
     </div>
   </div>
 
@@ -1090,18 +1090,18 @@
       12개 시작 시나리오 모두 MDD ≈ -49%로 안정적. Calmar는 <b>0.550~0.776</b> 범위 — <b style="color:var(--red)">2010·2011·2021 시작 시나리오는 0.636 미달</b>.
     </div>
     <div class="scenario-chart">
-      <div class="scenario-row"><div class="year">2010-02-11</div><div class="bar-wrap"><div class="fill under" style="width:43.8%"></div><div class="threshold"></div></div><div class="calmar fail">0.558</div></div>
-      <div class="scenario-row"><div class="year">2011-01-03</div><div class="bar-wrap"><div class="fill under" style="width:43.7%"></div><div class="threshold"></div></div><div class="calmar fail">0.557</div></div>
-      <div class="scenario-row"><div class="year">2012-01-03</div><div class="bar-wrap"><div class="fill" style="width:48.2%"></div><div class="threshold"></div></div><div class="calmar pass">0.614</div></div>
-      <div class="scenario-row"><div class="year">2013-01-02</div><div class="bar-wrap"><div class="fill" style="width:49.0%"></div><div class="threshold"></div></div><div class="calmar pass">0.624</div></div>
-      <div class="scenario-row"><div class="year">2014-01-02</div><div class="bar-wrap"><div class="fill" style="width:46.8%"></div><div class="threshold"></div></div><div class="calmar caution">0.597</div></div>
-      <div class="scenario-row"><div class="year">2015-01-02</div><div class="bar-wrap"><div class="fill" style="width:46.5%"></div><div class="threshold"></div></div><div class="calmar caution">0.593</div></div>
-      <div class="scenario-row"><div class="year">2016-01-04</div><div class="bar-wrap"><div class="fill" style="width:53.8%"></div><div class="threshold"></div></div><div class="calmar pass">0.685</div></div>
-      <div class="scenario-row"><div class="year">2017-01-03</div><div class="bar-wrap"><div class="fill" style="width:58.3%"></div><div class="threshold"></div></div><div class="calmar pass">0.743</div></div>
-      <div class="scenario-row"><div class="year">2018-01-02</div><div class="bar-wrap"><div class="fill" style="width:52.1%"></div><div class="threshold"></div></div><div class="calmar pass">0.664</div></div>
-      <div class="scenario-row"><div class="year">2019-01-02</div><div class="bar-wrap"><div class="fill" style="width:60.9%"></div><div class="threshold"></div></div><div class="calmar pass">0.776</div></div>
-      <div class="scenario-row"><div class="year">2020-01-02</div><div class="bar-wrap"><div class="fill" style="width:56.9%"></div><div class="threshold"></div></div><div class="calmar pass">0.725</div></div>
-      <div class="scenario-row"><div class="year">2021-01-04</div><div class="bar-wrap"><div class="fill under" style="width:43.2%"></div><div class="threshold"></div></div><div class="calmar fail">0.550</div></div>
+      <div class="scenario-row"><div class="year">2010-02-11<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">리먼 직후 회복기</span></div><div class="bar-wrap"><div class="fill under" style="width:43.8%"></div><div class="threshold"></div></div><div class="calmar fail">0.558</div></div>
+      <div class="scenario-row"><div class="year">2011-01-03<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">유럽 위기 진입</span></div><div class="bar-wrap"><div class="fill under" style="width:43.7%"></div><div class="threshold"></div></div><div class="calmar fail">0.557</div></div>
+      <div class="scenario-row"><div class="year">2012-01-03<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">유럽 위기 마무리</span></div><div class="bar-wrap"><div class="fill" style="width:48.2%"></div><div class="threshold"></div></div><div class="calmar pass">0.614</div></div>
+      <div class="scenario-row"><div class="year">2013-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">강세장 본격화</span></div><div class="bar-wrap"><div class="fill" style="width:49.0%"></div><div class="threshold"></div></div><div class="calmar pass">0.624</div></div>
+      <div class="scenario-row"><div class="year">2014-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">강세장 중반</span></div><div class="bar-wrap"><div class="fill" style="width:46.8%"></div><div class="threshold"></div></div><div class="calmar caution">0.597</div></div>
+      <div class="scenario-row"><div class="year">2015-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">중국 충격 직전</span></div><div class="bar-wrap"><div class="fill" style="width:46.5%"></div><div class="threshold"></div></div><div class="calmar caution">0.593</div></div>
+      <div class="scenario-row"><div class="year">2016-01-04<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">브렉시트 직전</span></div><div class="bar-wrap"><div class="fill" style="width:53.8%"></div><div class="threshold"></div></div><div class="calmar pass">0.685</div></div>
+      <div class="scenario-row"><div class="year">2017-01-03<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">강세 가속</span></div><div class="bar-wrap"><div class="fill" style="width:58.3%"></div><div class="threshold"></div></div><div class="calmar pass">0.743</div></div>
+      <div class="scenario-row"><div class="year">2018-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">기술주 고점</span></div><div class="bar-wrap"><div class="fill" style="width:52.1%"></div><div class="threshold"></div></div><div class="calmar pass">0.664</div></div>
+      <div class="scenario-row"><div class="year">2019-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">회복 시작</span></div><div class="bar-wrap"><div class="fill" style="width:60.9%"></div><div class="threshold"></div></div><div class="calmar pass">0.776</div></div>
+      <div class="scenario-row"><div class="year">2020-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">코로나 직전</span></div><div class="bar-wrap"><div class="fill" style="width:56.9%"></div><div class="threshold"></div></div><div class="calmar pass">0.725</div></div>
+      <div class="scenario-row"><div class="year">2021-01-04<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">버블 정점</span></div><div class="bar-wrap"><div class="fill under" style="width:43.2%"></div><div class="threshold"></div></div><div class="calmar fail">0.550</div></div>
     </div>
     <div style="margin-top:14px;font-size:10px;color:var(--text-3)">
       X: Calmar (좌→우 0 → 1.275) · 수직선: 기준선 <b style="color:var(--text)">0.636</b>
@@ -1129,8 +1129,14 @@
     </div>
   </div>
 
-  <!-- ─── FUTURE VALIDATION (구 🔬 탭, performance에 통합) ─── -->
-  <div class="ascii-divider">─────────── ─── ── ─ FUTURE VALIDATION ─ ── ─── ───────────</div>
+  <!-- ════════════════════════════════════════════════ -->
+  <!-- GROUP B: 미래 검증 -->
+  <!-- ════════════════════════════════════════════════ -->
+  <div class="group-header">
+    <div class="label">B · FUTURE VALIDATION</div>
+    <div class="title">미래 검증</div>
+    <div class="desc">학습 구간 밖에서도 통할지, 파라미터에 민감하지 않은지, 시장 충격에 견디는지</div>
+  </div>
 
   <div class="verdict-big">
     <div class="head">// FUTURE VALIDATION · VERDICT</div>
@@ -1224,6 +1230,7 @@
       <span class="tag pass" style="color:var(--green)">PASS</span>
       <div class="name">BLOCK BOOTSTRAP</div>
       <h3>수익률 재조합 500회</h3>
+        <div style="font-size:10px;color:var(--text-3);margin:-8px 0 12px 0;line-height:1.4;font-style:italic">과거 수익률 무작위 섞기 — 운 요소 분리</div>
       <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+32.15%</span></div>
       <div class="stat"><span class="l">Avg MDD</span><span class="r">-55.02%</span></div>
       <div class="stat"><span class="l">Calmar</span><span class="r">0.621</span></div>
@@ -1235,6 +1242,7 @@
       <span class="tag fail" style="color:var(--red)">FAIL</span>
       <div class="name">REGIME SWITCHING</div>
       <h3>근본 레짐 변화 200회</h3>
+        <div style="font-size:10px;color:var(--text-3);margin:-8px 0 12px 0;line-height:1.4;font-style:italic">닷컴버블·구조 변화 — 시장 패러다임 깨질 때</div>
       <div class="stat"><span class="l">Avg CAGR</span><span class="r bad">-7.02%</span></div>
       <div class="stat"><span class="l">Avg MDD</span><span class="r bad">-88.89%</span></div>
       <div class="stat"><span class="l">Calmar</span><span class="r bad">-0.072</span></div>
@@ -1246,6 +1254,7 @@
       <span class="tag pass" style="color:var(--green)">PASS</span>
       <div class="name">SHOCK -20</div>
       <h3>무작위 -20% 충격 100회</h3>
+        <div style="font-size:10px;color:var(--text-3);margin:-8px 0 12px 0;line-height:1.4;font-style:italic">단기 -20% 충격 시뮬레이션</div>
       <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+30.69%</span></div>
       <div class="stat"><span class="l">Avg MDD</span><span class="r">-54.01%</span></div>
       <div class="stat"><span class="l">Calmar</span><span class="r">0.586</span></div>
@@ -1257,6 +1266,7 @@
       <span class="tag" style="color:var(--amber)">CAUTION</span>
       <div class="name">SHOCK -30</div>
       <h3>무작위 -30% 충격 100회</h3>
+        <div style="font-size:10px;color:var(--text-3);margin:-8px 0 12px 0;line-height:1.4;font-style:italic">단기 -30% 극단 충격 시뮬레이션</div>
       <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+25.26%</span></div>
       <div class="stat"><span class="l">Avg MDD</span><span class="r bad">-70.58%</span></div>
       <div class="stat"><span class="l">Calmar</span><span class="r">0.393</span></div>
@@ -1266,42 +1276,156 @@
   </div>
 
   <!-- INSIGHTS -->
+
+  <!-- ════════════════════════════════════════════════ -->
+  <!-- GROUP C: 세금·실현 비용 -->
+  <!-- ════════════════════════════════════════════════ -->
+  <div class="group-header">
+    <div class="label">C · TAX & REALIZED COSTS</div>
+    <div class="title">세금·실현 비용</div>
+    <div class="desc">직투계좌 양도소득세(STRICT 22%)와 거래비용이 성과에 미치는 영향</div>
+  </div>
+
+  <div class="section-label">CORE COMPARISON · 세전 vs 세후 (편도 5bps)</div>
+
+  <div class="grid grid-4 mb-24">
+    <div class="kpi">
+      <div class="label">CAGR</div>
+      <div class="dual-kpi mt-16" style="margin-top:8px">
+        <div><div class="head pre">PRE-TAX</div><div class="v">+40.86%</div></div>
+        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">+31.52%</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">세금 드래그 -9.34%p</div>
+    </div>
+    <div class="kpi">
+      <div class="label">MDD</div>
+      <div class="dual-kpi mt-16" style="margin-top:8px">
+        <div><div class="head pre">PRE-TAX</div><div class="v">-45.96%</div></div>
+        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--red)">-49.20%</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">세금 매도로 -3.24%p 악화</div>
+    </div>
+    <div class="kpi">
+      <div class="label">CALMAR</div>
+      <div class="dual-kpi mt-16" style="margin-top:8px">
+        <div><div class="head pre">PRE-TAX</div><div class="v">0.889</div></div>
+        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">0.640</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">기준선 0.636 · PASS</div>
+    </div>
+    <div class="kpi">
+      <div class="label">FINAL VALUE</div>
+      <div class="dual-kpi mt-16" style="margin-top:8px">
+        <div><div class="head pre">PRE-TAX</div><div class="v">79.0억</div></div>
+        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">36.5억</div></div>
+      </div>
+      <div class="note" style="margin-top:10px">평균 납부세금 7.2억</div>
+    </div>
+  </div>
+
+  <!-- COST SENSITIVITY -->
+
+  <div class="section-label">COST × TAX SENSITIVITY MATRIX <span class="meta">기준선 Calmar 0.636 = QLD HY same-period</span></div>
+
+  <div class="panel mb-24">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>세금 정책</th>
+          <th>편도</th>
+          <th>왕복</th>
+          <th>세후 CAGR</th>
+          <th>세후 MDD</th>
+          <th>세후 Calmar</th>
+          <th>세후 XIRR</th>
+          <th>최종청산</th>
+          <th>납부세금</th>
+          <th>판정</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>NO TAX BASELINE</td><td>5bps</td><td>0.10%</td><td>+40.50%</td><td>-45.96%</td><td class="pass">0.881</td><td>+40.99%</td><td>76.9억</td><td>0.0억</td><td><span class="pill pass">PASS</span></td></tr>
+        <tr><td>STRICT 22% (NO DEDUCTION)</td><td><b>5bps</b></td><td>0.10%</td><td>+31.52%</td><td>-49.20%</td><td class="pass">0.640</td><td>+31.96%</td><td>36.5억</td><td>7.2억</td><td><span class="pill pass">PASS</span></td></tr>
+        <tr><td>STRICT 22% (NO DEDUCTION)</td><td>10bps</td><td>0.20%</td><td>+30.89%</td><td>-49.36%</td><td class="fail">0.626</td><td>+31.33%</td><td>34.4억</td><td>6.9억</td><td><span class="pill fail">FAIL</span></td></tr>
+        <tr><td>STRICT 22% (NO DEDUCTION)</td><td>15bps</td><td>0.30%</td><td>+30.27%</td><td>-49.53%</td><td class="fail">0.611</td><td>+30.70%</td><td>32.5억</td><td>6.6억</td><td><span class="pill fail">FAIL</span></td></tr>
+        <tr><td>KR 22% + 250만공제</td><td><b>5bps</b></td><td>0.10%</td><td>+31.63%</td><td>-49.18%</td><td class="pass">0.643</td><td>+32.10%</td><td>36.8억</td><td>7.3억</td><td><span class="pill pass">PASS</span></td></tr>
+        <tr><td>KR 22% + 250만공제</td><td>10bps</td><td>0.20%</td><td>+31.01%</td><td>-49.34%</td><td class="fail">0.628</td><td>+31.47%</td><td>34.8억</td><td>6.9억</td><td><span class="pill fail">FAIL</span></td></tr>
+        <tr><td>KR 22% + 250만공제</td><td>15bps</td><td>0.30%</td><td>+30.39%</td><td>-49.50%</td><td class="fail">0.614</td><td>+30.84%</td><td>32.8억</td><td>6.6억</td><td><span class="pill fail">FAIL</span></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:14px;padding:12px;background:rgba(255,176,32,0.05);border-left:2px solid var(--amber);font-size:11px;color:var(--text-2);line-height:1.7">
+      <b style="color:var(--amber)">▸ 해석:</b> 편도 5bps 두 모델 모두 PASS · 편도 10bps부터 FAIL. <b>세후 우위는 비용 관리 능력에 결정적으로 의존</b>.
+    </div>
+  </div>
+
+  
+  <!-- 세금 영향 요약 -->
+  <div class="panel mt-24" style="border-color:var(--amber-dim);background:linear-gradient(135deg,rgba(255,176,32,0.04),transparent)">
+    <div class="panel-title">TAX IMPACT SUMMARY · 세금이 성과에 미치는 영향</div>
+    <div class="grid grid-3" style="gap:16px">
+      <div style="padding:14px;background:var(--bg);border-left:2px solid var(--amber);border-radius:0 4px 4px 0">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:1px;font-weight:600;margin-bottom:6px">CAGR 손실</div>
+        <div style="font-size:22px;font-weight:700;color:var(--amber);font-family:var(--mono);font-variant-numeric:tabular-nums">−9.34%p</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px;line-height:1.5">세전 40.86% → 세후 31.52%</div>
+      </div>
+      <div style="padding:14px;background:var(--bg);border-left:2px solid var(--red);border-radius:0 4px 4px 0">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:1px;font-weight:600;margin-bottom:6px">최종자산 감소</div>
+        <div style="font-size:22px;font-weight:700;color:var(--red);font-family:var(--mono);font-variant-numeric:tabular-nums">−54%</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px;line-height:1.5">79.0억 → 36.5억 (백테스트 평균)</div>
+      </div>
+      <div style="padding:14px;background:var(--bg);border-left:2px solid var(--text-2);border-radius:0 4px 4px 0">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:1px;font-weight:600;margin-bottom:6px">평균 납부세금</div>
+        <div style="font-size:22px;font-weight:700;color:var(--text);font-family:var(--mono);font-variant-numeric:tabular-nums">7.2억</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px;line-height:1.5">스위칭 빈도 = 세금 드래그의 핵심 변수</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;padding:12px;background:rgba(255,77,94,0.05);border-left:2px solid var(--red);font-size:12px;color:var(--text-2);line-height:1.6;border-radius:0 4px 4px 0">
+      <b style="color:var(--red)">⚠ 핵심:</b> 세금은 <b style="color:var(--text)">현금 흐름에 즉시 영향</b>을 줌. 외부 계좌에 <b style="color:var(--text)">세금 예비비를 별도 보관</b>하지 않으면 매매 자금 부족 발생 가능.
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════ -->
+  <!-- GROUP D: 종합 결론 -->
+  <!-- ════════════════════════════════════════════════ -->
+  <div class="group-header">
+    <div class="label">D · FINAL INSIGHTS</div>
+    <div class="title">종합 결론 & 액션 가이드</div>
+    <div class="desc">위 모든 분석에서 도출된 핵심 결론과 실제 운용 시 어떻게 적용할지</div>
+  </div>
+
   <div class="section-label">FINAL INSIGHTS · 5 POINTS</div>
 
   <div class="insight-grid">
     <div class="insight-card pass">
       <span class="tag">PASS</span>
       <h4>Walk-Forward 통과</h4>
-      <p>OOS 평균 Calmar <b>0.928</b>이 Train 평균 0.863보다 높음 — 단일 학습 구간 과최적화 가능성 낮음.</p>
+      <p>OOS 평균 Calmar <b>0.928</b>이 Train 평균 0.863보다 높음 — 단일 학습 구간 과최적화 가능성 낮음.<br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ 실제 운용 시 <b>학습 구간 외에서도 성과 유지 기대</b></span></p>
     </div>
     <div class="insight-card pass">
       <span class="tag">PASS</span>
       <h4>파라미터 견고성</h4>
-      <p>std <b>0.047</b>, range 0.131 — BASE 주변 흔들어도 성과 붕괴 없음. 구조적 작동.</p>
+      <p>std <b>0.047</b>, range 0.131 — BASE 주변 흔들어도 성과 붕괴 없음. 구조적 작동.<br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ 단일 설정에 의존 안 함 — <b>임계값 미세 조정에 민감하지 않음</b></span></p>
     </div>
     <div class="insight-card pass">
       <span class="tag">PASS</span>
       <h4>Bootstrap 수익성</h4>
-      <p>평균 CAGR <b>+32.15%</b>, P(CAGR≥15%) <b>87.4%</b> — 수익률 재조합에서도 수익성 유지.</p>
+      <p>평균 CAGR <b>+32.15%</b>, P(CAGR≥15%) <b>87.4%</b> — 수익률 재조합에서도 수익성 유지.<br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ 확률적으로도 <b>87% 이상 시나리오에서 목표 수익</b></span></p>
     </div>
     <div class="insight-card caution">
       <span class="tag">CAUTION</span>
       <h4>레짐 한계</h4>
-      <p>Regime Switching 평균 CAGR <b style="color:var(--red)">-7.02%</b> · P(MDD&lt;-65%) <b style="color:var(--red)">100%</b> — QQQ 장기 성장 전제 깨지면 붕괴.</p>
+      <p>Regime Switching 평균 CAGR <b style="color:var(--red)">-7.02%</b> · P(MDD&lt;-65%) <b style="color:var(--red)">100%</b> — QQQ 장기 성장 전제 깨지면 붕괴.<br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ <b style="color:var(--amber)">⚠ 액션: 메인 자산이 아닌 위성 자산으로 한정</b> (예: 전체의 20% 이내)</span></p>
     </div>
     <div class="insight-card caution" style="grid-column:span 4">
       <span class="tag">CAUTION</span>
       <h4>-30% Shock MDD 한계 초과</h4>
       <p>P(MDD&lt;-65%) <b style="color:var(--red)">60.0%</b>, 평균 MDD <b style="color:var(--red)">-70.58%</b> — 사용자 허용 한계 자주 초과.
-        <b style="color:var(--text)">전체 자산의 제한 비중(예: 위성 한도 내)으로만 운용해야 함.</b></p>
+        <b style="color:var(--text)">전체 자산의 제한 비중(예: 위성 한도 내)으로만 운용해야 함.</b><br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ <b style="color:var(--amber)">⚠ 액션: 시장 -30% 충격 시 추가 자금 투입 금지</b>, 별도 현금 예비비 운용</span></p>
     </div>
   </div>
 
 </section>
 
-<!-- ====================================================== -->
-<!-- ⚙ RULES -->
-<!-- ====================================================== -->
 <section class="tab-panel" id="rules">
 
   <div class="section-label">EXECUTION RULES · D일 종가 신호 · D+1 시가 체결</div>
