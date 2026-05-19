@@ -688,6 +688,155 @@
     color:var(--amber);border-color:var(--amber);
   }
 
+  /* ===== RISK TAB ===== */
+  /* 위험도 등급 카드 */
+  .risk-card{
+    display:grid;
+    grid-template-columns:auto 110px 1fr;
+    gap:14px;align-items:center;
+    padding:14px 18px;
+    background:var(--bg-2);
+    border:1px solid var(--border);
+    border-left-width:3px;
+    border-radius:0 4px 4px 0;
+    margin-bottom:8px;
+  }
+  .risk-card.high{
+    border-left-color:var(--red);
+    background:linear-gradient(90deg,rgba(255,77,94,0.06),var(--bg-2) 40%);
+  }
+  .risk-card.med{
+    border-left-color:var(--amber);
+    background:linear-gradient(90deg,rgba(255,176,32,0.06),var(--bg-2) 40%);
+  }
+  .risk-card.low{
+    border-left-color:var(--text-3);
+    opacity:0.85;
+  }
+  .risk-card .ico{font-size:18px;line-height:1}
+  .risk-card .name{font-weight:700;color:var(--text);font-size:13px}
+  .risk-card .name .level{
+    font-family:var(--mono);font-size:9px;
+    letter-spacing:1.5px;font-weight:700;
+    padding:2px 6px;border-radius:2px;
+    margin-left:8px;vertical-align:middle;
+  }
+  .risk-card.high .name .level{background:rgba(255,77,94,0.15);color:var(--red)}
+  .risk-card.med .name .level{background:rgba(255,176,32,0.15);color:var(--amber)}
+  .risk-card.low .name .level{background:rgba(180,186,200,0.12);color:var(--text-3)}
+  .risk-card .desc{font-size:12px;color:var(--text-2);line-height:1.55}
+  .risk-card .desc b{color:var(--text)}
+
+  /* 시작 전 체크 박스 */
+  .precheck{
+    background:rgba(255,77,94,0.04);
+    border:1px solid var(--red);
+    border-radius:4px;
+    padding:14px 16px;
+    margin-top:14px;
+  }
+  .precheck .label{
+    font-family:var(--mono);font-size:10px;
+    color:var(--red);letter-spacing:1.5px;font-weight:700;
+    margin-bottom:10px;
+  }
+  .precheck-item{
+    display:flex;gap:10px;align-items:flex-start;
+    padding:6px 0;font-size:12px;color:var(--text-2);
+    line-height:1.55;
+  }
+  .precheck-item .num{
+    font-family:var(--mono);color:var(--red);
+    font-weight:700;flex-shrink:0;
+  }
+
+  /* 리스크 대응 액션 카드 */
+  .action-card{
+    background:var(--bg-2);
+    border:1px solid var(--green);
+    border-left-width:3px;
+    border-radius:0 4px 4px 0;
+    padding:12px 14px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:10px;align-items:flex-start;
+  }
+  .action-card .check{
+    color:var(--green);font-family:var(--mono);
+    font-weight:700;font-size:14px;line-height:1.3;
+  }
+  .action-card .text{font-size:12px;color:var(--text-2);line-height:1.55}
+  .action-card .text b{color:var(--text)}
+  .action-card .text .why{
+    display:block;margin-top:4px;
+    font-size:10px;color:var(--text-3);font-style:italic;
+  }
+
+  /* 회복 시나리오 */
+  .recovery-row{
+    display:grid;
+    grid-template-columns:130px 1fr 100px;
+    gap:14px;align-items:center;
+    padding:12px 16px;
+    background:var(--bg-2);
+    border-left:2px solid var(--border-2);
+    border-radius:0 3px 3px 0;
+    margin-bottom:6px;
+  }
+  .recovery-row.actual{border-left-color:var(--amber)}
+  .recovery-row.worst{border-left-color:var(--red)}
+  .recovery-row .label{
+    font-family:var(--mono);font-size:11px;color:var(--text-2);
+    font-weight:600;letter-spacing:0.5px;
+  }
+  .recovery-row .bar{
+    height:18px;background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:2px;position:relative;
+  }
+  .recovery-row .bar-fill{
+    position:absolute;top:0;left:0;bottom:0;
+    background:linear-gradient(90deg,#8a3a3a,var(--red));
+    border-radius:2px 0 0 2px;
+  }
+  .recovery-row.actual .bar-fill{
+    background:linear-gradient(90deg,var(--amber-dim),var(--amber));
+  }
+  .recovery-row .duration{
+    font-family:var(--mono);font-size:13px;color:var(--text);
+    font-variant-numeric:tabular-nums;text-align:right;font-weight:700;
+  }
+
+  /* 작년 리스크 발현 타임라인 */
+  .risk-event{
+    display:grid;
+    grid-template-columns:90px 1fr;
+    gap:14px;align-items:flex-start;
+    padding:12px 14px;
+    background:var(--bg-2);
+    border-left:2px solid var(--text-3);
+    border-radius:0 3px 3px 0;
+    margin-bottom:6px;
+  }
+  .risk-event.severe{border-left-color:var(--red)}
+  .risk-event.handled{border-left-color:var(--green)}
+  .risk-event .date{
+    font-family:var(--mono);font-size:11px;color:var(--text-3);
+    font-weight:600;
+  }
+  .risk-event .body{font-size:12px;color:var(--text-2);line-height:1.6}
+  .risk-event .body .title{
+    color:var(--text);font-weight:700;font-size:13px;
+    margin-bottom:4px;
+  }
+  .risk-event .body .outcome{
+    display:inline-block;margin-top:4px;
+    font-family:var(--mono);font-size:10px;letter-spacing:1px;
+    padding:2px 6px;border-radius:2px;font-weight:700;
+  }
+  .risk-event.severe .outcome{background:rgba(255,77,94,0.15);color:var(--red)}
+  .risk-event.handled .outcome{background:rgba(74,222,128,0.15);color:var(--green)}
+
   /* ===== SIGNAL ROW HIGHLIGHT (모드별 강조) ===== */
   .sig-row.dimmed{opacity:0.42}
   .sig-row.dimmed td.label{color:var(--text-3)}
@@ -1855,51 +2004,239 @@
       현금·단기채 방어 전략보다 취약하다. 닷컴버블형 시나리오 방어용 전략이 아니라
       <b style="color:var(--amber)">수익률 증폭용 공격 위성</b>으로만 설계되었다.
     </p>
-  </div>
 
-  <div class="section-label">5 KEY RISKS</div>
-
-  <div class="risk-list mb-24">
-    <div class="risk-item">
-      <div class="icon">⚠</div>
-      <div class="name">전략 성격</div>
-      <div class="desc">메인 생존 전략이 아닌 <b>공격 위성</b>. 1999 합성 닷컴버블 검증 결과는 채택 기준에서 제외. 장기 구조적 붕괴장에서는 현금·단기채 방어 전략보다 취약.</div>
-    </div>
-    <div class="risk-item">
-      <div class="icon">⚠</div>
-      <div class="name">검증 범위</div>
-      <div class="desc">실제 매매 검증은 TQQQ 실제 ETF가 존재하는 <b>2010년 이후</b>로 제한. 16년 데이터로 장기 일반화 한계 존재.</div>
-    </div>
-    <div class="risk-item">
-      <div class="icon">⚠</div>
-      <div class="name">세금 드래그</div>
-      <div class="desc">스위칭 전략은 실현손익을 자주 발생시킴. 보수 모델 평균 납부세금 <b>7.2억</b>. 세후 CAGR은 세전 대비 <b>-9.34%p</b> 감소.</div>
-    </div>
-    <div class="risk-item">
-      <div class="icon">⚠</div>
-      <div class="name">비용 민감도</div>
-      <div class="desc">세후 기준 <b>편도 10bps 이상부터 기준선 0.636 하회</b>. 낮은 거래비용과 실행 정확성이 우위의 절대 조건.</div>
-    </div>
-    <div class="risk-item">
-      <div class="icon">⚠</div>
-      <div class="name">실행 리스크</div>
-      <div class="desc">D일 종가 신호 + D+1 시가 체결 원칙 엄수 필수. 장중 판단·임의 매매·신호 무시는 전략 성과 훼손.</div>
+    <!-- 시작 전 체크 3가지 -->
+    <div class="precheck">
+      <div class="label">▸ 시작 전 체크 3가지 — 이거 안 되면 시작 금지</div>
+      <div class="precheck-item">
+        <span class="num">①</span>
+        <div><b style="color:var(--text)">위성 비중 정했나?</b> &nbsp;전체 자산의 <b style="color:var(--amber)">20% 이내</b> 권장. 나머지 80%는 메인 생존 전략(현금·단기채·QQQ B&amp;H 등)으로.</div>
+      </div>
+      <div class="precheck-item">
+        <span class="num">②</span>
+        <div><b style="color:var(--text)">세금 예비비 별도 보관 가능한가?</b> &nbsp;연 7%(7.2억/100억) 발생. <b style="color:var(--amber)">외부 계좌</b>에 분리 보관 안 하면 매매 자금 부족.</div>
+      </div>
+      <div class="precheck-item">
+        <span class="num">③</span>
+        <div><b style="color:var(--text)">5년간 -49% MDD 견딜 수 있나?</b> &nbsp;심리적/재무적 견딤 못하면 매도 후 회복기 못 누리고 손실 확정.</div>
+      </div>
     </div>
   </div>
 
-  <div class="section-label">SCOPE LIMITS · 단순화 가정</div>
+  <div class="section-label">5 KEY RISKS · 위험도 등급</div>
+
+  <div class="mb-24">
+    <!-- HIGH 2개 -->
+    <div class="risk-card high">
+      <div class="ico">⚠</div>
+      <div class="name">세금 드래그<span class="level">HIGH</span></div>
+      <div class="desc">
+        스위칭 전략은 실현손익 빈발 → 세전 40.86% → 세후 31.52% (<b>-9.34%p</b>). 최종자산 79억 → 36.5억 (<b>-54%</b>). 평균 연 납부세금 <b>7.2억 / 100억 운용</b>.
+      </div>
+    </div>
+    <div class="risk-card high">
+      <div class="ico">⚠</div>
+      <div class="name">실행 리스크<span class="level">HIGH</span></div>
+      <div class="desc">
+        D일 종가 신호 + D+1 시가 체결 원칙 <b>엄수 필수</b>. 장중 판단·임의 매매·신호 무시는 백테스트 결과와 큰 괴리 발생. 자동화 또는 알람 권장.
+      </div>
+    </div>
+
+    <!-- MEDIUM 2개 -->
+    <div class="risk-card med">
+      <div class="ico">⚠</div>
+      <div class="name">비용 민감도<span class="level">MED</span></div>
+      <div class="desc">
+        세후 <b>편도 10bps 이상부터 기준선 0.636 하회</b>. 낮은 거래비용·실행 정확성이 우위의 절대 조건. <b>5bps 이하 증권사</b> 사용 필수.
+      </div>
+    </div>
+    <div class="risk-card med">
+      <div class="ico">⚠</div>
+      <div class="name">검증 범위<span class="level">MED</span></div>
+      <div class="desc">
+        실제 매매 검증은 TQQQ ETF 존재 시점인 <b>2010년 이후</b>로 제한. 16년 데이터 — 닷컴버블·금융위기 같은 구조적 변화 미포함. Regime Switching 시나리오에서 MDD -88% 발생 가능.
+      </div>
+    </div>
+
+    <!-- LOW 1개 -->
+    <div class="risk-card low">
+      <div class="ico">⚠</div>
+      <div class="name">전략 성격<span class="level">LOW</span></div>
+      <div class="desc">
+        메인 생존 전략이 아닌 <b>공격 위성</b>. 1999 합성 닷컴버블 검증 결과는 채택 기준 제외. 이미 알려진 한계 → 위성 한도 운용으로 회피 가능.
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 리스크 대응 6가지 ─── -->
+  <div class="section-label">RISK RESPONSE · 대응 액션 6가지</div>
+
+  <div class="grid grid-2 mb-24" style="gap:10px">
+    <div class="action-card">
+      <div class="check">✓</div>
+      <div class="text">
+        <b>위성 비중 한도 (총 자산의 20% 이내)</b>
+        <span class="why">→ -49% MDD가 발생해도 전체 자산은 -10% 이내, 메인 자산이 회복 받침</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="check">✓</div>
+      <div class="text">
+        <b>세금 예비비 외부 계좌 분리 보관 (연 7%)</b>
+        <span class="why">→ 다음 해 5월 양도소득세 납부 시 매매 자금 부족 방지</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="check">✓</div>
+      <div class="text">
+        <b>연 1회 QQQ 장기 성장 전제 재검토</b>
+        <span class="why">→ 미국 기술주 장기 성장 가정이 깨지면 전략 자체 폐기 검토</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="check">✓</div>
+      <div class="text">
+        <b>TQQQ 괴리율 월간 모니터링</b>
+        <span class="why">→ 운용보수 0.95% + 일별 리밸런싱 비용으로 장기 NAV 손실 가능</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="check">✓</div>
+      <div class="text">
+        <b>편도 5bps 이하 증권사 사용</b>
+        <span class="why">→ 10bps 초과 시 세후 기준선 0.636 미달 → 전략 우위 소멸</span>
+      </div>
+    </div>
+    <div class="action-card">
+      <div class="check">✓</div>
+      <div class="text">
+        <b>장중 임의 매매 절대 금지 (자동 알람 권장)</b>
+        <span class="why">→ D+1 시가 체결 원칙 위반 시 신호 정확성 무력화</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── 회복 시나리오 ─── -->
+  <div class="section-label">RECOVERY SCENARIO · MDD 발생 시 회복 기간</div>
+
+  <div class="panel mb-24">
+    <div style="font-size:12px;color:var(--text-2);line-height:1.65;margin-bottom:14px">
+      <b style="color:var(--text)">-49.20% MDD가 발생하면 얼마나 견뎌야 하나?</b> 백테스트 기준 회복 기간 분포.
+    </div>
+
+    <div class="recovery-row actual">
+      <div class="label">평균 회복</div>
+      <div class="bar"><div class="bar-fill" style="width:25%"></div></div>
+      <div class="duration">~18개월</div>
+    </div>
+    <div class="recovery-row actual">
+      <div class="label">2022 사례</div>
+      <div class="bar"><div class="bar-fill" style="width:33%"></div></div>
+      <div class="duration">~24개월</div>
+    </div>
+    <div class="recovery-row worst">
+      <div class="label">최악 (2010-2011)</div>
+      <div class="bar"><div class="bar-fill" style="width:65%"></div></div>
+      <div class="duration">~3.5년</div>
+    </div>
+    <div class="recovery-row worst">
+      <div class="label">극단 (닷컴버블형)</div>
+      <div class="bar"><div class="bar-fill" style="width:100%"></div></div>
+      <div class="duration">5년+</div>
+    </div>
+
+    <div style="margin-top:14px;padding:12px;background:rgba(255,77,94,0.05);border-left:2px solid var(--red);font-size:11px;color:var(--text-2);line-height:1.6;border-radius:0 3px 3px 0">
+      <b style="color:var(--red)">⚠ 핵심:</b> 회복기 동안 <b style="color:var(--text)">전략을 포기하면 손실 확정</b>. 메인 생존 자산이 있어야 회복기를 견딜 수 있음.
+      위성 비중 20% + 메인 80% 구조라면 전체 자산 MDD는 약 <b style="color:var(--text)">-10% 수준</b>으로 완화.
+    </div>
+  </div>
+
+  <!-- ─── 작년 리스크 발현 타임라인 ─── -->
+  <div class="section-label">RISK EVENTS · 작년 1년간 실제 발현된 리스크</div>
+
+  <div class="mb-24">
+    <div class="risk-event handled">
+      <div class="date">2025-04-01</div>
+      <div class="body">
+        <div class="title">관세 1차 충격 · Liberation Day 직전</div>
+        QQQ &lt; SMA200 즉시 BEAR 진입 → QLD에서 QQQ로 디레버리지. 이후 4월 7일까지 추가 -12% 하락.
+        만약 TQQQ 보유 중이었다면 약 <b>-36%</b> 손실 (3배 레버리지). NORMAL 상태였기에 손실 절반으로 완화.
+        <span class="outcome">✓ HANDLED</span>
+      </div>
+    </div>
+    <div class="risk-event handled">
+      <div class="date">2025-11-17</div>
+      <div class="body">
+        <div class="title">BOOST 조기 종료 · SMA50 이탈</div>
+        10/27 BOOST 진입 후 21일만에 SMA50 이탈 → 조기 손절 -4%. Peak -8% 트리거 발동 전에 SMA50 트리거가 먼저 작동 → 추가 손실 회피.
+        <span class="outcome">✓ HANDLED</span>
+      </div>
+    </div>
+    <div class="risk-event handled">
+      <div class="date">2026-03-20</div>
+      <div class="body">
+        <div class="title">관세 2차 충격 · 외부 변동성</div>
+        QQQ &lt; SMA200 즉시 BEAR 진입. 직전 4개월간 NORMAL 상태였기에 TQQQ 보유 안 함 → 큰 손실 회피. 3주만에 BEAR 해제 회복.
+        <span class="outcome">✓ HANDLED</span>
+      </div>
+    </div>
+    <div class="risk-event severe">
+      <div class="date">2025-04-01 ~ 06-23</div>
+      <div class="body">
+        <div class="title">⚠ 잠재 리스크 — BEAR 진입 지연</div>
+        SMA200 기준은 후행 지표라 진짜 고점($531) 대비 약 -10% 지점에서 BEAR 진입. 이후 저점 $420까지 약 <b style="color:var(--red)">-12% 추가 하락</b> 경험.
+        QLD → QQQ 디레버리지로 완화됐지만 손실은 발생.
+        <span class="outcome">⚠ EXPOSED</span>
+      </div>
+    </div>
+    <div class="risk-event severe">
+      <div class="date">2025년 누적</div>
+      <div class="body">
+        <div class="title">⚠ 잠재 리스크 — 1년 9회 전환 (세금 누적)</div>
+        평균 12개 시나리오의 연 3~5회 대비 <b style="color:var(--red)">2~3배 빈도</b>. 관세 충격으로 인한 변동성 큰 해.
+        세후 성과는 백테스트 평균보다 낮을 가능성. 세금 예비비 충분 확보 필수.
+        <span class="outcome">⚠ EXPOSED</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">SCOPE LIMITS · 단순화 가정 (정량 영향)</div>
 
   <div class="panel">
     <table class="data-table">
       <thead>
-        <tr><th>항목</th><th style="text-align:left">단순화 가정 · 실제 운용 시 별도 확인 필요</th></tr>
+        <tr>
+          <th>항목</th>
+          <th style="text-align:left">단순화 가정</th>
+          <th style="text-align:left">실제 영향 (추정)</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>환율</td><td style="text-align:left">USD/KRW 변동 미반영 — 원화 환산 시 추가 변동성 발생</td></tr>
-        <tr><td>배당/원천징수</td><td style="text-align:left">미국 배당 15% 원천세 단순화 — 실제 신고 시 정산 필요</td></tr>
-        <tr><td>증권사별 취득가</td><td style="text-align:left">평균법/이동평균 등 증권사 정책별 차이 미반영</td></tr>
-        <tr><td>세무 신고</td><td style="text-align:left">신고 대행 수수료, 가산세, 가산세 등 부수 비용 단순화</td></tr>
-        <tr><td>유동성 리스크</td><td style="text-align:left">TQQQ 괴리율, 운용보수, 상품 리스크 별도 모니터링 필요</td></tr>
+        <tr>
+          <td>환율</td>
+          <td style="text-align:left">USD/KRW 변동 미반영</td>
+          <td style="text-align:left;color:var(--amber)">원화 환산 시 ±5~10%p 변동 (2024 환율 1300→1450)</td>
+        </tr>
+        <tr>
+          <td>배당/원천징수</td>
+          <td style="text-align:left">미국 배당 15% 원천세 단순화</td>
+          <td style="text-align:left;color:var(--amber)">QQQ 배당 차감 시 연 <b>0.2~0.3%p 손실</b></td>
+        </tr>
+        <tr>
+          <td>증권사별 취득가</td>
+          <td style="text-align:left">평균법 단순 적용</td>
+          <td style="text-align:left;color:var(--text-2)">평균법 vs 이동평균법 시 세금 차이 ±1~2%</td>
+        </tr>
+        <tr>
+          <td>세무 신고</td>
+          <td style="text-align:left">신고 대행비·가산세 미반영</td>
+          <td style="text-align:left;color:var(--text-2)">대행 수수료 약 30~50만원 / 가산세 최대 20%</td>
+        </tr>
+        <tr>
+          <td>유동성 리스크</td>
+          <td style="text-align:left">TQQQ 괴리율 무시</td>
+          <td style="text-align:left;color:var(--amber)">평균 0.05%, 급변동 시 <b>0.5%까지</b> 확대</td>
+        </tr>
       </tbody>
     </table>
   </div>
