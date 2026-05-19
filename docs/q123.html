@@ -553,6 +553,14 @@
     background:linear-gradient(90deg, rgba(255,176,32,0.08), transparent 60%);
     border-left:3px solid var(--amber);
     border-radius:0 6px 6px 0;
+    cursor:pointer;
+    user-select:none;
+    transition:background .15s, padding .15s;
+    position:relative;
+    padding-right:48px;
+  }
+  .group-header:hover{
+    background:linear-gradient(90deg, rgba(255,176,32,0.14), transparent 60%);
   }
   .group-header:first-child{margin-top:0}
   .group-header .label{
@@ -569,6 +577,69 @@
   .group-header .desc{
     font-size:12px;color:var(--text-2);
     line-height:1.5;
+  }
+  .group-header .chevron{
+    position:absolute;right:18px;top:50%;
+    transform:translateY(-50%) rotate(0deg);
+    font-family:var(--mono);font-size:18px;color:var(--amber);
+    transition:transform .25s;
+    line-height:1;
+  }
+  .group-header.collapsed .chevron{
+    transform:translateY(-50%) rotate(-90deg);
+  }
+  .group-header.collapsed{
+    margin-bottom:8px;
+  }
+  /* 그룹 본문 (접힘 대상) */
+  .group-body{
+    overflow:hidden;
+    transition:max-height .4s ease, opacity .25s;
+    max-height:none;
+    opacity:1;
+  }
+  .group-body.collapsed{
+    max-height:0;
+    opacity:0;
+    margin:0;
+    padding:0;
+  }
+
+  /* ===== 요약 박스 ===== */
+  .perf-summary{
+    background:linear-gradient(135deg, rgba(255,176,32,0.06), rgba(74,222,128,0.03));
+    border:1px solid var(--amber-dim);
+    border-radius:8px;
+    padding:22px 26px;
+    margin-bottom:24px;
+    position:relative;
+  }
+  .perf-summary .head{
+    font-family:var(--mono);
+    font-size:11px;color:var(--amber);letter-spacing:1.5px;
+    font-weight:700;margin-bottom:14px;
+  }
+  .perf-summary .point{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:8px 0;font-size:13.5px;color:var(--text);
+    line-height:1.6;
+  }
+  .perf-summary .point .ico{
+    flex-shrink:0;font-size:16px;line-height:1.4;
+  }
+  .perf-summary .point b{color:var(--amber)}
+  .perf-summary .point .caution{color:var(--amber)}
+  .perf-summary .point .danger{color:var(--red)}
+  .perf-summary .toggle-all{
+    position:absolute;top:18px;right:22px;
+    font-family:var(--mono);font-size:10px;letter-spacing:1px;
+    color:var(--text-3);cursor:pointer;
+    padding:4px 10px;border:1px solid var(--border-2);border-radius:3px;
+    background:var(--bg);
+    transition:color .15s, border-color .15s;
+  }
+  .perf-summary .toggle-all:hover{
+    color:var(--amber);border-color:var(--amber);
   }
 
   /* ===== SIGNAL ROW HIGHLIGHT (모드별 강조) ===== */
@@ -888,13 +959,28 @@
 <section class="tab-panel" id="performance">
 
   <!-- ════════════════════════════════════════════════ -->
-  <!-- GROUP A: 핵심 성과 -->
+  <!-- 요약 박스 (한눈에 보는 결론) -->
   <!-- ════════════════════════════════════════════════ -->
-  <div class="group-header">
-    <div class="label">A · CORE PERFORMANCE</div>
-    <div class="title">핵심 성과</div>
-    <div class="desc">이 전략이 다른 자산 대비 얼마나 효율적인지, 시작 시점이나 비용 조건에 얼마나 견고한지</div>
+  <div class="perf-summary">
+    <div class="head">// EXECUTIVE SUMMARY · 한눈에 보는 결론</div>
+    <div class="toggle-all" onclick="toggleAllGroups()">전체 펼치기</div>
+    <div class="point">
+      <span class="ico">🎯</span>
+      <div><b>5개 자산 중 세후 Calmar 1위</b> — 세후 CAGR <b>+31.52%</b>, MDD <b>-49.20%</b>, Calmar <b>0.640</b>. 단순 보유(QLD/QQQ/SPY/TQQQ)보다 위험·수익 균형 우수.</div>
+    </div>
+    <div class="point">
+      <span class="ico">🔬</span>
+      <div>Walk-forward·민감도·Bootstrap 검증 모두 <b>PASS</b>. 다만 <span class="caution">Regime Switching</span>과 <span class="caution">-30% Shock</span>에서 MDD 한계 초과 → <b>위성 전략으로만 운용</b>.</div>
+    </div>
+    <div class="point">
+      <span class="ico">⚠</span>
+      <div><b>직투계좌 세금이 핵심 변수</b> — 세전 79.0억 → 세후 36.5억(<span class="danger">-54%</span>). 평균 납부세금 <b>7.2억</b>. 세금 예비비 별도 보관 필수.</div>
+    </div>
   </div>
+
+  <div class="group-header" data-group="A" onclick="toggleGroup(this)"><div class="label">A · CORE PERFORMANCE</div><div class="title">핵심 성과</div><div class="desc">이 전략이 다른 자산 대비 얼마나 효율적인지, 시작 시점이나 비용 조건에 얼마나 견고한지</div><div class="chevron">▾</div></div>
+
+  <div class="group-body">
 
   <div class="verdict-big">
     <div class="head">// FINAL VERDICT · 4 KEY POINTS</div>
@@ -1131,12 +1217,11 @@
 
   <!-- ════════════════════════════════════════════════ -->
   <!-- GROUP B: 미래 검증 -->
-  <!-- ════════════════════════════════════════════════ -->
-  <div class="group-header">
-    <div class="label">B · FUTURE VALIDATION</div>
-    <div class="title">미래 검증</div>
-    <div class="desc">학습 구간 밖에서도 통할지, 파라미터에 민감하지 않은지, 시장 충격에 견디는지</div>
-  </div>
+  <!-- ════════════════════════════════════════════════ --></div>
+
+  <div class="group-header collapsed" data-group="B" onclick="toggleGroup(this)"><div class="label">B · FUTURE VALIDATION</div><div class="title">미래 검증</div><div class="desc">학습 구간 밖에서도 통할지, 파라미터에 민감하지 않은지, 시장 충격에 견디는지</div><div class="chevron">▾</div></div>
+
+  <div class="group-body collapsed">
 
   <div class="verdict-big">
     <div class="head">// FUTURE VALIDATION · VERDICT</div>
@@ -1279,12 +1364,11 @@
 
   <!-- ════════════════════════════════════════════════ -->
   <!-- GROUP C: 세금·실현 비용 -->
-  <!-- ════════════════════════════════════════════════ -->
-  <div class="group-header">
-    <div class="label">C · TAX & REALIZED COSTS</div>
-    <div class="title">세금·실현 비용</div>
-    <div class="desc">직투계좌 양도소득세(STRICT 22%)와 거래비용이 성과에 미치는 영향</div>
-  </div>
+  <!-- ════════════════════════════════════════════════ --></div>
+
+  <div class="group-header collapsed" data-group="C" onclick="toggleGroup(this)"><div class="label">C · TAX & REALIZED COSTS</div><div class="title">세금·실현 비용</div><div class="desc">직투계좌 양도소득세(STRICT 22%)와 거래비용이 성과에 미치는 영향</div><div class="chevron">▾</div></div>
+
+  <div class="group-body collapsed">
 
   <div class="section-label">CORE COMPARISON · 세전 vs 세후 (편도 5bps)</div>
 
@@ -1386,12 +1470,11 @@
 
   <!-- ════════════════════════════════════════════════ -->
   <!-- GROUP D: 종합 결론 -->
-  <!-- ════════════════════════════════════════════════ -->
-  <div class="group-header">
-    <div class="label">D · FINAL INSIGHTS</div>
-    <div class="title">종합 결론 & 액션 가이드</div>
-    <div class="desc">위 모든 분석에서 도출된 핵심 결론과 실제 운용 시 어떻게 적용할지</div>
-  </div>
+  <!-- ════════════════════════════════════════════════ --></div>
+
+  <div class="group-header collapsed" data-group="D" onclick="toggleGroup(this)"><div class="label">D · FINAL INSIGHTS</div><div class="title">종합 결론 & 액션 가이드</div><div class="desc">위 모든 분석에서 도출된 핵심 결론과 실제 운용 시 어떻게 적용할지</div><div class="chevron">▾</div></div>
+
+  <div class="group-body collapsed">
 
   <div class="section-label">FINAL INSIGHTS · 5 POINTS</div>
 
@@ -1422,7 +1505,7 @@
       <p>P(MDD&lt;-65%) <b style="color:var(--red)">60.0%</b>, 평균 MDD <b style="color:var(--red)">-70.58%</b> — 사용자 허용 한계 자주 초과.
         <b style="color:var(--text)">전체 자산의 제한 비중(예: 위성 한도 내)으로만 운용해야 함.</b><br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ <b style="color:var(--amber)">⚠ 액션: 시장 -30% 충격 시 추가 자금 투입 금지</b>, 별도 현금 예비비 운용</span></p>
     </div>
-  </div>
+  </div></div>
 
 </section>
 
@@ -2136,9 +2219,60 @@
   }
   setInterval(tick, 1000);
 
+  // ===== 그룹 접기/펼치기 =====
+  function toggleGroup(headerEl){
+    if(!headerEl) return;
+    const isCollapsed = headerEl.classList.toggle('collapsed');
+    // header 다음에 오는 .group-body가 대상
+    let next = headerEl.nextElementSibling;
+    while(next && !next.classList.contains('group-body')){
+      next = next.nextElementSibling;
+    }
+    if(next){
+      next.classList.toggle('collapsed', isCollapsed);
+    }
+    // 전체 토글 버튼 라벨 동기화
+    syncToggleAllLabel();
+  }
+
+  function syncToggleAllLabel(){
+    const headers = document.querySelectorAll('#performance .group-header');
+    const btn = document.querySelector('#performance .perf-summary .toggle-all');
+    if(!btn || !headers.length) return;
+    const allCollapsed = Array.from(headers).every(h => h.classList.contains('collapsed'));
+    btn.textContent = allCollapsed ? '전체 펼치기' : '전체 접기';
+  }
+
+  function toggleAllGroups(){
+    const headers = document.querySelectorAll('#performance .group-header');
+    const btn = document.querySelector('#performance .perf-summary .toggle-all');
+    // 펼친 게 하나도 없으면 → 전체 펼치기 (shouldOpen=true)
+    // 하나라도 펼친 게 있으면 → 전체 접기 (shouldOpen=false)
+    const anyOpen = Array.from(headers).some(h => !h.classList.contains('collapsed'));
+    const shouldCollapse = anyOpen;
+    headers.forEach(h => {
+      h.classList.toggle('collapsed', shouldCollapse);
+      let next = h.nextElementSibling;
+      while(next && !next.classList.contains('group-body')){
+        next = next.nextElementSibling;
+      }
+      if(next){
+        next.classList.toggle('collapsed', shouldCollapse);
+      }
+    });
+    if(btn){
+      // 작업 후 상태에 맞춰 라벨 갱신: 이제 다 접혔으면 '전체 펼치기', 다 열렸으면 '전체 접기'
+      btn.textContent = shouldCollapse ? '전체 펼치기' : '전체 접기';
+    }
+  }
+
   // ===== 데이터 로딩 시작 =====
   loadMarketData();                              // 페이지 로드 시 즉시 1회
   setInterval(loadMarketData, 5 * 60 * 1000);    // 5분마다 자동 갱신
+
+  // ===== 초기 토글 라벨 동기화 =====
+  document.addEventListener('DOMContentLoaded', syncToggleAllLabel);
+  syncToggleAllLabel();
 </script>
 
 </body>
