@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-05-21T20:29:54Z",
+  "updated_utc": "2026-05-21T21:57:52Z",
   "nasdaq": {
     "drawdown_pct": -0.73,
     "rsi": 71.7,
@@ -27,13 +27,13 @@
     "source": "CNN Business"
   },
   "etf_prices": {
-    "QLD": 92.41,
+    "QLD": 92.38,
     "SPMO": 144.69,
     "SCHD": 32.25,
     "AVUV": 119.24,
     "SGOV": 100.58
   },
-  "usd_krw": 1504.3,
+  "usd_krw": 1507.8,
   "kiwoom_price": 12160,
   "mps": {
     "trend": 1,
