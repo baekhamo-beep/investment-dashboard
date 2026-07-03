@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-07-03T15:47:28Z",
+  "updated_utc": "2026-07-03T17:12:00Z",
   "nasdaq": {
     "drawdown_pct": -4.39,
     "rsi": 48.9,
@@ -33,7 +33,7 @@
     "AVUV": 123.51,
     "SGOV": 100.44
   },
-  "usd_krw": 1530.8,
+  "usd_krw": 1529.3,
   "kiwoom_price": 13170,
   "mps": {
     "trend": 1,
