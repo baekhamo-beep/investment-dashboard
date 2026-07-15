@@ -1,15 +1,15 @@
 {
-  "updated_utc": "2026-07-14T21:46:10Z",
+  "updated_utc": "2026-07-15T01:19:52Z",
   "nasdaq": {
     "drawdown_pct": -3.44,
     "rsi": 52.3,
-    "ma200_dev_pct": 12.83,
-    "ma50_dev_pct": 0.42,
-    "current_price": 719.69,
+    "ma200_dev_pct": 12.84,
+    "ma50_dev_pct": 0.43,
+    "current_price": 719.71,
     "peak_price": 745.34,
     "sma50_price": 716.66,
     "sma200_price": 637.84,
-    "momentum_6m": 15.02,
+    "momentum_6m": 15.03,
     "return_20d_pct": -3.16,
     "return_60d_pct": 11.04,
     "return_63d_pct": 16.7,
@@ -33,8 +33,8 @@
     "AVUV": 124.08,
     "SGOV": 100.52
   },
-  "usd_krw": 1488.2,
-  "kiwoom_price": 12695,
+  "usd_krw": 1488.4,
+  "kiwoom_price": 12850,
   "mps": {
     "trend": 1,
     "momentum": 1,
