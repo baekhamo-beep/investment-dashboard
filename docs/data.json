@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-07-16T20:24:13Z",
+  "updated_utc": "2026-07-16T21:29:43Z",
   "nasdaq": {
     "drawdown_pct": -5.29,
     "rsi": 46.2,
@@ -17,9 +17,9 @@
     "above_ma200": true,
     "above_ma50": false
   },
-  "vix": 16.71,
+  "vix": 16.73,
   "fear_greed": {
-    "value": 41.6,
+    "value": 41.7,
     "classification": "fear",
     "prev_close": 41.1,
     "prev_1w": 44.7,
@@ -33,7 +33,7 @@
     "AVUV": 126.17,
     "SGOV": 100.55
   },
-  "usd_krw": 1478.2,
+  "usd_krw": 1479.1,
   "kiwoom_price": 12545,
   "mps": {
     "trend": 1,
