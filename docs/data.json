@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-07-24T01:44:08Z",
+  "updated_utc": "2026-07-24T13:15:53Z",
   "nasdaq": {
     "drawdown_pct": -7.16,
     "rsi": 41.1,
@@ -17,13 +17,13 @@
     "above_ma200": true,
     "above_ma50": false
   },
-  "vix": 18.7,
+  "vix": 18.9,
   "fear_greed": {
-    "value": 39.6,
+    "value": 38.8,
     "classification": "fear",
-    "prev_close": 43.0,
-    "prev_1w": 41.2,
-    "prev_1m": 28.5,
+    "prev_close": 39.6,
+    "prev_1w": 37.2,
+    "prev_1m": 26.5,
     "source": "CNN Business"
   },
   "etf_prices": {
@@ -33,8 +33,8 @@
     "AVUV": 124.83,
     "SGOV": 100.61
   },
-  "usd_krw": 1464.3,
-  "kiwoom_price": 12305,
+  "usd_krw": 1462.5,
+  "kiwoom_price": 12250,
   "mps": {
     "trend": 1,
     "momentum": 1,
