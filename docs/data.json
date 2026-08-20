@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-08-20T20:16:25Z",
+  "updated_utc": "2026-08-20T20:52:43Z",
   "nasdaq": {
     "drawdown_pct": -4.62,
     "rsi": 62.4,
@@ -17,7 +17,7 @@
     "above_ma200": true,
     "above_ma50": false
   },
-  "vix": 15.97,
+  "vix": 16.01,
   "fear_greed": {
     "value": 52.5,
     "classification": "neutral",
@@ -33,7 +33,7 @@
     "AVUV": 125.62,
     "SGOV": 100.59
   },
-  "usd_krw": 1393.5,
+  "usd_krw": 1393.7,
   "kiwoom_price": 11615,
   "mps": {
     "trend": 1,
