@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-08-29T04:42:44Z",
+  "updated_utc": "2026-08-29T15:54:45Z",
   "nasdaq": {
     "drawdown_pct": -3.25,
     "rsi": 48.5,
@@ -17,7 +17,7 @@
     "above_ma200": true,
     "above_ma50": true
   },
-  "vix": 14.43,
+  "vix": 14.51,
   "fear_greed": {
     "value": 54.4,
     "classification": "neutral",
