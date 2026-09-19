@@ -1,5 +1,5 @@
 {
-  "updated_utc": "2026-09-19T02:08:49Z",
+  "updated_utc": "2026-09-19T14:59:51Z",
   "nasdaq": {
     "drawdown_pct": -3.21,
     "rsi": 53.9,
@@ -28,12 +28,12 @@
   },
   "etf_prices": {
     "QLD": 91.0,
-    "SPMO": null,
+    "SPMO": 149.21,
     "SCHD": 33.68,
-    "AVUV": null,
-    "SGOV": null
+    "AVUV": 121.96,
+    "SGOV": 100.59
   },
-  "usd_krw": 1385.9,
+  "usd_krw": 1385.0,
   "kiwoom_price": 11420,
   "mps": {
     "trend": 1,
