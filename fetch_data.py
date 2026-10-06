@@ -1,6 +1,9 @@
 import json, os, requests, re
 from datetime import datetime, timezone
 import yfinance as yf
+import pandas as pd
+import exchange_calendars as xc
+from q123_engine import snapshot, indicators
 
 def calc_rsi(close, period=14):
     delta = close.diff()
@@ -51,6 +54,33 @@ def get_nasdaq():
         "above_ma200":     cur > ma200,
         "above_ma50":      cur > ma50,
     }
+
+def get_q123_state():
+    # Daily Yahoo bars can contain an unfinished session. Cut off at the last NYSE close.
+    calendar = xc.get_calendar("XNYS", start="2008-01-01", end="2030-12-31")
+    now = pd.Timestamp.now(tz="UTC")
+    complete = calendar.schedule.loc[calendar.schedule["close"] <= now]
+    last_day = complete.index[-1].tz_localize(None) if complete.index.tz else complete.index[-1]
+    end = (last_day + pd.Timedelta(days=1)).strftime("%Y-%m-%d")
+    df = yf.download("QQQ", start="2008-01-01", end=end, interval="1d", progress=False, auto_adjust=False)
+    close = df["Close"].dropna().squeeze()
+    close.index = pd.DatetimeIndex(close.index).tz_localize(None)
+    sessions = calendar.sessions.tz_localize(None)
+    close = close.loc[close.index.isin(sessions) & (close.index <= last_day)]
+    if close.index[-1] != last_day:
+        raise ValueError("Q123 latest completed session is missing")
+    expected = sessions[(sessions >= close.index[0]) & (sessions <= last_day)]
+    if not close.index.equals(expected):
+        raise ValueError("Q123 history has missing/duplicate sessions")
+    state = snapshot(close)
+    row = indicators(close).iloc[-1]
+    state["indicators"] = {k: float(row[k]) for k in ["close", "sma50", "sma200", "ret63", "ret126"]}
+    state["price_basis"] = "Yahoo unadjusted close; completed sessions only"
+    next_day = calendar.next_session(last_day)
+    state["next_session"] = str(next_day.date())
+    state["next_open_utc"] = calendar.session_open(next_day).isoformat()
+    state["updated_utc"] = datetime.now(timezone.utc).isoformat()
+    return state
 
 def get_vix():
     df = yf.download("^VIX", period="5d", interval="1d", progress=False, auto_adjust=True)
@@ -123,61 +153,67 @@ def get_cnn_fear_greed():
         except:
             return {"value": None, "classification": "unavailable", "source": "unavailable"}
 
-os.makedirs("docs", exist_ok=True)
+def main():
+    os.makedirs("docs", exist_ok=True)
 
-print("나스닥(QQQ) 수집...")
-qqq = get_nasdaq()
-print("VIX 수집...")
-vix = get_vix()
-print("ETF 현재가 수집...")
-etf_prices = get_etf_prices()
-print("환율 수집...")
-usd_krw = get_usd_krw()
-print("KIWOOM ETF 수집...")
-kiwoom_price = get_kiwoom_etf_price()
-print("CNN F&G 수집...")
-fg = get_cnn_fear_greed()
+    print("나스닥(QQQ) 수집...")
+    qqq = get_nasdaq()
+    print("VIX 수집...")
+    vix = get_vix()
+    print("ETF 현재가 수집...")
+    etf_prices = get_etf_prices()
+    print("환율 수집...")
+    usd_krw = get_usd_krw()
+    print("KIWOOM ETF 수집...")
+    kiwoom_price = get_kiwoom_etf_price()
+    print("CNN F&G 수집...")
+    fg = get_cnn_fear_greed()
 
-# MPS 자동 계산
-mps_trend     = 1 if qqq["above_ma200"] else 0
-mps_momentum  = 1 if qqq["momentum_6m"] > 0 else 0
-mps_vix       = 1 if vix < 20 else 0
-mps_total     = mps_trend + mps_momentum + mps_vix
+    # MPS 자동 계산
+    mps_trend     = 1 if qqq["above_ma200"] else 0
+    mps_momentum  = 1 if qqq["momentum_6m"] > 0 else 0
+    mps_vix       = 1 if vix < 20 else 0
+    mps_total     = mps_trend + mps_momentum + mps_vix
 
-data = {
-    "updated_utc":   datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-    "nasdaq": {
-        "drawdown_pct":    qqq["drawdown_pct"],
-        "rsi":             qqq["rsi"],
-        "ma200_dev_pct":   qqq["ma200_dev_pct"],
-        "ma50_dev_pct":    qqq["ma50_dev_pct"],      # Q123용 추가
-        "current_price":   qqq["current_price"],
-        "peak_price":      qqq["peak_price"],
-        "sma50_price":     qqq["sma50_price"],       # Q123용 추가 (절대값)
-        "sma200_price":    qqq["sma200_price"],      # Q123용 추가 (절대값)
-        "momentum_6m":     qqq["momentum_6m"],
-        "return_20d_pct":  qqq["return_20d_pct"],    # SWITCH용
-        "return_60d_pct":  qqq["return_60d_pct"],    # SWITCH용
-        "return_63d_pct":  qqq["return_63d_pct"],    # Q123 RET63
-        "return_126d_pct": qqq["return_126d_pct"],   # Q123 RET126
-        "above_ma200":     qqq["above_ma200"],
-        "above_ma50":      qqq["above_ma50"],        # Q123 정배열 판정용
-    },
-    "vix":           vix,
-    "fear_greed":    fg,
-    "etf_prices":    etf_prices,
-    "usd_krw":       usd_krw,
-    "kiwoom_price":  kiwoom_price,
-    "mps": {
-        "trend":    mps_trend,
-        "momentum": mps_momentum,
-        "vix":      mps_vix,
-        "total":    mps_total,
-    },
-}
+    data = {
+        "q123": get_q123_state(),
+        "updated_utc":   datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "nasdaq": {
+            "drawdown_pct":    qqq["drawdown_pct"],
+            "rsi":             qqq["rsi"],
+            "ma200_dev_pct":   qqq["ma200_dev_pct"],
+            "ma50_dev_pct":    qqq["ma50_dev_pct"],      # Q123용 추가
+            "current_price":   qqq["current_price"],
+            "peak_price":      qqq["peak_price"],
+            "sma50_price":     qqq["sma50_price"],       # Q123용 추가 (절대값)
+            "sma200_price":    qqq["sma200_price"],      # Q123용 추가 (절대값)
+            "momentum_6m":     qqq["momentum_6m"],
+            "return_20d_pct":  qqq["return_20d_pct"],    # SWITCH용
+            "return_60d_pct":  qqq["return_60d_pct"],    # SWITCH용
+            "return_63d_pct":  qqq["return_63d_pct"],    # Q123 RET63
+            "return_126d_pct": qqq["return_126d_pct"],   # Q123 RET126
+            "above_ma200":     qqq["above_ma200"],
+            "above_ma50":      qqq["above_ma50"],        # Q123 정배열 판정용
+        },
+        "vix":           vix,
+        "fear_greed":    fg,
+        "etf_prices":    etf_prices,
+        "usd_krw":       usd_krw,
+        "kiwoom_price":  kiwoom_price,
+        "mps": {
+            "trend":    mps_trend,
+            "momentum": mps_momentum,
+            "vix":      mps_vix,
+            "total":    mps_total,
+        },
+    }
 
-with open("docs/data.json", "w") as f:
-    json.dump(data, f, indent=2)
+    with open("docs/data.json", "w") as f:
+        json.dump(data, f, indent=2)
 
-print(f"\n✅ 저장 완료 | MPS: {mps_total}점 (추세:{mps_trend} 모멘텀:{mps_momentum} VIX:{mps_vix})")
-print(json.dumps(data, indent=2, ensure_ascii=False))
+    print(f"\n✅ 저장 완료 | MPS: {mps_total}점 (추세:{mps_trend} 모멘텀:{mps_momentum} VIX:{mps_vix})")
+    print(json.dumps(data, indent=2, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()

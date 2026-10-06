@@ -1,0 +1,4 @@
+numpy==2.3.5
+pandas==2.2.3
+exchange_calendars==4.13.2
+requests==2.34.2
