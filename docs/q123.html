@@ -1715,7 +1715,7 @@
       <div style="font-size:15px;font-weight:700;color:var(--text);margin:8px 0">쿨다운 중 TQQQ 재진입</div>
       <div style="font-size:11px;color:var(--text-2)">종료 체결일 E 다음 E+1~E+21 거래일 동안 TQQQ 보유 금지. E+21 종가부터 신호 가능, E+22 시가부터 재진입 가능.</div>
       <div class="consequence">
-        <b>위반 시:</b> 휩쏘 손실 누적 → 세금만 늘고 수익률 하락. 평균 연 세금 부담 30% 이상 증가 가능.
+        <b>위반 시:</b> 확정 규칙과 다른 전환이 발생하므로 제시한 백테스트 결과를 적용할 수 없습니다.
       </div>
     </div>
     <div class="panel danger deny-card" style="text-align:center;padding:20px">
@@ -1723,7 +1723,7 @@
       <div style="font-size:15px;font-weight:700;color:var(--text);margin:8px 0">메인 자산으로 운용</div>
       <div style="font-size:11px;color:var(--text-2)">위성 비중 한도 내에서만</div>
       <div class="consequence">
-        <b>위반 시:</b> -30% Shock 시 MDD -70% 초과 → 회복까지 5년+ 가능. 위성 한도 <b style="color:var(--text-2)">20% 이내</b> 권장.
+        <b>위반 시:</b> 충격 시나리오의 전체 포트폴리오 낙폭과 회복기간은 별도 검증이 필요합니다. 위성 한도 <b style="color:var(--text-2)">20% 이내</b> 권장.
       </div>
     </div>
   </div>
@@ -1898,7 +1898,7 @@
 
     // ─── 티커바 ───
     set('tk-mode', 'MODE: ' + Q123.currentMode);
-    set('tk-qqq', fmt$(Q123.qqq) + (Q123.drawdown != null ? ' (' + fmtPct(Q123.drawdown) + ' from ATH)' : ''));
+    set('tk-qqq', fmt$(Q123.qqq) + (Q123.drawdown != null ? ' (' + fmtPct(Q123.drawdown) + ' from 2Y HIGH)' : ''));
     set('tk-qld', fmt$(Q123.qldPrice));
     set('tk-ath', fmt$(Q123.ath));
     set('tk-sma50', 'SMA50 ' + fmt$(Q123.sma50));
