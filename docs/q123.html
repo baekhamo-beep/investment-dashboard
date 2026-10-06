@@ -953,16 +953,16 @@
     <span class="amber" id="tk-mode">MODE: —</span>
     <span>QQQ <span id="tk-qqq">—</span></span>
     <span>QLD <span id="tk-qld">—</span></span>
-    <span>ATH <span id="tk-ath">—</span></span>
+    <span>2년 고점 <span id="tk-ath">—</span></span>
     <span id="tk-sma50">SMA50 —</span>
     <span id="tk-sma200">SMA200 —</span>
     <span id="tk-ret63">RET63 —</span>
     <span id="tk-ret126">RET126 —</span>
-    <span>세후 CAGR <span class="amber">31.52%</span></span>
-    <span>세후 MDD <span class="down">-49.20%</span></span>
-    <span>Calmar 0.640</span>
-    <span>XIRR +31.96%</span>
-    <span>VERDICT <span class="amber">PASS w/ REGIME CAUTION</span></span>
+    <span>가격수익 CAGR <span class="amber">39.74%</span></span>
+    <span>가격수익 MDD <span class="down">-46.30%</span></span>
+    <span>Calmar 0.858</span>
+    <span>PRICE RETURN · 배당 제외</span>
+    <span>VERDICT <span class="amber">검증 범위 확인</span></span>
     <span id="tk-vix">VIX —</span>
   </div>
 </div>
@@ -998,16 +998,16 @@
         <h1>Q123 위성 사령부</h1>
         <div class="subtitle">
           BEAR=QQQ · NORMAL=QLD · BOOST=TQQQ 스위칭 전략 · 2010+ 실제 ETF 검증<br>
-          세후 CAGR <b style="color:var(--amber)">+31.52%</b> · MDD <b style="color:var(--red)">-49.20%</b> · Calmar <b>0.640</b> · XIRR <b>+31.96%</b> · 12개 시작 시나리오
+          가격수익 CAGR <b style="color:var(--amber)">+39.74%</b> · MDD <b style="color:var(--red)">-46.30%</b> · Calmar <b>0.858</b> · 12개 시작 평균 · 배당 제외
         </div>
-        <span class="badge">● PASS w/ REGIME CAUTION</span>
+        <span class="badge">● 검증 범위 확인</span>
       </div>
 
       <div class="system-info">
         SYSTEM......: <b>SATELLITE STRATEGY</b><br>
         STRATEGY....: <b>SW_M63_10_H63_X8</b><br>
-        VALIDATION..: <span class="verdict">PASS w/ CAUTION</span><br>
-        OOS CALMAR..: <b>0.928</b><br>
+        VALIDATION..: <span class="verdict">FIXED RULES</span><br>
+        AVG CALMAR..: <b>0.858</b><br>
         SAMPLE......: <b>2010-02-11 ~ 2026-05-15</b><br>
         STATUS......: <span class="verdict">● OPERATIONAL</span>
       </div>
@@ -1152,559 +1152,458 @@
 <!-- ④ PERFORMANCE -->
 <!-- ====================================================== -->
 <section class="tab-panel" id="performance">
-
-  <!-- ════════════════════════════════════════════════ -->
-  <!-- 요약 박스 (한눈에 보는 결론) -->
-  <!-- ════════════════════════════════════════════════ -->
-  <div class="perf-summary">
-    <div class="head">// EXECUTIVE SUMMARY · 한눈에 보는 결론</div>
-    <div class="toggle-all" onclick="toggleAllGroups()">전체 펼치기</div>
-    <div class="point">
-      <span class="ico">🎯</span>
-      <div><b>5개 자산 중 세후 Calmar 1위</b> — 세후 CAGR <b>+31.52%</b>, MDD <b>-49.20%</b>, Calmar <b>0.640</b>. 단순 보유(QLD/QQQ/SPY/TQQQ)보다 위험·수익 균형 우수.</div>
-    </div>
-    <div class="point">
-      <span class="ico">🔬</span>
-      <div>Walk-forward·민감도·Bootstrap 검증 모두 <b>PASS</b>. 다만 <span class="caution">Regime Switching</span>과 <span class="caution">-30% Shock</span>에서 MDD 한계 초과 → <b>위성 전략으로만 운용</b>.</div>
-    </div>
-    <div class="point">
-      <span class="ico">⚠</span>
-      <div><b>직투계좌 세금이 핵심 변수</b> — 세전 79.0억 → 세후 36.5억(<span class="danger">-54%</span>). 평균 납부세금 <b>7.2억</b>. 세금 예비비 별도 보관 필수.</div>
-    </div>
-  </div>
-
-  <div class="group-header" data-group="A" onclick="toggleGroup(this)"><div class="label">A · CORE PERFORMANCE</div><div class="title">핵심 성과</div><div class="desc">이 전략이 다른 자산 대비 얼마나 효율적인지, 시작 시점이나 비용 조건에 얼마나 견고한지</div><div class="chevron">▾</div></div>
-
-  <div class="group-body">
-
-  <div class="verdict-big">
-    <div class="head">// FINAL VERDICT · 4 KEY POINTS</div>
-    <h2>세전 <span class="accent">강하게 통과</span> · 세후 <span class="accent">조건부 통과</span></h2>
-    <p>
-      세전 기준 편도 15bps까지 견고. 직투계좌 세금(STRICT 22%) 반영 후엔 편도 5bps에서만 QLD HY 기준선 0.636을
-      <b style="color:var(--amber)">근소하게 초과</b>한다. 따라서 본 전략의 우위는
-      <b style="color:var(--text)">"낮은 비용·엄격한 실행을 전제로 한 통과"</b>로 해석한다.
-      <span style="color:var(--text-3);font-size:11px">(세금 영향 상세는 아래 그룹 C 참조)</span>
-    </p>
-  </div>
-
-  <!-- ─── 벤치마크 비교 (Buy & Hold) ─── -->
-  <div class="section-label">BENCHMARK COMPARISON · vs Buy & Hold <span class="meta">2010-02-11 ~ 2026-05-15 · 12개 시작 시나리오 평균 · STRICT 22%</span></div>
-
-  <div class="panel mb-24">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>전략/자산</th>
-          <th>CAGR 세전</th>
-          <th>CAGR 세후</th>
-          <th>MDD</th>
-          <th>Calmar 세전</th>
-          <th>Calmar 세후</th>
-          <th>특징</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="background:rgba(255,176,32,0.05)">
-          <td><b style="color:var(--amber)">Q123 (M63)</b></td>
-          <td><b>+40.86%</b></td>
-          <td><b style="color:var(--amber)">+31.52%</b></td>
-          <td><b>-49.20%</b></td>
-          <td><b class="pass">0.889</b></td>
-          <td><b class="pass">0.640</b></td>
-          <td style="text-align:left;color:var(--text-2)">3단계 스위칭 · 위성</td>
-        </tr>
-        <tr>
-          <td>QLD B&amp;H</td>
-          <td>+33.12%</td>
-          <td>+30.12%</td>
-          <td class="fail">-63.68%</td>
-          <td>0.520</td>
-          <td>0.473</td>
-          <td style="text-align:left;color:var(--text-2)">2배 레버리지 단순 보유</td>
-        </tr>
-        <tr>
-          <td>QQQ B&amp;H</td>
-          <td>+20.46%</td>
-          <td>+18.06%</td>
-          <td>-35.12%</td>
-          <td>0.583</td>
-          <td>0.514</td>
-          <td style="text-align:left;color:var(--text-2)">기준 자산 단순 보유</td>
-        </tr>
-        <tr>
-          <td>SPY B&amp;H</td>
-          <td>+15.13%</td>
-          <td>+13.08%</td>
-          <td>-32.95%</td>
-          <td>0.459</td>
-          <td>0.397</td>
-          <td style="text-align:left;color:var(--text-2)">S&amp;P 500 단순 보유</td>
-        </tr>
-        <tr>
-          <td>TQQQ B&amp;H</td>
-          <td>+40.85%</td>
-          <td>+37.60%</td>
-          <td class="fail">-81.66%</td>
-          <td>0.500</td>
-          <td>0.460</td>
-          <td style="text-align:left;color:var(--text-2)">3배 레버리지 단순 보유</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- 시각화: Calmar / CAGR 막대 비교 -->
-    <div class="grid grid-2 mt-24" style="gap:24px">
-      <div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:1px;margin-bottom:10px;font-weight:600">CALMAR (세후) · 위험 대비 수익</div>
-        <div class="bench-chart">
-          <div class="bench-row">
-            <div class="bench-label">Q123</div>
-            <div class="bench-bar"><div class="bench-fill amber" style="width:71.9%"></div></div>
-            <div class="bench-val">0.640</div>
-          </div>
-          <div class="bench-row">
-            <div class="bench-label">QQQ B&amp;H</div>
-            <div class="bench-bar"><div class="bench-fill" style="width:57.8%"></div></div>
-            <div class="bench-val">0.514</div>
-          </div>
-          <div class="bench-row">
-            <div class="bench-label">QLD B&amp;H</div>
-            <div class="bench-bar"><div class="bench-fill" style="width:53.1%"></div></div>
-            <div class="bench-val">0.473</div>
-          </div>
-          <div class="bench-row">
-            <div class="bench-label">TQQQ B&amp;H</div>
-            <div class="bench-bar"><div class="bench-fill" style="width:51.7%"></div></div>
-            <div class="bench-val">0.460</div>
-          </div>
-          <div class="bench-row">
-            <div class="bench-label">SPY B&amp;H</div>
-            <div class="bench-bar"><div class="bench-fill" style="width:44.6%"></div></div>
-            <div class="bench-val">0.397</div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:1px;margin-bottom:10px;font-weight:600">MDD (낙폭) · 작을수록 좋음</div>
-        <div class="bench-chart">
-          <div class="bench-row">
-            <div class="bench-label">SPY B&amp;H</div>
-            <div class="bench-bar"><div class="bench-fill red" style="width:40.3%"></div></div>
-            <div class="bench-val">-32.95%</div>
-          </div>
-          <div class="bench-row">
-            <div class="bench-label">QQQ B&amp;H</div>
-            <div class="bench-bar"><div class="bench-fill red" style="width:43.0%"></div></div>
-            <div class="bench-val">-35.12%</div>
-          </div>
-          <div class="bench-row">
-            <div class="bench-label">Q123</div>
-            <div class="bench-bar"><div class="bench-fill amber" style="width:60.2%"></div></div>
-            <div class="bench-val">-49.20%</div>
-          </div>
-          <div class="bench-row">
-            <div class="bench-label">QLD B&amp;H</div>
-            <div class="bench-bar"><div class="bench-fill red" style="width:78.0%"></div></div>
-            <div class="bench-val">-63.68%</div>
-          </div>
-          <div class="bench-row">
-            <div class="bench-label">TQQQ B&amp;H</div>
-            <div class="bench-bar"><div class="bench-fill red" style="width:100%"></div></div>
-            <div class="bench-val">-81.66%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:18px;padding:14px;background:rgba(255,176,32,0.06);border-left:2px solid var(--amber);font-size:12px;color:var(--text-2);line-height:1.7;border-radius:0 4px 4px 0">
-      <b style="color:var(--amber)">▸ 핵심 해석:</b><br>
-      · <b style="color:var(--text)">Q123 vs TQQQ B&amp;H</b>: CAGR -6%p 손해(31.52 vs 37.60), MDD -32%p 개선(49.20 vs 81.66) → <b>위험 대비 수익 1.4배 우수</b><br>
-      · <b style="color:var(--text)">Q123 vs QLD B&amp;H</b>: CAGR +1.4%p 우수, MDD -14.5%p 개선 → <b>같은 수익에 손실 폭 훨씬 작음</b><br>
-      · <b style="color:var(--text)">Q123 vs QQQ B&amp;H</b>: CAGR +13.5%p 우수, MDD -14%p 더 큼 → <b>위험 감수하면서 수익 크게 향상</b><br>
-      · <b style="color:var(--text)">5개 중 세후 Calmar 1위</b> — 단순 보유보다 위험·수익 균형 우수
-    </div>
-  
-    <!-- 1억 시작 시 최종자산 비교 -->
-    <div style="margin-top:20px;padding-top:18px;border-top:1px dashed var(--border)">
-      <div style="font-family:var(--mono);font-size:11px;color:var(--text-3);letter-spacing:1px;margin-bottom:12px;font-weight:600">
-        1억 시작 시 최종자산 추정 (세후, 평균 11년 기준)
-      </div>
-      <div class="bench-chart">
-        <div class="bench-row">
-          <div class="bench-label">Q123</div>
-          <div class="bench-bar"><div class="bench-fill amber" style="width:100%"></div></div>
-          <div class="bench-val">36.5억</div>
-        </div>
-        <div class="bench-row">
-          <div class="bench-label">TQQQ B&amp;H</div>
-          <div class="bench-bar"><div class="bench-fill red" style="width:91.8%"></div></div>
-          <div class="bench-val">33.5억</div>
-        </div>
-        <div class="bench-row">
-          <div class="bench-label">QLD B&amp;H</div>
-          <div class="bench-bar"><div class="bench-fill" style="width:49.6%"></div></div>
-          <div class="bench-val">18.1억</div>
-        </div>
-        <div class="bench-row">
-          <div class="bench-label">QQQ B&amp;H</div>
-          <div class="bench-bar"><div class="bench-fill" style="width:17.0%"></div></div>
-          <div class="bench-val">6.2억</div>
-        </div>
-        <div class="bench-row">
-          <div class="bench-label">SPY B&amp;H</div>
-          <div class="bench-bar"><div class="bench-fill" style="width:10.7%"></div></div>
-          <div class="bench-val">3.9억</div>
-        </div>
-      </div>
-      <div style="font-size:11px;color:var(--text-3);margin-top:10px;line-height:1.5">
-        Q123은 TQQQ와 비슷한 절대 수익을 내면서 <b style="color:var(--text-2)">MDD는 절반(-49% vs -82%)</b>으로 작음.
-      </div>
-    </div>
-  </div>
-
-  <!-- START YEAR ROBUSTNESS -->
-  <div class="section-label">START YEAR ROBUSTNESS · STRICT 22% · 편도 5bps</div>
-
-  <div class="panel mb-24">
-    <div style="font-size:11px;color:var(--text-2);margin-bottom:14px;line-height:1.7">
-      12개 시작 시나리오 모두 MDD ≈ -49%로 안정적. Calmar는 <b>0.550~0.776</b> 범위 — <b style="color:var(--red)">2010·2011·2021 시작 시나리오는 0.636 미달</b>.
-    </div>
-    <div class="scenario-chart">
-      <div class="scenario-row"><div class="year">2010-02-11<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">리먼 직후 회복기</span></div><div class="bar-wrap"><div class="fill under" style="width:43.8%"></div><div class="threshold"></div></div><div class="calmar fail">0.558</div></div>
-      <div class="scenario-row"><div class="year">2011-01-03<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">유럽 위기 진입</span></div><div class="bar-wrap"><div class="fill under" style="width:43.7%"></div><div class="threshold"></div></div><div class="calmar fail">0.557</div></div>
-      <div class="scenario-row"><div class="year">2012-01-03<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">유럽 위기 마무리</span></div><div class="bar-wrap"><div class="fill" style="width:48.2%"></div><div class="threshold"></div></div><div class="calmar pass">0.614</div></div>
-      <div class="scenario-row"><div class="year">2013-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">강세장 본격화</span></div><div class="bar-wrap"><div class="fill" style="width:49.0%"></div><div class="threshold"></div></div><div class="calmar pass">0.624</div></div>
-      <div class="scenario-row"><div class="year">2014-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">강세장 중반</span></div><div class="bar-wrap"><div class="fill" style="width:46.8%"></div><div class="threshold"></div></div><div class="calmar caution">0.597</div></div>
-      <div class="scenario-row"><div class="year">2015-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">중국 충격 직전</span></div><div class="bar-wrap"><div class="fill" style="width:46.5%"></div><div class="threshold"></div></div><div class="calmar caution">0.593</div></div>
-      <div class="scenario-row"><div class="year">2016-01-04<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">브렉시트 직전</span></div><div class="bar-wrap"><div class="fill" style="width:53.8%"></div><div class="threshold"></div></div><div class="calmar pass">0.685</div></div>
-      <div class="scenario-row"><div class="year">2017-01-03<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">강세 가속</span></div><div class="bar-wrap"><div class="fill" style="width:58.3%"></div><div class="threshold"></div></div><div class="calmar pass">0.743</div></div>
-      <div class="scenario-row"><div class="year">2018-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">기술주 고점</span></div><div class="bar-wrap"><div class="fill" style="width:52.1%"></div><div class="threshold"></div></div><div class="calmar pass">0.664</div></div>
-      <div class="scenario-row"><div class="year">2019-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">회복 시작</span></div><div class="bar-wrap"><div class="fill" style="width:60.9%"></div><div class="threshold"></div></div><div class="calmar pass">0.776</div></div>
-      <div class="scenario-row"><div class="year">2020-01-02<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">코로나 직전</span></div><div class="bar-wrap"><div class="fill" style="width:56.9%"></div><div class="threshold"></div></div><div class="calmar pass">0.725</div></div>
-      <div class="scenario-row"><div class="year">2021-01-04<br><span style="font-size:9px;color:var(--text-3);font-weight:400;font-family:var(--sans)">버블 정점</span></div><div class="bar-wrap"><div class="fill under" style="width:43.2%"></div><div class="threshold"></div></div><div class="calmar fail">0.550</div></div>
-    </div>
-    <div style="margin-top:14px;font-size:10px;color:var(--text-3)">
-      X: Calmar (좌→우 0 → 1.275) · 수직선: 기준선 <b style="color:var(--text)">0.636</b>
-    </div>
-  </div>
-
-  <!-- PRE-TAX COST SENSITIVITY -->
-  <div class="section-label">PRE-TAX COST SENSITIVITY · 0~15bps</div>
-
-  <div class="panel mb-24">
-    <table class="data-table">
-      <thead>
-        <tr><th>편도 비용</th><th>왕복 근사</th><th>CAGR</th><th>MDD</th><th>Worst MDD</th><th>Calmar</th><th>최종자산</th><th>평균 거래</th><th>모드변경</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>0bps</td><td>0.00%</td><td>+41.58%</td><td>-45.80%</td><td>-46.11%</td><td class="pass">0.908</td><td>84.3억</td><td>241.3</td><td>55.5</td></tr>
-        <tr><td>2.5bps</td><td>0.05%</td><td>+41.22%</td><td>-45.88%</td><td>-46.16%</td><td class="pass">0.898</td><td>81.6억</td><td>241.3</td><td>55.5</td></tr>
-        <tr><td><b>5bps</b></td><td>0.10%</td><td>+40.86%</td><td>-45.96%</td><td>-46.22%</td><td class="pass">0.889</td><td>79.0억</td><td>241.3</td><td>55.5</td></tr>
-        <tr><td>10bps</td><td>0.20%</td><td>+40.14%</td><td>-46.12%</td><td>-46.32%</td><td class="pass">0.870</td><td>74.1억</td><td>241.3</td><td>55.5</td></tr>
-        <tr><td>15bps</td><td>0.30%</td><td>+39.43%</td><td>-46.28%</td><td>-46.43%</td><td class="pass">0.852</td><td>69.5억</td><td>241.3</td><td>55.5</td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:12px;font-size:11px;color:var(--text-2);line-height:1.7">
-      <b style="color:var(--green)">세전 기준 모든 비용 구간 PASS</b> · 편도 15bps에서도 Calmar 0.852 유지.
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════════ -->
-  <!-- GROUP B: 미래 검증 -->
-  <!-- ════════════════════════════════════════════════ --></div>
-
-  <div class="group-header collapsed" data-group="B" onclick="toggleGroup(this)"><div class="label">B · FUTURE VALIDATION</div><div class="title">미래 검증</div><div class="desc">학습 구간 밖에서도 통할지, 파라미터에 민감하지 않은지, 시장 충격에 견디는지</div><div class="chevron">▾</div></div>
-
-  <div class="group-body collapsed">
-
-  <div class="verdict-big">
-    <div class="head">// FUTURE VALIDATION · VERDICT</div>
-    <h2>PASS with <span class="accent">REGIME CAUTION</span></h2>
-    <p>
-      Walk-forward·민감도·Bootstrap 검증을 모두 통과해 <b>구조적 견고성</b>이 확인되었다.
-      OOS 평균 Calmar 0.928이 Train 평균 0.863보다 높아 단일 학습 구간 과최적화 가능성이 낮다.
-      다만 <b style="color:var(--amber)">Regime Switching</b>과 <b style="color:var(--amber)">-30% Shock</b>에서는
-      MDD가 사용자 한계(-65%)를 자주 초과해, <b>메인 생존 전략이 아닌 제한 비중 위성 전략</b>으로만 운용해야 한다.
-    </p>
-  </div>
-
-  <div class="section-label">VALIDATION METRICS · 3 KEY</div>
-
-  <div class="grid grid-3 mb-24">
-    <div class="kpi">
-      <div class="label">OOS CALMAR</div>
-      <div class="v amber">0.928</div>
-      <div class="note">Train 평균 0.863 대비 <b style="color:var(--green)">+0.065</b><br>학습 구간 외 효율 유지</div>
-    </div>
-    <div class="kpi">
-      <div class="label">PARAMETER ROBUSTNESS</div>
-      <div class="v">std 0.047</div>
-      <div class="note">range 0.131 · 7개 설정 <b style="color:var(--green)">모두 0.636 초과</b><br>단일 파라미터 의존도 낮음</div>
-    </div>
-    <div class="kpi" style="border-color:var(--amber)">
-      <div class="label">REGIME LIMIT</div>
-      <div class="v" style="color:var(--amber)">⚠ CAUTION</div>
-      <div class="note">P(CAGR ≥ 15%) = <b style="color:var(--red)">3.5%</b><br>QQQ 장기 성장 전제 깨지면 붕괴</div>
-    </div>
-  </div>
-
-  <!-- WALK-FORWARD -->
-  <div class="section-label">WALK-FORWARD · 3 ROLLING WINDOWS</div>
-
-  <div class="panel mb-24">
-    <div style="font-size:11px;color:var(--text-2);margin-bottom:14px;line-height:1.7">
-      과거 구간을 <b>Train</b>으로 두고, 학습에 쓰지 않은 <b style="color:var(--amber)">OOS</b> 구간에서 효율이 유지되는지 확인.
-    </div>
-    <table class="data-table">
-      <thead>
-        <tr><th>Window</th><th>Train 기간</th><th>OOS 기간</th><th>T.CAGR</th><th>OOS CAGR</th><th>T.Calmar</th><th>OOS Calmar</th><th>OOS MDD</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>W1</td><td style="text-align:right">2010-02 ~ 2013-12</td><td style="text-align:right">2014-01 ~ 2017-12</td><td>+28.15%</td><td>+25.70%</td><td>0.812</td><td class="pass">0.698</td><td>-36.79%</td></tr>
-        <tr><td>W2</td><td style="text-align:right">2010-02 ~ 2017-12</td><td style="text-align:right">2018-01 ~ 2021-12</td><td>+26.58%</td><td class="pass">+59.78%</td><td>0.722</td><td class="pass">1.469</td><td>-40.70%</td></tr>
-        <tr><td>W3</td><td style="text-align:right">2014-01 ~ 2021-12</td><td style="text-align:right">2022-01 ~ 2026-05</td><td>+42.87%</td><td>+27.75%</td><td>1.053</td><td class="caution">0.617</td><td>-44.97%</td></tr>
-        <tr style="background:var(--bg-2);font-weight:700">
-          <td>OOS AVG</td><td></td><td></td><td></td><td>+37.74%</td><td></td><td class="pass">0.928</td><td></td>
-        </tr>
-      </tbody>
-    </table>
-    <div style="margin-top:14px;padding:12px;background:rgba(74,222,128,0.05);border-left:2px solid var(--green);font-size:11px;color:var(--text-2);line-height:1.7">
-      <b style="color:var(--green)">▸ PASS:</b> OOS Calmar 0.928 &gt; Train 0.863 — 학습 외 구간에서도 효율 유지.
-      <b style="color:var(--amber)">단, W3 (2022+) OOS Calmar 0.617은 기준선 0.636 소폭 하회</b> — 최근 구간은 경계.
-    </div>
-  </div>
-
-  <!-- PARAMETER SENSITIVITY -->
-  <div class="section-label">PARAMETER SENSITIVITY · 7 CONFIGS</div>
-
-  <div class="panel mb-24">
-    <div style="font-size:11px;color:var(--text-2);margin-bottom:14px;line-height:1.7">
-      RET63 진입 문턱, BOOST 보유기간, BOOST 종료 낙폭을 변경. BASE가 최적점이 아닌 <b>"중간 안정 구간"</b>에 있어야 과최적화가 아님.
-    </div>
-    <table class="data-table">
-      <thead>
-        <tr><th>설정</th><th>전략명</th><th>CAGR</th><th>MDD</th><th>Calmar</th><th>Min</th><th>OOS</th><th>Rank</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>EXIT_6pct</td><td>MOM10_H63_X6</td><td>+40.89%</td><td>-45.94%</td><td class="pass">0.890</td><td>0.761</td><td>0.928</td><td>1</td></tr>
-        <tr style="background:rgba(255,176,32,0.04)"><td><b>BASE_M63_10</b></td><td>SW_M63_10_H63_X8</td><td>+40.82%</td><td>-45.96%</td><td class="pass">0.888</td><td>0.761</td><td>0.928</td><td><b>2</b></td></tr>
-        <tr><td>EXIT_10pct</td><td>MOM10_H63_X10</td><td>+40.82%</td><td>-45.96%</td><td class="pass">0.888</td><td>0.761</td><td>0.928</td><td>2</td></tr>
-        <tr><td>HOLD_84d</td><td>MOM10_H84_X8</td><td>+39.82%</td><td>-46.19%</td><td class="pass">0.862</td><td>0.739</td><td>0.839</td><td>4</td></tr>
-        <tr><td>MOM63_8pct</td><td>MOM8_H63_X8</td><td>+39.73%</td><td>-46.92%</td><td class="pass">0.847</td><td>0.721</td><td>0.863</td><td>5</td></tr>
-        <tr><td>MOM63_12pct</td><td>MOM12_H63_X8</td><td>+37.04%</td><td>-46.19%</td><td class="pass">0.802</td><td>0.703</td><td>0.776</td><td>6</td></tr>
-        <tr><td>HOLD_42d</td><td>MOM10_H42_X8</td><td>+35.06%</td><td>-46.19%</td><td class="pass">0.759</td><td>0.689</td><td>0.722</td><td>7</td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:14px;padding:12px;background:rgba(74,222,128,0.05);border-left:2px solid var(--green);font-size:11px;color:var(--text-2);line-height:1.7">
-      <b style="color:var(--green)">▸ PASS:</b> BASE는 2위 — 압도적 최고점 아님. 인접 설정(EXIT_6pct 0.890, EXIT_10pct 0.888) 거의 동일.
-      <b>7개 설정 모두 Calmar 0.759 이상 · 기준선 0.636 초과</b>.
-    </div>
-  </div>
-
-  <!-- STRESS TEST -->
-  <div class="section-label">STRESS TEST · 4 SCENARIOS</div>
-
-  <div class="grid grid-4 mb-24">
-    <div class="stress-card">
-      <span class="tag pass" style="color:var(--green)">PASS</span>
-      <div class="name">BLOCK BOOTSTRAP</div>
-      <h3>수익률 재조합 500회</h3>
-        <div style="font-size:10px;color:var(--text-3);margin:-8px 0 12px 0;line-height:1.4;font-style:italic">과거 수익률 무작위 섞기 — 운 요소 분리</div>
-      <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+32.15%</span></div>
-      <div class="stat"><span class="l">Avg MDD</span><span class="r">-55.02%</span></div>
-      <div class="stat"><span class="l">Calmar</span><span class="r">0.621</span></div>
-      <div class="stat"><span class="l">P(CAGR≥15%)</span><span class="r good">87.4%</span></div>
-      <div class="stat"><span class="l">P(MDD&lt;-65%)</span><span class="r">14.8%</span></div>
-    </div>
-
-    <div class="stress-card fail">
-      <span class="tag fail" style="color:var(--red)">FAIL</span>
-      <div class="name">REGIME SWITCHING</div>
-      <h3>근본 레짐 변화 200회</h3>
-        <div style="font-size:10px;color:var(--text-3);margin:-8px 0 12px 0;line-height:1.4;font-style:italic">닷컴버블·구조 변화 — 시장 패러다임 깨질 때</div>
-      <div class="stat"><span class="l">Avg CAGR</span><span class="r bad">-7.02%</span></div>
-      <div class="stat"><span class="l">Avg MDD</span><span class="r bad">-88.89%</span></div>
-      <div class="stat"><span class="l">Calmar</span><span class="r bad">-0.072</span></div>
-      <div class="stat"><span class="l">P(CAGR≥15%)</span><span class="r bad">3.5%</span></div>
-      <div class="stat"><span class="l">P(MDD&lt;-65%)</span><span class="r bad">100.0%</span></div>
-    </div>
-
-    <div class="stress-card">
-      <span class="tag pass" style="color:var(--green)">PASS</span>
-      <div class="name">SHOCK -20</div>
-      <h3>무작위 -20% 충격 100회</h3>
-        <div style="font-size:10px;color:var(--text-3);margin:-8px 0 12px 0;line-height:1.4;font-style:italic">단기 -20% 충격 시뮬레이션</div>
-      <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+30.69%</span></div>
-      <div class="stat"><span class="l">Avg MDD</span><span class="r">-54.01%</span></div>
-      <div class="stat"><span class="l">Calmar</span><span class="r">0.586</span></div>
-      <div class="stat"><span class="l">P(CAGR≥15%)</span><span class="r good">100.0%</span></div>
-      <div class="stat"><span class="l">P(MDD&lt;-65%)</span><span class="r">13.0%</span></div>
-    </div>
-
-    <div class="stress-card fail">
-      <span class="tag" style="color:var(--amber)">CAUTION</span>
-      <div class="name">SHOCK -30</div>
-      <h3>무작위 -30% 충격 100회</h3>
-        <div style="font-size:10px;color:var(--text-3);margin:-8px 0 12px 0;line-height:1.4;font-style:italic">단기 -30% 극단 충격 시뮬레이션</div>
-      <div class="stat"><span class="l">Avg CAGR</span><span class="r good">+25.26%</span></div>
-      <div class="stat"><span class="l">Avg MDD</span><span class="r bad">-70.58%</span></div>
-      <div class="stat"><span class="l">Calmar</span><span class="r">0.393</span></div>
-      <div class="stat"><span class="l">P(CAGR≥15%)</span><span class="r">87.0%</span></div>
-      <div class="stat"><span class="l">P(MDD&lt;-65%)</span><span class="r bad">60.0%</span></div>
-    </div>
-  </div>
-
-  <!-- INSIGHTS -->
-
-  <!-- ════════════════════════════════════════════════ -->
-  <!-- GROUP C: 세금·실현 비용 -->
-  <!-- ════════════════════════════════════════════════ --></div>
-
-  <div class="group-header collapsed" data-group="C" onclick="toggleGroup(this)"><div class="label">C · TAX & REALIZED COSTS</div><div class="title">세금·실현 비용</div><div class="desc">직투계좌 양도소득세(STRICT 22%)와 거래비용이 성과에 미치는 영향</div><div class="chevron">▾</div></div>
-
-  <div class="group-body collapsed">
-
-  <div class="section-label">CORE COMPARISON · 세전 vs 세후 (편도 5bps)</div>
-
-  <div class="grid grid-4 mb-24">
-    <div class="kpi">
-      <div class="label">CAGR</div>
-      <div class="dual-kpi mt-16" style="margin-top:8px">
-        <div><div class="head pre">PRE-TAX</div><div class="v">+40.86%</div></div>
-        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">+31.52%</div></div>
-      </div>
-      <div class="note" style="margin-top:10px">세금 드래그 -9.34%p</div>
-    </div>
-    <div class="kpi">
-      <div class="label">MDD</div>
-      <div class="dual-kpi mt-16" style="margin-top:8px">
-        <div><div class="head pre">PRE-TAX</div><div class="v">-45.96%</div></div>
-        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--red)">-49.20%</div></div>
-      </div>
-      <div class="note" style="margin-top:10px">세금 매도로 -3.24%p 악화</div>
-    </div>
-    <div class="kpi">
-      <div class="label">CALMAR</div>
-      <div class="dual-kpi mt-16" style="margin-top:8px">
-        <div><div class="head pre">PRE-TAX</div><div class="v">0.889</div></div>
-        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">0.640</div></div>
-      </div>
-      <div class="note" style="margin-top:10px">기준선 0.636 · PASS</div>
-    </div>
-    <div class="kpi">
-      <div class="label">FINAL VALUE</div>
-      <div class="dual-kpi mt-16" style="margin-top:8px">
-        <div><div class="head pre">PRE-TAX</div><div class="v">79.0억</div></div>
-        <div><div class="head post">AFTER-TAX</div><div class="v" style="color:var(--amber)">36.5억</div></div>
-      </div>
-      <div class="note" style="margin-top:10px">평균 납부세금 7.2억</div>
-    </div>
-  </div>
-
-  <!-- COST SENSITIVITY -->
-
-  <div class="section-label">COST × TAX SENSITIVITY MATRIX <span class="meta">기준선 Calmar 0.636 = QLD HY same-period</span></div>
-
-  <div class="panel mb-24">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>세금 정책</th>
-          <th>편도</th>
-          <th>왕복</th>
-          <th>세후 CAGR</th>
-          <th>세후 MDD</th>
-          <th>세후 Calmar</th>
-          <th>세후 XIRR</th>
-          <th>최종청산</th>
-          <th>납부세금</th>
-          <th>판정</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>NO TAX BASELINE</td><td>5bps</td><td>0.10%</td><td>+40.50%</td><td>-45.96%</td><td class="pass">0.881</td><td>+40.99%</td><td>76.9억</td><td>0.0억</td><td><span class="pill pass">PASS</span></td></tr>
-        <tr><td>STRICT 22% (NO DEDUCTION)</td><td><b>5bps</b></td><td>0.10%</td><td>+31.52%</td><td>-49.20%</td><td class="pass">0.640</td><td>+31.96%</td><td>36.5억</td><td>7.2억</td><td><span class="pill pass">PASS</span></td></tr>
-        <tr><td>STRICT 22% (NO DEDUCTION)</td><td>10bps</td><td>0.20%</td><td>+30.89%</td><td>-49.36%</td><td class="fail">0.626</td><td>+31.33%</td><td>34.4억</td><td>6.9억</td><td><span class="pill fail">FAIL</span></td></tr>
-        <tr><td>STRICT 22% (NO DEDUCTION)</td><td>15bps</td><td>0.30%</td><td>+30.27%</td><td>-49.53%</td><td class="fail">0.611</td><td>+30.70%</td><td>32.5억</td><td>6.6억</td><td><span class="pill fail">FAIL</span></td></tr>
-        <tr><td>KR 22% + 250만공제</td><td><b>5bps</b></td><td>0.10%</td><td>+31.63%</td><td>-49.18%</td><td class="pass">0.643</td><td>+32.10%</td><td>36.8억</td><td>7.3억</td><td><span class="pill pass">PASS</span></td></tr>
-        <tr><td>KR 22% + 250만공제</td><td>10bps</td><td>0.20%</td><td>+31.01%</td><td>-49.34%</td><td class="fail">0.628</td><td>+31.47%</td><td>34.8억</td><td>6.9억</td><td><span class="pill fail">FAIL</span></td></tr>
-        <tr><td>KR 22% + 250만공제</td><td>15bps</td><td>0.30%</td><td>+30.39%</td><td>-49.50%</td><td class="fail">0.614</td><td>+30.84%</td><td>32.8억</td><td>6.6억</td><td><span class="pill fail">FAIL</span></td></tr>
-      </tbody>
-    </table>
-    <div style="margin-top:14px;padding:12px;background:rgba(255,176,32,0.05);border-left:2px solid var(--amber);font-size:11px;color:var(--text-2);line-height:1.7">
-      <b style="color:var(--amber)">▸ 해석:</b> 편도 5bps 두 모델 모두 PASS · 편도 10bps부터 FAIL. <b>세후 우위는 비용 관리 능력에 결정적으로 의존</b>.
-    </div>
-  </div>
-
-  
-  <!-- 세금 영향 요약 -->
-  <div class="panel mt-24" style="border-color:var(--amber-dim);background:linear-gradient(135deg,rgba(255,176,32,0.04),transparent)">
-    <div class="panel-title">TAX IMPACT SUMMARY · 세금이 성과에 미치는 영향</div>
-    <div class="grid grid-3" style="gap:16px">
-      <div style="padding:14px;background:var(--bg);border-left:2px solid var(--amber);border-radius:0 4px 4px 0">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:1px;font-weight:600;margin-bottom:6px">CAGR 손실</div>
-        <div style="font-size:22px;font-weight:700;color:var(--amber);font-family:var(--mono);font-variant-numeric:tabular-nums">−9.34%p</div>
-        <div style="font-size:11px;color:var(--text-3);margin-top:4px;line-height:1.5">세전 40.86% → 세후 31.52%</div>
-      </div>
-      <div style="padding:14px;background:var(--bg);border-left:2px solid var(--red);border-radius:0 4px 4px 0">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:1px;font-weight:600;margin-bottom:6px">최종자산 감소</div>
-        <div style="font-size:22px;font-weight:700;color:var(--red);font-family:var(--mono);font-variant-numeric:tabular-nums">−54%</div>
-        <div style="font-size:11px;color:var(--text-3);margin-top:4px;line-height:1.5">79.0억 → 36.5억 (백테스트 평균)</div>
-      </div>
-      <div style="padding:14px;background:var(--bg);border-left:2px solid var(--text-2);border-radius:0 4px 4px 0">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:1px;font-weight:600;margin-bottom:6px">평균 납부세금</div>
-        <div style="font-size:22px;font-weight:700;color:var(--text);font-family:var(--mono);font-variant-numeric:tabular-nums">7.2억</div>
-        <div style="font-size:11px;color:var(--text-3);margin-top:4px;line-height:1.5">스위칭 빈도 = 세금 드래그의 핵심 변수</div>
-      </div>
-    </div>
-    <div style="margin-top:14px;padding:12px;background:rgba(255,77,94,0.05);border-left:2px solid var(--red);font-size:12px;color:var(--text-2);line-height:1.6;border-radius:0 4px 4px 0">
-      <b style="color:var(--red)">⚠ 핵심:</b> 세금은 <b style="color:var(--text)">현금 흐름에 즉시 영향</b>을 줌. 외부 계좌에 <b style="color:var(--text)">세금 예비비를 별도 보관</b>하지 않으면 매매 자금 부족 발생 가능.
-    </div>
-  </div>
-
-  <!-- ════════════════════════════════════════════════ -->
-  <!-- GROUP D: 종합 결론 -->
-  <!-- ════════════════════════════════════════════════ --></div>
-
-  <div class="group-header collapsed" data-group="D" onclick="toggleGroup(this)"><div class="label">D · FINAL INSIGHTS</div><div class="title">종합 결론 & 액션 가이드</div><div class="desc">위 모든 분석에서 도출된 핵심 결론과 실제 운용 시 어떻게 적용할지</div><div class="chevron">▾</div></div>
-
-  <div class="group-body collapsed">
-
-  <div class="section-label">FINAL INSIGHTS · 5 POINTS</div>
-
-  <div class="insight-grid">
-    <div class="insight-card pass">
-      <span class="tag">PASS</span>
-      <h4>Walk-Forward 통과</h4>
-      <p>OOS 평균 Calmar <b>0.928</b>이 Train 평균 0.863보다 높음 — 단일 학습 구간 과최적화 가능성 낮음.<br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ 실제 운용 시 <b>학습 구간 외에서도 성과 유지 기대</b></span></p>
-    </div>
-    <div class="insight-card pass">
-      <span class="tag">PASS</span>
-      <h4>파라미터 견고성</h4>
-      <p>std <b>0.047</b>, range 0.131 — BASE 주변 흔들어도 성과 붕괴 없음. 구조적 작동.<br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ 단일 설정에 의존 안 함 — <b>임계값 미세 조정에 민감하지 않음</b></span></p>
-    </div>
-    <div class="insight-card pass">
-      <span class="tag">PASS</span>
-      <h4>Bootstrap 수익성</h4>
-      <p>평균 CAGR <b>+32.15%</b>, P(CAGR≥15%) <b>87.4%</b> — 수익률 재조합에서도 수익성 유지.<br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ 확률적으로도 <b>87% 이상 시나리오에서 목표 수익</b></span></p>
-    </div>
-    <div class="insight-card caution">
-      <span class="tag">CAUTION</span>
-      <h4>레짐 한계</h4>
-      <p>Regime Switching 평균 CAGR <b style="color:var(--red)">-7.02%</b> · P(MDD&lt;-65%) <b style="color:var(--red)">100%</b> — QQQ 장기 성장 전제 깨지면 붕괴.<br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ <b style="color:var(--amber)">⚠ 액션: 메인 자산이 아닌 위성 자산으로 한정</b> (예: 전체의 20% 이내)</span></p>
-    </div>
-    <div class="insight-card caution" style="grid-column:span 4">
-      <span class="tag">CAUTION</span>
-      <h4>-30% Shock MDD 한계 초과</h4>
-      <p>P(MDD&lt;-65%) <b style="color:var(--red)">60.0%</b>, 평균 MDD <b style="color:var(--red)">-70.58%</b> — 사용자 허용 한계 자주 초과.
-        <b style="color:var(--text)">전체 자산의 제한 비중(예: 위성 한도 내)으로만 운용해야 함.</b><br><span style="font-size:11px;color:var(--text-2);display:inline-block;margin-top:6px;line-height:1.5">→ <b style="color:var(--amber)">⚠ 액션: 시장 -30% 충격 시 추가 자금 투입 금지</b>, 별도 현금 예비비 운용</span></p>
-    </div>
-  </div></div>
-
+<!-- Generated by scripts/render_q123.py -->
+<div class="perf-summary">
+<div class="head">PRICE RETURN · 독립 재현 결과</div>
+<div class="toggle-all" onclick="toggleAllGroups()">전체 펼치기</div>
+<p>2010-02-11 ~ 2026-05-15 · 2010년 및 2011~2021년 첫 거래일, 12개 시작 시점의 산술평균 · 최초 1억 · 추가납입 없음 · 편도 5bps.</p>
+<p>업로드 Investing CSV의 분할 반영 OHLC 가격 기준. 배당·환율 미반영. 기존 40.86%는 다른 데이터·가정으로 산출된 수치이므로 이번 검증값과 직접 비교하지 않습니다. 배당 재투자 성과는 원본 자료 확보 후 별도 검증합니다.</p>
+</div>
+<div class="group-header" data-group="A" onclick="toggleGroup(this)">
+<div class="label">A</div>
+<div class="title">핵심 성과</div>
+<div class="chevron">▾</div>
+</div>
+<div class="group-body">
+<div class="panel mb-24">
+<div class="panel-title">BENCHMARK · 동일 가격수익 기준</div>
+<div style="overflow-x:auto">
+<table class="data-table">
+<thead>
+<tr>
+<th>전략</th>
+<th>평균 CAGR</th>
+<th>평균 MDD</th>
+<th>평균 Calmar</th>
+<th>평균 최종평가액</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q123</td>
+<td>+39.74%</td>
+<td>-46.30%</td>
+<td>0.858</td>
+<td>48.08억</td>
+</tr>
+<tr>
+<td>QLD</td>
+<td>+32.55%</td>
+<td>-63.78%</td>
+<td>0.510</td>
+<td>34.77억</td>
+</tr>
+<tr>
+<td>QQQ</td>
+<td>+19.45%</td>
+<td>-35.62%</td>
+<td>0.546</td>
+<td>7.90억</td>
+</tr>
+<tr>
+<td>SPY</td>
+<td>+13.15%</td>
+<td>-33.38%</td>
+<td>0.397</td>
+<td>4.02억</td>
+</tr>
+<tr>
+<td>TQQQ</td>
+<td>+39.64%</td>
+<td>-81.75%</td>
+<td>0.485</td>
+<td>91.29억</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="panel mb-24">
+<div class="panel-title">START YEAR · 시작 시점별 결과</div>
+<div style="overflow-x:auto">
+<table class="data-table">
+<thead>
+<tr>
+<th>실제 시작일</th>
+<th>CAGR</th>
+<th>MDD</th>
+<th>Calmar</th>
+<th>전환 수</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2010-02-11</td>
+<td>+33.97%</td>
+<td>-46.30%</td>
+<td>0.734</td>
+<td>87</td>
+</tr>
+<tr>
+<td>2011-01-03</td>
+<td>+33.76%</td>
+<td>-46.30%</td>
+<td>0.729</td>
+<td>82</td>
+</tr>
+<tr>
+<td>2012-01-03</td>
+<td>+37.35%</td>
+<td>-46.30%</td>
+<td>0.807</td>
+<td>76</td>
+</tr>
+<tr>
+<td>2013-01-02</td>
+<td>+37.72%</td>
+<td>-46.30%</td>
+<td>0.815</td>
+<td>70</td>
+</tr>
+<tr>
+<td>2014-01-02</td>
+<td>+35.91%</td>
+<td>-46.30%</td>
+<td>0.776</td>
+<td>64</td>
+</tr>
+<tr>
+<td>2015-01-02</td>
+<td>+36.24%</td>
+<td>-46.30%</td>
+<td>0.783</td>
+<td>58</td>
+</tr>
+<tr>
+<td>2016-01-04</td>
+<td>+42.10%</td>
+<td>-46.30%</td>
+<td>0.909</td>
+<td>54</td>
+</tr>
+<tr>
+<td>2017-01-03</td>
+<td>+46.49%</td>
+<td>-46.30%</td>
+<td>1.004</td>
+<td>48</td>
+</tr>
+<tr>
+<td>2018-01-02</td>
+<td>+41.78%</td>
+<td>-46.30%</td>
+<td>0.902</td>
+<td>46</td>
+</tr>
+<tr>
+<td>2019-01-02</td>
+<td>+49.51%</td>
+<td>-46.30%</td>
+<td>1.069</td>
+<td>40</td>
+</tr>
+<tr>
+<td>2020-01-02</td>
+<td>+47.13%</td>
+<td>-46.30%</td>
+<td>1.018</td>
+<td>34</td>
+</tr>
+<tr>
+<td>2021-01-04</td>
+<td>+34.87%</td>
+<td>-46.30%</td>
+<td>0.753</td>
+<td>26</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="panel mb-24">
+<div class="panel-title">COST · 편도 비용 민감도</div>
+<div style="overflow-x:auto">
+<table class="data-table">
+<thead>
+<tr>
+<th>비용</th>
+<th>CAGR</th>
+<th>평균 MDD</th>
+<th>최악 MDD</th>
+<th>Calmar</th>
+<th>최종평가액</th>
+<th>주문 수</th>
+<th>전환 수</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0bps</td>
+<td>+40.48%</td>
+<td>-46.14%</td>
+<td>-46.14%</td>
+<td>0.877</td>
+<td>51.59억</td>
+<td>115.17</td>
+<td>57.08</td>
+</tr>
+<tr>
+<td>2.5bps</td>
+<td>+40.11%</td>
+<td>-46.22%</td>
+<td>-46.22%</td>
+<td>0.868</td>
+<td>49.80억</td>
+<td>115.17</td>
+<td>57.08</td>
+</tr>
+<tr>
+<td>5bps</td>
+<td>+39.74%</td>
+<td>-46.30%</td>
+<td>-46.30%</td>
+<td>0.858</td>
+<td>48.08억</td>
+<td>115.17</td>
+<td>57.08</td>
+</tr>
+<tr>
+<td>10bps</td>
+<td>+39.00%</td>
+<td>-46.46%</td>
+<td>-46.46%</td>
+<td>0.839</td>
+<td>44.82억</td>
+<td>115.17</td>
+<td>57.08</td>
+</tr>
+<tr>
+<td>15bps</td>
+<td>+38.26%</td>
+<td>-46.62%</td>
+<td>-46.62%</td>
+<td>0.821</td>
+<td>41.80억</td>
+<td>115.17</td>
+<td>57.08</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>주문 수 = 최초 매수 1 + 모드전환당 매도·매수 2. 종료일 평가만 하며 강제 청산 주문은 포함하지 않습니다. 각 시나리오 Calmar를 계산한 뒤 평균하므로 평균 CAGR ÷ 평균 MDD와 다를 수 있습니다.</p>
+</div>
+</div>
+<div class="group-header collapsed" data-group="B" onclick="toggleGroup(this)">
+<div class="label">B</div>
+<div class="title">기간·민감도·Bootstrap 검증</div>
+<div class="chevron">▾</div>
+</div>
+<div class="group-body collapsed">
+<div class="panel mb-24">
+<div class="panel-title">기간 분할 검증 · 고정 규칙</div>
+<div style="overflow-x:auto">
+<table class="data-table">
+<thead>
+<tr>
+<th>구간</th>
+<th>앞 구간</th>
+<th>뒤 구간</th>
+<th>앞 CAGR</th>
+<th>앞 Calmar</th>
+<th>뒤 CAGR</th>
+<th>뒤 MDD</th>
+<th>뒤 Calmar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W1</td>
+<td>2010-02-11 ~ 2013-12-31</td>
+<td>2014-01-02 ~ 2017-12-29</td>
+<td>+28.53%</td>
+<td>0.813</td>
+<td>+22.82%</td>
+<td>-37.20%</td>
+<td>0.613</td>
+</tr>
+<tr>
+<td>W2</td>
+<td>2010-02-11 ~ 2017-12-29</td>
+<td>2018-01-02 ~ 2021-12-31</td>
+<td>+25.34%</td>
+<td>0.681</td>
+<td>+59.07%</td>
+<td>-40.68%</td>
+<td>1.452</td>
+</tr>
+<tr>
+<td>W3</td>
+<td>2014-01-02 ~ 2021-12-31</td>
+<td>2022-01-03 ~ 2026-05-15</td>
+<td>+40.66%</td>
+<td>1.000</td>
+<td>+27.15%</td>
+<td>-45.48%</td>
+<td>0.597</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>각 구간은 NORMAL에서 새로 시작하고 지표는 이전 200거래일 이상으로 워밍업합니다. 현재 확정 규칙을 과거 여러 구간에 적용한 검증입니다. 과거 시점에서 파라미터를 선택한 진정한 워크포워드 검증이 아니므로 이 결과만으로 과최적화가 없다고 판단할 수 없습니다.</p>
+</div>
+<div class="panel mb-24">
+<div class="panel-title">PARAMETER · 7개 설정</div>
+<div style="overflow-x:auto">
+<table class="data-table">
+<thead>
+<tr>
+<th>설정</th>
+<th>CAGR</th>
+<th>MDD</th>
+<th>Calmar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BASE</td>
+<td>+39.74%</td>
+<td>-46.30%</td>
+<td>0.858</td>
+</tr>
+<tr>
+<td>EXIT_6</td>
+<td>+39.80%</td>
+<td>-46.30%</td>
+<td>0.860</td>
+</tr>
+<tr>
+<td>EXIT_10</td>
+<td>+39.74%</td>
+<td>-46.30%</td>
+<td>0.858</td>
+</tr>
+<tr>
+<td>HOLD_42</td>
+<td>+34.50%</td>
+<td>-46.30%</td>
+<td>0.745</td>
+</tr>
+<tr>
+<td>HOLD_84</td>
+<td>+38.55%</td>
+<td>-46.30%</td>
+<td>0.833</td>
+</tr>
+<tr>
+<td>MOM_8</td>
+<td>+38.92%</td>
+<td>-47.25%</td>
+<td>0.824</td>
+</tr>
+<tr>
+<td>MOM_12</td>
+<td>+35.21%</td>
+<td>-46.37%</td>
+<td>0.759</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="panel mb-24">
+<div class="panel-title">BOOTSTRAP · 실현 전략 수익률 블록 재조합</div>
+<div style="overflow-x:auto">
+<table class="data-table">
+<thead>
+<tr>
+<th>평균 CAGR</th>
+<th>평균 MDD</th>
+<th>평균 Calmar</th>
+<th>CAGR ≥ 15% 비율</th>
+<th>MDD &lt; -65% 비율</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+34.41%</td>
+<td>-55.74%</td>
+<td>0.666</td>
+<td>95.0%</td>
+<td>21.2%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>2010 시작의 일별 실현 전략 수익률 · 원형 21거래일 블록 · 복원추출 500회 · seed 20261006. 재조합된 시장 경로에서 신호를 다시 계산한 결과가 아닙니다. 이 비율은 미래 성공확률을 뜻하지 않습니다.</p>
+</div>
+<div class="panel mb-24">
+<div class="panel-title">추가 검증 상태</div>
+<p>기존 레짐 전환·충격 테스트는 생성 산식과 코드가 없어 이번 정본에서 확정값으로 사용하지 않습니다. 2000~2009 닷컴버블·금융위기 스트레스는 아직 검증하지 않았습니다.</p>
+</div>
+</div>
+<div class="group-header collapsed" data-group="C" onclick="toggleGroup(this)">
+<div class="label">C</div>
+<div class="title">세금·경제적 순자산</div>
+<div class="chevron">▾</div>
+</div>
+<div class="group-body collapsed">
+<div class="panel mb-24">
+<div class="panel-title">TAX · 외부 납부 가정 분리</div>
+<div style="overflow-x:auto">
+<table class="data-table">
+<thead>
+<tr>
+<th>항목</th>
+<th>12개 평균</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>세금 미차감 계좌평가액</td>
+<td>48.08억</td>
+</tr>
+<tr>
+<td>누적 발생 예상세금</td>
+<td>10.39억</td>
+</tr>
+<tr>
+<td>평가액 − 누적 예상세금</td>
+<td>37.69억</td>
+</tr>
+<tr>
+<td>동일 경제적 순자산의 환산 CAGR</td>
+<td>+36.42%</td>
+</tr>
+<tr>
+<td>종료일 전량 청산·비용·예상세금 반영 순자산</td>
+<td>36.82억</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>연간 실현손익 합산 후 250만원을 공제하고 양수 부분에 22%를 적용한 단순 시뮬레이션입니다. 환율은 고정으로 두며 납부 이력·신고액이 아닙니다. 세금을 투자계좌에서 차감하지 않아 외부 자금 부담이 남습니다. 외부 납부 현금흐름을 반영한 XIRR과도 다릅니다. 마지막 보유분 청산은 해당 연도의 기존 손익·공제와 함께 재계산합니다.</p>
+<p>세금 인출 모델의 기존 31.52%와 외부 납부 모델을 혼용하지 않습니다. 경제적 CAGR은 각 시나리오에서 별도로 계산한 뒤 평균합니다.</p>
+</div>
+</div>
+<div class="group-header collapsed" data-group="D" onclick="toggleGroup(this)">
+<div class="label">D</div>
+<div class="title">산식·자료와 검증 한계</div>
+<div class="chevron">▾</div>
+</div>
+<div class="group-body collapsed">
+<div class="panel mb-24">
+<div class="panel-title">검증 범위와 데이터</div>
+<p>미국 NYSE 거래 캘린더로 비거래일 19행을 제거했습니다. 누락·중복 거래일과 0 이하 가격은 오류 처리하고 보간하지 않습니다. QQQ 지표에는 2008~2009 원시 종가를 워밍업으로 추가합니다. 초기 보유는 NORMAL이며 BOOST peak는 실제 진입일 종가부터 추적합니다.</p>
+<p>ETF 초기 가격이 센트 단위로 반올림된 업로드 자료이므로 초기 레버리지 ETF 수익률에 정밀도 한계가 있습니다. 운용보수·레버리지 조달비용은 ETF 가격에 반영된 부분을 추가로 이중 차감하지 않습니다.</p>
+<p>
+<a href="./q123_results.json">전체 계산 결과 JSON</a> · <a href="./q123_transitions.csv">전체 신호일·체결일 CSV</a> · <a href="https://github.com/baekhamo-beep/investment-dashboard/blob/main/docs/Q123_METHOD.md">규칙·산식</a>
+</p>
+</div>
+</div>
 </section>
 
 <section class="tab-panel" id="rules">
+<!-- Q123_CANONICAL_NOTE --><div class="panel mb-24"><div class="panel-title">Q123_CANONICAL_V2 · 실행 정의</div><p>BEAR 진입이 최우선이며 BOOST → BEAR도 쿨다운을 시작합니다. 종가 = SMA200은 신규 BEAR 조건이 아니지만 회복 연속일을 충족하지 않습니다. BOOST 진입일을 보유 1일로 세며 63번째 종가에서 종료 신호를 내고 64번째 시가에 매도합니다. 종가 peak는 진입일 종가부터 계산합니다. 장중 가격으로 상태를 전환하지 않습니다.</p></div>
 
   <div class="section-label">EXECUTION RULES · D일 종가 신호 · D+1 시가 체결</div>
 
@@ -1793,7 +1692,7 @@
         → D+1 시가에 <b style="color:var(--text)">TQQQ 100%</b><br><br>
         <b style="color:var(--green)">▼▼ BOOST 종료</b> (셋 중 하나)<br>
         ① QQQ &lt; SMA50<br>
-        ② BOOST peak 대비 <b>-8%</b><br>
+        ② 진입일 이후 QQQ <b>종가 최고점</b> 대비 <b>-8%</b><br>
         ③ 보유 <b>63거래일</b> 도달<br>
         → QLD 100% + <b style="color:var(--amber)">21거래일 쿨다운</b>
       </div>
@@ -1808,15 +1707,15 @@
       <div style="font-size:15px;font-weight:700;color:var(--text);margin:8px 0">장중 임의 매매</div>
       <div style="font-size:11px;color:var(--text-2)">종가 신호 무시 · D+1 시가 체결 원칙 위반</div>
       <div class="consequence">
-        <b>위반 시:</b> 신호 정확성 무력화 → 백테스트 결과(CAGR +31.52%)와 실제 성과 큰 괴리.
+        <b>위반 시:</b> 신호 정확성 무력화 → 동일 규칙 백테스트 결과와 실제 성과 큰 괴리.
       </div>
     </div>
     <div class="panel danger deny-card" style="text-align:center;padding:20px">
       <div style="font-size:10px;color:var(--red);letter-spacing:2px;font-weight:700">DENY 2</div>
       <div style="font-size:15px;font-weight:700;color:var(--text);margin:8px 0">쿨다운 중 TQQQ 재진입</div>
-      <div style="font-size:11px;color:var(--text-2)">BOOST 종료 후 21거래일 강제 휴식</div>
+      <div style="font-size:11px;color:var(--text-2)">종료 체결일 E 다음 E+1~E+21 거래일 동안 TQQQ 보유 금지. E+21 종가부터 신호 가능, E+22 시가부터 재진입 가능.</div>
       <div class="consequence">
-        <b>위반 시:</b> 휩쏘 손실 누적 → 세금만 늘고 수익률 하락. 평균 연 세금 부담 30% 이상 증가 가능.
+        <b>위반 시:</b> 확정 규칙과 다른 전환이 발생하므로 제시한 백테스트 결과를 적용할 수 없습니다.
       </div>
     </div>
     <div class="panel danger deny-card" style="text-align:center;padding:20px">
@@ -1824,7 +1723,7 @@
       <div style="font-size:15px;font-weight:700;color:var(--text);margin:8px 0">메인 자산으로 운용</div>
       <div style="font-size:11px;color:var(--text-2)">위성 비중 한도 내에서만</div>
       <div class="consequence">
-        <b>위반 시:</b> -30% Shock 시 MDD -70% 초과 → 회복까지 5년+ 가능. 위성 한도 <b style="color:var(--text-2)">20% 이내</b> 권장.
+        <b>위반 시:</b> 충격 시나리오의 전체 포트폴리오 낙폭과 회복기간은 별도 검증이 필요합니다. 위성 한도 <b style="color:var(--text-2)">20% 이내</b> 권장.
       </div>
     </div>
   </div>
@@ -1895,359 +1794,24 @@
       </div>
     </div>
 
-    <div class="panel accent">
-      <div class="panel-title">TRANSITIONS · 실제 vs 평균</div>
-
-      <!-- 실제 1년 (작년 4월 ~ 현재) -->
-      <div style="background:rgba(255,176,32,0.06);border:1px solid var(--amber-dim);border-radius:4px;padding:12px;margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
-          <span style="font-family:var(--mono);font-size:10px;color:var(--amber);letter-spacing:1.5px;font-weight:700">⚡ 실제 1년 (2025-04 ~ 현재)</span>
-          <span style="font-family:var(--mono);font-size:11px;color:var(--text-3)">백테스트 검증</span>
-        </div>
-        <div style="display:flex;align-items:baseline;gap:8px">
-          <span style="font-family:var(--mono);font-size:32px;font-weight:700;color:var(--amber);line-height:1">9</span>
-          <span style="font-size:13px;color:var(--text-2)">회 전환</span>
-        </div>
-        <div style="font-size:11px;color:var(--text-3);margin-top:6px;line-height:1.5">
-          BEAR 2회 + NORMAL/BOOST 전환 7회 — <b style="color:var(--text-2)">관세 충격(2025-04, 2026-03) 2번 모두 방어</b>
-        </div>
-      </div>
-
-      <div style="font-family:var(--mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;font-weight:600;margin-bottom:8px">
-        AVG 12개 시나리오 평균 (보조)
-      </div>
-      <div style="display:flex;flex-direction:column;gap:6px;font-size:11px">
-        <div style="display:grid;grid-template-columns:1fr auto;padding:6px 10px;background:var(--bg);border-left:2px solid var(--amber);border-radius:0 3px 3px 0">
-          <div><span style="color:var(--amber);font-family:var(--mono);font-weight:600">TQQQ → QLD</span> <span style="color:var(--text-3)">BOOST 종료</span></div>
-          <div style="font-family:var(--mono);font-weight:700;color:var(--text)">20.2</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:6px 10px;background:var(--bg);border-left:2px solid var(--amber);border-radius:0 3px 3px 0">
-          <div><span style="color:var(--amber);font-family:var(--mono);font-weight:600">QLD → TQQQ</span> <span style="color:var(--text-3)">BOOST 진입</span></div>
-          <div style="font-family:var(--mono);font-weight:700;color:var(--text)">19.1</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:6px 10px;background:var(--bg);border-left:2px solid var(--red);border-radius:0 3px 3px 0">
-          <div><span style="color:var(--red);font-family:var(--mono);font-weight:600">QLD → QQQ</span> <span style="color:var(--text-3)">BEAR 진입</span></div>
-          <div style="font-family:var(--mono);font-weight:700;color:var(--text)">8.0</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:6px 10px;background:var(--bg);border-left:2px solid var(--green);border-radius:0 3px 3px 0">
-          <div><span style="color:var(--green);font-family:var(--mono);font-weight:600">QQQ → QLD</span> <span style="color:var(--text-3)">BEAR 해제</span></div>
-          <div style="font-family:var(--mono);font-weight:700;color:var(--text)">6.3</div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr auto;padding:6px 10px;background:var(--bg);border-left:2px solid var(--border-2);border-radius:0 3px 3px 0">
-          <div><span style="color:var(--text-2);font-family:var(--mono);font-weight:600">QQQ → TQQQ</span> <span style="color:var(--text-3)">BEAR→BOOST 직행</span></div>
-          <div style="font-family:var(--mono);font-weight:700;color:var(--text-2)">1.8</div>
-        </div>
-      </div>
-
-      <div style="margin-top:12px;padding:10px;background:rgba(255,77,94,0.05);border-left:2px solid var(--red);border-radius:0 3px 3px 0;font-size:11px;color:var(--text-2);line-height:1.5">
-        <b style="color:var(--red)">⚠ 핵심:</b> 스위칭 빈도가 <b style="color:var(--text)">세후 성과를 결정</b>. 작년 1년만 9회 전환 = 평균 납부세금 7.2억 발생 원인.
-      </div>
-    </div>
+<!-- Q123_TRANSITION_SUMMARY_START --><div class="panel mb-24"><div class="panel-title">TRANSITIONS · 2025-03-06 ~ 2026-05-15</div><p><b>8회 전환</b> · 2025년 한 해 6회. 뉴스 설명 대신 가격 조건을 근거로 기록합니다.</p><div style="overflow-x:auto"><table class="data-table"><thead><tr><th>전환</th><th>12개 시작 평균</th></tr></thead><tbody><tr><td>QLD → QQQ</td><td>8.33</td></tr><tr><td>QLD → TQQQ</td><td>20.17</td></tr><tr><td>QQQ → QLD</td><td>7.25</td></tr><tr><td>QQQ → TQQQ</td><td>1.08</td></tr><tr><td>TQQQ → QLD</td><td>20.25</td></tr></tbody></table></div><p>전환 횟수만으로 세금액을 계산할 수 없습니다. 연간 실제 실현손익이 필요합니다.</p></div><!-- Q123_TRANSITION_SUMMARY_END -->
   </div>
 
   <!-- ─── 전환 로그 사례 (작년 4월 ~ 현재) ─── -->
   <div class="ascii-divider">─────────── ─── ── ─ TRANSITION CASE STUDY ─ ── ─── ───────────</div>
-
-  <div class="section-label">CASE STUDY · 2025-04 ~ 2026-05 실제 백테스트 (관세 충격 2회 + V자 반등)</div>
-
-  <div style="font-size:12px;color:var(--text-2);margin-bottom:14px;line-height:1.7;max-width:920px">
-    작년 4월 관세 1차 충격부터 현재까지 <b style="color:var(--amber)">M63 전략이 실제로 어떻게 작동했는지</b>의 백테스트 로그.
-    9회 전환 중 <b style="color:var(--red)">관세 충격 2번 모두</b> BEAR로 빠르게 디레버리지하여 손실 회피.
-  </div>
-
-  <div class="log-row bear"><div class="date">2025-04-01</div><div class="trans">NORMAL <span class="arr">→</span> BEAR</div><div class="reason">QQQ &lt; SMA200 (관세 1차 충격, Liberation Day 직전)</div></div>
-  <div class="log-row normal"><div class="date">2025-06-23</div><div class="trans">BEAR <span class="arr">→</span> NORMAL</div><div class="reason">BEAR 해제 (관세 협상 진전, 정배열 회복)</div></div>
-  <div class="log-row boost"><div class="date">2025-06-24</div><div class="trans">NORMAL <span class="arr">→</span> BOOST</div><div class="reason">정배열 + RET63 10.1% (BEAR 해제 1일만에 BOOST 직행)</div></div>
-  <div class="log-row normal"><div class="date">2025-09-23</div><div class="trans">BOOST <span class="arr">→</span> NORMAL</div><div class="reason">BOOST 종료: 보유 63거래일 만기 도달</div></div>
-  <div class="log-row boost"><div class="date">2025-10-27</div><div class="trans">NORMAL <span class="arr">→</span> BOOST</div><div class="reason">정배열 + RET63 10.9% (쿨다운 후 재진입)</div></div>
-  <div class="log-row normal"><div class="date">2025-11-17</div><div class="trans">BOOST <span class="arr">→</span> NORMAL</div><div class="reason">BOOST 종료: QQQ &lt; SMA50 (조기 손절, -4%)</div></div>
-  <div class="log-row bear"><div class="date">2026-03-20</div><div class="trans">NORMAL <span class="arr">→</span> BEAR</div><div class="reason">QQQ &lt; SMA200 (관세 2차 충격)</div></div>
-  <div class="log-row normal"><div class="date">2026-04-08</div><div class="trans">BEAR <span class="arr">→</span> NORMAL</div><div class="reason">BEAR 해제 (단기 회복, 3주만에 SMA200 복귀)</div></div>
-  <div class="log-row boost"><div class="date">2026-05-05</div><div class="trans">NORMAL <span class="arr">→</span> BOOST</div><div class="reason">정배열 + RET63 10.7% (V자 반등, 현재 진행 중)</div></div>
-
-  <div class="grid grid-3 mt-24">
-    <div class="panel">
-      <div class="panel-title">관세 충격 2회 방어</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.7">
-        2025-04 관세 1차 + 2026-03 관세 2차 <b style="color:var(--text)">모두 NORMAL/BEAR 상태에서 디레버리지</b>.<br>
-        TQQQ 보유 안 함 → 3배 레버리지 손실 회피.
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">V자 반등 캐치</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.7">
-        2025-06 회복 시 <b style="color:var(--text)">BEAR → BOOST 1일 직행</b>.<br>
-        2026-04 회복도 27일 후 BOOST 재진입 (쿨다운 21일 후 6일).
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-title">1년 9회 전환</div>
-      <div style="font-size:12px;color:var(--text-2);line-height:1.7">
-        BEAR <b>24%</b> / NORMAL <b>45%</b> / BOOST <b>31%</b> 비중 분포.<br>
-        스위칭 빈도가 <b style="color:var(--red)">세금 7.2억 발생</b>의 원인.
-      </div>
-    </div>
-  </div>
-
+<div class="section-label">CASE STUDY · 신호일과 실제 체결일</div><div class="panel mb-24"><div class="panel-title">2025-03-06 ~ 2026-05-15 · 8회</div><div style="overflow-x:auto"><table class="data-table"><thead><tr><th>신호일 D</th><th>체결일 D+1 시가</th><th>전환</th><th>근거</th></tr></thead><tbody><tr><td>2025-03-06</td><td>2025-03-07</td><td>NORMAL → BEAR</td><td>QQQ &lt; SMA200</td></tr><tr><td>2025-06-24</td><td>2025-06-25</td><td>BEAR → BOOST</td><td>SMA200 위 5거래일 + 정배열 + BOOST 조건</td></tr><tr><td>2025-09-23</td><td>2025-09-24</td><td>BOOST → NORMAL</td><td>BOOST 63거래일</td></tr><tr><td>2025-10-27</td><td>2025-10-28</td><td>NORMAL → BOOST</td><td>정배열 + RET63 ≥ 10% + RET126 ≥ 0</td></tr><tr><td>2025-11-17</td><td>2025-11-18</td><td>BOOST → NORMAL</td><td>QQQ &lt; SMA50</td></tr><tr><td>2026-03-20</td><td>2026-03-23</td><td>NORMAL → BEAR</td><td>QQQ &lt; SMA200</td></tr><tr><td>2026-04-14</td><td>2026-04-15</td><td>BEAR → NORMAL</td><td>SMA200 위 5거래일 + 정배열</td></tr><tr><td>2026-05-05</td><td>2026-05-06</td><td>NORMAL → BOOST</td><td>정배열 + RET63 ≥ 10% + RET126 ≥ 0</td></tr></tbody></table></div><p>2025-06-24는 BEAR → BOOST 직행 신호입니다. 2026-04-08은 회복 첫날이며 5거래일 완료일은 4/14, 체결일은 4/15입니다. 5/15 기준 사례와 현재 상태를 구분합니다.</p></div><div class="panel mb-24"><div class="panel-title">검증기간 이후 전환</div><div style="overflow-x:auto"><table class="data-table"><thead><tr><th>신호일</th><th>체결일</th><th>전환</th><th>근거</th></tr></thead><tbody><tr><td>2026-07-07</td><td>2026-07-08</td><td>BOOST → NORMAL</td><td>QQQ &lt; SMA50</td></tr></tbody></table></div></div>
 </section>
 
 <!-- ====================================================== -->
 <!-- ⚠ RISK -->
 <!-- ====================================================== -->
-<section class="tab-panel" id="risk">
-
-  <div class="verdict-big" style="border-color:var(--red);background:linear-gradient(135deg,rgba(255,64,64,0.05),transparent)">
-    <div class="head" style="color:var(--red)">// SATELLITE STRATEGY · CRITICAL CAUTIONS</div>
-    <h2><span class="accent" style="color:var(--red)">메인 생존 전략 아님</span> · 공격 위성으로만 운용</h2>
-    <p>
-      본 전략의 최악 방어 자산도 <b style="color:var(--text)">QQQ 100%</b>이므로 장기 구조적 붕괴장에서는
-      현금·단기채 방어 전략보다 취약하다. 닷컴버블형 시나리오 방어용 전략이 아니라
-      <b style="color:var(--amber)">수익률 증폭용 공격 위성</b>으로만 설계되었다.
-    </p>
-
-    <!-- 시작 전 체크 3가지 -->
-    <div class="precheck">
-      <div class="label">▸ 시작 전 체크 3가지 — 이거 안 되면 시작 금지</div>
-      <div class="precheck-item">
-        <span class="num">①</span>
-        <div><b style="color:var(--text)">위성 비중 정했나?</b> &nbsp;전체 자산의 <b style="color:var(--amber)">20% 이내</b> 권장. 나머지 80%는 메인 생존 전략(현금·단기채·QQQ B&amp;H 등)으로.</div>
-      </div>
-      <div class="precheck-item">
-        <span class="num">②</span>
-        <div><b style="color:var(--text)">세금 예비비 별도 보관 가능한가?</b> &nbsp;연 7%(7.2억/100억) 발생. <b style="color:var(--amber)">외부 계좌</b>에 분리 보관 안 하면 매매 자금 부족.</div>
-      </div>
-      <div class="precheck-item">
-        <span class="num">③</span>
-        <div><b style="color:var(--text)">5년간 -49% MDD 견딜 수 있나?</b> &nbsp;심리적/재무적 견딤 못하면 매도 후 회복기 못 누리고 손실 확정.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-label">5 KEY RISKS · 위험도 등급</div>
-
-  <div class="mb-24">
-    <!-- HIGH 2개 -->
-    <div class="risk-card high">
-      <div class="ico">⚠</div>
-      <div class="name">세금 드래그<span class="level">HIGH</span></div>
-      <div class="desc">
-        스위칭 전략은 실현손익 빈발 → 세전 40.86% → 세후 31.52% (<b>-9.34%p</b>). 최종자산 79억 → 36.5억 (<b>-54%</b>). 평균 연 납부세금 <b>7.2억 / 100억 운용</b>.
-      </div>
-    </div>
-    <div class="risk-card high">
-      <div class="ico">⚠</div>
-      <div class="name">실행 리스크<span class="level">HIGH</span></div>
-      <div class="desc">
-        D일 종가 신호 + D+1 시가 체결 원칙 <b>엄수 필수</b>. 장중 판단·임의 매매·신호 무시는 백테스트 결과와 큰 괴리 발생. 자동화 또는 알람 권장.
-      </div>
-    </div>
-
-    <!-- MEDIUM 2개 -->
-    <div class="risk-card med">
-      <div class="ico">⚠</div>
-      <div class="name">비용 민감도<span class="level">MED</span></div>
-      <div class="desc">
-        세후 <b>편도 10bps 이상부터 기준선 0.636 하회</b>. 낮은 거래비용·실행 정확성이 우위의 절대 조건. <b>5bps 이하 증권사</b> 사용 필수.
-      </div>
-    </div>
-    <div class="risk-card med">
-      <div class="ico">⚠</div>
-      <div class="name">검증 범위<span class="level">MED</span></div>
-      <div class="desc">
-        실제 매매 검증은 TQQQ ETF 존재 시점인 <b>2010년 이후</b>로 제한. 16년 데이터 — 닷컴버블·금융위기 같은 구조적 변화 미포함. Regime Switching 시나리오에서 MDD -88% 발생 가능.
-      </div>
-    </div>
-
-    <!-- LOW 1개 -->
-    <div class="risk-card low">
-      <div class="ico">⚠</div>
-      <div class="name">전략 성격<span class="level">LOW</span></div>
-      <div class="desc">
-        메인 생존 전략이 아닌 <b>공격 위성</b>. 1999 합성 닷컴버블 검증 결과는 채택 기준 제외. 이미 알려진 한계 → 위성 한도 운용으로 회피 가능.
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── 리스크 대응 6가지 ─── -->
-  <div class="section-label">RISK RESPONSE · 대응 액션 6가지</div>
-
-  <div class="grid grid-2 mb-24" style="gap:10px">
-    <div class="action-card">
-      <div class="check">✓</div>
-      <div class="text">
-        <b>위성 비중 한도 (총 자산의 20% 이내)</b>
-        <span class="why">→ -49% MDD가 발생해도 전체 자산은 -10% 이내, 메인 자산이 회복 받침</span>
-      </div>
-    </div>
-    <div class="action-card">
-      <div class="check">✓</div>
-      <div class="text">
-        <b>세금 예비비 외부 계좌 분리 보관 (연 7%)</b>
-        <span class="why">→ 다음 해 5월 양도소득세 납부 시 매매 자금 부족 방지</span>
-      </div>
-    </div>
-    <div class="action-card">
-      <div class="check">✓</div>
-      <div class="text">
-        <b>연 1회 QQQ 장기 성장 전제 재검토</b>
-        <span class="why">→ 미국 기술주 장기 성장 가정이 깨지면 전략 자체 폐기 검토</span>
-      </div>
-    </div>
-    <div class="action-card">
-      <div class="check">✓</div>
-      <div class="text">
-        <b>TQQQ 괴리율 월간 모니터링</b>
-        <span class="why">→ 운용보수 0.95% + 일별 리밸런싱 비용으로 장기 NAV 손실 가능</span>
-      </div>
-    </div>
-    <div class="action-card">
-      <div class="check">✓</div>
-      <div class="text">
-        <b>편도 5bps 이하 증권사 사용</b>
-        <span class="why">→ 10bps 초과 시 세후 기준선 0.636 미달 → 전략 우위 소멸</span>
-      </div>
-    </div>
-    <div class="action-card">
-      <div class="check">✓</div>
-      <div class="text">
-        <b>장중 임의 매매 절대 금지 (자동 알람 권장)</b>
-        <span class="why">→ D+1 시가 체결 원칙 위반 시 신호 정확성 무력화</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── 회복 시나리오 ─── -->
-  <div class="section-label">RECOVERY SCENARIO · MDD 발생 시 회복 기간</div>
-
-  <div class="panel mb-24">
-    <div style="font-size:12px;color:var(--text-2);line-height:1.65;margin-bottom:14px">
-      <b style="color:var(--text)">-49.20% MDD가 발생하면 얼마나 견뎌야 하나?</b> 백테스트 기준 회복 기간 분포.
-    </div>
-
-    <div class="recovery-row actual">
-      <div class="label">평균 회복</div>
-      <div class="bar"><div class="bar-fill" style="width:25%"></div></div>
-      <div class="duration">~18개월</div>
-    </div>
-    <div class="recovery-row actual">
-      <div class="label">2022 사례</div>
-      <div class="bar"><div class="bar-fill" style="width:33%"></div></div>
-      <div class="duration">~24개월</div>
-    </div>
-    <div class="recovery-row worst">
-      <div class="label">최악 (2010-2011)</div>
-      <div class="bar"><div class="bar-fill" style="width:65%"></div></div>
-      <div class="duration">~3.5년</div>
-    </div>
-    <div class="recovery-row worst">
-      <div class="label">극단 (닷컴버블형)</div>
-      <div class="bar"><div class="bar-fill" style="width:100%"></div></div>
-      <div class="duration">5년+</div>
-    </div>
-
-    <div style="margin-top:14px;padding:12px;background:rgba(255,77,94,0.05);border-left:2px solid var(--red);font-size:11px;color:var(--text-2);line-height:1.6;border-radius:0 3px 3px 0">
-      <b style="color:var(--red)">⚠ 핵심:</b> 회복기 동안 <b style="color:var(--text)">전략을 포기하면 손실 확정</b>. 메인 생존 자산이 있어야 회복기를 견딜 수 있음.
-      위성 비중 20% + 메인 80% 구조라면 전체 자산 MDD는 약 <b style="color:var(--text)">-10% 수준</b>으로 완화.
-    </div>
-  </div>
-
-  <!-- ─── 작년 리스크 발현 타임라인 ─── -->
-  <div class="section-label">RISK EVENTS · 작년 1년간 실제 발현된 리스크</div>
-
-  <div class="mb-24">
-    <div class="risk-event handled">
-      <div class="date">2025-04-01</div>
-      <div class="body">
-        <div class="title">관세 1차 충격 · Liberation Day 직전</div>
-        QQQ &lt; SMA200 즉시 BEAR 진입 → QLD에서 QQQ로 디레버리지. 이후 4월 7일까지 추가 -12% 하락.
-        만약 TQQQ 보유 중이었다면 약 <b>-36%</b> 손실 (3배 레버리지). NORMAL 상태였기에 손실 절반으로 완화.
-        <span class="outcome">✓ HANDLED</span>
-      </div>
-    </div>
-    <div class="risk-event handled">
-      <div class="date">2025-11-17</div>
-      <div class="body">
-        <div class="title">BOOST 조기 종료 · SMA50 이탈</div>
-        10/27 BOOST 진입 후 21일만에 SMA50 이탈 → 조기 손절 -4%. Peak -8% 트리거 발동 전에 SMA50 트리거가 먼저 작동 → 추가 손실 회피.
-        <span class="outcome">✓ HANDLED</span>
-      </div>
-    </div>
-    <div class="risk-event handled">
-      <div class="date">2026-03-20</div>
-      <div class="body">
-        <div class="title">관세 2차 충격 · 외부 변동성</div>
-        QQQ &lt; SMA200 즉시 BEAR 진입. 직전 4개월간 NORMAL 상태였기에 TQQQ 보유 안 함 → 큰 손실 회피. 3주만에 BEAR 해제 회복.
-        <span class="outcome">✓ HANDLED</span>
-      </div>
-    </div>
-    <div class="risk-event severe">
-      <div class="date">2025-04-01 ~ 06-23</div>
-      <div class="body">
-        <div class="title">⚠ 잠재 리스크 — BEAR 진입 지연</div>
-        SMA200 기준은 후행 지표라 진짜 고점($531) 대비 약 -10% 지점에서 BEAR 진입. 이후 저점 $420까지 약 <b style="color:var(--red)">-12% 추가 하락</b> 경험.
-        QLD → QQQ 디레버리지로 완화됐지만 손실은 발생.
-        <span class="outcome">⚠ EXPOSED</span>
-      </div>
-    </div>
-    <div class="risk-event severe">
-      <div class="date">2025년 누적</div>
-      <div class="body">
-        <div class="title">⚠ 잠재 리스크 — 1년 9회 전환 (세금 누적)</div>
-        평균 12개 시나리오의 연 3~5회 대비 <b style="color:var(--red)">2~3배 빈도</b>. 관세 충격으로 인한 변동성 큰 해.
-        세후 성과는 백테스트 평균보다 낮을 가능성. 세금 예비비 충분 확보 필수.
-        <span class="outcome">⚠ EXPOSED</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-label">SCOPE LIMITS · 단순화 가정 (정량 영향)</div>
-
-  <div class="panel">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>항목</th>
-          <th style="text-align:left">단순화 가정</th>
-          <th style="text-align:left">실제 영향 (추정)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>환율</td>
-          <td style="text-align:left">USD/KRW 변동 미반영</td>
-          <td style="text-align:left;color:var(--amber)">원화 환산 시 ±5~10%p 변동 (2024 환율 1300→1450)</td>
-        </tr>
-        <tr>
-          <td>배당/원천징수</td>
-          <td style="text-align:left">미국 배당 15% 원천세 단순화</td>
-          <td style="text-align:left;color:var(--amber)">QQQ 배당 차감 시 연 <b>0.2~0.3%p 손실</b></td>
-        </tr>
-        <tr>
-          <td>증권사별 취득가</td>
-          <td style="text-align:left">평균법 단순 적용</td>
-          <td style="text-align:left;color:var(--text-2)">평균법 vs 이동평균법 시 세금 차이 ±1~2%</td>
-        </tr>
-        <tr>
-          <td>세무 신고</td>
-          <td style="text-align:left">신고 대행비·가산세 미반영</td>
-          <td style="text-align:left;color:var(--text-2)">대행 수수료 약 30~50만원 / 가산세 최대 20%</td>
-        </tr>
-        <tr>
-          <td>유동성 리스크</td>
-          <td style="text-align:left">TQQQ 괴리율 무시</td>
-          <td style="text-align:left;color:var(--amber)">평균 0.05%, 급변동 시 <b>0.5%까지</b> 확대</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-</section>
+<section class="tab-panel" id="risk"><div class="panel mb-24"><div class="panel-title">Q123 위험과 검증 범위</div><p>BEAR도 QQQ를 보유하므로 하락을 차단하지 않습니다. TQQQ·QLD의 일별 레버리지와 변동성 누적으로 큰 손실이 발생할 수 있습니다.</p><p>현재 가격수익 검증의 평균 MDD는 -46.30%이며 미래 손실 한도가 아닙니다. 2010년 이후 결과에 닷컴버블과 2008 금융위기가 포함되지 않습니다.</p><p>신호는 완료된 거래일 종가로 확정하고 다음 거래일 시가에서 실행합니다. 급격한 갭 하락, 주문 지연과 실제 슬리피지는 편도 정률 비용으로 충분히 설명되지 않습니다.</p><p>전환 때마다 실현손익이 발생하므로 실제 손익·환율과 신고내역을 별도로 관리해야 합니다. 세금 외부 납부 모델은 계좌 복리를 유지하지만 추가 외부 자금이 필요합니다.</p><p>기존 회복기간·포트폴리오 전체 MDD·연 7% 세금 예비비·레짐 확률 등 원본 산식이 없는 추정치는 이번 정본에서 제거했습니다.</p></div></section>
 
 </main>
 
 <footer>
   Q123 위성 사령부 · QQQ123 PRACTICAL_M63_10 · SW_M63_10_H63_X8__MA200__NODD__C5<br>
-  기준 자료: 세후 백테스트 v1 · Future Validation v1 · 비교 기준 <a href="https://investment-dashboard-drab-kappa.vercel.app/qld.html">QLD HY 대시보드</a><br>
+  기준 자료: Q123_CANONICAL_V2 · 업로드 가격수익 검증 · 편도 5bps · 비교 기준 <a href="https://investment-dashboard-drab-kappa.vercel.app/qld.html">QLD HY 대시보드</a><br>
   본 페이지는 백테스트 검증 보고서 시각화이며 투자·세무 자문을 대체하지 않습니다.
 </footer>
 
@@ -2256,9 +1820,9 @@
   const Q123 = {
     qqq: null,        // 현재가
     ath: null,        // 전고점 (peak_price)
-    sma50: null,      // 추정값
+    sma50: null,      // QQQ 원시 종가 SMA50
     sma200: null,     // ma200_dev_pct로 역산
-    ret63: null,      // momentum_6m / 2 로 보수적 추정 (3개월 ≈ 6개월의 절반)
+    ret63: null,      // QQQ 63거래일 수익률
     ret126: null,     // momentum_6m
     vix: null,
     qldPrice: null,
@@ -2268,8 +1832,8 @@
     aboveSMA200: false,
     bearCondition: false,
     boostCondition: false,
-    currentMode: 'NORMAL',
-    currentAsset: 'QLD',
+    currentMode: null,
+    currentAsset: null,
     updated: null,
   };
 
@@ -2277,68 +1841,46 @@
   // data.json에서 모든 값 직접 사용 (fetch_data.py가 정확값 제공)
   async function loadMarketData(){
     try{
-      const d = await fetch('./data.json?t='+Date.now()).then(r=>r.json());
-
-      // 기본 시장 값
-      Q123.qqq = d.nasdaq.current_price;
-      Q123.ath = d.nasdaq.peak_price;
-      Q123.drawdown = d.nasdaq.drawdown_pct;
-      Q123.vix = d.vix;
-      Q123.qldPrice = d.etf_prices && d.etf_prices.QLD;
-      Q123.usdKrw = d.usd_krw;
-
-      // SMA: data.json에 sma50_price/sma200_price가 있으면 그 절대값 사용,
-      //      없으면 ma50_dev_pct/ma200_dev_pct에서 역산
-      if(d.nasdaq.sma50_price != null){
-        Q123.sma50 = d.nasdaq.sma50_price;
-        Q123.sma200 = d.nasdaq.sma200_price;
-        Q123.dataSource = 'accurate';
-      } else if(d.nasdaq.ma50_dev_pct != null){
-        Q123.sma50 = Q123.qqq / (1 + d.nasdaq.ma50_dev_pct/100);
-        Q123.sma200 = Q123.qqq / (1 + d.nasdaq.ma200_dev_pct/100);
-        Q123.dataSource = 'accurate';
-      } else {
-        // 폴백: ma50_dev_pct 없는 옛 data.json
-        Q123.sma200 = Q123.qqq / (1 + d.nasdaq.ma200_dev_pct/100);
-        const drawdownAbs = Math.abs(Q123.drawdown);
-        let w;
-        if(drawdownAbs < 5) w = 0.25;
-        else if(drawdownAbs < 15) w = 0.45;
-        else w = Math.min(0.5 + (drawdownAbs-15)/30, 0.8);
-        Q123.sma50 = Q123.qqq * (1-w) + Q123.sma200 * w;
-        if(Q123.sma50 < Q123.sma200) Q123.sma50 = (Q123.qqq + Q123.sma200) / 2;
-        Q123.dataSource = 'estimate';
-      }
-
-      // RET: 정확값이 있으면 사용, 없으면 추정
-      if(d.nasdaq.return_63d_pct != null){
-        Q123.ret63 = d.nasdaq.return_63d_pct;
-        Q123.ret126 = d.nasdaq.return_126d_pct != null ? d.nasdaq.return_126d_pct : d.nasdaq.momentum_6m;
-      } else {
-        Q123.ret126 = d.nasdaq.momentum_6m;
-        Q123.ret63 = Q123.ret126 * 0.55;  // 폴백 추정
-        Q123.dataSource = 'estimate';
-      }
-
-      // 정배열 판정
-      Q123.aboveSMA50  = d.nasdaq.above_ma50 != null ? d.nasdaq.above_ma50 : (Q123.qqq > Q123.sma50);
-      Q123.aboveSMA200 = d.nasdaq.above_ma200;
-      Q123.alignment   = Q123.aboveSMA50 && Q123.aboveSMA200 && Q123.sma50 > Q123.sma200;
-      Q123.bearCondition  = !Q123.aboveSMA200;
+      const response = await fetch('./data.json?t='+Date.now());
+      if(!response.ok) throw new Error('시장 자료 요청 실패');
+      const d = await response.json();
+      // A dated seed supports the current static deployment until the next workflow run.
+      const state = d.q123 || await fetch('./q123_state.json?t='+Date.now()).then(r=>{
+        if(!r.ok) throw new Error('Q123 상태 요청 실패');
+        return r.json();
+      });
+      const ind = state.indicators;
+      const assets = {BEAR:'QQQ',NORMAL:'QLD',BOOST:'TQQQ'};
+      if(state.version !== 'Q123_CANONICAL_V2' || !['BEAR','NORMAL','BOOST'].includes(state.mode) ||
+         !['BEAR','NORMAL','BOOST'].includes(state.target_mode) || !ind ||
+         !['close','sma50','sma200','ret63','ret126'].every(k=>Number.isFinite(ind[k])) ||
+         assets[state.mode] !== state.asset || assets[state.target_mode] !== state.target_asset ||
+         !['cooldown_remaining','boost_days','above_days'].every(k=>Number.isInteger(state[k]) && state[k]>=0) ||
+         !Number.isFinite(Date.parse(state.next_open_utc))) throw new Error('검증된 Q123 상태가 없습니다');
+      Q123.state = state;
+      Q123.qqq = ind.close; Q123.sma50 = ind.sma50; Q123.sma200 = ind.sma200;
+      Q123.ret63 = ind.ret63 * 100; Q123.ret126 = ind.ret126 * 100;
+      Q123.aboveSMA50 = ind.close > ind.sma50;
+      Q123.aboveSMA200 = ind.close > ind.sma200;
+      Q123.alignment = Q123.aboveSMA50 && ind.sma50 > ind.sma200;
+      Q123.bearCondition = ind.close < ind.sma200;
       Q123.boostCondition = Q123.alignment && Q123.ret63 >= 10 && Q123.ret126 >= 0;
-
-      // 모드 자동 판단
-      if(Q123.bearCondition){ Q123.currentMode = 'BEAR'; Q123.currentAsset = 'QQQ'; }
-      else if(Q123.boostCondition){ Q123.currentMode = 'BOOST'; Q123.currentAsset = 'TQQQ'; }
-      else { Q123.currentMode = 'NORMAL'; Q123.currentAsset = 'QLD'; }
-
-      Q123.updated = d.updated_utc;
-      Q123.asOf = new Date(new Date(d.updated_utc).getTime()+9*3600000).toISOString().slice(0,10);
+      Q123.currentMode = state.mode; Q123.currentAsset = state.asset;
+      Q123.targetMode = state.target_mode; Q123.targetAsset = state.target_asset;
+      Q123.vix = d.vix; Q123.qldPrice = d.etf_prices && d.etf_prices.QLD;
+      Q123.usdKrw = d.usd_krw; Q123.ath = d.nasdaq.peak_price;
+      Q123.drawdown = d.nasdaq.drawdown_pct;
+      Q123.updated = state.updated_utc || d.updated_utc;
+      Q123.asOf = state.as_of; Q123.dataSource = 'accurate';
       renderAll();
     }catch(e){
       console.warn('Q123 데이터 로딩 실패:', e);
+      Q123.qqq = null; Q123.state = null;
       const el = document.getElementById('judge-text');
-      if(el) el.textContent = '데이터 로딩 실패';
+      if(el) el.textContent = '검증된 상태 로딩 실패 · 주문 생성 중지';
+      ['mode-name','tk-mode'].forEach(id=>{ const e=document.getElementById(id); if(e) e.textContent='확인 필요'; });
+      const out = document.getElementById('orderOutput');
+      if(out) out.textContent = '검증된 상태 로딩 실패 · 주문 생성 중지';
     }
   }
 
@@ -2356,7 +1898,7 @@
 
     // ─── 티커바 ───
     set('tk-mode', 'MODE: ' + Q123.currentMode);
-    set('tk-qqq', fmt$(Q123.qqq) + (Q123.drawdown != null ? ' (' + fmtPct(Q123.drawdown) + ' from ATH)' : ''));
+    set('tk-qqq', fmt$(Q123.qqq) + (Q123.drawdown != null ? ' (' + fmtPct(Q123.drawdown) + ' from 2Y HIGH)' : ''));
     set('tk-qld', fmt$(Q123.qldPrice));
     set('tk-ath', fmt$(Q123.ath));
     set('tk-sma50', 'SMA50 ' + fmt$(Q123.sma50));
@@ -2415,17 +1957,12 @@
     checkCell('sig-ret63-st', Q123.ret63 >= 10);
     checkCell('sig-ret126-st', Q123.ret126 >= 0);
 
-    // ─── BOOST 관련 행 (보유일/peak/쿨다운) - 추적 미지원 안내 ───
-    // 현재는 진입 시점을 추적하지 않으므로 회색 작은 글씨로 안내 처리
-    const unsupportedHTML = '<span style="color:var(--text-3);font-size:10px;font-style:italic;font-weight:400">추적 미지원</span>';
-    if(Q123.currentMode === 'BOOST'){
-      setHTML('sig-boost-days', unsupportedHTML);
-      setHTML('sig-boost-peak', unsupportedHTML);
-    } else {
-      set('sig-boost-days', '—');
-      set('sig-boost-peak', '—');
-    }
-    set('sig-cooldown', '—');
+    set('sig-boost-days', Q123.state.boost_days ? Q123.state.boost_days+'거래일' : '—');
+    set('sig-boost-peak', Q123.state.boost_drawdown == null ? '—' : fmtPct(Q123.state.boost_drawdown*100));
+    set('sig-cooldown', Q123.state.cooldown_remaining+'거래일 남음');
+    checkCell('sig-boost-days-st', Q123.state.boost_days < 63);
+    checkCell('sig-boost-peak-st', Q123.state.boost_drawdown == null || Q123.state.boost_drawdown > -.08);
+    checkCell('sig-cooldown-st', Q123.state.cooldown_remaining === 0);
 
     // ─── 모드별 행 강조 (관련 행 highlighted, 비관련 행 dimmed) ───
     // 공유 행(QQQ Close)은 항상 표시
@@ -2464,28 +2001,15 @@
       rows.cooldown.forEach(r => r.classList.add('dimmed'));
     }
 
-    // ─── 판단 / 다음 트리거 텍스트 ───
-    let judgeMsg, nextTrigger;
-    if(Q123.currentMode === 'BEAR'){
-      judgeMsg = `QQQ < SMA200 → <b style="color:var(--text)">BEAR 모드 · QQQ 100%</b>`;
-      nextTrigger = 'QQQ가 SMA200 위 5거래일 + 정배열 회복 시 QLD로 복귀';
-    } else if(Q123.currentMode === 'BOOST'){
-      judgeMsg = `정배열 + RET63 ≥ +10% + RET126 ≥ 0% 모두 충족 → <b style="color:var(--text)">BOOST 모드 · TQQQ 100%</b>`;
-      nextTrigger = 'QQQ < SMA50, BOOST peak 대비 -8%, 또는 보유 63일 도달 시 QLD로 종료';
-    } else {
-      // NORMAL — 어떤 조건이 부족한지
-      const reasons = [];
-      if(!Q123.alignment) reasons.push('정배열 미충족');
-      if(Q123.ret63 < 10) reasons.push(`RET63 ${(10-Q123.ret63).toFixed(1)}%p 부족`);
-      if(Q123.ret126 < 0) reasons.push(`RET126 ${(-Q123.ret126).toFixed(1)}%p 부족`);
-      const summary = reasons.length ? reasons.join(', ') : '조건 미달';
-      judgeMsg = `${summary} → <b style="color:var(--text)">NORMAL 유지 · QLD 100%</b>`;
-      if(Q123.ret63 < 10){
-        nextTrigger = `RET63 ≥ +10% 달성 시 D+1 시가에 QLD → TQQQ (현재 ${(10-Q123.ret63).toFixed(1)}%p 부족)`;
-      } else {
-        nextTrigger = '정배열 회복 + BOOST 조건 충족 시 TQQQ 진입';
-      }
-    }
+    const state = Q123.state;
+    const pending = state.target_mode !== state.mode;
+    let judgeMsg = `완료된 ${state.as_of} 종가 기준 · <b>${state.mode} / ${state.asset} 100%</b>`;
+    let nextTrigger = `다음 거래일 ${state.next_session} 시가 목표: ${state.target_mode} / ${state.target_asset} · ${state.reason}`;
+    if(pending) judgeMsg += ` → ${state.as_of} 신호: <b>${state.target_mode}</b> (${state.reason})`;
+    else if(state.mode === 'BEAR') judgeMsg += ` · SMA200 위 연속 ${state.above_days}/5거래일`;
+    else if(state.mode === 'BOOST') judgeMsg += ` · 보유 ${state.boost_days}/63거래일`;
+    else if(state.cooldown_remaining) judgeMsg += ` · 쿨다운 ${state.cooldown_remaining}거래일 남음`;
+    if(Date.now() >= Date.parse(state.next_open_utc)) nextTrigger += ' · 과거 종가 상태입니다. 최신 장 마감 자료 확인 필요';
     setHTML('judge-text', judgeMsg);
     set('next-trigger-text', nextTrigger);
 
@@ -2538,7 +2062,7 @@
     };
 
     if(Q123.currentMode === 'BOOST'){
-      // BOOST 종료 트리거 — 진입 시점 추적 미지원이므로 ATH 기준 보수적 표시
+      // BOOST 진입일 이후의 실제 종가 peak와 보유기간
       // 1) SMA50 이탈까지: QQQ가 SMA50까지 얼마나 떨어져야 하는가
       const sma50Gap = (Q123.qqq - Q123.sma50) / Q123.qqq * 100;
       const sma50Fill = Math.max(0, Math.min(100, (1 - sma50Gap/15) * 100));
@@ -2547,24 +2071,13 @@
         sma50Gap > 0 ? `QQQ -${sma50Gap.toFixed(1)}% 필요` : '발동 임박',
         sma50Gap < 3);
 
-      // 2) peak -8%까지 (ATH 기준 보수치 — 진입 시점 peak는 미추적)
-      const peakGap = Q123.ath != null ? ((Q123.qqq - Q123.ath) / Q123.ath * 100) : 0;
-      const peakDistance = -8 - peakGap;
-      const peakFill = Math.max(0, Math.min(100, (1 - Math.abs(peakDistance)/8) * 100));
-      setBar(2, 'Peak −8% *',
-        peakFill,
-        peakGap > -8 ? `ATH 대비 ${peakGap.toFixed(1)}% (${(-8 - peakGap).toFixed(1)}%p 여유)` : '발동 임박',
-        Math.abs(peakDistance) < 2);
-
-      // 3) 보유 63일 — 진입일 미추적이므로 막대 자체를 숨기고 안내만
-      hide(3);
-
-      // footnote 표시
+      const peakGap = Q123.state.boost_drawdown * 100;
+      setBar(2, '종가 peak −8%', (1-Math.abs(-8-peakGap)/8)*100,
+        `진입 후 종가 peak 대비 ${peakGap.toFixed(1)}%`, Math.abs(-8-peakGap)<2);
+      setBar(3, '보유기간', Q123.state.boost_days/63*100,
+        `${Q123.state.boost_days}/63거래일`, Q123.state.boost_days>=60);
       const fn = document.getElementById('mode-footnote');
-      if(fn){
-        fn.style.display = '';
-        fn.innerHTML = '* <b style="color:var(--text-2)">Peak −8%는 ATH 기준 보수치</b> — BOOST 진입 시점 peak가 추적되면 더 정확해짐. <b style="color:var(--text-2)">보유 63일</b> 트리거는 진입일 미추적으로 표시 생략.';
-      }
+      if(fn) fn.style.display = 'none';
 
     } else if(Q123.currentMode === 'BEAR'){
       // BEAR 해제 트리거 2개
@@ -2583,7 +2096,7 @@
         Q123.alignment ? '정배열 ✓' : '추세 형성 대기',
         Q123.alignment);
 
-      hide(3);
+      setBar(3, '회복 확인', Math.min(5,Q123.state.above_days)/5*100, `${Math.min(5,Q123.state.above_days)}/5거래일 연속`, Q123.state.above_days>=4);
       const fn = document.getElementById('mode-footnote');
       if(fn) fn.style.display = 'none';
 
@@ -2602,10 +2115,10 @@
       const boostFill = Math.max(0, Math.min(100, (Q123.ret63 / 10) * 100));
       setBar(2, 'BOOST 진입',
         boostFill,
-        boostGap <= 0 ? '조건 충족 ✓' : `RET63 +${boostGap.toFixed(1)}%p 필요`,
+        boostGap <= 0 ? 'RET63 충족 ✓' : `RET63 +${boostGap.toFixed(1)}%p 필요`,
         boostGap < 3);
 
-      hide(3);
+      setBar(3, '쿨다운', (21-Q123.state.cooldown_remaining)/21*100, `${Q123.state.cooldown_remaining}거래일 남음`, false);
       const fn = document.getElementById('mode-footnote');
       if(fn) fn.style.display = 'none';
     }
@@ -2629,7 +2142,7 @@
     const asset = document.getElementById('curAsset').value;
     const nav = parseFloat(document.getElementById('navInput').value) || 0;
     const fx = parseFloat(document.getElementById('fxInput').value) || 1380;
-    const bps = parseInt(document.getElementById('bpsInput').value) || 5;
+    const bps = Number(document.getElementById('bpsInput').value);
     const out = document.getElementById('orderOutput');
 
     // 실시간 데이터 또는 폴백 사용
@@ -2646,15 +2159,16 @@
       return;
     }
 
-    // 목표 자산 결정
-    let targetMode, targetAsset, action;
-    if(bearCondition){
-      targetMode = 'BEAR'; targetAsset = 'QQQ';
-    } else if(boostCondition){
-      targetMode = 'BOOST'; targetAsset = 'TQQQ';
-    } else {
-      targetMode = 'NORMAL'; targetAsset = 'QLD';
+    if(!Q123.state || Date.now() >= Date.parse(Q123.state.next_open_utc)){
+      out.innerHTML = '<div class="head">// ORDER SHEET</div><p>이 종가 신호의 다음 거래일 시가가 이미 지났습니다. 최신 완료 거래일 상태를 확인하세요.</p>';
+      return;
     }
+    if(!Number.isFinite(bps) || bps<0 || bps>100 || nav<=0 || fx<=0){
+      out.textContent = '평가금액·환율은 양수, 비용은 0~100bps로 입력하세요.';
+      return;
+    }
+    const targetMode = Q123.targetMode, targetAsset = Q123.targetAsset;
+    let action;
 
     if(asset === targetAsset){
       action = 'HOLD · 모드 일치 · 매매 없음';
@@ -2675,7 +2189,7 @@
     const ret126Gap = ret126 >= 0 ? '충족' : `${(0-ret126).toFixed(1)}%p 부족`;
 
     out.innerHTML = `
-      <div class="head">// ORDER SHEET · ${new Date().toISOString().slice(0,10)}</div>
+      <div class="head">// ORDER SHEET · 종가 ${Q123.asOf} → 시가 ${Q123.state.next_session}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
         <div><span style="color:var(--text-3)">현재 보유:</span> <b>${asset}</b></div>
         <div><span style="color:var(--text-3)">목표 모드:</span> <b style="color:var(--amber)">${targetMode}</b></div>
@@ -2700,8 +2214,8 @@
       </div>
       <div style="margin-top:8px;padding:10px;background:rgba(255,77,94,0.05);border-left:2px solid var(--red);font-size:11px;color:var(--text-2);line-height:1.7;border-radius:0 3px 3px 0">
         <div style="color:var(--red);font-weight:700;font-size:10px;letter-spacing:1px;margin-bottom:4px">⚠ 세금 영향 시뮬레이션</div>
-        · 매도가 시 평가차익이 +10%라면 → 세금 약 <b>₩${Math.round(nav*0.10*0.22).toLocaleString()}</b> 발생 (수익의 22%)<br>
-        · 백테스트 기준 평균 연 납부세금 <b>7.2억 / 100억 운용</b> = 연 7.2%<br>
+        · 실제 연간 실현손익과 적용 공제를 반영해 별도로 예상세금을 계산하세요.<br>
+        · 예상세금은 연간 실현손익·공제·환율에 따라 달라지며 이 주문만으로 확정할 수 없습니다.<br>
         · 이 전환을 포함해 <b>외부 계좌에 세금 예비비 별도 보관</b> 권장
       </div>` : asset === 'CASH' ? `
       <div style="margin-top:10px;padding:10px;background:var(--bg-2);font-size:11px;color:var(--text-2);line-height:1.7">
@@ -2716,7 +2230,7 @@
     `;
   }
   function resetForm(){
-    document.getElementById('curAsset').value = 'QLD';
+    document.getElementById('curAsset').value = Q123.currentAsset || 'QLD';
     document.getElementById('navInput').value = 100000000;
     const fxEl = document.getElementById('fxInput');
     fxEl.value = Q123.usdKrw != null ? Math.round(Q123.usdKrw) : 1380;

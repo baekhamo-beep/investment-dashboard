@@ -1,0 +1,35 @@
+{
+  "mode": "NORMAL",
+  "asset": "QLD",
+  "target_mode": "NORMAL",
+  "target_asset": "QLD",
+  "reason": "HOLD",
+  "boost_days": 0,
+  "boost_peak": null,
+  "boost_drawdown": null,
+  "cooldown_remaining": 0,
+  "above_days": 125,
+  "version": "Q123_CANONICAL_V2",
+  "as_of": "2026-10-05",
+  "signal_date": null,
+  "execution": null,
+  "last_transition": {
+    "signal_date": "2026-07-07",
+    "from": "BOOST",
+    "to": "NORMAL",
+    "reason": "QQQ < SMA50",
+    "execution_date": "2026-07-08",
+    "from_asset": "TQQQ",
+    "to_asset": "QLD"
+  },
+  "indicators": {
+    "close": 756.2,
+    "sma50": 718.2564,
+    "sma200": 669.3263,
+    "ret63": 0.06592616607699142,
+    "ret126": 0.28496176720475797
+  },
+  "price_basis": "unadjusted close; supplied Investing CSV",
+  "next_session": "2026-10-06",
+  "next_open_utc": "2026-10-06T13:30:00+00:00"
+}
