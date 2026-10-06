@@ -58,6 +58,8 @@ def render():
     start=html.index(marker); end=html.index('</section>',start)
     html=html[:start]+marker+' ─ ── ─── ───────────</div>\n'+case+'\n'+html[end:]
     # Headline numbers always come from the same generated scenario metrics.
+    html=re.sub(r'VALIDATION\.\.: <span class="verdict">.*?</span>', 'VALIDATION..: <span class="verdict">FIXED RULES</span>', html)
+    html=re.sub(r'(?:OOS|AVG) CALMAR\.\.: <b>.*?</b>', lambda _:f'AVG CALMAR..: <b>{num(q["calmar"])}</b>', html)
     html=re.sub(r'가격수익 CAGR <span class="amber">[0-9.]+%</span>',lambda _:f'가격수익 CAGR <span class="amber">{q["cagr"]*100:.2f}%</span>',html)
     html=re.sub(r'가격수익 MDD <span class="down">-[0-9.]+%</span>',lambda _:f'가격수익 MDD <span class="down">{pct(q["mdd"])}</span>',html)
     html=re.sub(r'<span>Calmar [0-9.]+</span>',lambda _:f'<span>Calmar {num(q["calmar"])}</span>',html)
