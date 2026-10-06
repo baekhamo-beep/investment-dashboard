@@ -13,6 +13,8 @@ It reports model signals, not a brokerage account's orders or holdings.
 5. The bot sends the chat ID **inside that private Telegram message**, never in Actions logs.
 6. Add that number to the `TELEGRAM_CHAT_ID` Actions secret.
 7. Run **Q123 Telegram Alerts** manually with `test_message` selected to verify reception.
+   Changes to its workflow or transport/alert code on main also send one connection test.
+   Connection tests then verify fresh market data against the current exchange calendar.
 
 Telegram keeps unconsumed updates for at most 24 hours. If discovery fails, send the phrase again.
 The discovery script does not remove existing webhooks. A bot with an existing webhook must
