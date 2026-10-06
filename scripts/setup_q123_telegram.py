@@ -28,6 +28,10 @@ def main():
         if not isinstance(me, dict) or me.get('is_bot') is not True:
             raise TelegramError('Stored token does not identify a bot')
         print('Telegram token verified on GitHub runner.')
+        # Public bot username helps distinguish a valid token for a different bot.
+        username = me.get('username', '')
+        if isinstance(username, str) and username.replace('_', '').isalnum():
+            print(f'Configured bot username: @{username}')
         chat_id = os.environ.get('TELEGRAM_CHAT_ID', '').strip()
         if chat_id:
             chat = client.call('getChat', chat_id=chat_id)
@@ -35,6 +39,7 @@ def main():
                 raise TelegramError('Only a private recipient chat is supported')
         else:
             updates = client.call('getUpdates', allowed_updates=['message'], timeout=0)
+            print(f'Pending update count: {len(updates or [])}')
             chat_id = discover_chat(updates or [], 'Q123 연결 확인')
         # Keep contact identifiers out of public Actions logs.
         print(f'::add-mask::{chat_id}')
