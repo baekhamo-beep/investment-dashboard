@@ -1,14 +1,18 @@
 from pathlib import Path
+import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import pandas as pd
 import requests
 
 from scripts.telegram_client import Telegram, TelegramError
 from scripts.setup_q123_telegram import discover_chat
-from scripts.q123_telegram import calendar_at, due_events, validate_state, messages, Journal, deliver
+from scripts.q123_telegram import (calendar_at, due_events, validate_state, messages,
+                                  Journal, deliver, missed_preopen_messages,
+                                  wait_for_preopen, main)
 
 
 class TelegramTests(unittest.TestCase):
@@ -82,6 +86,81 @@ class TelegramTests(unittest.TestCase):
         self.assertEqual(len(messages(self.state(due, target='BOOST'), due, now)), 1)
         now, due = self.due('2026-10-06T13:12:00Z')
         self.assertIn('12분 지연', messages(self.state(due), due, now)[0][1])
+
+    def test_early_runner_waits_for_summer_and_winter_target(self):
+        for value, target in [('2026-10-06T12:59:15Z', '2026-10-06T13:00:00Z'),
+                              ('2027-01-06T13:59:15Z', '2027-01-06T14:00:00Z')]:
+            now = pd.Timestamp(value)
+            expected = pd.Timestamp(target)
+            clock = Mock(side_effect=[expected - pd.Timedelta(seconds=15), expected])
+            sleep = Mock()
+            self.assertEqual(wait_for_preopen(calendar_at(now), now, clock, sleep), expected)
+            self.assertEqual([x.args[0] for x in sleep.call_args_list], [30, 15])
+
+    def test_wait_never_blocks_far_early_holidays_or_after_open(self):
+        for value in ['2026-10-06T11:00:00Z', '2026-10-10T12:50:00Z',
+                      '2026-11-26T13:50:00Z', '2026-10-06T13:30:00Z']:
+            now = pd.Timestamp(value)
+            sleep = Mock()
+            self.assertEqual(wait_for_preopen(calendar_at(now), now, Mock(), sleep), now)
+            sleep.assert_not_called()
+
+    def test_missing_preopen_warns_once_and_never_sends_expired_target(self):
+        now = pd.Timestamp('2026-10-06T14:05:00Z')
+        cal = calendar_at(now)
+        with tempfile.TemporaryDirectory() as directory:
+            journal = Journal(Path(directory) / 'journal.json')
+            notices = missed_preopen_messages(cal, now, journal)
+            self.assertEqual(len(notices), 1)
+            identity, message = notices[0]
+            self.assertEqual(identity, 'preopen-missed:2026-10-06')
+            self.assertIn('10/06 22:00', message)
+            self.assertIn('매매 신호가 아닌', message)
+            self.assertNotIn('100%', message)
+            client = Mock()
+            deliver(client, 'private-id', notices, journal, now)
+            deliver(client, 'private-id', missed_preopen_messages(cal, now, journal), journal, now)
+            self.assertEqual(client.send.call_count, 1)
+            journal.record('preopen:2026-10-06', now)
+            self.assertEqual(missed_preopen_messages(cal, now, journal), [])
+
+    def test_no_missing_warning_before_open_weekends_or_holidays(self):
+        with tempfile.TemporaryDirectory() as directory:
+            journal = Journal(Path(directory) / 'journal.json')
+            for value in ['2026-10-06T13:29:59Z', '2026-10-10T14:05:00Z',
+                          '2026-11-26T14:35:00Z']:
+                now = pd.Timestamp(value)
+                self.assertEqual(missed_preopen_messages(calendar_at(now), now, journal), [])
+
+    def test_warning_at_open_and_after_early_close(self):
+        with tempfile.TemporaryDirectory() as directory:
+            journal = Journal(Path(directory) / 'journal.json')
+            for value in ['2026-10-06T13:30:00Z', '2026-11-27T18:10:00Z']:
+                now = pd.Timestamp(value)
+                self.assertEqual(len(missed_preopen_messages(calendar_at(now), now, journal)), 1)
+
+    def test_slow_price_download_does_not_send_after_open_target(self):
+        before = pd.Timestamp('2026-10-06T13:29:59Z')
+        after = pd.Timestamp('2026-10-06T13:30:01Z')
+        state = self.state(due_events(calendar_at(before), before), target='BOOST')
+        with tempfile.TemporaryDirectory() as directory:
+            journal = Journal(Path(directory) / 'journal.json')
+            client = Mock()
+            with patch('scripts.q123_telegram.utc_now', side_effect=[before, after]), \
+                 patch('scripts.q123_telegram.Journal', return_value=journal), \
+                 patch('scripts.q123_telegram.Telegram', return_value=client), \
+                 patch.dict('os.environ', {'TELEGRAM_BOT_TOKEN': 'fixture', 'TELEGRAM_CHAT_ID': 'fixture-id'}), \
+                 patch.object(sys, 'argv', ['q123_telegram.py']), \
+                 patch.dict(sys.modules, {'fetch_data': SimpleNamespace(get_q123_state=lambda: state)}):
+                self.assertEqual(main(), 0)
+            self.assertEqual(client.send.call_count, 1)
+            self.assertIn('누락 확인', client.send.call_args.args[1])
+            self.assertNotIn('100%', client.send.call_args.args[1])
+            self.assertFalse(journal.sent('preopen:2026-10-06'))
+
+    def test_missing_configuration_fails_visibly(self):
+        with patch.dict('os.environ', {}, clear=True), patch.object(sys, 'argv', ['q123_telegram.py']):
+            self.assertEqual(main(), 1)
 
     def test_receipts_survive_failure_and_prevent_repeats(self):
         now, due = self.due('2026-10-06T13:00:00Z')

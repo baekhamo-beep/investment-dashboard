@@ -8,16 +8,22 @@ on:
       - 'scripts/q123_telegram.py'
       - 'scripts/telegram_client.py'
   schedule:
-    # Summer/winter US opens: UTC 13:30/14:30. Catch up until open if delayed.
-    - cron: '0,10,20,30 13,14 * * 1-5'
+    # Start before the summer target (13:00 UTC); the runner waits locally.
+    - cron: '43,53 12 * * 1-5'
+    # Off-hour backups, winter prewarming (13:43/53), and post-open health checks.
+    - cron: '3,13,23,33,43,53 13-16 * * 1-5'
     # Includes NYSE early closes as well as regular summer/winter closes.
     - cron: '7,27,47 17-22 * * 1-5'
+  workflow_run:
+    workflows: ['Fetch Market Data']
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       test_message:
         description: 'Send a connection test instead of checking scheduled alerts'
         type: boolean
-        default: true
+        default: false
 
 permissions:
   contents: write
@@ -28,8 +34,9 @@ concurrency:
 
 jobs:
   notify:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.head_repository.full_name == github.repository
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,15 +50,18 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          SEND_TEST: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.test_message) }}
+          SEND_TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.test_message }}
+          EARLY_RUNNER: ${{ github.event_name == 'schedule' }}
         run: |
           if [ "$SEND_TEST" = "true" ]; then
             python scripts/q123_telegram.py --test
+          elif [ "$EARLY_RUNNER" = "true" ]; then
+            python scripts/q123_telegram.py --wait-for-preopen
           else
             python scripts/q123_telegram.py
           fi
       - name: Verify fresh market data for connection tests
-        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.test_message)
+        if: github.event_name == 'workflow_dispatch' && inputs.test_message
         run: |
           python - <<'PY'
           import pandas as pd

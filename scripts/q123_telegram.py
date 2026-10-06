@@ -6,6 +6,7 @@ import math
 import os
 from pathlib import Path
 import sys
+import time
 
 import exchange_calendars as xc
 import pandas as pd
@@ -57,6 +58,47 @@ def validate_state(state, due):
 
 def korean_time(stamp):
     return stamp.tz_convert('Asia/Seoul').strftime('%m/%d %H:%M')
+
+
+def utc_now():
+    return pd.Timestamp.now(tz='UTC')
+
+
+def wait_for_preopen(calendar, now, clock=utc_now, sleep=time.sleep):
+    """An early runner waits locally; other checks never wait more than 30 minutes."""
+    due = due_events(calendar, now)
+    target = due['open'] - pd.Timedelta(minutes=30)
+    remaining = (target - now).total_seconds()
+    if not 0 < remaining <= 1800:
+        return now
+    print(f'Runner ready; waiting for pre-open notice at {target.isoformat()}.', flush=True)
+    waited = 0
+    while now < target and waited < 1800:
+        seconds = min(30, (target - now).total_seconds(), 1800 - waited)
+        sleep(seconds)
+        waited += seconds
+        now = clock()
+    return now
+
+
+def missed_preopen_messages(calendar, now, journal):
+    """Report today's missing notice without sending an expired trading target."""
+    opened = calendar.schedule.loc[calendar.schedule['open'] <= now]
+    day, row = opened.index[-1], opened.iloc[-1]
+    if row['open'].tz_convert('America/New_York').date() != now.tz_convert('America/New_York').date():
+        return []
+    session = str(day.date())
+    if journal.sent(f'preopen:{session}'):
+        return []
+    return [(f'preopen-missed:{session}',
+             '⚠️ Q123 개장 전 알림 누락 확인\n'
+             f'미국 거래일: {session}\n'
+             f"예정 알림: {korean_time(row['open'] - pd.Timedelta(minutes=30))} 한국시간\n"
+             f"개장: {korean_time(row['open'])} 한국시간\n"
+             '개장 전에 정상 알림을 전송한 기록이 없습니다.\n'
+             '예약 실행 지연·누락 또는 전송 실패 여부를 점검해야 합니다.\n'
+             '이미 개장했으므로 지난 시가 매매 목표를 뒤늦게 보내지 않습니다.\n'
+             '이 메시지는 매매 신호가 아닌 알림 상태 안내입니다.\n' + SITE)]
 
 
 def messages(state, due, now):
@@ -129,33 +171,45 @@ def deliver(client, chat_id, notices, journal, now):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--test', action='store_true')
+    parser.add_argument('--wait-for-preopen', action='store_true')
     args = parser.parse_args()
     token = os.environ.get('TELEGRAM_BOT_TOKEN', '').strip()
     chat_id = os.environ.get('TELEGRAM_CHAT_ID', '').strip()
     if not token or not chat_id:
         print('Telegram setup pending: configure TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID.')
-        return 1 if args.test else 0
+        return 1
     print(f'::add-mask::{chat_id}')
     client = Telegram(token)
     try:
         if args.test:
             client.send(chat_id, '✅ Q123 알림 수신 테스트\n'
-                        '전환 신호 확정 시 및 매 거래일 개장 30분 전 알림이 설정됐습니다.\n'
+                        'Telegram 전송 연결을 확인했습니다.\n'
+                        '예약 실행과 정시 도착 여부는 별도로 확인해야 합니다.\n'
+                        '알림 목표: 전환 신호 확정 시 및 매 거래일 개장 30분 전.\n'
                         '미국 휴장일 제외·서머타임 자동 반영.\n'
                         'GitHub 예약 실행 상황에 따라 발송이 지연될 수 있습니다.\n' + SITE)
             print('Test message acknowledged.')
             return 0
-        now = pd.Timestamp.now(tz='UTC')
-        due = due_events(calendar_at(now), now)
+        now = utc_now()
+        calendar = calendar_at(now)
+        if args.wait_for_preopen:
+            now = wait_for_preopen(calendar, now)
+        due = due_events(calendar, now)
+        print(f"Alert check UTC={now.isoformat()} preopen={due['preopen']} afterclose={due['afterclose']}")
+        journal = Journal()
+        deliver(client, chat_id, missed_preopen_messages(calendar, now, journal), journal, now)
         if not due['preopen'] and not due['afterclose']:
             print('Outside completed-close and pre-open notification windows.')
             return 0
-        journal = Journal()
         # Heavy price collection is done only when a notification window is active.
         try:
             from fetch_data import get_q123_state
             state = get_q123_state()
-            validate_state(state, due)
+            # Price collection can cross the open: never send a stale pre-open order target.
+            now = utc_now()
+            due = due_events(calendar, now)
+            if due['preopen'] or due['afterclose']:
+                validate_state(state, due)
         except Exception:
             deliver(client, chat_id, [(f"data-error:{due['session']}",
                 '⚠️ Q123 데이터 확인 필요\n'
@@ -163,6 +217,10 @@ def main():
                 '이번 점검에서는 정상 상태나 매매 목표를 안내하지 않습니다.\n' + SITE)], journal, now)
             print('Fresh Q123 state validation failed; no normal signal was sent.')
             return 1
+        deliver(client, chat_id, missed_preopen_messages(calendar, now, journal), journal, now)
+        if not due['preopen'] and not due['afterclose']:
+            print('Notification window closed during price collection; no expired target sent.')
+            return 0
         deliver(client, chat_id, messages(state, due, now), journal, now)
         print('Q123 notification check complete.')
     except (TelegramError, ValueError):

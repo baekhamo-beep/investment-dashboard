@@ -13,8 +13,8 @@ It reports model signals, not a brokerage account's orders or holdings.
 5. The bot sends the chat ID **inside that private Telegram message**, never in Actions logs.
 6. Add that number to the `TELEGRAM_CHAT_ID` Actions secret.
 7. Run **Q123 Telegram Alerts** manually with `test_message` selected to verify reception.
-   Changes to its workflow or transport/alert code on main also send one connection test.
-   Connection tests then verify fresh market data against the current exchange calendar.
+   Manual connection tests then verify fresh market data against the current exchange calendar.
+   Code pushes run the normal alert/health check, not a misleading schedule-success test.
 
 Telegram keeps unconsumed updates for at most 24 hours. If discovery fails, send the phrase again.
 The discovery script does not remove existing webhooks. A bot with an existing webhook must
@@ -35,6 +35,27 @@ GitHub Actions schedules can be delayed or dropped. Runs can catch up before the
 label delays of at least 5 minutes; no pre-open instruction is sent at or after open.
 Exact delivery at minus 30 minutes is not guaranteed. Use an external scheduler if required.
 Phone/app notification settings and connectivity also affect when a user sees the message.
+
+## Schedule reliability and missed-notice checks
+
+- Early off-hour jobs start before the target time and wait inside the runner for up to
+  30 minutes. This reduces dependence on a job being created exactly at the top of an hour.
+- Additional checks run every ten minutes off-hour through 16:53 UTC. Completion of the
+  existing main-branch `Fetch Market Data` workflow also triggers a backup check.
+- After an exchange session opens, a missing acknowledged `preopen` receipt causes one
+  **missed-notice warning** for that session. It contains no expired target or trading instruction.
+- A normal pre-open receipt suppresses the warning. Warning receipts prevent repeat warnings.
+- Time is rechecked after price collection so a slow download cannot send a pre-open target
+  after the market has opened. Missing Telegram configuration now fails visibly.
+- These are mitigations within GitHub, not an independent scheduler or proof of timely delivery.
+  If every trigger is delayed/dropped, even the warning waits until a runner actually starts.
+  A successful connection test proves Telegram delivery only. Verify `event=schedule` runs and
+  the session's delivery receipt separately.
+
+Incident 2026-10-06: at diagnosis the workflow was active, the 09:17 UTC push/test succeeded,
+and the workflow runs API reported one run total with no schedule-triggered run. The missing
+pre-open notice occurred before the alert script was invoked. The internal scheduler reason
+was unavailable; the safeguards above do not claim to establish or eliminate that reason.
 
 ## Delivery journal and credentials
 
