@@ -1,9 +1,9 @@
 name: Validate Q123
 on:
   pull_request:
-    paths: ['q123_engine.py', 'scripts/*q123*', 'tests/**', 'data/**', 'docs/q123*', 'fetch_data.py', 'requirements-q123.txt', '.github/workflows/test_q123.yml']
+    paths: ['q123_engine.py', 'scripts/*q123*', 'scripts/telegram_client.py', 'tests/**', 'data/**', 'docs/q123*', 'fetch_data.py', 'requirements-q123.txt', '.github/workflows/test_q123.yml', '.github/workflows/*q123*telegram*']
   push:
-    paths: ['q123_engine.py', 'scripts/*q123*', 'tests/**', 'data/**', 'docs/q123*', 'fetch_data.py', 'requirements-q123.txt', '.github/workflows/test_q123.yml']
+    paths: ['q123_engine.py', 'scripts/*q123*', 'scripts/telegram_client.py', 'tests/**', 'data/**', 'docs/q123*', 'fetch_data.py', 'requirements-q123.txt', '.github/workflows/test_q123.yml', '.github/workflows/*q123*telegram*']
 jobs:
   validate:
     runs-on: ubuntu-latest
