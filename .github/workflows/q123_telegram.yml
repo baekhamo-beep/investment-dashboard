@@ -69,12 +69,11 @@ jobs:
         run: |
           python - <<'PY'
           import pandas as pd
-          from fetch_data import get_q123_state
-          from scripts.q123_telegram import calendar_at, due_events, validate_state
+          from scripts.q123_telegram import calendar_at, due_events, validate_state, load_alert_state
           now = pd.Timestamp.now(tz='UTC')
-          state = get_q123_state()
+          state = load_alert_state(calendar_at(now), now)
           validate_state(state, due_events(calendar_at(now), now))
-          print('Fresh market state verified:', state['as_of'], state['mode'], '->', state['target_mode'])
+          print('Latest completed-session state verified:', state['as_of'], state['mode'], '->', state['target_mode'])
           PY
       - name: Persist acknowledged-message receipts
         if: always()
