@@ -20,6 +20,10 @@ on:
     branches: [main]
   workflow_dispatch:
     inputs:
+      wait_for_preopen:
+        description: 'External scheduler: wait up to 30 minutes for the pre-open target'
+        type: boolean
+        default: false
       test_message:
         description: 'Send a connection test instead of checking scheduled alerts'
         type: boolean
@@ -51,7 +55,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           SEND_TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.test_message }}
-          EARLY_RUNNER: ${{ github.event_name == 'schedule' }}
+          EARLY_RUNNER: ${{ github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.wait_for_preopen) }}
         run: |
           if [ "$SEND_TEST" = "true" ]; then
             python scripts/q123_telegram.py --test
