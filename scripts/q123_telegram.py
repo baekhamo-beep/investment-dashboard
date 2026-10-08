@@ -56,6 +56,32 @@ def validate_state(state, due):
         raise ValueError('Q123 transition is not a latest-close signal')
 
 
+def load_alert_state(calendar, now, fetcher=None, cache_path=None):
+    """Use a completed-close snapshot only after calendar and freshness checks."""
+    due = due_events(calendar, now)
+    try:
+        if fetcher is None:
+            from fetch_data import get_q123_state
+            fetcher = get_q123_state
+        state = fetcher()
+        validate_state(state, due)
+        print('Q123 data source: live download.')
+        return state
+    except Exception as exc:
+        # Log the exception type only: upstream errors may contain request secrets.
+        print(f'Live Q123 unavailable ({type(exc).__name__}); checking saved snapshot.')
+    path = cache_path if cache_path is not None else ROOT / 'docs/data.json'
+    state = json.loads(Path(path).read_text())['q123']
+    validate_state(state, due)
+    stamp = pd.Timestamp(state.get('updated_utc'))
+    completed_close = calendar.schedule.loc[
+        calendar.schedule['close'] <= now, 'close'].iloc[-1]
+    if pd.isna(stamp) or stamp.tzinfo is None or not completed_close <= stamp <= now:
+        raise ValueError('Saved Q123 snapshot timestamp is invalid')
+    print(f"Q123 data source: validated saved snapshot; as_of={state['as_of']}.")
+    return state
+
+
 def korean_time(stamp):
     return stamp.tz_convert('Asia/Seoul').strftime('%m/%d %H:%M')
 
@@ -203,8 +229,7 @@ def main():
             return 0
         # Heavy price collection is done only when a notification window is active.
         try:
-            from fetch_data import get_q123_state
-            state = get_q123_state()
+            state = load_alert_state(calendar, now)
             # Price collection can cross the open: never send a stale pre-open order target.
             now = utc_now()
             due = due_events(calendar, now)
