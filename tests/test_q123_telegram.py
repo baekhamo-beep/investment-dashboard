@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -12,7 +13,7 @@ from scripts.telegram_client import Telegram, TelegramError
 from scripts.setup_q123_telegram import discover_chat
 from scripts.q123_telegram import (calendar_at, due_events, validate_state, messages,
                                   Journal, deliver, missed_preopen_messages,
-                                  wait_for_preopen, main)
+                                  wait_for_preopen, load_alert_state, main)
 
 
 class TelegramTests(unittest.TestCase):
@@ -28,6 +29,32 @@ class TelegramTests(unittest.TestCase):
     def due(self, value):
         now = pd.Timestamp(value)
         return now, due_events(calendar_at(now), now)
+
+    def test_saved_snapshot_fallback_and_rejection(self):
+        now, due = self.due('2026-10-08T00:48:00Z')
+        cal = calendar_at(now)
+        good = self.state(due)
+        good['updated_utc'] = '2026-10-07T23:55:33Z'
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'data.json'
+            path.write_text(json.dumps({'q123': good}))
+            failed = Mock(side_effect=ValueError('provider missing latest bar'))
+            self.assertEqual(load_alert_state(cal, now, failed, path), good)
+            self.assertEqual(load_alert_state(cal, now, lambda: good, Path('absent')), good)
+            for changes in [
+                {'as_of': '2026-10-06'},
+                {'next_session': '2026-10-09'},
+                {'version': 'obsolete'},
+                {'updated_utc': '2026-10-07T19:59:00Z'},
+                {'updated_utc': '2026-10-08T01:00:00Z'},
+                {'updated_utc': None},
+                {'updated_utc': '2026-10-07T23:55:33'},
+                {'target_asset': 'INVALID'},
+            ]:
+                with self.subTest(changes=changes):
+                    path.write_text(json.dumps({'q123': {**good, **changes}}))
+                    with self.assertRaises(ValueError):
+                        load_alert_state(cal, now, failed, path)
 
     def test_summer_winter_and_open_boundary(self):
         for value, opening in [('2026-10-06T13:00:00Z', '2026-10-06T13:30:00Z'),
