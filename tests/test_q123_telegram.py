@@ -13,7 +13,8 @@ from scripts.telegram_client import Telegram, TelegramError
 from scripts.setup_q123_telegram import discover_chat
 from scripts.q123_telegram import (calendar_at, due_events, validate_state, messages,
                                   Journal, deliver, missed_preopen_messages,
-                                  wait_for_preopen, load_alert_state, main)
+                                  wait_for_preopen, load_alert_state, main,
+                                  data_failure_messages, recovery_messages, needs_recovery)
 
 
 class TelegramTests(unittest.TestCase):
@@ -29,6 +30,57 @@ class TelegramTests(unittest.TestCase):
     def due(self, value):
         now = pd.Timestamp(value)
         return now, due_events(calendar_at(now), now)
+
+
+    def test_data_warning_grace_persistence_and_recovery(self):
+        now, due = self.due('2026-10-08T20:05:00Z')
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'journal.json'
+            journal = Journal(path)
+            self.assertEqual(data_failure_messages(journal, due, now), [])
+            journal = Journal(path)
+            self.assertTrue(needs_recovery(journal, due))
+            self.assertEqual(data_failure_messages(journal, due, now + pd.Timedelta(minutes=29)), [])
+            notices = data_failure_messages(journal, due, now + pd.Timedelta(minutes=30))
+            self.assertEqual(len(notices), 1)
+            client = Mock()
+            deliver(client, 'test', notices, journal, now)
+            deliver(client, 'test', notices, journal, now)
+            self.assertEqual(client.send.call_count, 1)
+            recovered = recovery_messages(journal, self.state(due), due)
+            self.assertIn('[시스템 복구]', recovered[0][1])
+            deliver(client, 'test', recovered, journal, now)
+            deliver(client, 'test', recovered, journal, now)
+            self.assertEqual(client.send.call_count, 2)
+
+    def test_preopen_failure_is_immediate_and_silent_failures_do_not_recover_notice(self):
+        now, due = self.due('2026-10-09T13:00:00Z')
+        with tempfile.TemporaryDirectory() as directory:
+            journal = Journal(Path(directory) / 'journal.json')
+            notices = data_failure_messages(journal, due, now)
+            self.assertEqual(len(notices), 1)
+            self.assertIn('개장 전 판단 불가', notices[0][1])
+            self.assertEqual(recovery_messages(journal, self.state(due), due), [])
+            journal.record(notices[0][0], now)
+            self.assertEqual(len(recovery_messages(journal, self.state(due), due)), 1)
+
+
+    def test_legacy_warning_recovers_outside_trading_window(self):
+        now, due = self.due('2026-10-09T06:15:00Z')
+        with tempfile.TemporaryDirectory() as directory:
+            journal = Journal(Path(directory) / 'journal.json')
+            journal.record(f"data-error:{due['session']}", now)
+            client = Mock()
+            with patch('scripts.q123_telegram.utc_now', return_value=now), \
+                 patch('scripts.q123_telegram.Journal', return_value=journal), \
+                 patch('scripts.q123_telegram.Telegram', return_value=client), \
+                 patch('scripts.q123_telegram.load_alert_state', return_value=self.state(due)), \
+                 patch.dict('os.environ', {'TELEGRAM_BOT_TOKEN': 'fixture', 'TELEGRAM_CHAT_ID': 'fixture-id'}), \
+                 patch.object(sys, 'argv', ['q123_telegram.py']):
+                self.assertEqual(main(), 0)
+                self.assertEqual(main(), 0)
+            self.assertEqual(client.send.call_count, 1)
+            self.assertIn('[시스템 복구]', client.send.call_args.args[1])
 
     def test_saved_snapshot_fallback_and_rejection(self):
         now, due = self.due('2026-10-08T00:48:00Z')
