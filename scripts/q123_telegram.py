@@ -117,7 +117,7 @@ def missed_preopen_messages(calendar, now, journal):
     if journal.sent(f'preopen:{session}'):
         return []
     return [(f'preopen-missed:{session}',
-             '⚠️ Q123 개장 전 알림 누락 확인\n'
+             '⚠️ [시스템 경고] Q123 개장 전 알림 누락 확인\n'
              f'미국 거래일: {session}\n'
              f"예정 알림: {korean_time(row['open'] - pd.Timedelta(minutes=30))} 한국시간\n"
              f"개장: {korean_time(row['open'])} 한국시간\n"
@@ -134,7 +134,7 @@ def messages(state, due, now):
     if switching and (due['afterclose'] or due['preopen']):
         identity = f"transition:{state['signal_date']}:{state['mode']}:{state['target_mode']}"
         notices.append((identity,
-            '🔔 Q123 전환 신호 확정\n'
+            '🔔 [매매 신호] Q123 전환 신호 확정\n'
             f"모델 상태: {state['mode']} → {state['target_mode']}\n"
             f"목표 자산: {state['target_asset']} 100%\n"
             f"신호일(미국): {state['signal_date']} 종가\n"
@@ -143,7 +143,7 @@ def messages(state, due, now):
             '실제 계좌의 주문·체결을 확인한 알림이 아닙니다.\n' + SITE))
     if due['preopen']:
         elapsed = int((now - (due['open'] - pd.Timedelta(minutes=30))).total_seconds() / 60)
-        heading = '⏰ Q123 개장 전 알림'
+        heading = '⏰ [정기 점검] Q123 개장 전 알림'
         if elapsed >= 5:
             heading += f' (예약 실행 {elapsed}분 지연)'
         action = f"전환 신호 있음: {state['mode']} → {state['target_mode']}" if switching else 'HOLD · 모델 상태 유지'
@@ -179,6 +179,9 @@ class Journal:
         self.data['sent'][self.key(identity)] = now.isoformat()
         cutoff = now - pd.Timedelta(days=180)
         self.data['sent'] = {k: v for k, v in self.data['sent'].items() if pd.Timestamp(v) >= cutoff}
+        self.save()
+
+    def save(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)
         temporary = self.path.with_suffix('.tmp')
         temporary.write_text(json.dumps(self.data, indent=2, sort_keys=True) + '\n')
@@ -192,6 +195,48 @@ def deliver(client, chat_id, notices, journal, now):
         client.send(chat_id, message)
         journal.record(identity, now)  # Persist only acknowledged sends, even if later sends fail.
         print('Telegram notice acknowledged; receipt persisted.')
+
+
+def needs_recovery(journal, due):
+    return (bool(journal.data.get('data_failure')) or
+            (journal.sent(f"data-error:{due['session']}") and
+             not journal.sent(f"data-recovered:{due['session']}")))
+
+
+def data_failure_messages(journal, due, now):
+    failure = journal.data.get('data_failure')
+    if not failure or failure['as_of'] != due['as_of']:
+        failure = {'as_of': due['as_of'], 'first_seen': now.isoformat(), 'checks': 0}
+    failure['checks'] += 1
+    journal.data['data_failure'] = failure
+    journal.save()
+    elapsed = now - pd.Timestamp(failure['first_seen'])
+    if due['preopen']:
+        identity = f"data-preopen-error:{due['session']}"
+        heading = '⚠️ [시스템 경고] 개장 전 판단 불가'
+    elif failure['checks'] >= 2 and elapsed >= pd.Timedelta(minutes=30):
+        identity = f"data-error:{due['session']}"
+        heading = '⚠️ [시스템 경고] 데이터 검증 실패 지속'
+    else:
+        print('Temporary data failure recorded; retry on next scheduled run.')
+        return []
+    return [(identity, heading + '\n'
+             f"필요한 종가 기준: {due['as_of']} (미국)\n"
+             '최신 데이터를 검증하지 못해 전환 여부를 판단할 수 없습니다.\n'
+             '이 메시지는 매수·매도 신호가 아닙니다.\n'
+             '다음 예약 실행에서 재확인하며, 확인 전에는 매매 목표를 안내하지 않습니다.\n' + SITE)]
+
+
+def recovery_messages(journal, state, due):
+    warned = (journal.sent(f"data-error:{due['session']}") or
+              journal.sent(f"data-preopen-error:{due['session']}"))
+    if not warned:
+        return []
+    return [(f"data-recovered:{due['session']}",
+             '✅ [시스템 복구] 최신 데이터 검증 완료\n'
+             f"확인한 종가 기준: {state['as_of']} (미국)\n"
+             '데이터 검증이 정상화됐습니다. 매수·매도 신호는 아닙니다.\n'
+             '전환 신호와 개장 전 점검은 별도 알림으로 안내합니다.\n' + SITE)]
 
 
 def main():
@@ -224,24 +269,25 @@ def main():
         print(f"Alert check UTC={now.isoformat()} preopen={due['preopen']} afterclose={due['afterclose']}")
         journal = Journal()
         deliver(client, chat_id, missed_preopen_messages(calendar, now, journal), journal, now)
-        if not due['preopen'] and not due['afterclose']:
+        if not due['preopen'] and not due['afterclose'] and not needs_recovery(journal, due):
             print('Outside completed-close and pre-open notification windows.')
             return 0
         # Heavy price collection is done only when a notification window is active.
         try:
-            state = load_alert_state(calendar, now)
+            active_window = due['preopen'] or due['afterclose']
+            state = load_alert_state(calendar, now, fetcher=None if active_window else lambda: None)
             # Price collection can cross the open: never send a stale pre-open order target.
             now = utc_now()
             due = due_events(calendar, now)
             if due['preopen'] or due['afterclose']:
                 validate_state(state, due)
         except Exception:
-            deliver(client, chat_id, [(f"data-error:{due['session']}",
-                '⚠️ Q123 데이터 확인 필요\n'
-                '최신 완료 거래일의 데이터를 확인하지 못했습니다.\n'
-                '이번 점검에서는 정상 상태나 매매 목표를 안내하지 않습니다.\n' + SITE)], journal, now)
+            deliver(client, chat_id, data_failure_messages(journal, due, now), journal, now)
             print('Fresh Q123 state validation failed; no normal signal was sent.')
             return 1
+        deliver(client, chat_id, recovery_messages(journal, state, due), journal, now)
+        journal.data.pop('data_failure', None)
+        journal.save()
         deliver(client, chat_id, missed_preopen_messages(calendar, now, journal), journal, now)
         if not due['preopen'] and not due['afterclose']:
             print('Notification window closed during price collection; no expired target sent.')
