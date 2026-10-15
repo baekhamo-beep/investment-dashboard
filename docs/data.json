@@ -33,9 +33,9 @@
     "price_basis": "Yahoo unadjusted close; completed sessions only",
     "next_session": "2026-10-15",
     "next_open_utc": "2026-10-15T13:30:00+00:00",
-    "updated_utc": "2026-10-14T21:49:47.080986+00:00"
+    "updated_utc": "2026-10-15T02:16:44.103363+00:00"
   },
-  "updated_utc": "2026-10-14T21:49:47Z",
+  "updated_utc": "2026-10-15T02:16:44Z",
   "nasdaq": {
     "drawdown_pct": -4.04,
     "rsi": 41.6,
@@ -69,8 +69,8 @@
     "AVUV": 119.19,
     "SGOV": 100.54
   },
-  "usd_krw": 1340.9,
-  "kiwoom_price": 11070,
+  "usd_krw": 1349.4,
+  "kiwoom_price": 10870,
   "mps": {
     "trend": 1,
     "momentum": 1,
