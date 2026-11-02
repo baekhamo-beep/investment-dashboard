@@ -24,38 +24,38 @@
       "to_asset": "QLD"
     },
     "indicators": {
-      "close": 681.0999755859375,
-      "sma50": 724.3539990234375,
-      "sma200": 679.8158999633789,
-      "ret63": -0.05905919933946946,
-      "ret126": 0.01221610189554756
+      "close": 681.0900268554688,
+      "sma50": 724.3538000488281,
+      "sma200": 679.8158502197266,
+      "ret63": -0.05907294352791226,
+      "ret126": 0.012201316598917433
     },
     "price_basis": "Yahoo unadjusted close; completed sessions only",
     "next_session": "2026-11-03",
     "next_open_utc": "2026-11-03T14:30:00+00:00",
-    "updated_utc": "2026-11-02T21:00:39.800247+00:00"
+    "updated_utc": "2026-11-02T22:30:46.724934+00:00"
   },
-  "updated_utc": "2026-11-02T21:00:39Z",
+  "updated_utc": "2026-11-02T22:30:46Z",
   "nasdaq": {
-    "drawdown_pct": -10.38,
+    "drawdown_pct": -10.34,
     "rsi": 27.2,
-    "ma200_dev_pct": 0.31,
-    "ma50_dev_pct": -5.97,
-    "current_price": 680.81,
+    "ma200_dev_pct": 0.35,
+    "ma50_dev_pct": -5.94,
+    "current_price": 681.09,
     "peak_price": 759.66,
     "sma50_price": 724.07,
     "sma200_price": 678.68,
-    "momentum_6m": 0.1,
-    "return_20d_pct": -10.38,
-    "return_60d_pct": -5.46,
-    "return_63d_pct": -5.85,
-    "return_126d_pct": 1.4,
+    "momentum_6m": 0.14,
+    "return_20d_pct": -10.34,
+    "return_60d_pct": -5.42,
+    "return_63d_pct": -5.81,
+    "return_126d_pct": 1.44,
     "above_ma200": true,
     "above_ma50": false
   },
-  "vix": 21.61,
+  "vix": 21.15,
   "fear_greed": {
-    "value": 22.4,
+    "value": 22.7,
     "classification": "extreme fear",
     "prev_close": 26.2,
     "prev_1w": 29.8,
@@ -63,13 +63,13 @@
     "source": "CNN Business"
   },
   "etf_prices": {
-    "QLD": 80.22,
-    "SPMO": 132.36,
-    "SCHD": 35.88,
-    "AVUV": 123.93,
-    "SGOV": 100.42
+    "QLD": 80.3,
+    "SPMO": 132.45,
+    "SCHD": 35.9,
+    "AVUV": 123.97,
+    "SGOV": 100.43
   },
-  "usd_krw": 1345.3,
+  "usd_krw": 1345.7,
   "kiwoom_price": 10320,
   "mps": {
     "trend": 1,
