@@ -36,8 +36,25 @@ async function load(s){const r=context();r.c.payload=market(s);vm.runInContext('
   // Expired next-open instructions are not offered as current executable orders.
   ({c,get}=await load({...state,next_open_utc:'2000-01-01T14:30:00Z'}));
   vm.runInContext('generateOrder()',c);assert.match(get('orderOutput').innerHTML,/이미 지났습니다/);
+  // A BEAR signal must be prominent without mislabeling the unexecuted QLD holding.
+  const bearPending = {...state,mode:'NORMAL',asset:'QLD',target_mode:'BEAR',target_asset:'QQQ',
+    reason:'QQQ < SMA200',indicators:{close:647.05,sma50:722.27,sma200:680.71,ret63:-.105,ret126:-.069}};
+  ({c,get}=await load(bearPending));
+  assert.equal(get('mode-label').textContent,'NEXT-OPEN SIGNAL');
+  assert.equal(get('mode-value').textContent,'BEAR');
+  assert.match(get('mode-asset').innerHTML,/QQQ.*100%/);
+  assert.match(get('mode-pending-note').textContent,/NORMAL\/QLD 100%/);
+  assert.match(get('mode-pending-note').textContent,/BEAR\/QQQ 100%/);
+  assert.equal(get('dist-name-1').textContent,'BEAR 진입 발동');
+  get('curAsset').value='QLD';
+  vm.runInContext('generateOrder()',c);
+  assert.match(get('orderOutput').innerHTML,/QLD 전량 매도 → QQQ 매수/);
+  // An expired signal must not be presented as an already executed trade.
+  ({c,get}=await load({...bearPending,next_open_utc:'2000-01-01T14:30:00Z'}));
+  assert.equal(get('mode-label').textContent,'LAST CLOSE SIGNAL · VERIFY');
+  assert.match(get('mode-pending-note').textContent,/최신 상태 및 실제 체결 여부 확인 필요/);
   // Missing or incompatible state stops order generation.
   ({c,get}=await load({...state,version:'OLD'}));
   vm.runInContext('generateOrder()',c);assert.match(get('orderOutput').innerHTML,/로딩되지 않았습니다/);
-  console.log('Q123 UI: 5 regression scenarios passed');
+  console.log('Q123 UI: 7 regression scenarios passed');
 })().catch(e=>{console.error(e);process.exitCode=1});

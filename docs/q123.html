@@ -1034,10 +1034,11 @@
   <div class="mode-display">
     <div class="mode-grid">
       <div class="mode-current">
-        <div class="label">CURRENT MODE</div>
+        <div class="label" id="mode-label">CURRENT MODE</div>
         <div class="value" id="mode-value">—</div>
         <div class="asset" id="mode-asset">→ — <span class="pct">—</span></div>
         <div class="asset-detail" id="mode-asset-detail" style="font-size:11px;color:var(--text-3);margin-top:6px;line-height:1.6">—</div>
+        <div id="mode-pending-note" style="display:none;margin-top:10px;padding:10px 12px;background:rgba(255,77,94,0.06);border-left:3px solid var(--red);font-size:11px;line-height:1.7;color:var(--text-2)"></div>
       </div>
       <div class="mode-distance" id="mode-distance">
         <!-- JS에서 현재 모드에 따라 동적으로 채워짐 -->
@@ -1891,13 +1892,19 @@
     const set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
     const setHTML = (id, val) => { const el = document.getElementById(id); if(el) el.innerHTML = val; };
 
-    // 모드 색상
-    const modeColor = Q123.currentMode === 'BOOST' ? 'var(--amber)'
-                   : Q123.currentMode === 'BEAR' ? 'var(--red)'
+    // 완료된 종가의 모델 보유와 다음 시가 목표는 서로 다를 수 있다.
+    // 미체결 전환 신호는 큰 화면에 목표를 강조하되 기존 보유를 명확히 병기한다.
+    const state = Q123.state;
+    const pending = state.target_mode !== state.mode;
+    const displayMode = pending ? state.target_mode : state.mode;
+    const displayAsset = pending ? state.target_asset : state.asset;
+    const signalExpired = Date.now() >= Date.parse(state.next_open_utc);
+    const modeColor = displayMode === 'BOOST' ? 'var(--amber)'
+                   : displayMode === 'BEAR' ? 'var(--red)'
                    : 'var(--green)';
 
     // ─── 티커바 ───
-    set('tk-mode', 'MODE: ' + Q123.currentMode);
+    set('tk-mode', pending ? 'SIGNAL: ' + displayMode + ' → ' + displayAsset : 'MODE: ' + displayMode);
     set('tk-qqq', fmt$(Q123.qqq) + (Q123.drawdown != null ? ' (' + fmtPct(Q123.drawdown) + ' from 2Y HIGH)' : ''));
     set('tk-qld', fmt$(Q123.qldPrice));
     set('tk-ath', fmt$(Q123.ath));
@@ -1909,17 +1916,20 @@
 
     // ─── 모드 표시 ───
     const modeValEl = document.getElementById('mode-value');
+    set('mode-label', pending ? (signalExpired ? 'LAST CLOSE SIGNAL · VERIFY' : 'NEXT-OPEN SIGNAL') : 'CURRENT MODE');
     if(modeValEl){
-      modeValEl.textContent = Q123.currentMode;
+      modeValEl.textContent = displayMode;
       modeValEl.style.color = modeColor;
       modeValEl.style.textShadow = `0 0 16px ${modeColor.replace('var(','').replace(')','')==='--amber'?'rgba(255,176,32,0.25)':modeColor==='var(--red)'?'rgba(255,77,94,0.25)':'rgba(74,222,128,0.25)'}`;
     }
-    setHTML('mode-asset', `→ ${Q123.currentAsset} <span class="pct">100%</span>`);
+    setHTML('mode-asset', `→ ${displayAsset} <span class="pct">100%</span>`);
 
     // ─── 자산 디테일 (현재 보유 자산의 가격/상태) ───
     // QLD 가격은 data.json에 있지만 TQQQ는 없음 → 가능하면 보조 정보 표시
     let assetDetail = '';
-    if(Q123.currentAsset === 'QLD' && Q123.qldPrice != null){
+    if(pending){
+      assetDetail = `${state.as_of} 종가 신호 확정 · ${state.reason}`;
+    } else if(Q123.currentAsset === 'QLD' && Q123.qldPrice != null){
       assetDetail = `QLD $${Q123.qldPrice.toFixed(2)} · QQQ 2배 레버리지 · 변동성 중간`;
     } else if(Q123.currentAsset === 'TQQQ'){
       assetDetail = `QQQ 3배 레버리지 · BOOST peak 추적 중 · 종료 조건 모니터링`;
@@ -1927,6 +1937,15 @@
       assetDetail = `나스닥 100 직접 보유 · 레버리지 축소 · BEAR 방어 중`;
     }
     set('mode-asset-detail', assetDetail);
+    const pendingNote = document.getElementById('mode-pending-note');
+    if(pendingNote){
+      pendingNote.style.display = pending ? 'block' : 'none';
+      if(pending){
+        pendingNote.textContent = signalExpired
+          ? `종가 기준 전환 신호: ${state.mode}/${state.asset} 100% → ${state.target_mode}/${state.target_asset} 100%. 예정된 ${state.next_session} 시가가 지났습니다. 최신 상태 및 실제 체결 여부 확인 필요.`
+          : `전환 전 모델 보유: ${state.mode}/${state.asset} 100% → ${state.next_session} 미국장 시가 목표: ${state.target_mode}/${state.target_asset} 100%. 아직 체결된 포지션은 아닙니다.`;
+      }
+    }
 
     // ─── 모드별 동적 거리 막대 ───
     renderDistanceBars();
@@ -1982,13 +2001,13 @@
       r.classList.remove('dimmed', 'highlighted');
     });
 
-    if(Q123.currentMode === 'BEAR'){
+    if(displayMode === 'BEAR'){
       // BEAR: 추세 행이 핵심, 나머지는 흐리게
       rows.trend.forEach(r => r.classList.add('highlighted'));
       rows.momentum.forEach(r => r.classList.add('dimmed'));
       rows.boost.forEach(r => r.classList.add('dimmed'));
       rows.cooldown.forEach(r => r.classList.add('dimmed'));
-    } else if(Q123.currentMode === 'BOOST'){
+    } else if(displayMode === 'BOOST'){
       // BOOST: 추세 + BOOST 행이 핵심 (종료 조건 모니터링)
       rows.trend.forEach(r => r.classList.add('highlighted'));
       rows.boost.forEach(r => r.classList.add('highlighted'));
@@ -2001,15 +2020,13 @@
       rows.cooldown.forEach(r => r.classList.add('dimmed'));
     }
 
-    const state = Q123.state;
-    const pending = state.target_mode !== state.mode;
     let judgeMsg = `완료된 ${state.as_of} 종가 기준 · <b>${state.mode} / ${state.asset} 100%</b>`;
     let nextTrigger = `다음 거래일 ${state.next_session} 시가 목표: ${state.target_mode} / ${state.target_asset} · ${state.reason}`;
     if(pending) judgeMsg += ` → ${state.as_of} 신호: <b>${state.target_mode}</b> (${state.reason})`;
     else if(state.mode === 'BEAR') judgeMsg += ` · SMA200 위 연속 ${state.above_days}/5거래일`;
     else if(state.mode === 'BOOST') judgeMsg += ` · 보유 ${state.boost_days}/63거래일`;
     else if(state.cooldown_remaining) judgeMsg += ` · 쿨다운 ${state.cooldown_remaining}거래일 남음`;
-    if(Date.now() >= Date.parse(state.next_open_utc)) nextTrigger += ' · 과거 종가 상태입니다. 최신 장 마감 자료 확인 필요';
+    if(signalExpired) nextTrigger += ' · 과거 종가 상태입니다. 최신 장 마감 자료 확인 필요';
     setHTML('judge-text', judgeMsg);
     set('next-trigger-text', nextTrigger);
 
@@ -2029,7 +2046,7 @@
     document.querySelectorAll('.checklist-item[data-priority]').forEach(item => {
       const pri = item.getAttribute('data-priority');
       // 'all'은 항상 일반, 모드 일치 시 priority
-      if(pri === Q123.currentMode){
+      if(pri === displayMode){
         item.classList.add('priority');
       } else {
         item.classList.remove('priority');
@@ -2038,8 +2055,10 @@
     // 안내 텍스트 갱신
     const hint = document.getElementById('checklist-mode-hint');
     if(hint){
-      const modeKr = {BEAR:'BEAR', NORMAL:'NORMAL', BOOST:'BOOST'}[Q123.currentMode] || '—';
-      hint.textContent = `현재 ${modeKr} 모드 — 우선 항목은 ⚡ 표시`;
+      const modeKr = {BEAR:'BEAR', NORMAL:'NORMAL', BOOST:'BOOST'}[displayMode] || '—';
+      hint.textContent = pending
+        ? `다음 시가 ${modeKr} 전환 신호 — 우선 항목은 ⚡ 표시 (현재 모델 보유: ${state.mode})`
+        : `현재 ${modeKr} 모드 — 우선 항목은 ⚡ 표시`;
     }
   }
 
@@ -2061,7 +2080,15 @@
       if(row) row.style.display = 'none';
     };
 
-    if(Q123.currentMode === 'BOOST'){
+    if(Q123.targetMode === 'BEAR' && Q123.currentMode !== 'BEAR'){
+      // 이미 BEAR 진입 신호가 확정되었으므로 '진입까지 0% 필요'로 표시하지 않는다.
+      const deviation = (Q123.qqq / Q123.sma200 - 1) * 100;
+      setBar(1, 'BEAR 진입 발동', 100, `QQQ / SMA200 ${deviation.toFixed(2)}% · 발동 ✓`, true);
+      setBar(2, '다음 시가 목표', 100, `${Q123.state.next_session} · QQQ 100%`, true);
+      hide(3);
+      const fn = document.getElementById('mode-footnote');
+      if(fn) fn.style.display = 'none';
+    } else if(Q123.currentMode === 'BOOST'){
       // BOOST 진입일 이후의 실제 종가 peak와 보유기간
       // 1) SMA50 이탈까지: QQQ가 SMA50까지 얼마나 떨어져야 하는가
       const sma50Gap = (Q123.qqq - Q123.sma50) / Q123.qqq * 100;
