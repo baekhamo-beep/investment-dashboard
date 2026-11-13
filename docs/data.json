@@ -33,48 +33,48 @@
     "price_basis": "Yahoo unadjusted close; completed sessions only",
     "next_session": "2026-11-13",
     "next_open_utc": "2026-11-13T14:30:00+00:00",
-    "updated_utc": "2026-11-13T03:59:37.331016+00:00"
+    "updated_utc": "2026-11-13T18:54:37.444053+00:00"
   },
-  "updated_utc": "2026-11-13T03:59:37Z",
+  "updated_utc": "2026-11-13T18:54:37Z",
   "nasdaq": {
-    "drawdown_pct": -9.41,
-    "rsi": 45.4,
-    "ma200_dev_pct": 1.06,
-    "ma50_dev_pct": -4.22,
-    "current_price": 688.17,
+    "drawdown_pct": -10.63,
+    "rsi": 40.6,
+    "ma200_dev_pct": -0.34,
+    "ma50_dev_pct": -5.41,
+    "current_price": 678.91,
     "peak_price": 759.66,
-    "sma50_price": 718.46,
-    "sma200_price": 680.94,
-    "momentum_6m": -2.72,
-    "return_20d_pct": -3.05,
-    "return_60d_pct": -3.1,
-    "return_63d_pct": -5.77,
-    "return_126d_pct": -4.19,
-    "above_ma200": true,
+    "sma50_price": 717.7,
+    "sma200_price": 681.2,
+    "momentum_6m": -3.62,
+    "return_20d_pct": -5.49,
+    "return_60d_pct": -4.74,
+    "return_63d_pct": -6.89,
+    "return_126d_pct": -4.03,
+    "above_ma200": false,
     "above_ma50": false
   },
-  "vix": 18.7,
+  "vix": 19.45,
   "fear_greed": {
-    "value": 39.9,
+    "value": 38.4,
     "classification": "fear",
-    "prev_close": 37.0,
-    "prev_1w": 20.0,
-    "prev_1m": 45.2,
+    "prev_close": 39.8,
+    "prev_1w": 24.4,
+    "prev_1m": 45.6,
     "source": "CNN Business"
   },
   "etf_prices": {
-    "QLD": 81.3,
-    "SPMO": 134.43,
-    "SCHD": 35.93,
-    "AVUV": 121.82,
-    "SGOV": 100.53
+    "QLD": 79.07,
+    "SPMO": 131.8,
+    "SCHD": 36.03,
+    "AVUV": 122.0,
+    "SGOV": 100.56
   },
-  "usd_krw": 1332.4,
-  "kiwoom_price": 9990,
+  "usd_krw": 1336.4,
+  "kiwoom_price": 10030,
   "mps": {
-    "trend": 1,
+    "trend": 0,
     "momentum": 0,
     "vix": 1,
-    "total": 2
+    "total": 1
   }
 }
