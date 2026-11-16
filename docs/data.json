@@ -11,7 +11,7 @@
     "cooldown_remaining": 0,
     "above_days": 0,
     "version": "Q123_CANONICAL_V2",
-    "as_of": "2026-11-13",
+    "as_of": "2026-11-16",
     "signal_date": null,
     "execution": null,
     "last_transition": {
@@ -24,57 +24,57 @@
       "to_asset": "QQQ"
     },
     "indicators": {
-      "close": 679.8900146484375,
-      "sma50": 717.8672009277344,
-      "sma200": 682.2389001464844,
-      "ret63": -0.06847792182596191,
-      "ret126": -0.040963111065079105
+      "close": 661.75,
+      "sma50": 716.7230004882813,
+      "sma200": 682.4383001708984,
+      "ret63": -0.07771321515617469,
+      "ret126": -0.06251771487724578
     },
     "price_basis": "Yahoo unadjusted close; completed sessions only",
-    "next_session": "2026-11-16",
-    "next_open_utc": "2026-11-16T14:30:00+00:00",
-    "updated_utc": "2026-11-15T18:09:14.311486+00:00"
+    "next_session": "2026-11-17",
+    "next_open_utc": "2026-11-17T14:30:00+00:00",
+    "updated_utc": "2026-11-16T21:23:50.150395+00:00"
   },
-  "updated_utc": "2026-11-15T18:09:14Z",
+  "updated_utc": "2026-11-16T21:23:50Z",
   "nasdaq": {
-    "drawdown_pct": -10.5,
-    "rsi": 40.9,
-    "ma200_dev_pct": -0.19,
-    "ma50_dev_pct": -5.27,
-    "current_price": 679.89,
+    "drawdown_pct": -12.89,
+    "rsi": 34.0,
+    "ma200_dev_pct": -2.89,
+    "ma50_dev_pct": -7.65,
+    "current_price": 661.75,
     "peak_price": 759.66,
-    "sma50_price": 717.72,
-    "sma200_price": 681.2,
-    "momentum_6m": -3.48,
-    "return_20d_pct": -5.36,
-    "return_60d_pct": -4.6,
-    "return_63d_pct": -6.75,
-    "return_126d_pct": -3.89,
+    "sma50_price": 716.59,
+    "sma200_price": 681.41,
+    "momentum_6m": -5.47,
+    "return_20d_pct": -7.79,
+    "return_60d_pct": -6.21,
+    "return_63d_pct": -7.68,
+    "return_126d_pct": -6.05,
     "above_ma200": false,
     "above_ma50": false
   },
-  "vix": 19.3,
+  "vix": 23.13,
   "fear_greed": {
-    "value": 38.6,
+    "value": 30.7,
     "classification": "fear",
-    "prev_close": 39.8,
-    "prev_1w": 24.4,
-    "prev_1m": 45.6,
+    "prev_close": 38.6,
+    "prev_1w": 31.5,
+    "prev_1m": 18.2,
     "source": "CNN Business"
   },
   "etf_prices": {
-    "QLD": 79.3,
-    "SPMO": 132.31,
-    "SCHD": 36.12,
-    "AVUV": 122.22,
-    "SGOV": 100.56
+    "QLD": 75.08,
+    "SPMO": 128.06,
+    "SCHD": 35.86,
+    "AVUV": 120.77,
+    "SGOV": 100.58
   },
-  "usd_krw": 1335.0,
-  "kiwoom_price": 10030,
+  "usd_krw": 1335.7,
+  "kiwoom_price": 9835,
   "mps": {
     "trend": 0,
     "momentum": 0,
-    "vix": 1,
-    "total": 1
+    "vix": 0,
+    "total": 0
   }
 }
