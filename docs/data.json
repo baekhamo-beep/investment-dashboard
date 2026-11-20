@@ -33,9 +33,9 @@
     "price_basis": "Yahoo unadjusted close; completed sessions only",
     "next_session": "2026-11-20",
     "next_open_utc": "2026-11-20T14:30:00+00:00",
-    "updated_utc": "2026-11-19T21:54:41.820332+00:00"
+    "updated_utc": "2026-11-20T04:48:03.497094+00:00"
   },
-  "updated_utc": "2026-11-19T21:54:41Z",
+  "updated_utc": "2026-11-20T04:48:03Z",
   "nasdaq": {
     "drawdown_pct": -15.09,
     "rsi": 36.5,
@@ -64,13 +64,13 @@
   },
   "etf_prices": {
     "QLD": 71.26,
-    "SPMO": 124.04,
+    "SPMO": null,
     "SCHD": 34.2,
-    "AVUV": 116.52,
-    "SGOV": 100.61
+    "AVUV": null,
+    "SGOV": null
   },
-  "usd_krw": 1334.7,
-  "kiwoom_price": 9560,
+  "usd_krw": 1337.4,
+  "kiwoom_price": 9210,
   "mps": {
     "trend": 0,
     "momentum": 0,
