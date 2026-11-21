@@ -33,9 +33,9 @@
     "price_basis": "Yahoo unadjusted close; completed sessions only",
     "next_session": "2026-11-23",
     "next_open_utc": "2026-11-23T14:30:00+00:00",
-    "updated_utc": "2026-11-21T04:42:35.101025+00:00"
+    "updated_utc": "2026-11-21T18:26:07.994649+00:00"
   },
-  "updated_utc": "2026-11-21T04:42:35Z",
+  "updated_utc": "2026-11-21T18:26:07Z",
   "nasdaq": {
     "drawdown_pct": -19.9,
     "rsi": 31.4,
