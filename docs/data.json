@@ -33,9 +33,9 @@
     "price_basis": "Yahoo unadjusted close; completed sessions only",
     "next_session": "2026-11-24",
     "next_open_utc": "2026-11-24T14:30:00+00:00",
-    "updated_utc": "2026-11-23T23:01:25.550086+00:00"
+    "updated_utc": "2026-11-24T07:30:59.564835+00:00"
   },
-  "updated_utc": "2026-11-23T23:01:25Z",
+  "updated_utc": "2026-11-24T07:30:59Z",
   "nasdaq": {
     "drawdown_pct": -14.3,
     "rsi": 42.7,
@@ -57,8 +57,8 @@
   "fear_greed": {
     "value": 17.0,
     "classification": "extreme fear",
-    "prev_close": 9.7,
-    "prev_1w": 31.1,
+    "prev_close": 17.0,
+    "prev_1w": 26.0,
     "prev_1m": 16.7,
     "source": "CNN Business"
   },
@@ -69,8 +69,8 @@
     "AVUV": 116.8,
     "SGOV": 100.64
   },
-  "usd_krw": 1342.1,
-  "kiwoom_price": 9140,
+  "usd_krw": 1343.2,
+  "kiwoom_price": 9385,
   "mps": {
     "trend": 0,
     "momentum": 0,
